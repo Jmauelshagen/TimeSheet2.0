@@ -5,12 +5,29 @@
 
 @{
     ViewBag.Title = "TimeSheet";
+    <div>
+        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+    </div>
 }
+
+
 
 <h2>Time Sheet</h2>
 
 
 <table style="width:100%" cellpadding="4">
+    <!DOCTYPE html>
+    <html>
+    <body>
+
+        <p id="Time"></p>
+
+        <script>
+            document.getElementById("Time").innerHTML = Date();
+        </script>
+
+    </body>
+</html>
     <tr>
         <th>Date</th>
         <th>Day</th>
@@ -24,7 +41,7 @@
         <th>Hours > 40 weekly</th>
     </tr>
     <tr>
-        <th>date</th>
+        <td><input type="text" name="Date" /></td>
         <th>Sun</th>
         <td><input type="text" name="start" /></td>
         <td><input type="text" name="mealOut" /></td>
@@ -35,7 +52,7 @@
         <td><input type="text" name="absentHours" /></td>
     </tr>
     <tr>
-        <th>date</th>
+        <td><input type="text" name="Date" /></td>
         <th>Mon</th>
         <td><input type="text" name="monStart" /></td>
         <td><input type="text" name="monMealOut" /></td>
@@ -44,9 +61,10 @@
         <td><input type="text" name="monHoursWorked" /></td>
         <td><input type="text" name="monTypeOfAbsence" /></td>
         <td><input type="text" name="monAbsentHours" /></td>
+
     </tr>
     <tr>
-        <th>date</th>
+        <td><input type="text" name="Date" /></td>
         <th>Tues</th>
         <td><input type="text" name="tuesStart" /></td>
         <td><input type="text" name="tuesMealOut" /></td>
@@ -57,7 +75,7 @@
         <td><input type="text" name="tuesAbsentHours" /></td>
     </tr>
     <tr>
-        <th>date</th>
+        <td><input type="text" name="Date" /></td>
         <th>Wed</th>
         <td><input type="text" name="wedStart" /></td>
         <td><input type="text" name="wedMealOut" /></td>
@@ -68,7 +86,7 @@
         <td><input type="text" name="wedAbsentHours" /></td>
     </tr>
     <tr>
-        <th>date</th>
+        <td><input type="text" name="Date" /></td>
         <th>Thurs</th>
         <td><input type="text" name="thursStart" /></td>
         <td><input type="text" name="thursMealOut" /></td>
@@ -79,7 +97,7 @@
         <td><input type="text" name="thursAbsentHours" /></td>
     </tr>
     <tr>
-        <th>date</th>
+        <td><input type="text" name="Date" /></td>
         <th>Fri</th>
         <td><input type="text" name="friStart" /></td>
         <td><input type="text" name="friMealOut" /></td>
@@ -90,7 +108,7 @@
         <td><input type="text" name="friAbsentHours" /></td>
     </tr>
     <tr>
-        <th>date</th>
+     <td><input type="text" name="Date" /></td>
         <th>Sat</th>
         <td><input type="text" name="start" /></td>
         <td><input type="text" name="mealOut" /></td>
@@ -99,9 +117,14 @@
         <td><input type="text" name="hoursWorked" /></td>
         <td><input type="text" name="typeOfAbsence" /></td>
         <td><input type="text" name="absentHours" /></td>
+
     </tr>
     <tr>
-        <th colspan="5">Total weekly hours</th>
+        <th colspan="5">Total weekly hours</th><script>
+            var tD = new Date();
+            var datestr = (tD.getMonth() + ) + "/" + tD.getDate() + "/" + tD.getFullYear();
+            document.write("<input type='text' name='textField' value='" + datestr + "'>");
+</script>
         <td><input type="text" name="totalWeekly" /></td>
         <th>Total absent hours</th>
         <td><input type="text" name="totalAbsent" /></td>
