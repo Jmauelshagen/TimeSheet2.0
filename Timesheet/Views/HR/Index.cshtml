@@ -1,0 +1,35 @@
+﻿@{
+    Layout = null;
+    if (Session["hrId"] == null)
+    {
+        Response.Redirect("~/Login/Index");
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>HR</title>
+</head>
+
+<body>
+    <div>
+        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+    </div>
+    <div>
+        <h1>HR</h1>
+        <ul>
+            <li>
+                <a href="http://localhost:59443/Timesheet/Timesheet">Timesheet</a>
+            </li>
+            <li>
+                <a href="">Timesheet Reports</a>
+            </li>
+        </ul>
+
+        <a href="@Url.Action("LogOut", "Login")">LogOut</a>
+    </div>
+</body>
+</html>
