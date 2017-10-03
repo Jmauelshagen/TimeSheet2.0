@@ -18,7 +18,7 @@ namespace Timesheet.Controllers
         [HttpPost]
         public ActionResult Authorize(Emp empModel, Sup supModel, HR hrModel)
         {
-            using (LoginDatabaseEntities db = new LoginDatabaseEntities())
+            using (LoginDatabaseEntities1 db = new LoginDatabaseEntities1())
             {
                 var empDetails = db.Emps.Where(x => x.UserName == empModel.UserName && x.Password == empModel.Password)
                     .FirstOrDefault();
@@ -29,7 +29,7 @@ namespace Timesheet.Controllers
 
                     if (empDetails == null)
                     {
-                        empModel.LoginErrorMessage = "wrong UserName or Password";
+                        empModel.LoginErrorMessage = "Wrong UserName or Password";
                     }
                     else
                     {

@@ -7,14 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-
 namespace Timesheet.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Emp
     {
         public int EmpId { get; set; }
@@ -24,7 +23,6 @@ namespace Timesheet.Models
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "This Field is required")]
         public string Password { get; set; }
-
-        public String LoginErrorMessage { get; set; }
+        public string LoginErrorMessage { get; internal set; }
     }
 }

@@ -7,8 +7,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.ComponentModel.DataAnnotations;
-
 namespace Timesheet.Models
 {
     using System;
@@ -17,11 +15,8 @@ namespace Timesheet.Models
     public partial class Sup
     {
         public int SupId { get; set; }
-        [Required]
         public string UserName { get; set; }
-        [DataType(DataType.Password)]
         public string Password { get; set; }
-
-        public String LoginErrorMessage { get; set; }
+        public string LoginErrorMessage { get; internal set; }
     }
 }

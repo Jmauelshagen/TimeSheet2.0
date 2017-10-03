@@ -13,10 +13,10 @@ namespace Timesheet.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class LoginDatabaseEntities : DbContext
+    public partial class LoginDatabaseEntities1 : DbContext
     {
-        public LoginDatabaseEntities()
-            : base("name=LoginDatabaseEntities")
+        public LoginDatabaseEntities1()
+            : base("name=LoginDatabaseEntities1")
         {
         }
     
@@ -26,7 +26,12 @@ namespace Timesheet.Models
         }
     
         public DbSet<Emp> Emps { get; set; }
+        public DbSet<Employee> Employees { get; set; }
         public DbSet<HR> HRs { get; set; }
+        public DbSet<LeaveType> LeaveTypes { get; set; }
+        public DbSet<Login> Logins { get; set; }
+        public DbSet<Role> Roles { get; set; }
         public DbSet<Sup> Sups { get; set; }
+        public DbSet<TimeSheet> TimeSheets { get; set; }
     }
 }

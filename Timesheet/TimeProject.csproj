@@ -160,7 +160,16 @@
     <Compile Include="Models\Emp.cs">
       <DependentUpon>LoginDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Employee.cs">
+      <DependentUpon>LoginDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\HR.cs">
+      <DependentUpon>LoginDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LeaveType.cs">
+      <DependentUpon>LoginDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Login.cs">
       <DependentUpon>LoginDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LoginDataModel.Context.cs">
@@ -178,7 +187,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LoginDataModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Role.cs">
+      <DependentUpon>LoginDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Sup.cs">
+      <DependentUpon>LoginDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TimeSheet.cs">
       <DependentUpon>LoginDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -197,8 +212,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="Models\LoginDataModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>LoginDataModel.Context.cs</LastGenOutput>
       <DependentUpon>LoginDataModel.edmx</DependentUpon>
+      <LastGenOutput>LoginDataModel.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Models\LoginDataModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
