@@ -1,4 +1,4 @@
-﻿@model Timesheet.Models.Emp
+﻿@model Timesheet.Models.Login
     
 @{
     Layout = null;
@@ -45,17 +45,17 @@
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.UserName)
+                    @Html.LabelFor(model => model.Username)
                 </td>
                 <td>
-                    @Html.EditorFor(model => model.UserName)
+                    @Html.EditorFor(model => model.Username)
 
                 </td>
             </tr>
             <tr>
                 <td></td>
                 <td>
-                    @Html.ValidationMessageFor(model => model.UserName)
+                    @Html.ValidationMessageFor(model => model.Username)
                 </td>
             </tr>
             <tr>
