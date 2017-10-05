@@ -1,4 +1,4 @@
-﻿@model Timesheet.Models.Emp
+﻿@model Timesheet.Models.Login
     
 @{
     Layout = null;
@@ -10,6 +10,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Login</title>
+    <!--Style info for the screen-->
     <style>
         body {
             background-color: cadetblue;
@@ -35,7 +36,7 @@
 <div id="login-div">
 
 
-
+    <!--The login form-->
     @using (Html.BeginForm("Authorize", "Login", FormMethod.Post))
     {
         <table>
@@ -45,17 +46,17 @@
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.UserName)
+                    @Html.LabelFor(model => model.Username)
                 </td>
                 <td>
-                    @Html.EditorFor(model => model.UserName)
+                    @Html.EditorFor(model => model.Username)
 
                 </td>
             </tr>
             <tr>
                 <td></td>
                 <td>
-                    @Html.ValidationMessageFor(model => model.UserName)
+                    @Html.ValidationMessageFor(model => model.Username)
                 </td>
             </tr>
             <tr>
@@ -70,7 +71,8 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <label class="field-validation-error">@Html.DisplayFor(model => model.LoginErrorMessage)</label>
+                    
+                    <label class="field-validation-error">@Html.DisplayFor(model => Session["Error"])</label>
                 </td>
             </tr>
             <tr>

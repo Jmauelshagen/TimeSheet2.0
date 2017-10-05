@@ -23,5 +23,6 @@ namespace Timesheet.Models
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "This Field is required")]
         public string Password { get; set; }
+        public string LoginErrorMessage { get; internal set; }
     }
 }
