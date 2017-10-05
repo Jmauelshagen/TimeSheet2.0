@@ -10,6 +10,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Login</title>
+    <!--Style info for the screen-->
     <style>
         body {
             background-color: cadetblue;
@@ -35,7 +36,7 @@
 <div id="login-div">
 
 
-
+    <!--The login form-->
     @using (Html.BeginForm("Authorize", "Login", FormMethod.Post))
     {
         <table>
@@ -70,7 +71,8 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <label class="field-validation-error">@Html.DisplayFor(model => model.LoginErrorMessage)</label>
+                    
+                    <label class="field-validation-error">@Html.DisplayFor(model => Session["Error"])</label>
                 </td>
             </tr>
             <tr>
