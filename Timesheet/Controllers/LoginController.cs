@@ -27,9 +27,10 @@ namespace Timesheet.Controllers
                 var employeeId = empId.FirstOrDefault();
 
 
-                if (empId == null)
+                if (empId.FirstOrDefault() == 0)
                 {
                     model.LoginErrorMessage = "Invalid user.";
+                    return RedirectToAction("Index", "Login");
                 }
                 else
                 {
