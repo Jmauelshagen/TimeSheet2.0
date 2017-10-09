@@ -1,0 +1,46 @@
+﻿@{
+    Layout = null;
+}
+
+
+@{
+    ViewBag.Title = "TimeSheet Reports";
+    <div>
+        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+    </div>
+}
+
+
+
+<h2>Timesheet Reports</h2>
+<p><a href="#" onclick="history.back();">Back</a></p>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <a href="@Url.Action("weekly", "monthly")">weekly</a>
+    <a href="@Url.Action("weekly", "monthly")">monthly</a>
+
+    <p>Enter Employee's name to view Timesheet</p>
+
+    <form>
+        <input type="text" placeholder="Search..." required>
+        <input type="button" value="Search">
+
+
+    </form>
+</head>
+<body><p>
+    <a href="url">Click here to view all Employee Timesheet
+</p>
+    <a href="url">Approve/Deny Timesheets
+<p>
+    <a href="url">Approved Timesheets
+        </p>
+    <a href="url">Denied Timesheets
+ <p> </p>       </a>
+        </a>
+</body>
+</html>
