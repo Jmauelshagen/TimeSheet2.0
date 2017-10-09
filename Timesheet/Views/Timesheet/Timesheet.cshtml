@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Timesheet.Models.TimeSheet
+
+@{
     Layout = null;
 }
 
@@ -15,7 +17,7 @@
 <h2>Time Sheet</h2>
 
 
-<table style="width:100%" cellpadding="4">
+
     <!DOCTYPE html>
     <html>
     <body>
@@ -26,112 +28,116 @@
             document.getElementById("Time").innerHTML = Date();
         </script>
 
-    </body>
-</html>
-    <tr>
-        <th>Date</th>
-        <th>Day</th>
-        <th>Start/ Time In</th>
-        <th>Meal/ Time Out</th>
-        <th>Meal/ Time In</th>
-        <th>Finish/ Time Out</th>
-        <th>Hours Worked</th>
-        <th>Type of absence</th>
-        <th>Absent hours</th>
-        <th>Hours > 40 weekly</th>
-    </tr>
-    <tr>
-        <td><input type="text" name="Date" /></td>
-        <th>Sun</th>
-        <td><input type="text" name="start" /></td>
-        <td><input type="text" name="mealOut" /></td>
-        <td><input type="text" name="mealIn" /></td>
-        <td><input type="text" name="finish" /></td>
-        <td><input type="text" name="hoursWorked" /></td>
-        <td><input type="text" name="typeOfAbsence" /></td>
-        <td><input type="text" name="absentHours" /></td>
-    </tr>
-    <tr>
-        <td><input type="text" name="Date" /></td>
-        <th>Mon</th>
-        <td><input type="text" name="monStart" /></td>
-        <td><input type="text" name="monMealOut" /></td>
-        <td><input type="text" name="monMealIn" /></td>
-        <td><input type="text" name="monFinish" /></td>
-        <td><input type="text" name="monHoursWorked" /></td>
-        <td><input type="text" name="monTypeOfAbsence" /></td>
-        <td><input type="text" name="monAbsentHours" /></td>
+        <table style="width:100%" cellpadding="4">
+            <tr>
+                <th>Date</th>
+                <th>Day</th>
+                <th>Start/ Time In</th>
+                <th>Meal/ Time Out</th>
+                <th>Meal/ Time In</th>
+                <th>Finish/ Time Out</th>
+                <th>Hours Worked</th>
+                <th>Type of absence</th>
+                <th>Absent hours</th>
+                <th>Hours > 40 weekly</th>
+            </tr>
+            <tr>
+                <td><input type="text" name="date" /></td>
+                <th>Sun</th>
+                <td><input type="text" name="start" /></td>
+                <td><input type="text" name="mealOut" /></td>
+                <td><input type="text" name="mealIn" /></td>
+                <td><input type="text" name="finish" /></td>
+                <td><input type="text" name="hoursWorked" /></td>
+                <td><input type="text" name="typeOfAbsence" /></td>
+                <td><input type="text" name="absentHours" /></td>
+            </tr>
+            <tr>
+                <td><input type="text" name="Date" /></td>
+                <th>Mon</th>
+                <td><input type="text" name="monStart" /></td>
+                <td><input type="text" name="monMealOut" /></td>
+                <td><input type="text" name="monMealIn" /></td>
+                <td><input type="text" name="monFinish" /></td>
+                <td><input type="text" name="monHoursWorked" /></td>
+                <td><input type="text" name="monTypeOfAbsence" /></td>
+                <td><input type="text" name="monAbsentHours" /></td>
 
-    </tr>
-    <tr>
-        <td><input type="text" name="Date" /></td>
-        <th>Tues</th>
-        <td><input type="text" name="tuesStart" /></td>
-        <td><input type="text" name="tuesMealOut" /></td>
-        <td><input type="text" name="tuesMealIn" /></td>
-        <td><input type="text" name="tuesFinish" /></td>
-        <td><input type="text" name="tuesHoursWorked" /></td>
-        <td><input type="text" name="tuesTypeOfAbsence" /></td>
-        <td><input type="text" name="tuesAbsentHours" /></td>
-    </tr>
-    <tr>
-        <td><input type="text" name="Date" /></td>
-        <th>Wed</th>
-        <td><input type="text" name="wedStart" /></td>
-        <td><input type="text" name="wedMealOut" /></td>
-        <td><input type="text" name="wedMealIn" /></td>
-        <td><input type="text" name="wedFinish" /></td>
-        <td><input type="text" name="wedHoursWorked" /></td>
-        <td><input type="text" name="wedTypeOfAbsence" /></td>
-        <td><input type="text" name="wedAbsentHours" /></td>
-    </tr>
-    <tr>
-        <td><input type="text" name="Date" /></td>
-        <th>Thurs</th>
-        <td><input type="text" name="thursStart" /></td>
-        <td><input type="text" name="thursMealOut" /></td>
-        <td><input type="text" name="thursMealIn" /></td>
-        <td><input type="text" name="thursFinish" /></td>
-        <td><input type="text" name="thursHoursWorked" /></td>
-        <td><input type="text" name="thursTypeOfAbsence" /></td>
-        <td><input type="text" name="thursAbsentHours" /></td>
-    </tr>
-    <tr>
-        <td><input type="text" name="Date" /></td>
-        <th>Fri</th>
-        <td><input type="text" name="friStart" /></td>
-        <td><input type="text" name="friMealOut" /></td>
-        <td><input type="text" name="friMealIn" /></td>
-        <td><input type="text" name="friFinish" /></td>
-        <td><input type="text" name="friHoursWorked" /></td>
-        <td><input type="text" name="friTypeOfAbsence" /></td>
-        <td><input type="text" name="friAbsentHours" /></td>
-    </tr>
-    <tr>
-     <td><input type="text" name="Date" /></td>
-        <th>Sat</th>
-        <td><input type="text" name="start" /></td>
-        <td><input type="text" name="mealOut" /></td>
-        <td><input type="text" name="mealIn" /></td>
-        <td><input type="text" name="finish" /></td>
-        <td><input type="text" name="hoursWorked" /></td>
-        <td><input type="text" name="typeOfAbsence" /></td>
-        <td><input type="text" name="absentHours" /></td>
+            </tr>
+            <tr>
+                <td><input type="text" name="Date" /></td>
+                <th>Tues</th>
+                <td><input type="text" name="tuesStart" /></td>
+                <td><input type="text" name="tuesMealOut" /></td>
+                <td><input type="text" name="tuesMealIn" /></td>
+                <td><input type="text" name="tuesFinish" /></td>
+                <td><input type="text" name="tuesHoursWorked" /></td>
+                <td><input type="text" name="tuesTypeOfAbsence" /></td>
+                <td><input type="text" name="tuesAbsentHours" /></td>
+            </tr>
+            <tr>
+                <td><input type="text" name="Date" /></td>
+                <th>Wed</th>
+                <td><input type="text" name="wedStart" /></td>
+                <td><input type="text" name="wedMealOut" /></td>
+                <td><input type="text" name="wedMealIn" /></td>
+                <td><input type="text" name="wedFinish" /></td>
+                <td><input type="text" name="wedHoursWorked" /></td>
+                <td><input type="text" name="wedTypeOfAbsence" /></td>
+                <td><input type="text" name="wedAbsentHours" /></td>
+            </tr>
+            <tr>
+                <td><input type="text" name="Date" /></td>
+                <th>Thurs</th>
+                <td><input type="text" name="thursStart" /></td>
+                <td><input type="text" name="thursMealOut" /></td>
+                <td><input type="text" name="thursMealIn" /></td>
+                <td><input type="text" name="thursFinish" /></td>
+                <td><input type="text" name="thursHoursWorked" /></td>
+                <td><input type="text" name="thursTypeOfAbsence" /></td>
+                <td><input type="text" name="thursAbsentHours" /></td>
+            </tr>
+            <tr>
+                <td><input type="text" name="Date" /></td>
+                <th>Fri</th>
+                <td><input type="text" name="friStart" /></td>
+                <td><input type="text" name="friMealOut" /></td>
+                <td><input type="text" name="friMealIn" /></td>
+                <td><input type="text" name="friFinish" /></td>
+                <td><input type="text" name="friHoursWorked" /></td>
+                <td><input type="text" name="friTypeOfAbsence" /></td>
+                <td><input type="text" name="friAbsentHours" /></td>
+            </tr>
+            <tr>
+                <td><input type="text" name="Date" /></td>
+                <th>Sat</th>
+                <td><input type="text" name="start" /></td>
+                <td><input type="text" name="mealOut" /></td>
+                <td><input type="text" name="mealIn" /></td>
+                <td><input type="text" name="finish" /></td>
+                <td><input type="text" name="hoursWorked" /></td>
+                <td><input type="text" name="typeOfAbsence" /></td>
+                <td><input type="text" name="absentHours" /></td>
 
-    </tr>
-    <tr>
-        <th colspan="5">Total weekly hours</th><script>
-            var tD = new Date();
-            var datestr = (tD.getMonth() + ) + "/" + tD.getDate() + "/" + tD.getFullYear();
-            document.write("<input type='text' name='textField' value='" + datestr + "'>");
-</script>
-        <td><input type="text" name="totalWeekly" /></td>
-        <th>Total absent hours</th>
-        <td><input type="text" name="totalAbsent" /></td>
-    </tr>
-    <tr>
-        <th colspan="9">Overtime hours x1.5 to be added to prior FLSA comp balance</th>
-        <td><input type="text" name="overtime" /></td>
-    </tr>
-</table>
+            </tr>
+            <tr>
+                <th colspan="5">Total weekly hours</th>
+                <script>
+                    var tD = new Date();
+                    var datestr = (tD.getMonth() + ) + "/" + tD.getDate() + "/" + tD.getFullYear();
+                    document.write("<input type='text' name='textField' value='" + datestr + "'>");
+                </script>
+                <td><input type="text" name="totalWeekly" /></td>
+                <th>Total absent hours</th>
+                <td><input type="text" name="totalAbsent" /></td>
+            </tr>
+            <tr>
+                <th colspan="9">Overtime hours x1.5 to be added to prior FLSA comp balance</th>
+                <td><input type="text" name="overtime" /></td>
+            </tr>
+        </table>
+</body>
+
 <a href="@Url.Action("LogOut", "Login")">LogOut</a>
+
+</html>
