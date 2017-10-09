@@ -154,6 +154,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\SupervisorController.cs" />
     <Compile Include="Controllers\TimesheetController.cs" />
+    <Compile Include="Controllers\TimesheetReportsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -263,7 +264,9 @@
     <Content Include="Views\Supervisor\Index.cshtml" />
     <Content Include="Views\HR\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\TimesheetReports\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
   </ItemGroup>
