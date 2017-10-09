@@ -18,17 +18,17 @@ namespace Timesheet.Models
     public partial class Login
     {
         //Instance variables
-        LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
+        LoginDatabaseEntities2 db = new LoginDatabaseEntities2();
 
         //Class properties
-        public int EmpId { get; set; } 
+        public int EmpId { get; set; }
         [DisplayName("User Name")]
         [Required(ErrorMessage = "This Field is required")]
         public string Username { get; set; }
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "This Field is required")]
         public string Password { get; set; }
-        public string LoginErrorMessage { get; internal set; }
+        public string LoginErrorMessage { get; set; }
 
         //Constructors
         //no-arg constructor
@@ -54,8 +54,8 @@ namespace Timesheet.Models
         public bool ValidateLogin(string uname, string pword)
         {
             var log = from logins in db.Logins
-                          where logins.Username == uname && logins.Password == pword
-                          select logins;
+                      where logins.Username == uname && logins.Password == pword
+                      select logins;
             Login login = (Login)log.FirstOrDefault();
 
             if (login.EmpId == 0)
@@ -78,5 +78,6 @@ namespace Timesheet.Models
             Login login = (Login)log.FirstOrDefault();
             return login;
         }
+
     }
 }

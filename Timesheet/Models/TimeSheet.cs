@@ -17,7 +17,7 @@ namespace Timesheet.Models
     public partial class TimeSheet
     {
         //Instance Variables
-        LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
+        LoginDatabaseEntities2 db = new LoginDatabaseEntities2();
 
         //Class properties
         public int Id { get; set; }
@@ -33,7 +33,7 @@ namespace Timesheet.Models
         public Nullable<int> TotalHoursWorked { get; set; }
         public string Submitted { get; set; }
         public string AuthorizedBySupervisor { get; set; }
-        public int EmpId { get; set; }
+        public Nullable<int> EmpId { get; set; }
 
         //Constructors
         //no-args constructor
@@ -54,6 +54,7 @@ namespace Timesheet.Models
             AuthorizedBySupervisor = "False";
             EmpId = 0;
         }
+
         //all-args constructor
         public TimeSheet(int id, string wEnd, string date, string inT, string outL, string inL, string outT,
             int leaveId, int leaveHrs, int addlHrs, int tlHrs, string sub, string auth, int empId)
@@ -106,7 +107,7 @@ namespace Timesheet.Models
                     this.InsertTimeSheet(sheet);
                     timesheets.Add(sheet);
                 }
-                
+
             }
             else
             {
@@ -307,5 +308,6 @@ namespace Timesheet.Models
             }
             return dates;
         }
+
     }
- }
+}

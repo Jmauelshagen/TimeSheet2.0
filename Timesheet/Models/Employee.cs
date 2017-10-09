@@ -12,13 +12,13 @@ namespace Timesheet.Models
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    
     public partial class Employee
     {
-        //instance variables
-        LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
+        //Instance variables
+        LoginDatabaseEntities2 db = new LoginDatabaseEntities2();
 
-        //class properties
+        //Class properties
         public int EmpId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -27,7 +27,7 @@ namespace Timesheet.Models
         public string Department { get; set; }
         public int Supervisor { get; set; }
 
-        //class constructors
+        //Constructors
         //0-arg constructor
         public Employee()
         {
@@ -56,11 +56,11 @@ namespace Timesheet.Models
         //Method accepts the employee id as a paramter and returns an Employee object
         public Employee GetEmployee(int id)
         {
-                var e = from employees in db.Employees
-                               where employees.EmpId == id
-                               select employees;
-                Employee emp = (Employee)e.FirstOrDefault();
-                return emp;
+            var e = from employees in db.Employees
+                    where employees.EmpId == id
+                    select employees;
+            Employee emp = (Employee)e.FirstOrDefault();
+            return emp;
         }
 
         //Method is to obtain employee data for multiple employees
@@ -80,6 +80,6 @@ namespace Timesheet.Models
 
             return empList;
         }
-        
+
     }
 }

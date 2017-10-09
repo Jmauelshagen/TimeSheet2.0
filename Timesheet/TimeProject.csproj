@@ -159,43 +159,43 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Emp.cs">
-      <DependentUpon>LoginDataModel.tt</DependentUpon>
+      <DependentUpon>TimeProjectModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Employee.cs">
-      <DependentUpon>LoginDataModel.tt</DependentUpon>
+      <DependentUpon>TimeProjectModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\HR.cs">
-      <DependentUpon>LoginDataModel.tt</DependentUpon>
+      <DependentUpon>TimeProjectModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LeaveType.cs">
-      <DependentUpon>LoginDataModel.tt</DependentUpon>
+      <DependentUpon>TimeProjectModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Login.cs">
-      <DependentUpon>LoginDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\LoginDataModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LoginDataModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\LoginDataModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LoginDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\LoginDataModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LoginDataModel.edmx</DependentUpon>
+      <DependentUpon>TimeProjectModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Role.cs">
-      <DependentUpon>LoginDataModel.tt</DependentUpon>
+      <DependentUpon>TimeProjectModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Sup.cs">
-      <DependentUpon>LoginDataModel.tt</DependentUpon>
+      <DependentUpon>TimeProjectModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TimeProjectModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TimeProjectModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TimeProjectModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TimeProjectModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TimeProjectModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TimeProjectModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\TimeSheet.cs">
-      <DependentUpon>LoginDataModel.tt</DependentUpon>
+      <DependentUpon>TimeProjectModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -252,27 +252,27 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\LoginDataModel.Context.tt">
+    <Content Include="Models\TimeProjectModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>LoginDataModel.edmx</DependentUpon>
-      <LastGenOutput>LoginDataModel.Context.cs</LastGenOutput>
+      <DependentUpon>TimeProjectModel.edmx</DependentUpon>
+      <LastGenOutput>TimeProjectModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\LoginDataModel.tt">
+    <Content Include="Models\TimeProjectModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>LoginDataModel.edmx</DependentUpon>
-      <LastGenOutput>LoginDataModel.cs</LastGenOutput>
+      <DependentUpon>TimeProjectModel.edmx</DependentUpon>
+      <LastGenOutput>TimeProjectModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EntityDeploy Include="Models\LoginDataModel.edmx">
+    <EntityDeploy Include="Models\TimeProjectModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>LoginDataModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>TimeProjectModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\LoginDataModel.edmx.diagram">
-      <DependentUpon>LoginDataModel.edmx</DependentUpon>
+    <Content Include="Models\TimeProjectModel.edmx.diagram">
+      <DependentUpon>TimeProjectModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
