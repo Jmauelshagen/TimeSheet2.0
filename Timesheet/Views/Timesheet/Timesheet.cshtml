@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Timesheet.Models.TimeSheet
+
+@{
     Layout = null;
 }
 
@@ -10,8 +12,9 @@
     </div>
 }
 
-
-
+@using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post))
+{
+    <input type="submit" value="Submit" />
 <h2>Time Sheet</h2>
 
 
@@ -36,21 +39,23 @@
         <th>Meal/ Time In</th>
         <th>Finish/ Time Out</th>
         <th>Hours Worked</th>
-        <th>Type of absence</th>
-        <th>Absent hours</th>
+        <th>Additional Hours</th>
+        <th>Absent Hours</th>
+        <th>Type of Absence</th>
         <th>Hours > 40 weekly</th>
     </tr>
     <tr>
         <td><input type="text" name="Date" /></td>
         <th>Sun</th>
-        <td><input type="text" name="start" /></td>
-        <td><input type="text" name="mealOut" /></td>
-        <td><input type="text" name="mealIn" /></td>
-        <td><input type="text" name="finish" /></td>
-        <td><input type="text" name="hoursWorked" /></td>
-        <td><input type="text" name="typeOfAbsence" /></td>
-        <td><input type="text" name="absentHours" /></td>
-    </tr>
+        <td>@Html.TextBoxFor(m => m.TimeIn)</td>
+        <td>@Html.TextBoxFor(m => m.OutForLunch)</td>
+        <td>@Html.TextBoxFor(m => m.InFromLunch)</td>
+        <td>@Html.TextBoxFor(m => m.TimeOut)</td>
+        <td>@Html.TextBoxFor(m => m.AdditionalHours)</td>
+        <td>@Html.TextBoxFor(m => m.TotalHoursWorked)</td>
+        <td>@Html.TextBoxFor(m => m.LeaveHours)</td>
+     
+</tr>
     <tr>
         <td><input type="text" name="Date" /></td>
         <th>Mon</th>
@@ -120,7 +125,7 @@
 
     </tr>
     <tr>
-        <th colspan="5">Total weekly hours</th><script>
+        <th colspan="6">Total weekly hours</th><script>
             var tD = new Date();
             var datestr = (tD.getMonth() + ) + "/" + tD.getDate() + "/" + tD.getFullYear();
             document.write("<input type='text' name='textField' value='" + datestr + "'>");
@@ -130,8 +135,9 @@
         <td><input type="text" name="totalAbsent" /></td>
     </tr>
     <tr>
-        <th colspan="9">Overtime hours x1.5 to be added to prior FLSA comp balance</th>
+        <th colspan="10">Overtime hours x1.5 to be added to prior FLSA comp balance</th>
         <td><input type="text" name="overtime" /></td>
     </tr>
 </table>
+    }
 <a href="@Url.Action("LogOut", "Login")">LogOut</a>

@@ -63,7 +63,5 @@ namespace Timesheet.Controllers
 
             return RedirectToAction("GetTimesheet", "Timesheet");
         }
-
-
     }
 }
