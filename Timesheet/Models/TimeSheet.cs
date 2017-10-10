@@ -12,6 +12,7 @@ namespace Timesheet.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
     public partial class TimeSheet
@@ -33,6 +34,8 @@ namespace Timesheet.Models
         public Nullable<int> TotalHoursWorked { get; set; }
         public string Submitted { get; set; }
         public string AuthorizedBySupervisor { get; set; }
+        [Key]
+        [ForeignKey("Employee")]
         public Nullable<int> EmpId { get; set; }
 
         //Constructors
