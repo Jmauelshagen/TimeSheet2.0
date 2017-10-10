@@ -13,10 +13,11 @@
 
 
 <h2>Time Sheet</h2>
-
+<input type="submit" value="Submit">
 
 <table style="width:100%" cellpadding="4">
     <!DOCTYPE html>
+
     <html>
     <body>
 
@@ -24,6 +25,8 @@
 
         <script>
             document.getElementById("Time").innerHTML = Date();
+
+            
         </script>
 
     </body>
@@ -124,6 +127,7 @@
             var tD = new Date();
             var datestr = (tD.getMonth() + ) + "/" + tD.getDate() + "/" + tD.getFullYear();
             document.write("<input type='text' name='textField' value='" + datestr + "'>");
+
 </script>
         <td><input type="text" name="totalWeekly" /></td>
         <th>Total absent hours</th>
@@ -132,6 +136,8 @@
     <tr>
         <th colspan="9">Overtime hours x1.5 to be added to prior FLSA comp balance</th>
         <td><input type="text" name="overtime" /></td>
+
     </tr>
+    
 </table>
 <a href="@Url.Action("LogOut", "Login")">LogOut</a>
