@@ -15,21 +15,23 @@ namespace Timesheet.Controllers
             return View();
         }
 
+        Employee emp1 = new Employee();
+       
         [HttpPost]
-        public ActionResult Authorize(Emp empModel, Sup supModel, HR hrModel)
+        public ActionResult Authorize(Login auth, Role role)
         {
             using (LoginDatabaseEntities1 db = new LoginDatabaseEntities1())
             {
-                var empDetails = db.Emps.Where(x => x.UserName == empModel.UserName && x.Password == empModel.Password)
-                    .FirstOrDefault();
-                var supDetails = db.Sups.Where(x => x.UserName == supModel.UserName && x.Password == supModel.Password)
-                    .FirstOrDefault();
-                var hrDetails = db.HRs.Where(x => x.UserName == hrModel.UserName && x.Password == hrModel.Password)
+                var empDetails = db.Logins.Where(x => x.Username == auth.Username && x.Password == auth.Password)
                     .FirstOrDefault();
 
-                    if (empDetails == null)
+                var roledetails = db.Roles.Where(x => x.RoleId == role.RoleId)
+                    .FirstOrDefault();
+
+
+                if (empDetails == null)
                     {
-                        empModel.LoginErrorMessage = "Wrong UserName or Password";
+                        auth.LoginErrorMessage = "Wrong UserName or Password";
                     }
                     else
                     {
@@ -37,28 +39,31 @@ namespace Timesheet.Controllers
                         return RedirectToAction("Index", "Employees");
                     }
 
-                    if (supDetails == null)
-                    {
-                        supModel.LoginErrorMessage = "wrong UserName or Password";
-                    }
-                    else
-                    {
-                        Session["supId"] = supDetails.SupId;
-                        return RedirectToAction("Index", "Supervisor");
-                    }
+             
 
-                    if (hrDetails == null)
-                    {
-                        hrModel.LoginErrorMessage = "wrong UserName or Password";
-                    }
-                    else
-                    {
-                        Session["hrId"] = hrDetails.HRId;
-                        return RedirectToAction("Index", "HR");
-                    }
+                int caseSwitch = 1;
+
+                switch(caseSwitch)
+                {
+                    case 1:
+                        roledetails.RoleId = 1;
+                        Session["empId"] = empDetails.EmpId;
+                        RedirectToAction("Index", "Employees");
+                        break;
+                    case 2:
+                        roledetails.RoleId = 2;
+                        Session["empId"] = empDetails.EmpId;
+                       return RedirectToAction("Index", "Supervisor");
+                        break;
+                    case 3:
+                        roledetails.RoleId = 3;
+                        Session["empId"] = empDetails.EmpId;
+                        RedirectToAction("Index", "HR");
+                        break;
+                }
 
             }
-            return View("Index",empModel);
+            return View("Index",auth);
         }
 
 
