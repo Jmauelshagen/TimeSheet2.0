@@ -22,12 +22,13 @@
 <body>
 
     <h2>Time Sheet</h2>
-@{ string today = DateTime.Now.ToLongDateString(); }
+@{ string today = DateTime.Now.ToLongDateString();
+    string time = DateTime.Now.ToLongTimeString();}
 
 
 
 
-    <p id="Time">It is @today</p>
+    <p id="Time">It is @today at @time</p>
 
     
 
@@ -49,13 +50,13 @@
             {
                 <tr>
                     <td>@tsheets[i].Date</td>
-                    <td><input type="text" name="start" placeholder="@tsheets[i].TimeIn" /></td>
-                    <td><input type="text" name="mealOut" placeholder="@tsheets[i].OutForLunch" /></td>
-                    <td><input type="text" name="mealIn" placeholder="@tsheets[i].InFromLunch" /></td>
-                    <td><input type="text" name="finish" placeholder="@tsheets[i].TimeOut" /></td>
-                    <td><input type="text" name="typeOfAbsence" placeholder="@tsheets[i].LeaveId" /></td>
-                    <td><input type="text" name="absentHours" placeholder="@tsheets[i].LeaveHours" /></td>
-                    <td><input type="text" name="hoursWorked" placeholder="@tsheets[i].TotalHoursWorked" /></td>
+                    <td>@Html.EditorFor(model => model.TimeIn, new {placeholder = tsheets[i].TimeIn })</td>
+                    <td>@Html.EditorFor(model => model.OutForLunch, new {placeholder = tsheets[i].OutForLunch})</td>
+                    <td>@Html.EditorFor(model => model.InFromLunch, new {placeholder = tsheets[i].InFromLunch })</td>
+                    <td>@Html.EditorFor(model => model.TimeOut, new {placeholder = tsheets[i].TimeOut })</td>
+                    <td>@Html.EditorFor(model => model.LeaveId, new {placeholder = tsheets[i].LeaveId})</td>
+                    <td>@Html.EditorFor(model => model.LeaveHours, new {placeholder = tsheets[i].LeaveHours})</td>
+                    <td>@tsheets[i].TotalHoursWorked</td>
                     <td>Over 8</td>
                     <td><input class="button" id="submit" type="submit" value="Save" /></td>
                 </tr>
