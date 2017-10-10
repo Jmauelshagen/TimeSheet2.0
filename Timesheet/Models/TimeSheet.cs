@@ -80,10 +80,12 @@ namespace Timesheet.Models
         public List<TimeSheet> GetTimeSheetByWeek(int empId, List<string> dates)
         {
             List<TimeSheet> timesheets = new List<TimeSheet>();
+            string wEnd = dates[0].Trim();
             var sheets = from tsheets in db.TimeSheets
-                         where tsheets.EmpId == empId && tsheets.WeekEnding.Equals(dates[0].Trim())
+                         where tsheets.EmpId == empId && tsheets.WeekEnding == wEnd
                          select tsheets;
-            if (sheets.Count() == 0)
+            var count = sheets.Count();
+            if (count == 0)
             {
                 for (int i = 1; i < 8; i++)
                 {
@@ -124,8 +126,8 @@ namespace Timesheet.Models
         {
             var ids = from tsheets in db.TimeSheets
                       orderby tsheets.Id descending
-                      select tsheets;
-            int maxId = ids.FirstOrDefault().Id;
+                      select tsheets.Id;
+            int maxId = ids.FirstOrDefault();
             return maxId;
         }
 

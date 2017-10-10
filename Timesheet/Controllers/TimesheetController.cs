@@ -32,7 +32,7 @@ namespace Timesheet.Controllers
             Session["TimeSheetData"] = tsheets;
 
             //Return the TimeSheet view
-            return View();
+            return RedirectToAction("Timesheet", "Timesheet");
         }
 
         
