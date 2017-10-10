@@ -83,6 +83,7 @@ namespace Timesheet.Models
             string wEnd = dates[0].Trim();
             var sheets = from tsheets in db.TimeSheets
                          where tsheets.EmpId == empId && tsheets.WeekEnding == wEnd
+                         orderby tsheets.Id ascending
                          select tsheets;
             var count = sheets.Count();
             if (count == 0)
