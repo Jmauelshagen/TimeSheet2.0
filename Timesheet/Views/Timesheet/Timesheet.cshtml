@@ -25,12 +25,8 @@
 @{ string today = DateTime.Now.ToLongDateString();
     string time = DateTime.Now.ToLongTimeString();}
 
-
-
-
     <p id="Time">It is @today at @time</p>
 
-    
 
     <table style="width:100%" cellpadding="4">
         <tr>
@@ -74,6 +70,7 @@
                 </tr>
              }
 
+
          }
         <tr>
             <th colspan="5">Total weekly hours</th>
@@ -96,3 +93,4 @@
 <a href="@Url.Action("LogOut", "Login")">LogOut</a>
 
 </html>
+
