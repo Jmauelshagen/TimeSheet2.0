@@ -139,6 +139,31 @@ namespace Timesheet.Models
             db.SaveChanges();
         }
 
+        //Method to update TimeSheet data in the TimeSheet data table
+        public void UpdateTimeSheet(TimeSheet sheet)
+        {
+            TimeSheet tsheet = (from tsheets in db.TimeSheets
+                                where tsheets.Id == sheet.Id
+                                select tsheets).First();
+
+            tsheet.Id = sheet.Id;
+            tsheet.WeekEnding = sheet.WeekEnding;
+            tsheet.Date = sheet.Date;
+            tsheet.TimeIn = sheet.TimeIn;
+            tsheet.OutForLunch = sheet.OutForLunch;
+            tsheet.InFromLunch = sheet.InFromLunch;
+            tsheet.TimeOut = sheet.TimeOut;
+            tsheet.LeaveId = sheet.LeaveId;
+            tsheet.LeaveHours = sheet.LeaveHours;
+            tsheet.AdditionalHours = sheet.AdditionalHours;
+            tsheet.TotalHoursWorked = sheet.TotalHoursWorked;
+            tsheet.Submitted = sheet.Submitted;
+            tsheet.AuthorizedBySupervisor = sheet.AuthorizedBySupervisor;
+            tsheet.EmpId = sheet.EmpId;
+
+            db.SaveChanges();
+        }
+
         //This method determines the curent date and then derives the dates for each day of the week
         public List<string> GetDates()
         {

@@ -59,7 +59,7 @@ namespace Timesheet.Controllers
                 EmpId = model.EmpId
             };
 
-            sheet.InsertTimeSheet(sheet);
+            sheet.UpdateTimeSheet(sheet);
 
             return RedirectToAction("GetTimesheet", "Timesheet");
         }

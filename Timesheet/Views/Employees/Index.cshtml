@@ -38,18 +38,15 @@
     </div>
     <div>
         <h1>Employees</h1>
-        <p>Welcome @emp.FirstName @emp.LastName!</p>
-        <center>
-            <p>Click below to record your time.</p>
-
+        <p>Welcome @emp.FirstName @emp.LastName!  Click below to record your time.</p>
+            
             <ul>
                 <li>
 
                     <a href="@Url.Action("GetTimeSheet","Timesheet")">Timesheet</a>
                 </li>
             </ul>
-        </center>
-
+        
         <a href="@Url.Action("LogOut", "Login")">LogOut</a>
     </div>
 </body>
