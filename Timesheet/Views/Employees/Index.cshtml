@@ -1,4 +1,5 @@
-﻿
+﻿@using Timesheet.Models
+
 @{
     Layout = null;
 }
@@ -8,22 +9,48 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Employees</title>
+    <title>Employee</title>
+    <style>
+        body {
+            background-color: cadetblue;
+            font-family: Arial;
+        }
+
+        #login-div {
+            position: absolute;
+            left: 40%;
+            top: 40%;
+            padding: 10px 10px;
+        }
+
+        .field-validation-error {
+            color: red;
+        }
+    </style>
+
 </head>
 
 <body>
-<div>
-    <img src="~/Content/ChatLogo.jpg" alt="ChatLogo"height="250"width="1520" />
-</div>
-<div>
-    <h1>Employees</h1>
-    <ul>
-        <li>
-            <a href="http://localhost:59443/Timesheet/Timesheet">Timesheet</a>
-        </li>
-    </ul>
+    @{var emp = (Employee)Session["Employee"]; }
 
-    <a href="@Url.Action("LogOut", "Login")">LogOut</a>
-</div>
+    <div>
+        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+    </div>
+    <div>
+        <h1>Employees</h1>
+        <p>Welcome @emp.FirstName @emp.LastName!</p>
+        <center>
+            <p>Click below to record your time.</p>
+
+            <ul>
+                <li>
+
+                    <a href="@Url.Action("GetTimeSheet","Timesheet")">Timesheet</a>
+                </li>
+            </ul>
+        </center>
+
+        <a href="@Url.Action("LogOut", "Login")">LogOut</a>
+    </div>
 </body>
 </html>

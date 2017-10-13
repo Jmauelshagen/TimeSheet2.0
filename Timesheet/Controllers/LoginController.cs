@@ -18,80 +18,69 @@ namespace Timesheet.Controllers
         [HttpPost]
         public ActionResult Authorize(Login model)
         {
-            using (LoginDatabaseEntities1 db = new LoginDatabaseEntities1())
+            //Logic to verify that the login information given matches data in the Logins database
+            //Instantiate an empty login object, then call the ValidateLogin method with the username and
+            //password information from the UI.  If the method returns false, then the user is redirected to the login
+            //screen and an error message is displayed.
+            Login log = new Login();
+            if (!log.ValidateLogin(model.Username, model.Password))
             {
-                //Query for employee id that matches the username and password submitted from the login form
-                //Then grab it from the empId container
-                var empId = from login in db.Logins
-                            where login.Username == model.Username && login.Password == model.Password
-                            select login.EmpId;
-                var employeeId = empId.FirstOrDefault();
+                string error = "Invalid user.";
+                Session["Error"] = error;
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            //Instantiate a login object based on the username and password.  Get the employee id from the login object,
+            //and create an employee object and put that object into the session
+            {
+                Login login = log.GetLogin(model.Username, model.Password);
+                Employee emp = new Employee();
+                Employee employee = emp.GetEmployee(login.EmpId);
+                Session["Employee"] = employee;
 
-                //Logic to verify that the login information given matches data in the Logins database
-                //If no match is found, the empId will be zero (0)
-                if (empId.FirstOrDefault() == 0)
+                //Get the role id from the Employee object
+                int role = employee.RoleId;
+
+                //Redirect the user to the correct dashboard screen based upon the role id
+                // 1 = Employee; 2 = Supervisor; 3 = HR
+                switch (role)
                 {
-                    string error = "Invalid user.";
-                    Session["Error"] = error;
-                    return RedirectToAction("Index", "Login");
-                }
-                else
-                {
-                    //If a match is found, query for the matching record on the Employee table
-                    //and instantiate an Employee object and add it to the session
-                    IEnumerable<Employee> emp = from employee in db.Employees
-                                                where employee.EmpId == employeeId
-                                                select employee;
-                    Session["Employee"] = emp.FirstOrDefault();
-
-                    //Get the role id from the Employee object
-                    int role = emp.FirstOrDefault().RoleId;
-
-                    //Redirect the user to the correct dashboard screen based upon the role id
-                    // 1 = Employee; 2 = Supervisor; 3 = HR
-                    switch (role)
-                    {
-                        case 1:
-                            {
-                                return RedirectToAction("Index", "Employees");
-                                break;
-                            }
-                        case 2:
-                            {
-                                return RedirectToAction("Index", "Supervisor");
-                                break;
-                            }
-                        case 3:
-                            {
-                                return RedirectToAction("Index", "HR");
-                                break;
-                            }
-                        default:
-                            {
-                                model.LoginErrorMessage = "An error has occurred.";
-                                return RedirectToAction("Index", "Login");
-                                break;
-                            }
-                    }
-                            
-                        
+                    case 1:
+                        {
+                            return RedirectToAction("Index", "Employees");
+                            break;
+                        }
+                    case 2:
+                        {
+                            return RedirectToAction("Index", "Supervisor");
+                            break;
+                        }
+                    case 3:
+                        {
+                            return RedirectToAction("Index", "HR");
+                            break;
+                        }
+                    default:
+                        {
+                            model.LoginErrorMessage = "An error has occurred.";
+                            return RedirectToAction("Index", "Login");
+                            break;
+                        }
                 }
 
 
             }
-            //default return statement
-            return RedirectToAction("Index", "Login");
         }
 
         //method for handling the logout link
         public ActionResult LogOut()
         {
-           Session.Abandon();
-            return RedirectToAction("Index","Login");
+            Session.Abandon();
+            return RedirectToAction("Index", "Login");
         }
-   
-        
 
-        
+
+
+
     }
 }
