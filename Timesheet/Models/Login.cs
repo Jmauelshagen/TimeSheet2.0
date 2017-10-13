@@ -78,6 +78,5 @@ namespace Timesheet.Models
             Login login = (Login)log.FirstOrDefault();
             return login;
         }
-
     }
 }

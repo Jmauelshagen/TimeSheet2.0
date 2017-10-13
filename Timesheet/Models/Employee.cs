@@ -80,6 +80,5 @@ namespace Timesheet.Models
 
             return empList;
         }
-
     }
 }
