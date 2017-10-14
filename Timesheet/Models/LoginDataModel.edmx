@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="LoginDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="LoginDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Emp">
           <Key>
             <PropertyRef Name="EmpId" />
@@ -80,6 +80,7 @@
           <Property Name="TotalHoursWorked" Type="int" />
           <Property Name="Submitted" Type="nchar" MaxLength="10" />
           <Property Name="AuthorizedBySupervisor" Type="nchar" MaxLength="10" />
+          <Property Name="EmpId" Type="int" />
         </EntityType>
         <EntityContainer Name="LoginDatabaseModelStoreContainer">
           <EntitySet Name="Emp" EntityType="Self.Emp" Schema="dbo" store:Type="Tables" />
@@ -91,8 +92,7 @@
           <EntitySet Name="Sup" EntityType="Self.Sup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TimeSheets" EntityType="Self.TimeSheets" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="LoginDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -171,6 +171,7 @@
           <Property Name="TotalHoursWorked" Type="Int32" />
           <Property Name="Submitted" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="AuthorizedBySupervisor" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="EmpId" Type="Int32" />
         </EntityType>
         <EntityContainer Name="LoginDatabaseEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Emps" EntityType="Self.Emp" />
@@ -256,6 +257,7 @@
           <EntitySetMapping Name="TimeSheets">
             <EntityTypeMapping TypeName="LoginDatabaseModel.TimeSheet">
               <MappingFragment StoreEntitySet="TimeSheets">
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="WeekEnding" ColumnName="WeekEnding" />
                 <ScalarProperty Name="Date" ColumnName="Date" />

@@ -11,9 +11,15 @@ namespace Timesheet.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+
     public partial class TimeSheet
     {
+        //Instance Variables
+        LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
+
+        //Class properties
         public int Id { get; set; }
         public string WeekEnding { get; set; }
         public string Date { get; set; }
@@ -27,5 +33,283 @@ namespace Timesheet.Models
         public Nullable<int> TotalHoursWorked { get; set; }
         public string Submitted { get; set; }
         public string AuthorizedBySupervisor { get; set; }
+        public Nullable<int> EmpId { get; set; }
+
+        //Constructors
+        //no-args constructor
+        public TimeSheet()
+        {
+            Id = 0;
+            WeekEnding = "";
+            Date = "";
+            TimeIn = "";
+            OutForLunch = "";
+            InFromLunch = "";
+            TimeOut = "";
+            LeaveId = 0;
+            LeaveHours = 0;
+            AdditionalHours = 0;
+            TotalHoursWorked = 0;
+            Submitted = "False";
+            AuthorizedBySupervisor = "False";
+            EmpId = 0;
+        }
+
+        //all-args constructor
+        public TimeSheet(int id, string wEnd, string date, string inT, string outL, string inL, string outT,
+            int leaveId, int leaveHrs, int addlHrs, int tlHrs, string sub, string auth, int empId)
+        {
+            Id = id;
+            WeekEnding = wEnd;
+            Date = date;
+            TimeIn = inT;
+            OutForLunch = outL;
+            InFromLunch = inL;
+            TimeOut = outT;
+            LeaveId = leaveId;
+            LeaveHours = leaveHrs;
+            AdditionalHours = addlHrs;
+            TotalHoursWorked = tlHrs;
+            Submitted = sub;
+            AuthorizedBySupervisor = auth;
+            EmpId = empId;
+        }
+
+        //Method to get list of Timesheet objects by employee id and week ending date
+        //Queries the TimeSheet table by employee id and WeekEnding date and returns List collection of Timesheet objects
+        public List<TimeSheet> GetTimeSheetByWeek(int empId, List<string> dates)
+        {
+            List<TimeSheet> timesheets = new List<TimeSheet>();
+            string wEnd = dates[0].Trim();
+            var sheets = from tsheets in db.TimeSheets
+                         where tsheets.EmpId == empId && tsheets.WeekEnding == wEnd
+                         orderby tsheets.Id ascending
+                         select tsheets;
+            var count = sheets.Count();
+            if (count == 0)
+            {
+                for (int i = 1; i < 8; i++)
+                {
+                    TimeSheet sheet = new TimeSheet
+                    {
+                        Id = this.GetMaxTimeSheetId() + 1,
+                        WeekEnding = dates[0].Trim(),
+                        Date = dates[i].Trim(),
+                        TimeIn = "",
+                        OutForLunch = "",
+                        InFromLunch = "",
+                        TimeOut = "",
+                        LeaveId = 0,
+                        LeaveHours = 0,
+                        AdditionalHours = 0,
+                        TotalHoursWorked = 0,
+                        Submitted = "False",
+                        AuthorizedBySupervisor = "False",
+                        EmpId = empId
+                    };
+                    this.InsertTimeSheet(sheet);
+                    timesheets.Add(sheet);
+                }
+
+            }
+            else
+            {
+                foreach (TimeSheet sheet in sheets)
+                {
+                    timesheets.Add(sheet);
+                }
+            }
+            return timesheets;
+        }
+
+        //Method to get the max id from the TimeSheet data table
+        public int GetMaxTimeSheetId()
+        {
+            var ids = from tsheets in db.TimeSheets
+                      orderby tsheets.Id descending
+                      select tsheets.Id;
+            int maxId = ids.FirstOrDefault();
+            return maxId;
+        }
+
+        //Method to insert TimeSheet data into the TimeSheet data table
+        public void InsertTimeSheet(TimeSheet sheet)
+        {
+            db.TimeSheets.Add(sheet);
+            db.SaveChanges();
+        }
+
+        //This method determines the curent date and then derives the dates for each day of the week
+        public List<string> GetDates()
+        {
+            List<string> dates = new List<string>();
+            string endOfWeek = "";
+            string sunDate = "";
+            string monDate = "";
+            string tueDate = "";
+            string wedDate = "";
+            string thrDate = "";
+            string friDate = "";
+            string satDate = "";
+            int hoy = (int)DateTime.Now.DayOfWeek;
+
+            switch (hoy)
+            {
+                case 1: //Sunday
+                    {
+                        endOfWeek = DateTime.Now.AddDays(6).ToShortDateString();
+                        dates.Add(endOfWeek);
+                        sunDate = DateTime.Now.ToShortDateString();
+                        dates.Add(sunDate);
+                        monDate = DateTime.Now.AddDays(1).ToShortDateString();
+                        dates.Add(monDate);
+                        tueDate = DateTime.Now.AddDays(2).ToShortDateString();
+                        dates.Add(tueDate);
+                        wedDate = DateTime.Now.AddDays(3).ToShortDateString();
+                        dates.Add(wedDate);
+                        thrDate = DateTime.Now.AddDays(4).ToShortDateString();
+                        dates.Add(thrDate);
+                        friDate = DateTime.Now.AddDays(5).ToShortDateString();
+                        dates.Add(friDate);
+                        satDate = DateTime.Now.AddDays(6).ToShortDateString();
+                        dates.Add(satDate);
+
+                        break;
+                    }
+
+                case 2: //Monday
+                    {
+                        endOfWeek = DateTime.Now.AddDays(5).ToShortDateString();
+                        dates.Add(endOfWeek);
+                        sunDate = DateTime.Now.AddDays(-1).ToShortDateString();
+                        dates.Add(sunDate);
+                        monDate = DateTime.Now.ToShortDateString();
+                        dates.Add(monDate);
+                        tueDate = DateTime.Now.AddDays(1).ToShortDateString();
+                        dates.Add(tueDate);
+                        wedDate = DateTime.Now.AddDays(2).ToShortDateString();
+                        dates.Add(wedDate);
+                        thrDate = DateTime.Now.AddDays(3).ToShortDateString();
+                        dates.Add(thrDate);
+                        friDate = DateTime.Now.AddDays(4).ToShortDateString();
+                        dates.Add(friDate);
+                        satDate = DateTime.Now.AddDays(5).ToShortDateString();
+                        dates.Add(satDate);
+
+                        break;
+                    }
+
+                case 3: //Tuesday
+                    {
+                        endOfWeek = DateTime.Now.AddDays(4).ToShortDateString();
+                        dates.Add(endOfWeek);
+                        sunDate = DateTime.Now.AddDays(-2).ToShortDateString();
+                        dates.Add(sunDate);
+                        monDate = DateTime.Now.AddDays(-1).ToShortDateString();
+                        dates.Add(monDate);
+                        tueDate = DateTime.Now.ToShortDateString();
+                        dates.Add(tueDate);
+                        wedDate = DateTime.Now.AddDays(1).ToShortDateString();
+                        dates.Add(wedDate);
+                        thrDate = DateTime.Now.AddDays(2).ToShortDateString();
+                        dates.Add(thrDate);
+                        friDate = DateTime.Now.AddDays(3).ToShortDateString();
+                        dates.Add(friDate);
+                        satDate = DateTime.Now.AddDays(4).ToShortDateString();
+                        dates.Add(satDate);
+
+                        break;
+                    }
+
+                case 4: //Wednesday
+                    {
+                        endOfWeek = DateTime.Now.AddDays(3).ToShortDateString();
+                        dates.Add(endOfWeek);
+                        sunDate = DateTime.Now.AddDays(-3).ToShortDateString();
+                        dates.Add(sunDate);
+                        monDate = DateTime.Now.AddDays(-2).ToShortDateString();
+                        dates.Add(monDate);
+                        tueDate = DateTime.Now.AddDays(-1).ToShortDateString();
+                        dates.Add(tueDate);
+                        wedDate = DateTime.Now.ToShortDateString();
+                        dates.Add(wedDate);
+                        thrDate = DateTime.Now.AddDays(1).ToShortDateString();
+                        dates.Add(thrDate);
+                        friDate = DateTime.Now.AddDays(2).ToShortDateString();
+                        dates.Add(friDate);
+                        satDate = DateTime.Now.AddDays(3).ToShortDateString();
+                        dates.Add(satDate);
+
+                        break;
+                    }
+
+                case 5: //Thursday
+                    {
+                        endOfWeek = DateTime.Now.AddDays(2).ToShortDateString();
+                        dates.Add(endOfWeek);
+                        sunDate = DateTime.Now.AddDays(-4).ToShortDateString();
+                        dates.Add(sunDate);
+                        monDate = DateTime.Now.AddDays(-3).ToShortDateString();
+                        dates.Add(monDate);
+                        tueDate = DateTime.Now.AddDays(-2).ToShortDateString();
+                        dates.Add(tueDate);
+                        wedDate = DateTime.Now.AddDays(-1).ToShortDateString();
+                        dates.Add(wedDate);
+                        thrDate = DateTime.Now.ToShortDateString();
+                        dates.Add(thrDate);
+                        friDate = DateTime.Now.AddDays(1).ToShortDateString();
+                        dates.Add(friDate);
+                        satDate = DateTime.Now.AddDays(2).ToShortDateString();
+                        dates.Add(satDate);
+
+                        break;
+                    }
+
+                case 6: //Friday
+                    {
+                        endOfWeek = DateTime.Now.AddDays(1).ToShortDateString();
+                        dates.Add(endOfWeek);
+                        sunDate = DateTime.Now.AddDays(-5).ToShortDateString();
+                        dates.Add(sunDate);
+                        monDate = DateTime.Now.AddDays(-4).ToShortDateString();
+                        dates.Add(monDate);
+                        tueDate = DateTime.Now.AddDays(-3).ToShortDateString();
+                        dates.Add(tueDate);
+                        wedDate = DateTime.Now.AddDays(-2).ToShortDateString();
+                        dates.Add(wedDate);
+                        thrDate = DateTime.Now.AddDays(-1).ToShortDateString();
+                        dates.Add(thrDate);
+                        friDate = DateTime.Now.ToShortDateString();
+                        dates.Add(friDate);
+                        satDate = DateTime.Now.AddDays(1).ToShortDateString();
+                        dates.Add(satDate);
+
+                        break;
+                    }
+
+                case 7: //Saturday
+                    {
+                        endOfWeek = DateTime.Now.ToShortDateString();
+                        dates.Add(endOfWeek);
+                        sunDate = DateTime.Now.AddDays(-6).ToShortDateString();
+                        dates.Add(sunDate);
+                        monDate = DateTime.Now.AddDays(-5).ToShortDateString();
+                        dates.Add(monDate);
+                        tueDate = DateTime.Now.AddDays(-4).ToShortDateString();
+                        dates.Add(tueDate);
+                        wedDate = DateTime.Now.AddDays(-3).ToShortDateString();
+                        dates.Add(wedDate);
+                        thrDate = DateTime.Now.AddDays(-2).ToShortDateString();
+                        dates.Add(thrDate);
+                        friDate = DateTime.Now.AddDays(-1).ToShortDateString();
+                        dates.Add(friDate);
+                        satDate = DateTime.Now.ToShortDateString();
+                        dates.Add(satDate);
+
+                        break;
+                    }
+            }
+            return dates;
+        }
     }
 }
