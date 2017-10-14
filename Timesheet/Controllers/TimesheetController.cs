@@ -17,8 +17,14 @@ namespace Timesheet.Controllers
 
         public ActionResult GetTimeSheet()
         {
+            //Remove the TimeSheet variable from the session if it exists
+            if (Session["TimeSheetData"]!=null)
+            {
+                Session.Remove("TimeSheetData");
+            }
             //Pull the employee object from the session.
             Employee emp = (Employee)Session["Employee"];
+            
 
             //Instantiate a TimeSheet object
             TimeSheet tsheet = new TimeSheet();
@@ -40,6 +46,7 @@ namespace Timesheet.Controllers
         {
             //Pull the employee object from the session.
             Employee emp = (Employee)Session["Employee"];
+            List<string> dates = (List<string>)Session["Dates"];
 
             //Instantiate TimeSheet object with data from form
             TimeSheet sheet = new TimeSheet
@@ -61,7 +68,13 @@ namespace Timesheet.Controllers
 
             sheet.UpdateTimeSheet(sheet);
 
-            return RedirectToAction("GetTimesheet", "Timesheet");
+            //Get list of TimeSheet objects based on date and employee id and add list to session
+            List<TimeSheet> tsheets = sheet.GetTimeSheetByWeek(emp.EmpId, dates);
+            Session["TimeSheetData"] = tsheets;
+
+            //Return the TimeSheet view
+            return RedirectToAction("Timesheet", "Timesheet");
+
         }
 
 

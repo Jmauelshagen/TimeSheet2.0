@@ -86,6 +86,7 @@ namespace Timesheet.Models
                          orderby tsheets.Id ascending
                          select tsheets;
             var count = sheets.Count();
+            Console.WriteLine("TimeSheet count is: " + count.ToString());
             if (count == 0)
             {
                 for (int i = 1; i < 8; i++)
@@ -180,7 +181,7 @@ namespace Timesheet.Models
 
             switch (hoy)
             {
-                case 1: //Sunday
+                case 0: //Sunday
                     {
                         endOfWeek = DateTime.Now.AddDays(6).ToShortDateString();
                         dates.Add(endOfWeek);
@@ -202,7 +203,7 @@ namespace Timesheet.Models
                         break;
                     }
 
-                case 2: //Monday
+                case 1: //Monday
                     {
                         endOfWeek = DateTime.Now.AddDays(5).ToShortDateString();
                         dates.Add(endOfWeek);
@@ -224,7 +225,7 @@ namespace Timesheet.Models
                         break;
                     }
 
-                case 3: //Tuesday
+                case 2: //Tuesday
                     {
                         endOfWeek = DateTime.Now.AddDays(4).ToShortDateString();
                         dates.Add(endOfWeek);
@@ -246,7 +247,7 @@ namespace Timesheet.Models
                         break;
                     }
 
-                case 4: //Wednesday
+                case 3: //Wednesday
                     {
                         endOfWeek = DateTime.Now.AddDays(3).ToShortDateString();
                         dates.Add(endOfWeek);
@@ -268,7 +269,7 @@ namespace Timesheet.Models
                         break;
                     }
 
-                case 5: //Thursday
+                case 4: //Thursday
                     {
                         endOfWeek = DateTime.Now.AddDays(2).ToShortDateString();
                         dates.Add(endOfWeek);
@@ -290,7 +291,7 @@ namespace Timesheet.Models
                         break;
                     }
 
-                case 6: //Friday
+                case 5: //Friday
                     {
                         endOfWeek = DateTime.Now.AddDays(1).ToShortDateString();
                         dates.Add(endOfWeek);
@@ -312,7 +313,7 @@ namespace Timesheet.Models
                         break;
                     }
 
-                case 7: //Saturday
+                case 6: //Saturday
                     {
                         endOfWeek = DateTime.Now.ToShortDateString();
                         dates.Add(endOfWeek);
