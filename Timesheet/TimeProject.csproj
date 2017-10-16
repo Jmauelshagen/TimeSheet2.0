@@ -267,7 +267,7 @@
     <Content Include="Views\HR\Index.cshtml" />
     <Content Include="Views\TimesheetReports\TimesheetReports.cshtml" />
     <Content Include="Views\Reports\Reports.cshtml" />
-    <Content Include="Views\ApprovedTimesheets\AprovedTimesheet.cshtml" />
+    <Content Include="Views\ApprovedTimesheets\ApprovedTimesheets.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

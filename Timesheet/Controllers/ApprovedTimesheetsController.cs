@@ -4,12 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Timesheet.Controllers
+namespace ApprovedTimesheets.Controllers
 {
     public class ApprovedTimesheetsController : Controller
     {
         // GET: ApprovedTimesheets
-        public ActionResult Index()
+        public ActionResult ApprovedTimesheets()
         {
             return View();
         }
