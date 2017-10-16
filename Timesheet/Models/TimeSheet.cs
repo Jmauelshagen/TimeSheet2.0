@@ -86,6 +86,7 @@ namespace Timesheet.Models
                          orderby tsheets.Id ascending
                          select tsheets;
             var count = sheets.Count();
+            Console.WriteLine("TimeSheet count is: " + count.ToString());
             if (count == 0)
             {
                 for (int i = 1; i < 8; i++)
@@ -95,10 +96,10 @@ namespace Timesheet.Models
                         Id = this.GetMaxTimeSheetId() + 1,
                         WeekEnding = dates[0].Trim(),
                         Date = dates[i].Trim(),
-                        TimeIn = "",
-                        OutForLunch = "",
-                        InFromLunch = "",
-                        TimeOut = "",
+                        TimeIn = "0:00",
+                        OutForLunch = "0:00",
+                        InFromLunch = "0:00",
+                        TimeOut = "0:00",
                         LeaveId = 0,
                         LeaveHours = 0,
                         AdditionalHours = 0,
@@ -139,6 +140,31 @@ namespace Timesheet.Models
             db.SaveChanges();
         }
 
+        //Method to update TimeSheet data in the TimeSheet data table
+        public void UpdateTimeSheet(TimeSheet sheet)
+        {
+            TimeSheet tsheet = (from tsheets in db.TimeSheets
+                                where tsheets.Id == sheet.Id
+                                select tsheets).First();
+
+            tsheet.Id = sheet.Id;
+            tsheet.WeekEnding = sheet.WeekEnding;
+            tsheet.Date = sheet.Date;
+            tsheet.TimeIn = sheet.TimeIn;
+            tsheet.OutForLunch = sheet.OutForLunch;
+            tsheet.InFromLunch = sheet.InFromLunch;
+            tsheet.TimeOut = sheet.TimeOut;
+            tsheet.LeaveId = sheet.LeaveId;
+            tsheet.LeaveHours = sheet.LeaveHours;
+            tsheet.AdditionalHours = sheet.AdditionalHours;
+            tsheet.TotalHoursWorked = sheet.TotalHoursWorked;
+            tsheet.Submitted = sheet.Submitted;
+            tsheet.AuthorizedBySupervisor = sheet.AuthorizedBySupervisor;
+            tsheet.EmpId = sheet.EmpId;
+
+            db.SaveChanges();
+        }
+
         //This method determines the curent date and then derives the dates for each day of the week
         public List<string> GetDates()
         {
@@ -155,7 +181,7 @@ namespace Timesheet.Models
 
             switch (hoy)
             {
-                case 1: //Sunday
+                case 0: //Sunday
                     {
                         endOfWeek = DateTime.Now.AddDays(6).ToShortDateString();
                         dates.Add(endOfWeek);
@@ -177,7 +203,7 @@ namespace Timesheet.Models
                         break;
                     }
 
-                case 2: //Monday
+                case 1: //Monday
                     {
                         endOfWeek = DateTime.Now.AddDays(5).ToShortDateString();
                         dates.Add(endOfWeek);
@@ -199,7 +225,7 @@ namespace Timesheet.Models
                         break;
                     }
 
-                case 3: //Tuesday
+                case 2: //Tuesday
                     {
                         endOfWeek = DateTime.Now.AddDays(4).ToShortDateString();
                         dates.Add(endOfWeek);
@@ -221,7 +247,7 @@ namespace Timesheet.Models
                         break;
                     }
 
-                case 4: //Wednesday
+                case 3: //Wednesday
                     {
                         endOfWeek = DateTime.Now.AddDays(3).ToShortDateString();
                         dates.Add(endOfWeek);
@@ -243,7 +269,7 @@ namespace Timesheet.Models
                         break;
                     }
 
-                case 5: //Thursday
+                case 4: //Thursday
                     {
                         endOfWeek = DateTime.Now.AddDays(2).ToShortDateString();
                         dates.Add(endOfWeek);
@@ -265,7 +291,7 @@ namespace Timesheet.Models
                         break;
                     }
 
-                case 6: //Friday
+                case 5: //Friday
                     {
                         endOfWeek = DateTime.Now.AddDays(1).ToShortDateString();
                         dates.Add(endOfWeek);
@@ -287,7 +313,7 @@ namespace Timesheet.Models
                         break;
                     }
 
-                case 7: //Saturday
+                case 6: //Saturday
                     {
                         endOfWeek = DateTime.Now.ToShortDateString();
                         dates.Add(endOfWeek);
