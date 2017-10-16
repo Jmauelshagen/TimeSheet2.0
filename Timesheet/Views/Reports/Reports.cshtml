@@ -4,11 +4,19 @@
     Layout = null;
 }
 
-   ViewBag.Title = "Reports";
+@{
+    ViewBag.Title = "Reports";
     <div>
         <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
     </div>
-   
+
+    Employee emp = (Employee)Session["Employee"];
+    List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
+    List<string> dates = (List<string>)Session["Dates"];
+
+
+} 
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,6 +44,10 @@
 <body>
 
     }<h2>Reports</h2>
+    @{ string today = DateTime.Now.ToLongDateString();
+        string time = DateTime.Now.ToLongTimeString();}
+
+    <p id="Time">It is @today at @time</p>
 
     <select>
         <option value="Name1">Name1</option>
@@ -46,17 +58,6 @@
 
     <table style="width:100%" cellpadding="4">
 
-        <!DOCTYPE html>
-
-        <html>
-        <body>
-
-            <p id="Time"></p>
-
-
-
-        </body>
-    </html>
     <tr>
         <th>Date</th>
         <th>Day</th>
@@ -164,4 +165,4 @@
 
 </table>
 <p><a href="#" onclick="history.back();">Back</a></p>
-
+</html>
