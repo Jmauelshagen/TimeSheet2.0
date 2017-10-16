@@ -80,13 +80,13 @@
                             <td>@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
                             <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly" })</td>
                             <td>@Html.TextBoxFor(model => model.Date, new { @Value = @tsheets[i].Date.ToString().Trim(), @readonly = "readonly" })</td>
-                            <td>@Html.EditorFor(model => model.TimeIn, new { @Value = @tsheets[i].TimeIn.ToString().Trim() })</td>
-                            <td>@Html.EditorFor(model => model.OutForLunch, new { @Value = @tsheets[i].OutForLunch.ToString().Trim() })</td>
-                            <td>@Html.EditorFor(model => model.InFromLunch, new { @Value = @tsheets[i].InFromLunch.ToString().Trim() })</td>
-                            <td>@Html.EditorFor(model => model.TimeOut, new { @Value = @tsheets[i].TimeOut.ToString().Trim() })</td>
+                            <td>@Html.TextBoxFor(model => model.TimeIn, new { @Value = @tsheets[i].TimeIn.ToString().Trim() })</td>
+                            <td>@Html.TextBoxFor(model => model.OutForLunch, new { @Value = @tsheets[i].OutForLunch.ToString().Trim() })</td>
+                            <td>@Html.TextBoxFor(model => model.InFromLunch, new { @Value = @tsheets[i].InFromLunch.ToString().Trim() })</td>
+                            <td>@Html.TextBoxFor(model => model.TimeOut, new { @Value = @tsheets[i].TimeOut.ToString().Trim() })</td>
                             <td>@Html.EditorFor(model => model.LeaveId, new { @Value = @tsheets[i].LeaveId.ToString().Trim() })</td>
                             <td>@Html.EditorFor(model => model.LeaveHours, new { @Value = @tsheets[i].LeaveHours.ToString().Trim() })</td>
-                            <td>@Html.EditorFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim() })</td>
+                            <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim() })</td>
                             <td>@Html.TextBoxFor(model => model.TotalHoursWorked, new { @Value = @tsheets[i].TotalHoursWorked.ToString().Trim(), @readonly = "readonly" })</td>
                             <td>Over 8</td>
                             <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
@@ -123,31 +123,6 @@
         </tr>
     </table>
     
-    @{
-        foreach (TimeSheet sheet in tsheets)
-        {
-            <table>
-            <tr>
-                <td>Id is @sheet.Id</td>
-                <td>WeekEd is @sheet.WeekEnding</td>
-                <td>Date is @sheet.Date</td>
-                <td>TimeIn is @sheet.TimeIn</td>
-                <td>OutForLunch is @sheet.OutForLunch</td>
-                <td>InFromLunch is @sheet.InFromLunch</td>
-                <td>TimeOut is @sheet.TimeOut</td>
-                <td>LeaveId is @sheet.LeaveId</td>
-                <td>LeaveHours is @sheet.LeaveHours</td>
-                <td>AdditionalHours is @sheet.AdditionalHours</td>
-                <td>TotalHoursWorked is @sheet.TotalHoursWorked</td>
-                <td>Submitted is @sheet.Submitted</td>
-                <td>AuthorizedBySupervisor is @sheet.AuthorizedBySupervisor</td>
-                <td>EmpId is @sheet.EmpId</td>
-            </tr>
-            </table>
-        }
-
-     }
-
 
 <a href="@Url.Action("LogOut", "Login")">LogOut</a>
 
