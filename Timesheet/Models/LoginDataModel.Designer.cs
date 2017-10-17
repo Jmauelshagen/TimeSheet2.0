@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+﻿// T4 code generation is enabled for model 'C:\TimeProject\Timesheet\Timesheet\Models\LoginDataModel.edmx'. 
+=======
 ﻿// T4 code generation is enabled for model 'C:\Timesheet Project\Timesheet\Timesheet\Models\LoginDataModel.edmx'. 
+>>>>>>> cac41c4629ba0546f4bcf1adcd73a357693d4b50
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
