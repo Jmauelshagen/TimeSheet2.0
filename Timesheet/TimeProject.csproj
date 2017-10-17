@@ -148,12 +148,15 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ApprovedTimesheetsController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HRController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\SupervisorController.cs" />
     <Compile Include="Controllers\TimesheetController.cs" />
+    <Compile Include="Controllers\TimesheetReportsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -262,6 +265,9 @@
     <Content Include="Views\Timesheet\Timesheet.cshtml" />
     <Content Include="Views\Supervisor\Index.cshtml" />
     <Content Include="Views\HR\Index.cshtml" />
+    <Content Include="Views\TimesheetReports\TimesheetReports.cshtml" />
+    <Content Include="Views\Reports\Reports.cshtml" />
+    <Content Include="Views\ApprovedTimesheets\ApprovedTimesheets.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

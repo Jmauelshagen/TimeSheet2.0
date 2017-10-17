@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Timesheet.Models.TimeSheet
+@using Timesheet.Models
+@{
     Layout = null;
 }
 
@@ -6,132 +8,124 @@
 @{
     ViewBag.Title = "TimeSheet";
     <div>
-        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        <center>
+            <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        </center>
     </div>
+
+    Employee emp = (Employee)Session["Employee"];
+    List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
+    List<string> dates = (List<string>)Session["Dates"];
+
 }
 
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Timesheet</title>
+    <style>
+        body {
+            background-color: cadetblue;
+            font-family: Arial;
+        }
+
+        #login-div {
+            position: absolute;
+            left: 40%;
+            top: 40%;
+            padding: 10px 10px;
+        }
+
+        .field-validation-error {
+            color: red;
+        }
+    </style>
+
+</head>
+<body>
+
+    <h2>Time Sheet</h2>
+    @{ string today = DateTime.Now.ToLongDateString();
+        string time = DateTime.Now.ToLongTimeString();}
+
+    <p id="Time">It is @today at @time</p>
 
 
-<h2>Time Sheet</h2>
+    <table style="width:100%" cellpadding="4">
+        <tr>
+            <th></th>
+            <th>Week end</th>
+            <th>Date</th>
+            <th>Start/ Time In</th>
+            <th>Meal/ Time Out</th>
+            <th>Meal/ Time In</th>
+            <th>Finish/ Time Out</th>
+            <th>Type of absence</th>
+            <th>Absent hours</th>
+            <th>Additional Hours</th>
+            <th>Hours Worked</th>
+            <th>Over Time</th>
+            
+        </tr>
+
+        </table>
+        
+            
+             @{   for (int i = 0; i < 7; i++)
+                 {
+                     using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post))
+                     {
+                    <table>
+                        <tr>
+                            <td>@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
+                            <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly" })</td>
+                            <td>@Html.TextBoxFor(model => model.Date, new { @Value = @tsheets[i].Date.ToString().Trim(), @readonly = "readonly" })</td>
+                            <td>@Html.TextBoxFor(model => model.TimeIn, new { @Value = @tsheets[i].TimeIn.ToString().Trim() })</td>
+                            <td>@Html.TextBoxFor(model => model.OutForLunch, new { @Value = @tsheets[i].OutForLunch.ToString().Trim() })</td>
+                            <td>@Html.TextBoxFor(model => model.InFromLunch, new { @Value = @tsheets[i].InFromLunch.ToString().Trim() })</td>
+                            <td>@Html.TextBoxFor(model => model.TimeOut, new { @Value = @tsheets[i].TimeOut.ToString().Trim() })</td>
+                            <td>@Html.EditorFor(model => model.LeaveId, new { @Value = @tsheets[i].LeaveId.ToString().Trim() })</td>
+                            <td>@Html.EditorFor(model => model.LeaveHours, new { @Value = @tsheets[i].LeaveHours.ToString().Trim() })</td>
+                            <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim() })</td>
+                            <td>@Html.TextBoxFor(model => model.TotalHoursWorked, new { @Value = @tsheets[i].TotalHoursWorked.ToString().Trim(), @readonly = "readonly" })</td>
+                            <td>Over 8</td>
+                            <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
+                            <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
+                            <td>@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
+                            <td><input class="button" id="submit" type="submit" value="Save" /></td>
+                        </tr>
+                    </table>
+                     }
+                 }
+               }
 
 
-<table style="width:100%" cellpadding="4">
-    <!DOCTYPE html>
-    <html>
-    <body>
+    <table>
+        <tr>
+            <th colspan="5">Total weekly hours</th>
+            
+            <td><input type="text" name="totalWeekly" /></td>
+            <th>Total absent hours</th>
+            <td><input type="text" name="totalAbsent" /></td>
+            <script>
+                var tD = new Date();
+                var datestr = (tD.getMonth() + ) + "/" + tD.getDate() + "/" + tD.getFullYear();
+                document.write("<input type='text' name='textField' value='" + datestr + "'>");
+            </script>
+      
+        <tr>
+            <th colspan="9">Overtime hours x1.5 to be added to prior FLSA comp balance</th>
+            <td><input type="text" name="overtime" /></td>
+        </tr>
+    </table>
+    
 
-        <p id="Time"></p>
-
-        <script>
-            document.getElementById("Time").innerHTML = Date();
-        </script>
-
-    </body>
-</html>
-    <tr>
-        <th>Date</th>
-        <th>Day</th>
-        <th>Start/ Time In</th>
-        <th>Meal/ Time Out</th>
-        <th>Meal/ Time In</th>
-        <th>Finish/ Time Out</th>
-        <th>Hours Worked</th>
-        <th>Type of absence</th>
-        <th>Absent hours</th>
-        <th>Hours > 40 weekly</th>
-    </tr>
-    <tr>
-        <td><input type="text" name="Date" /></td>
-        <th>Sun</th>
-        <td><input type="text" name="start" /></td>
-        <td><input type="text" name="mealOut" /></td>
-        <td><input type="text" name="mealIn" /></td>
-        <td><input type="text" name="finish" /></td>
-        <td><input type="text" name="hoursWorked" /></td>
-        <td><input type="text" name="typeOfAbsence" /></td>
-        <td><input type="text" name="absentHours" /></td>
-    </tr>
-    <tr>
-        <td><input type="text" name="Date" /></td>
-        <th>Mon</th>
-        <td><input type="text" name="monStart" /></td>
-        <td><input type="text" name="monMealOut" /></td>
-        <td><input type="text" name="monMealIn" /></td>
-        <td><input type="text" name="monFinish" /></td>
-        <td><input type="text" name="monHoursWorked" /></td>
-        <td><input type="text" name="monTypeOfAbsence" /></td>
-        <td><input type="text" name="monAbsentHours" /></td>
-
-    </tr>
-    <tr>
-        <td><input type="text" name="Date" /></td>
-        <th>Tues</th>
-        <td><input type="text" name="tuesStart" /></td>
-        <td><input type="text" name="tuesMealOut" /></td>
-        <td><input type="text" name="tuesMealIn" /></td>
-        <td><input type="text" name="tuesFinish" /></td>
-        <td><input type="text" name="tuesHoursWorked" /></td>
-        <td><input type="text" name="tuesTypeOfAbsence" /></td>
-        <td><input type="text" name="tuesAbsentHours" /></td>
-    </tr>
-    <tr>
-        <td><input type="text" name="Date" /></td>
-        <th>Wed</th>
-        <td><input type="text" name="wedStart" /></td>
-        <td><input type="text" name="wedMealOut" /></td>
-        <td><input type="text" name="wedMealIn" /></td>
-        <td><input type="text" name="wedFinish" /></td>
-        <td><input type="text" name="wedHoursWorked" /></td>
-        <td><input type="text" name="wedTypeOfAbsence" /></td>
-        <td><input type="text" name="wedAbsentHours" /></td>
-    </tr>
-    <tr>
-        <td><input type="text" name="Date" /></td>
-        <th>Thurs</th>
-        <td><input type="text" name="thursStart" /></td>
-        <td><input type="text" name="thursMealOut" /></td>
-        <td><input type="text" name="thursMealIn" /></td>
-        <td><input type="text" name="thursFinish" /></td>
-        <td><input type="text" name="thursHoursWorked" /></td>
-        <td><input type="text" name="thursTypeOfAbsence" /></td>
-        <td><input type="text" name="thursAbsentHours" /></td>
-    </tr>
-    <tr>
-        <td><input type="text" name="Date" /></td>
-        <th>Fri</th>
-        <td><input type="text" name="friStart" /></td>
-        <td><input type="text" name="friMealOut" /></td>
-        <td><input type="text" name="friMealIn" /></td>
-        <td><input type="text" name="friFinish" /></td>
-        <td><input type="text" name="friHoursWorked" /></td>
-        <td><input type="text" name="friTypeOfAbsence" /></td>
-        <td><input type="text" name="friAbsentHours" /></td>
-    </tr>
-    <tr>
-     <td><input type="text" name="Date" /></td>
-        <th>Sat</th>
-        <td><input type="text" name="start" /></td>
-        <td><input type="text" name="mealOut" /></td>
-        <td><input type="text" name="mealIn" /></td>
-        <td><input type="text" name="finish" /></td>
-        <td><input type="text" name="hoursWorked" /></td>
-        <td><input type="text" name="typeOfAbsence" /></td>
-        <td><input type="text" name="absentHours" /></td>
-
-    </tr>
-    <tr>
-        <th colspan="5">Total weekly hours</th><script>
-            var tD = new Date();
-            var datestr = (tD.getMonth() + ) + "/" + tD.getDate() + "/" + tD.getFullYear();
-            document.write("<input type='text' name='textField' value='" + datestr + "'>");
-</script>
-        <td><input type="text" name="totalWeekly" /></td>
-        <th>Total absent hours</th>
-        <td><input type="text" name="totalAbsent" /></td>
-    </tr>
-    <tr>
-        <th colspan="9">Overtime hours x1.5 to be added to prior FLSA comp balance</th>
-        <td><input type="text" name="overtime" /></td>
-    </tr>
-</table>
 <a href="@Url.Action("LogOut", "Login")">LogOut</a>
+
+</body>
+
+
+
+</html>
+

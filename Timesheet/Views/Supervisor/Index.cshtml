@@ -1,9 +1,6 @@
-﻿@{
+﻿@using Timesheet.Models
+@{
     Layout = null;
-    if (Session["supId"] == null)
-    {
-        Response.Redirect("~/Login/Index");
-    }
 }
 
 <!DOCTYPE html>
@@ -12,20 +9,39 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Supervisor</title>
+    <style>
+        body {
+            background-color: cadetblue;
+            font-family: Arial;
+        }
+
+        #login-div {
+            position: absolute;
+            left: 40%;
+            top: 40%;
+            padding: 10px 10px;
+        }
+
+        .field-validation-error {
+            color: red;
+        }
+    </style>
 </head>
 
 <body>
+    @{var emp = (Employee)Session["Employee"]; }
     <div>
         <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
     </div>
     <div>
         <h1>Supervisor</h1>
+        <p>Welcome @emp.FirstName @emp.LastName!</p>
         <ul>
             <li>
-                <a href="http://localhost:59443/Timesheet/Timesheet">Timesheet</a>
+                <a href="@Url.Action("GetTimeSheet","Timesheet")">Timesheet</a>
             </li>
             <li>
-                <a href="">Timesheet Reports</a>
+                <a href="http://localhost:59443/TimesheetReports/TimesheetReports">Timesheet Reports</a>
             </li>
         </ul>
 

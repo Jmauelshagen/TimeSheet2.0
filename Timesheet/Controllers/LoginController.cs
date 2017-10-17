@@ -15,66 +15,72 @@ namespace Timesheet.Controllers
             return View();
         }
 
-        Employee emp1 = new Employee();
-       
         [HttpPost]
-        public ActionResult Authorize(Login auth, Role role)
+        public ActionResult Authorize(Login model)
         {
-            using (LoginDatabaseEntities1 db = new LoginDatabaseEntities1())
+            //Logic to verify that the login information given matches data in the Logins database
+            //Instantiate an empty login object, then call the ValidateLogin method with the username and
+            //password information from the UI.  If the method returns false, then the user is redirected to the login
+            //screen and an error message is displayed.
+            Login log = new Login();
+            if (!log.ValidateLogin(model.Username, model.Password))
             {
-                var empDetails = db.Logins.Where(x => x.Username == auth.Username && x.Password == auth.Password)
-                    .FirstOrDefault();
+                string error = "Invalid user.";
+                Session["Error"] = error;
+                return RedirectToAction("Index", "Login");
+            }
+            else
+            //Instantiate a login object based on the username and password.  Get the employee id from the login object,
+            //and create an employee object and put that object into the session
+            {
+                Login login = log.GetLogin(model.Username, model.Password);
+                Employee emp = new Employee();
+                Employee employee = emp.GetEmployee(login.EmpId);
+                Session["Employee"] = employee;
 
-                var roledetails = db.Roles.Where(x => x.RoleId == role.RoleId)
-                    .FirstOrDefault();
+                //Get the role id from the Employee object
+                int role = employee.RoleId;
 
-
-                if (empDetails == null)
-                    {
-                        auth.LoginErrorMessage = "Wrong UserName or Password";
-                    }
-                    else
-                    {
-                        Session["empId"] = empDetails.EmpId;
-                        return RedirectToAction("Index", "Employees");
-                    }
-
-             
-
-                int caseSwitch = 1;
-
-                switch(caseSwitch)
+                //Redirect the user to the correct dashboard screen based upon the role id
+                // 1 = Employee; 2 = Supervisor; 3 = HR
+                switch (role)
                 {
                     case 1:
-                        roledetails.RoleId = 1;
-                        Session["empId"] = empDetails.EmpId;
-                        RedirectToAction("Index", "Employees");
-                        break;
+                        {
+                            return RedirectToAction("Index", "Employees");
+                            break;
+                        }
                     case 2:
-                        roledetails.RoleId = 2;
-                        Session["empId"] = empDetails.EmpId;
-                       return RedirectToAction("Index", "Supervisor");
-                        break;
+                        {
+                            return RedirectToAction("Index", "Supervisor");
+                            break;
+                        }
                     case 3:
-                        roledetails.RoleId = 3;
-                        Session["empId"] = empDetails.EmpId;
-                        RedirectToAction("Index", "HR");
-                        break;
+                        {
+                            return RedirectToAction("Index", "HR");
+                            break;
+                        }
+                    default:
+                        {
+                            model.LoginErrorMessage = "An error has occurred.";
+                            return RedirectToAction("Index", "Login");
+                            break;
+                        }
                 }
 
+
             }
-            return View("Index",auth);
         }
 
-
+        //method for handling the logout link
         public ActionResult LogOut()
         {
-           Session.Abandon();
-            return RedirectToAction("Index","Login");
+            Session.Abandon();
+            return RedirectToAction("Index", "Login");
         }
-   
-        
 
-        
+
+
+
     }
 }
