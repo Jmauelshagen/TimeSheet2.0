@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Timesheet.Models.TimeSheet
+@using Timesheet.Models
+@{
     Layout = null;
 }
 
@@ -6,31 +8,115 @@
 @{
     ViewBag.Title = "TimeSheet";
     <div>
-        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        <center>
+            <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        </center>
     </div>
+
+    Employee emp = (Employee)Session["Employee"];
+    List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
+    List<string> dates = (List<string>)Session["Dates"];
+
 }
 
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Timesheet</title>
+    <style>
+        body {
+            background-color: cadetblue;
+            font-family: Arial;
+        }
+
+        #login-div {
+            position: absolute;
+            left: 40%;
+            top: 40%;
+            padding: 10px 10px;
+        }
+
+        .field-validation-error {
+            color: red;
+        }
+    </style>
+
+</head>
+<body>
+
+    <h2>Time Sheet</h2>
+    @{ string today = DateTime.Now.ToLongDateString();
+        string time = DateTime.Now.ToLongTimeString();}
+
+    <p id="Time">It is @today at @time</p>
 
 
-<h2>Time Sheet</h2>
-<input type="submit" value="Submit">
-
-<table style="width:100%" cellpadding="4">
-    <!DOCTYPE html>
-
-    <html>
-    <body>
-
-        <p id="Time"></p>
-
-        <script>
-            document.getElementById("Time").innerHTML = Date();
-
+    <table style="width:100%" cellpadding="4">
+        <colgroup span="4"></colgroup>
+        <tr>
+            <th></th>
+            <th>Week end</th>
+            <th>Date</th>
+            <th>Start/ Time In</th>
+            <th>Meal/ Time Out</th>
+            <th>Meal/ Time In</th>
+            <th>Finish/ Time Out</th>
+            <th>Type of absence</th>
+            <th>Absent hours</th>
+            <th>Additional Hours</th>
+            <th>Hours Worked</th>
+            <th>Over Time</th>           
+        </tr>           
+             @{   for (int i = 0; i < 7; i++)
+                 {
+                     using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post))
+                     {          
+                        <tr>
+                            <td>@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
+                            <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly" })</td>
+                            <td>@Html.TextBoxFor(model => model.Date, new { @Value = @tsheets[i].Date.ToString().Trim(), @readonly = "readonly" })</td>
+                            <td>@Html.TextBoxFor(model => model.TimeIn, new { @Value = @tsheets[i].TimeIn.ToString().Trim() })</td>
+                            <td>@Html.TextBoxFor(model => model.OutForLunch, new { @Value = @tsheets[i].OutForLunch.ToString().Trim() })</td>
+                            <td>@Html.TextBoxFor(model => model.InFromLunch, new { @Value = @tsheets[i].InFromLunch.ToString().Trim() })</td>
+                            <td>@Html.TextBoxFor(model => model.TimeOut, new { @Value = @tsheets[i].TimeOut.ToString().Trim() })</td>
+                            <td>@Html.EditorFor(model => model.LeaveId, new { @Value = @tsheets[i].LeaveId.ToString().Trim() })</td>
+                            <td>@Html.EditorFor(model => model.LeaveHours, new { @Value = @tsheets[i].LeaveHours.ToString().Trim() })</td>
+                            <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim() })</td>
+                            <td>@Html.TextBoxFor(model => model.TotalHoursWorked, new { @Value = @tsheets[i].TotalHoursWorked.ToString().Trim(), @readonly = "readonly" })</td>
+                            <td>Over 8</td>
+                            <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
+                            <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
+                            <td>@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
+                            <td><input class="button" id="submit" type="submit" value="Save" /></td>
+                        </tr>
+                    
+                     }
+                 }
+               } 
+        <tr>
+            <th colspan="5">Total weekly hours</th>
             
-        </script>
+            <td><input type="text" name="totalWeekly" /></td>
+            <th>Total absent hours</th>
+            <td><input type="text" name="totalAbsent" /></td>
+            <script>
+                var tD = new Date();
+                var datestr = (tD.getMonth() + ) + "/" + tD.getDate() + "/" + tD.getFullYear();
+                document.write("<input type='text' name='textField' value='" + datestr + "'>");
+            </script>   
+        <tr>
+            <th colspan="9">Overtime hours x1.5 to be added to prior FLSA comp balance</th>
+            <td><input type="text" name="overtime" /></td>
+        </tr>
+    </table>
+    
 
-    </body>
+<a href="@Url.Action("LogOut", "Login")">LogOut</a>
+
+</body>
 </html>
+<<<<<<< HEAD
     <tr>
         <th>Date</th>
         <th>Day</th>
@@ -127,7 +213,6 @@
             var tD = new Date();
             var datestr = (tD.getMonth() + ) + "/" + tD.getDate() + "/" + tD.getFullYear();
             document.write("<input type='text' name='textField' value='" + datestr + "'>");
-
 </script>
         <td><input type="text" name="totalWeekly" /></td>
         <th>Total absent hours</th>
@@ -136,9 +221,30 @@
     <tr>
         <th colspan="9">Overtime hours x1.5 to be added to prior FLSA comp balance</th>
         <td><input type="text" name="overtime" /></td>
-
     </tr>
-    
 </table>
-<p><a href="#" onclick="history.back();">Back</a></p>
+
+<if class=SupervisorController : Controller>
+<div> 
+
+<button type="button" id="Approved" class="btn btn-success response">
+    <i class=" check"></i>Approve
+</button>
+
+<button type="button" id="Declined" class="btn btn-fail response">
+    <i class=" times"></i>Decline
+</button>
+
+</div>
+
+</if>
+
+<if class=EmployeeController : Controller>
+<buttonDecline.disabled= "true" >
+</buttonDecline.disabled>
+</if>
+
 <a href="@Url.Action("LogOut", "Login")">LogOut</a>
+=======
+
+>>>>>>> cac41c4629ba0546f4bcf1adcd73a357693d4b50
