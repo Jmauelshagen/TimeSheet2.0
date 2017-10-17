@@ -53,6 +53,7 @@
 
 
     <table style="width:100%" cellpadding="4">
+        <colgroup span="4"></colgroup>
         <tr>
             <th></th>
             <th>Week end</th>
@@ -65,18 +66,12 @@
             <th>Absent hours</th>
             <th>Additional Hours</th>
             <th>Hours Worked</th>
-            <th>Over Time</th>
-            
-        </tr>
-
-        </table>
-        
-            
+            <th>Over Time</th>           
+        </tr>           
              @{   for (int i = 0; i < 7; i++)
                  {
                      using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post))
-                     {
-                    <table>
+                     {          
                         <tr>
                             <td>@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
                             <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly" })</td>
@@ -95,13 +90,10 @@
                             <td>@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
                             <td><input class="button" id="submit" type="submit" value="Save" /></td>
                         </tr>
-                    </table>
+                    
                      }
                  }
-               }
-
-
-    <table>
+               } 
         <tr>
             <th colspan="5">Total weekly hours</th>
             
@@ -112,8 +104,7 @@
                 var tD = new Date();
                 var datestr = (tD.getMonth() + ) + "/" + tD.getDate() + "/" + tD.getFullYear();
                 document.write("<input type='text' name='textField' value='" + datestr + "'>");
-            </script>
-      
+            </script>   
         <tr>
             <th colspan="9">Overtime hours x1.5 to be added to prior FLSA comp balance</th>
             <td><input type="text" name="overtime" /></td>
@@ -124,8 +115,5 @@
 <a href="@Url.Action("LogOut", "Login")">LogOut</a>
 
 </body>
-
-
-
 </html>
 
