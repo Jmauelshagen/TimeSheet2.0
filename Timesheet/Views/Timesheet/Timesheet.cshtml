@@ -134,25 +134,4 @@
         <td><input type="text" name="overtime" /></td>
     </tr>
 </table>
-
-<if class=SupervisorController : Controller>
-<div> 
-
-<button type="button" id="Approved" class="btn btn-success response">
-    <i class=" check"></i>Approve
-</button>
-
-<button type="button" id="Declined" class="btn btn-fail response">
-    <i class=" times"></i>Decline
-</button>
-
-</div>
-
-</if>
-
-<if class=EmployeeController : Controller>
-<buttonDecline.disabled= "true" >
-</buttonDecline.disabled>
-</if>
-
 <a href="@Url.Action("LogOut", "Login")">LogOut</a>
