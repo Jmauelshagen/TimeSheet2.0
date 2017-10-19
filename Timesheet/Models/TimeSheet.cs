@@ -157,12 +157,28 @@ namespace Timesheet.Models
             tsheet.LeaveId = sheet.LeaveId;
             tsheet.LeaveHours = sheet.LeaveHours;
             tsheet.AdditionalHours = sheet.AdditionalHours;
-            tsheet.TotalHoursWorked = sheet.TotalHoursWorked;
+            tsheet.TotalHoursWorked = tsheet.CalculateTotalHoursWorked(sheet);
             tsheet.Submitted = sheet.Submitted;
             tsheet.AuthorizedBySupervisor = sheet.AuthorizedBySupervisor;
             tsheet.EmpId = sheet.EmpId;
 
             db.SaveChanges();
+        }
+
+        //Method to calculate total hours worked
+        public int CalculateTotalHoursWorked(TimeSheet sheet)
+        {
+            DateTime tIn = DateTime.Parse(sheet.TimeIn);
+            DateTime lOut = DateTime.Parse(sheet.OutForLunch);
+            DateTime lIn = DateTime.Parse(sheet.InFromLunch);
+            DateTime tOut = DateTime.Parse(sheet.TimeOut);
+
+            double hoursBeforeLunch = (lOut - tIn).TotalMilliseconds; //Calculate the number of hours worked before lunch in milliseconds
+            double hoursAfterLunch = (tOut - lIn).TotalMilliseconds; //Calculate the number of hours worked after lunch in milliseconds
+            double addlHours = ((double)sheet.AdditionalHours) * 3600000; //Convert additional hours value to milliseconds
+            double leaveHours = ((double)sheet.LeaveHours) * 3600000; //Convert leave hours value uto milliseconds
+            double totalHours = ((hoursBeforeLunch + hoursAfterLunch + addlHours) - (leaveHours))/3600000; //Do the arithmetic and convert from millis to hours
+            return Convert.ToInt32(totalHours);
         }
 
         //This method determines the curent date and then derives the dates for each day of the week

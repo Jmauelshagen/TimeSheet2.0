@@ -73,18 +73,31 @@
                      using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post))
                      {          
                         <tr>
-                            <td>@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
-                            <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly" })</td>
-                            <td>@Html.TextBoxFor(model => model.Date, new { @Value = @tsheets[i].Date.ToString().Trim(), @readonly = "readonly" })</td>
-                            <td>@Html.TextBoxFor(model => model.TimeIn, new { @Value = @tsheets[i].TimeIn.ToString().Trim() })</td>
-                            <td>@Html.TextBoxFor(model => model.OutForLunch, new { @Value = @tsheets[i].OutForLunch.ToString().Trim() })</td>
-                            <td>@Html.TextBoxFor(model => model.InFromLunch, new { @Value = @tsheets[i].InFromLunch.ToString().Trim() })</td>
-                            <td>@Html.TextBoxFor(model => model.TimeOut, new { @Value = @tsheets[i].TimeOut.ToString().Trim() })</td>
-                            <td>@Html.EditorFor(model => model.LeaveId, new { @Value = @tsheets[i].LeaveId.ToString().Trim() })</td>
-                            <td>@Html.EditorFor(model => model.LeaveHours, new { @Value = @tsheets[i].LeaveHours.ToString().Trim() })</td>
-                            <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim() })</td>
-                            <td>@Html.TextBoxFor(model => model.TotalHoursWorked, new { @Value = @tsheets[i].TotalHoursWorked.ToString().Trim(), @readonly = "readonly" })</td>
-                            <td>Over 8</td>
+                            <td>@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "display: none; width: 100px;" })</td>
+                            <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                            <td>@Html.TextBoxFor(model => model.Date, new { @Value = @tsheets[i].Date.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                            <td>@Html.TextBoxFor(model => model.TimeIn, new { @Value = @tsheets[i].TimeIn.ToString().Trim(), style = "width: 75px;" })</td>
+                            <td>@Html.TextBoxFor(model => model.OutForLunch, new { @Value = @tsheets[i].OutForLunch.ToString().Trim(), style = "width: 75px;" })</td>
+                            <td>@Html.TextBoxFor(model => model.InFromLunch, new { @Value = @tsheets[i].InFromLunch.ToString().Trim(), style = "width: 75px;" })</td>
+                            <td>@Html.TextBoxFor(model => model.TimeOut, new { @Value = @tsheets[i].TimeOut.ToString().Trim(), style = "width: 75px;" })</td>
+                            <td>@Html.TextBoxFor(model => model.LeaveId, new { @Value = @tsheets[i].LeaveId.ToString().Trim(), style = "width: 75px;" })</td>
+                            <td>@Html.TextBoxFor(model => model.LeaveHours, new { @Value = @tsheets[i].LeaveHours.ToString().Trim(), style = "width: 50px;" })</td>
+                            <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim(), style = "width: 75px;" })</td>
+                            <td>@Html.TextBoxFor(model => model.TotalHoursWorked, new { @Value = @tsheets[i].TotalHoursWorked.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
+                            <td>@{
+                                int overtime;
+                                if (tsheets[i].TotalHoursWorked <= 8)
+                                {
+                                    overtime = 0;
+                                }
+                                else
+                                {
+                                    overtime = (int)tsheets[i].TotalHoursWorked - 8;
+                                }
+
+                                }
+                            @overtime
+                            </td>
                             <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
                             <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
                             <td>@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
