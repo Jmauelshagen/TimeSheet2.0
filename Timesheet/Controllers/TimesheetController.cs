@@ -60,6 +60,7 @@ namespace Timesheet.Controllers
                 TimeOut = model.TimeOut,
                 LeaveId = model.LeaveId,
                 LeaveHours = model.LeaveHours,
+                AdditionalHours = model.AdditionalHours,
                 TotalHoursWorked = model.TotalHoursWorked,
                 Submitted = model.Submitted,
                 AuthorizedBySupervisor = model.AuthorizedBySupervisor,
