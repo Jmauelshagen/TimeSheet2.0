@@ -24,6 +24,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Timesheet</title>
+    <p><a href="#" onclick="history.back();">Back</a></p>
     <style>
         body {
             background-color: cadetblue;
@@ -100,11 +101,7 @@
             <td><input type="text" name="totalWeekly" /></td>
             <th>Total absent hours</th>
             <td><input type="text" name="totalAbsent" /></td>
-            <script>
-                var tD = new Date();
-                var datestr = (tD.getMonth() + ) + "/" + tD.getDate() + "/" + tD.getFullYear();
-                document.write("<input type='text' name='textField' value='" + datestr + "'>");
-            </script>   
+               
         <tr>
             <th colspan="9">Overtime hours x1.5 to be added to prior FLSA comp balance</th>
             <td><input type="text" name="overtime" /></td>
