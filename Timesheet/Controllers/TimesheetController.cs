@@ -15,6 +15,11 @@ namespace Timesheet.Controllers
             return View();
         }
 
+        public ActionResult Error()
+        {
+            return View();
+        }
+
         public ActionResult GetTimeSheet()
         {
             //Remove the TimeSheet variable from the session if it exists
@@ -80,8 +85,8 @@ namespace Timesheet.Controllers
             }
             catch (Exception)
             {
-                ModelState.AddModelError("", "Unable to perform action. Please contact us.");
-                return RedirectToAction("Error", "Timesheet");
+               
+                return RedirectToAction("Error");
             }
         }
 

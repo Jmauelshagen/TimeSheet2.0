@@ -40,11 +40,17 @@
         .field-validation-error {
             color: red;
         }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
     </style>
 
 </head>
 <body>
-    <h3><b>YOU GOOFED</b></h3>
+    <h3 align="center"><b>All time in/out information needs to be in a 0:00am/pm format</b></h3>
+    <h3 align="center"><b>All other information is numeric only</b></h3>
     <h2>Time Sheet</h2>
     @{ string today = DateTime.Now.ToLongDateString();
         string time = DateTime.Now.ToLongTimeString();}
@@ -109,18 +115,17 @@
                             }
         }
         <tr>
-            <th colspan="5">Total weekly hours</th>
-
-            <td><input type="text" name="totalWeekly" /></td>
-            <th>Total absent hours</th>
+            <th colspan="8">Total absent Hours</th>
             <td><input type="text" name="totalAbsent" /></td>
+            <th>Total weekly hours</th>
+            <td><input type="text" name="totalWeekly" /></td>
             <script>
                 var tD = new Date();
                 var datestr = (tD.getMonth() + ) + "/" + tD.getDate() + "/" + tD.getFullYear();
                 document.write("<input type='text' name='textField' value='" + datestr + "'>");
             </script>
         <tr>
-            <th colspan="9">Overtime hours x1.5 to be added to prior FLSA comp balance</th>
+            <th colspan="11">Overtime hours x1.5 to be added to prior FLSA comp balance</th>
             <td><input type="text" name="overtime" /></td>
         </tr>
     </table>

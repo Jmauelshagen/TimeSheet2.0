@@ -27,9 +27,9 @@ namespace Timesheet.Models
         public string OutForLunch { get; set; }
         public string InFromLunch { get; set; }
         public string TimeOut { get; set; }
-        public int LeaveId { get; set; }
-        public int LeaveHours { get; set; }
-        public int AdditionalHours { get; set; }
+        public Nullable<int> LeaveId { get; set; }
+        public Nullable<int> LeaveHours { get; set; }
+        public Nullable<int> AdditionalHours { get; set; }
         public Nullable<int> TotalHoursWorked { get; set; }
         public string Submitted { get; set; }
         public string AuthorizedBySupervisor { get; set; }
