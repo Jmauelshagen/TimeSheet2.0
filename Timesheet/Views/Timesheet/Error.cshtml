@@ -1,0 +1,132 @@
+﻿@model Timesheet.Models.TimeSheet
+@using Timesheet.Models
+@{
+    Layout = null;
+}
+
+
+@{
+    ViewBag.Title = "Error";
+    <div>
+        <center>
+            <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        </center>
+    </div>
+
+    Employee emp = (Employee)Session["Employee"];
+    List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
+    List<string> dates = (List<string>)Session["Dates"];
+
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Timesheet</title>
+    <style>
+        body {
+            background-color: cadetblue;
+            font-family: Arial;
+        }
+
+        #login-div {
+            position: absolute;
+            left: 40%;
+            top: 40%;
+            padding: 10px 10px;
+        }
+
+        .field-validation-error {
+            color: red;
+        }
+    </style>
+
+</head>
+<body>
+    <h3><b>YOU GOOFED</b></h3>
+    <h2>Time Sheet</h2>
+    @{ string today = DateTime.Now.ToLongDateString();
+        string time = DateTime.Now.ToLongTimeString();}
+
+    <p id="Time">It is @today at @time</p>
+
+
+    <table style="width:100%" cellpadding="4">
+        <colgroup span="4"></colgroup>
+        <tr>
+            <th></th>
+            <th>Week end</th>
+            <th>Date</th>
+            <th>Start/ Time In</th>
+            <th>Meal/ Time Out</th>
+            <th>Meal/ Time In</th>
+            <th>Finish/ Time Out</th>
+            <th>Type of absence</th>
+            <th>Absent hours</th>
+            <th>Additional Hours</th>
+            <th>Hours Worked</th>
+            <th>Over Time</th>
+        </tr>
+        @{   for (int i = 0; i < 7; i++)
+            {
+                using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post))
+                {
+                    <tr>
+                        <td>@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "display: none; width: 100px;" })</td>
+                        <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                        <td>@Html.TextBoxFor(model => model.Date, new { @Value = @tsheets[i].Date.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                        <td>@Html.TextBoxFor(model => model.TimeIn, new { @Value = @tsheets[i].TimeIn.ToString().Trim(), style = "width: 75px;" })</td>
+                        <td>@Html.TextBoxFor(model => model.OutForLunch, new { @Value = @tsheets[i].OutForLunch.ToString().Trim(), style = "width: 75px;" })</td>
+                        <td>@Html.TextBoxFor(model => model.InFromLunch, new { @Value = @tsheets[i].InFromLunch.ToString().Trim(), style = "width: 75px;" })</td>
+                        <td>@Html.TextBoxFor(model => model.TimeOut, new { @Value = @tsheets[i].TimeOut.ToString().Trim(), style = "width: 75px;" })</td>
+                        <td>@Html.TextBoxFor(model => model.LeaveId, new { @Value = @tsheets[i].LeaveId.ToString().Trim(), style = "width: 75px;" })</td>
+                        <td>@Html.TextBoxFor(model => model.LeaveHours, new { @Value = @tsheets[i].LeaveHours.ToString().Trim(), style = "width: 50px;" })</td>
+                        <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim(), style = "width: 75px;" })</td>
+                        <td>@Html.TextBoxFor(model => model.TotalHoursWorked, new { @Value = @tsheets[i].TotalHoursWorked.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
+                        <td>
+                            @{
+                            int overtime;
+                            if (tsheets[i].TotalHoursWorked <= 8)
+                            {
+                                overtime = 0;
+                            }
+                            else
+                            {
+                                overtime = (int)tsheets[i].TotalHoursWorked - 8;
+                            }
+
+                        }
+                        @overtime
+                    </td>
+                    <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
+                    <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
+                    <td>@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
+                    <td><input class="button" id="submit" type="submit" value="Save" /></td>
+                </tr>
+
+                                }
+                            }
+        }
+        <tr>
+            <th colspan="5">Total weekly hours</th>
+
+            <td><input type="text" name="totalWeekly" /></td>
+            <th>Total absent hours</th>
+            <td><input type="text" name="totalAbsent" /></td>
+            <script>
+                var tD = new Date();
+                var datestr = (tD.getMonth() + ) + "/" + tD.getDate() + "/" + tD.getFullYear();
+                document.write("<input type='text' name='textField' value='" + datestr + "'>");
+            </script>
+        <tr>
+            <th colspan="9">Overtime hours x1.5 to be added to prior FLSA comp balance</th>
+            <td><input type="text" name="overtime" /></td>
+        </tr>
+    </table>
+
+
+    <a href="@Url.Action("LogOut", "Login")">LogOut</a>
+
+</body>
+</html>

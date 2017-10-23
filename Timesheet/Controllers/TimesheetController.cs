@@ -44,38 +44,45 @@ namespace Timesheet.Controllers
         [HttpPost]
         public ActionResult SaveTimeSheet(TimeSheet model)
         {
-            //Pull the employee object from the session.
-            Employee emp = (Employee)Session["Employee"];
-            List<string> dates = (List<string>)Session["Dates"];
+            try {
+                //Pull the employee object from the session.
+                Employee emp = (Employee)Session["Employee"];
+                List<string> dates = (List<string>)Session["Dates"];
 
-            //Instantiate TimeSheet object with data from form
-            TimeSheet sheet = new TimeSheet
+                //Instantiate TimeSheet object with data from form
+                TimeSheet sheet = new TimeSheet
+                {
+                    Id = model.Id,
+                    WeekEnding = model.WeekEnding,
+                    Date = model.Date,
+                    TimeIn = model.TimeIn,
+                    OutForLunch = model.OutForLunch,
+                    InFromLunch = model.InFromLunch,
+                    TimeOut = model.TimeOut,
+                    LeaveId = model.LeaveId,
+                    LeaveHours = model.LeaveHours,
+                    AdditionalHours = model.AdditionalHours,
+                    TotalHoursWorked = model.TotalHoursWorked,
+                    Submitted = model.Submitted,
+                    AuthorizedBySupervisor = model.AuthorizedBySupervisor,
+                    EmpId = model.EmpId
+                };
+
+                sheet.UpdateTimeSheet(sheet);
+
+                //Get list of TimeSheet objects based on date and employee id and add list to session
+                List<TimeSheet> tsheets = sheet.GetTimeSheetByWeek(emp.EmpId, dates);
+                Session["TimeSheetData"] = tsheets;
+
+                //Return the TimeSheet view
+                return RedirectToAction("Timesheet", "Timesheet");
+
+            }
+            catch (Exception)
             {
-                Id = model.Id,
-                WeekEnding = model.WeekEnding,
-                Date = model.Date,
-                TimeIn = model.TimeIn,
-                OutForLunch = model.OutForLunch,
-                InFromLunch = model.InFromLunch,
-                TimeOut = model.TimeOut,
-                LeaveId = model.LeaveId,
-                LeaveHours = model.LeaveHours,
-                AdditionalHours = model.AdditionalHours,
-                TotalHoursWorked = model.TotalHoursWorked,
-                Submitted = model.Submitted,
-                AuthorizedBySupervisor = model.AuthorizedBySupervisor,
-                EmpId = model.EmpId
-            };
-
-            sheet.UpdateTimeSheet(sheet);
-
-            //Get list of TimeSheet objects based on date and employee id and add list to session
-            List<TimeSheet> tsheets = sheet.GetTimeSheetByWeek(emp.EmpId, dates);
-            Session["TimeSheetData"] = tsheets;
-
-            //Return the TimeSheet view
-            return RedirectToAction("Timesheet", "Timesheet");
-
+                ModelState.AddModelError("", "Unable to perform action. Please contact us.");
+                return RedirectToAction("Error", "Timesheet");
+            }
         }
 
 
