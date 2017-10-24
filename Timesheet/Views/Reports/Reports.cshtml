@@ -4,30 +4,29 @@
     Layout = null;
 }
 
+
 @{
     ViewBag.Title = "Reports";
     <div>
-        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        <center>
+            <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        </center>
     </div>
 
     Employee emp = (Employee)Session["Employee"];
     List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
     List<string> dates = (List<string>)Session["Dates"];
-    <select>
-        <option value="Name1">Name1</option>
-        <option value="Name2">Name2</option>
-        <option value="Name3">Name3</option>
-        <option value="Name4">Name4</option>
-    </select>
-    <p><a href="#" onclick="history.back();">Back</a></p>
+
 }
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <title>Reports</title>
+    
     <style>
-        body {
+        <style > body {
             background-color: cadetblue;
             font-family: Arial;
         }
@@ -40,40 +39,69 @@
         }
 
         .field-validation-error {
+            .previous
+
+        {
+            background-color: #f1f1f1;
+            color: black;
+        }
+
+        .next {
+            background-color: #f1f1f1;
+            color: black;
             color: red;
         }
     </style>
 
+
 </head>
 <body>
+    <p><a href="#" onclick="history.back();">Back</a></p>
+    <a href="#" class="previous">&laquo; Previous</a>
+    <a href="#" class="next">Next &laquo;</a>
 
-    <h2>Reports</h2>
-    @{ string today = DateTime.Now.ToLongDateString();
-        string time = DateTime.Now.ToLongTimeString();}
+   
 
-    <p id="Time">It is @today at @time</p>
+    <select name="name">
+        <option value="name">name</option>
+        <option value="name">name</option>
+        <option value="name">name</option>
+        <option value="name">name</option>
+    </select>
+    <select name="dates">
+        <option value="date">date</option>
+        <option value="date">date</option>
+        <option value="date">date</option>
+        <option value="date">date</option>
+    </select>
+    
+        <h2>Reports</h2>
+        @{ string today = DateTime.Now.ToLongDateString();
+            string time = DateTime.Now.ToLongTimeString();}
+
+        <p id="Time">It is @today at @time</p>
 
 
-    <table style="width:100%" cellpadding="4">
-        <colgroup span="4"></colgroup>
-        <tr>
-            <th></th>
-            <th>Week end</th>
-            <th>Date</th>
-            <th>Start/ Time In</th>
-            <th>Meal/ Time Out</th>
-            <th>Meal/ Time In</th>
-            <th>Finish/ Time Out</th>
-            <th>Type of absence</th>
-            <th>Absent hours</th>
-            <th>Additional Hours</th>
-            <th>Hours Worked</th>
-            <th>Over Time</th>
-        </tr>
-        @{   for (int i = 0; i < 7; i++)
-            {
-                using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post))
+        <table style="width:100%" cellpadding="4">
+            <colgroup span="4"></colgroup>
+            <tr>
+                <th></th>
+                <th>Week end</th>
+                <th>Date</th>
+                <th>Start/ Time In</th>
+                <th>Meal/ Time Out</th>
+                <th>Meal/ Time In</th>
+                <th>Finish/ Time Out</th>
+                <th>Type of absence</th>
+                <th>Absent hours</th>
+                <th>Additional Hours</th>
+                <th>Hours Worked</th>
+                <th>Over Time</th>
+            </tr>
+            @{   for (int i = 0; i < 7; i++)
                 {
+
+
                     <tr>
                         <td>@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
                         <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly" })</td>
@@ -90,27 +118,27 @@
                         <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
                         <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
                         <td>@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
-                        <td><input class="button" id="submit" type="submit" value="Save" /></td>
+
                     </tr>
 
                 }
             }
-        }
-        <tr>
-            <th colspan="5">Total weekly hours</th>
 
-            <td><input type="text" name="totalWeekly" /></td>
-            <th>Total absent hours</th>
-            <td><input type="text" name="totalAbsent" /></td>
+            <tr>
+                <th colspan="5">Total weekly hours</th>
 
-        <tr>
-            <th colspan="9">Overtime hours x1.5 to be added to prior FLSA comp balance</th>
-            <td><input type="text" name="overtime" /></td>
-        </tr>
-    </table>
+                <td><input type="text" name="totalWeekly" /></td>
+                <th>Total absent hours</th>
+                <td><input type="text" name="totalAbsent" /></td>
 
-
-    <a href="@Url.Action("LogOut", "Login")">LogOut</a>
+            <tr>
+                <th colspan="9">Overtime hours x1.5 to be added to prior FLSA comp balance</th>
+                <td><input type="text" name="overtime" /></td>
+            </tr>
+        </table>
+    <a href="@Url.Action("Approve", "Deny")">Approve</a>
+    <a href="@Url.Action("Approve", "Deny")">Deny</a>
+        <a href="@Url.Action("LogOut", "Login")">LogOut</a>
 
 </body>
 </html>
