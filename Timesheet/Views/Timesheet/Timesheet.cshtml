@@ -44,7 +44,7 @@
     </style>
 
 </head>
-<body>
+<body onload="disableSubmit()">
     <p><a href="#" onclick="history.back();">Back</a></p>
     <h2>Time Sheet</h2>
     @{ string today = DateTime.Now.ToLongDateString();
@@ -107,8 +107,28 @@
             <td><input type="text" name="overtime" /></td>
         </tr>
     </table>
-    
+  
+        <script>
+            function disableSubmit() {
+                document.getElementById("submit").disabled = true;
+            }
 
+            function activateButton(element) {
+
+                if (element.checked) {
+                    document.getElementById("submit").disabled = false;
+                }
+                else {
+                    document.getElementById("submit").disabled = true;
+                }
+
+            }
+        </script>
+  
+        <input type="checkbox" name="terms" id="terms" onchange="activateButton(this)">  I Agree to the above timesheet
+        <br><br>
+        <input type="submit" name="submit" id="submit">
+ 
 <a href="@Url.Action("LogOut", "Login")">LogOut</a>
 
 </body>

@@ -29,6 +29,7 @@
 </head>
 
 <body>
+    <p><a href="#" onclick="history.back();">Back</a></p>
     @{var emp = (Employee)Session["Employee"]; }
     <div>
         <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
@@ -37,9 +38,7 @@
         <h1>HR</h1>
         <p>Welcome @emp.FirstName @emp.LastName!</p>
         <ul>
-            <li>
-                <a href="@Url.Action("GetTimeSheet","Timesheet")">Timesheet</a>
-            </li>
+            
             <li>
                 <a href="http://localhost:59443/TimesheetReports/TimesheetReports">Timesheet Reports</a>
             </li>
