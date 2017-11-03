@@ -117,17 +117,32 @@
             <td><input type="text" name="totalAbsent" /></td>
             <th>Total weekly hours</th>
             <td><input type="text" name="totalWeekly" /></td>
-            <script>
-                var tD = new Date();
-                var datestr = (tD.getMonth() + ) + "/" + tD.getDate() + "/" + tD.getFullYear();
-                document.write("<input type='text' name='textField' value='" + datestr + "'>");
-            </script>   
+             
         <tr>
             <th colspan="11">Overtime hours x1.5 to be added to prior FLSA comp balance</th>
             <td><input type="text" name="overtime" /></td>
         </tr>
     </table>
-    
+    <script>
+        function disableSubmit() {
+            document.getElementById("submit").disabled = true;
+        }
+
+        function activateButton(element) {
+
+            if (element.checked) {
+                document.getElementById("submit").disabled = false;
+            }
+            else {
+                document.getElementById("submit").disabled = true;
+            }
+
+        }
+    </script>
+
+    <input type="checkbox" name="terms" id="terms" onchange="activateButton(this)">  I Agree to the above timesheet
+    <br><br>
+    <input type="submit" name="submit" id="submit">
 
 <a href="@Url.Action("LogOut", "Login")">LogOut</a>
 
