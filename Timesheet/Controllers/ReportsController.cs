@@ -10,12 +10,12 @@ namespace Reports.Controllers
     public class ReportsController : Controller
     {
         // GET: Reports,
+        LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
         public ActionResult Reports()
         {
-            LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
 
             ViewBag.Employees = new SelectList(db.Employees, "EmpId", "FirstName");
-            return View();
+            return View(db.TimeSheets.ToList());
         }
     }
 }
