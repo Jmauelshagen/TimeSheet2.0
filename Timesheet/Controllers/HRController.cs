@@ -13,5 +13,15 @@ namespace Timesheet.Controllers
         {
             return View();
         }
+
+        public ActionResult ApprovedTimesheets()
+        {
+            return View();
+        }
+
+        public ActionResult TimesheetReports()
+        {
+            return View();
+        }
     }
 }

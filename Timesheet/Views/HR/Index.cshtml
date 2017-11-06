@@ -38,10 +38,10 @@
         <p>Welcome @emp.FirstName @emp.LastName!</p>
         <ul>
             <li>
-                <a href="http://localhost:59443/ApprovedTimesheets/ApprovedTimesheets">Approved Timesheets</a>
+                <a href="@Url.Action("ApprovedTimesheets","ApprovedTimesheets")">Approved Timesheets</a>
             </li>
             <li>
-                <a href="http://localhost:59443/TimesheetReports/TimesheetReports">Timesheet Reports</a>
+                <a href="@Url.Action("TimesheetReports","TimesheetReports")">Timesheet Reports</a>
             </li>
         </ul>
 
