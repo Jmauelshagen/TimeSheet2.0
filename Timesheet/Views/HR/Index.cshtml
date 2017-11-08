@@ -1,4 +1,5 @@
 ﻿@using Timesheet.Models
+@model Timesheet.Models.TimeSheet
 @{
     Layout = null;
 }
@@ -36,14 +37,17 @@
     <div>
         <h1>HR</h1>
         <p>Welcome @emp.FirstName @emp.LastName!</p>
-        <ul>
-            <li>
-                <a href="@Url.Action("ApprovedTimesheets","ApprovedTimesheets")">Approved Timesheets</a>
-            </li>
-            <li>
-                <a href="@Url.Action("TimesheetReports","TimesheetReports")">Timesheet Reports</a>
-            </li>
-        </ul>
+        <br />
+        
+        @using (Html.BeginForm("GetPayData", "HR", FormMethod.Post, new { role = "form" }))
+        {
+            @Html.LabelFor(m => m.WeekEnding)
+            @Html.DropDownListFor(m => m.WeekEnding,
+           Model.WeekEndingDates,
+           " - Please select a date - ",
+           new { @class = "form-control"})
+            <button type="submit">Search</button>
+        }
 
         <a href="@Url.Action("LogOut", "Login")">LogOut</a>
     </div>
