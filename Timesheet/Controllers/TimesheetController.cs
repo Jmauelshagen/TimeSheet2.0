@@ -23,13 +23,13 @@ namespace Timesheet.Controllers
         public ActionResult GetTimeSheet()
         {
             //Remove the TimeSheet variable from the session if it exists
-            if (Session["TimeSheetData"]!=null)
+            if (Session["TimeSheetData"] != null)
             {
                 Session.Remove("TimeSheetData");
             }
             //Pull the employee object from the session.
             Employee emp = (Employee)Session["Employee"];
-            
+
 
             //Instantiate a TimeSheet object
             TimeSheet tsheet = new TimeSheet();
@@ -49,7 +49,8 @@ namespace Timesheet.Controllers
         [HttpPost]
         public ActionResult SaveTimeSheet(TimeSheet model)
         {
-            try {
+            try
+            {
                 //Pull the employee object from the session.
                 Employee emp = (Employee)Session["Employee"];
                 List<string> dates = (List<string>)Session["Dates"];
@@ -85,7 +86,7 @@ namespace Timesheet.Controllers
             }
             catch (Exception)
             {
-               
+
                 return RedirectToAction("Error");
             }
         }
