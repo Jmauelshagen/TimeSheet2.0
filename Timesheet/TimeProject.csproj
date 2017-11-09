@@ -192,6 +192,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LoginDataModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\PaySummary.cs" />
     <Compile Include="Models\Role.cs">
       <DependentUpon>LoginDataModel.tt</DependentUpon>
     </Compile>
