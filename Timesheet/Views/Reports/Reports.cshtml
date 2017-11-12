@@ -10,7 +10,7 @@
         <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
     </div>
 
-    Employee emp = (Employee)Session["Employee"];
+    employee emp = (employee)Session["Employee"];
     List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
     List<string> dates = (List<string>)Session["Dates"];
 
@@ -66,8 +66,8 @@
         </body>
     </html>
         <p>
-        <a href="@Url.Action("Approve", "Deny")">Approve</a>
-        <a href="@Url.Action("Approve", "Deny")">Deny</a>
+            <button type="submit" name="SubmitButton" value="Approve" class="btn btn-sm btn-success">Approve</button>
+            <button type="submit" name="SubmitButton" value="Decline" class="btn btn-sm btn-danger">Decline</button>
         </p>
         <a href="#" onclick="history.back();">Back</a>
 </html>

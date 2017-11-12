@@ -13,7 +13,7 @@ namespace Timesheet.Models
     using System.Collections.Generic;
     using System.Linq;
 
-    public partial class Employee
+    public partial class employee
     {
         //Instance variables
         LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
@@ -29,7 +29,7 @@ namespace Timesheet.Models
 
         //Constructors
         //0-arg constructor
-        public Employee()
+        public employee()
         {
             EmpId = 0;
             FirstName = "";
@@ -41,7 +41,7 @@ namespace Timesheet.Models
         }
 
         //all-arg constructor
-        public Employee(int id, string fName, string lName, string email, int role, string dept, int super)
+        public employee(int id, string fName, string lName, string email, int role, string dept, int super)
         {
             EmpId = id;
             FirstName = fName;
@@ -54,26 +54,26 @@ namespace Timesheet.Models
 
         //Method to obtain employee data from the database
         //Method accepts the employee id as a paramter and returns an Employee object
-        public Employee GetEmployee(int id)
+        public employee GetEmployee(int id)
         {
             var e = from employees in db.Employees
                     where employees.EmpId == id
                     select employees;
-            Employee emp = (Employee)e.FirstOrDefault();
+            employee emp = (employee)e.FirstOrDefault();
             return emp;
         }
 
         //Method is to obtain employee data for multiple employees
         //Method accepts a supervisor id as a parameter and returns a list of Employee objects
-        public List<Employee> GetEmployees(int id)
+        public List<employee> GetEmployees(int id)
         {
-            List<Employee> empList = new List<Employee>();
+            List<employee> empList = new List<employee>();
 
             var emps = from employees in db.Employees
                        where employees.Supervisor == id
                        select employees;
 
-            foreach (Employee e in emps)
+            foreach (employee e in emps)
             {
                 empList.Add(e);
             }

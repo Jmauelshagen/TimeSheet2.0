@@ -28,7 +28,7 @@ namespace Timesheet.Controllers
                 Session.Remove("TimeSheetData");
             }
             //Pull the employee object from the session.
-            Employee emp = (Employee)Session["Employee"];
+            employee emp = (employee)Session["Employee"];
             
 
             //Instantiate a TimeSheet object
@@ -51,7 +51,7 @@ namespace Timesheet.Controllers
         {
             try {
                 //Pull the employee object from the session.
-                Employee emp = (Employee)Session["Employee"];
+                employee emp = (employee)Session["Employee"];
                 List<string> dates = (List<string>)Session["Dates"];
 
                 //Instantiate TimeSheet object with data from form

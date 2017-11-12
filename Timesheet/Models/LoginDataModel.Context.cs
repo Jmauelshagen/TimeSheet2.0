@@ -26,12 +26,14 @@ namespace Timesheet.Models
         }
     
         public DbSet<Emp> Emps { get; set; }
-        public DbSet<Employee> Employees { get; set; }
+        public DbSet<employee> Employees { get; set; }
         public DbSet<HR> HRs { get; set; }
         public DbSet<LeaveType> LeaveTypes { get; set; }
         public DbSet<Login> Logins { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Sup> Sups { get; set; }
         public DbSet<TimeSheet> TimeSheets { get; set; }
+        public DbSet<Find> Find { get; set; }
+        public object CurrentApplications { get; internal set; }
     }
 }

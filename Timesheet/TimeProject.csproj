@@ -168,6 +168,7 @@
     <Compile Include="Models\Employee.cs">
       <DependentUpon>LoginDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Find.cs" />
     <Compile Include="Models\HR.cs">
       <DependentUpon>LoginDataModel.tt</DependentUpon>
     </Compile>

@@ -34,8 +34,8 @@ namespace Timesheet.Controllers
             //and create an employee object and put that object into the session
             {
                 Login login = log.GetLogin(model.Username, model.Password);
-                Employee emp = new Employee();
-                Employee employee = emp.GetEmployee(login.EmpId);
+                employee emp = new employee();
+                employee employee = emp.GetEmployee(login.EmpId);
                 Session["Employee"] = employee;
 
                 //Get the role id from the Employee object
