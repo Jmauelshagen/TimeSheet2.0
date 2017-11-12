@@ -38,6 +38,65 @@ namespace Timesheet.Models
             this.TimeSheetStatus = status;
         }
 
+        //constructor by Employee Id and WeekEnding date
+        public PaySummary(int empId, string wED)
+        {
+            //Code to calculate total hours worked in a week and time sheet status
+            string status = "Unknown";
+            int totalHours = 0;
+            var tsheets = (from sheets in db.TimeSheets
+                           where sheets.EmpId == empId && sheets.WeekEnding == wED
+                           select sheets);
+
+            foreach(TimeSheet sheet in tsheets)
+            {
+                totalHours += sheet.CalculateTotalHoursWorked(sheet);
+                if(sheet.Submitted.Equals("True") && sheet.AuthorizedBySupervisor.Equals("True"))
+                {
+                    status = "Authorized";
+                }
+                else if(sheet.Submitted.Equals("True") && sheet.AuthorizedBySupervisor.Equals("False"))
+                {
+                    status = "Submitted";
+                }
+                else
+                {
+                    status = "Not Submitted";
+                }
+            }
+            this.TimeSheetStatus = status;
+            this.TotalHours = totalHours.ToString();
+
+            //Calculate overtime hours
+            int overTime = totalHours - 40;
+            if(overTime<=0)
+            {
+                overTime = 0;
+            }
+            this.OverTimeHours = overTime.ToString();
+
+            //Code to get the employee name and Supervisor name by employee id
+            var fname = (from emps in db.Employees
+                         where emps.EmpId == empId
+                         select emps.FirstName).FirstOrDefault();
+            var lname = (from emps in db.Employees
+                         where emps.EmpId == empId
+                         select emps.LastName).FirstOrDefault();
+            this.EmpName = fname + " " + lname;
+
+            var sId = (from emps in db.Employees
+                       where emps.EmpId == empId
+                       select emps.Supervisor).FirstOrDefault();
+            var sfname = (from emps in db.Employees
+                          where emps.EmpId == sId
+                          select emps.FirstName).FirstOrDefault();
+            var slname = (from emps in db.Employees
+                          where emps.EmpId == sId
+                          select emps.LastName).FirstOrDefault();
+            this.SuperName = sfname + " " + slname;
+
+        }
+
         //Method to return pay summary data for employees
         public List<int> GetEmpIdsByWeekEndDate(string date)
         {

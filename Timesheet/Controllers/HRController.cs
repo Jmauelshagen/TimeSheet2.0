@@ -20,14 +20,18 @@ namespace Timesheet.Controllers
 
         public ActionResult GetPayData(TimeSheet model)
         {
+            List<PaySummary> paySumList = new List<PaySummary>();
+            PaySummary paySum = new PaySummary();
             var wED = model.WeekEnding;
-            //get list of employee ids that match the week end date
-            //then query the TimeSheet table for each employee's time sheet matching end date
-            //calculate total hours and overtime hours for week
-            //grab employee name, total hours, overtime hours, supervisor name and submittal status,
-            //and load data into a new class to hold this info
-            //instantiate list of this new class and put list into session to be used by the view
-            return View();
+            List<int> empIds = paySum.GetEmpIdsByWeekEndDate(wED);
+            foreach(int empId in empIds)
+            {
+                paySumList.Add(new PaySummary(empId, wED));
+            }
+
+            Session["PaySummaryList"] = paySumList;
+            
+            return RedirectToAction("Index", "HR");
         }
 
         public ActionResult ApprovedTimesheets()

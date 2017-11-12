@@ -30,7 +30,10 @@
 </head>
 
 <body>
-    @{var emp = (Employee)Session["Employee"]; }
+    @{var emp = (Employee)Session["Employee"];
+        var paySumList = (List<PaySummary>)Session["PaySummaryList"];
+        PaySummary paySum = null;
+        }
     <div>
         <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
     </div>
@@ -48,6 +51,46 @@
            new { @class = "form-control"})
             <button type="submit">Search</button>
         }
+        <br />
+
+        
+            @{
+                if (@paySumList != null)
+                {
+                    <table>
+                        <tr>
+                            <th>Employee Name</th>
+                            <th>Total Hours</th>
+                            <th>Over Time</th>
+                            <th>Time Sheet Status</th>
+                            <th>Supervisor</th>
+                        </tr>
+                        foreach(@paySum in @paySumList)
+                        {
+                        <tr>
+                            <td>
+                             @paySum.EmpName   
+                            </td>
+                            <td>
+                             @paySum.TotalHours
+                            </td>
+                            <td>
+                             @paySum.OverTimeHours
+                            </td>
+                            <td>
+                             @paySum.TimeSheetStatus
+                            </td>
+                            <td>
+                             @paySum.SuperName
+                            </td>
+                        </tr>
+                        }
+                    </table>
+                }
+              }
+            
+
+          
 
         <a href="@Url.Action("LogOut", "Login")">LogOut</a>
     </div>
