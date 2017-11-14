@@ -1,35 +1,60 @@
-﻿@{
+﻿@model Timesheet.Models.TimeSheet
+@using Timesheet.Models
+@{
     Layout = null;
 }
 
-
 @{
-    ViewBag.Title = "Approved Timesheet";
+    ViewBag.Title = "Approved Timesheets";
     <div>
         <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
     </div>
+
+    Employee emp = (Employee)Session["Employee"];
+    List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
+    List<string> dates = (List<string>)Session["Dates"];
+   
+
+
 }
 
-
-
-<h2>Approved Timesheets</h2>
-<p><a href="#" onclick="history.back();">Back</a></p>
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <title>Timesheet</title>
+    <style>
+        body {
+            background-color: cadetblue;
+            font-family: Arial;
+        }
+
+        #login-div {
+            position: absolute;
+            left: 40%;
+            top: 40%;
+            padding: 10px 10px;
+        }
+
+        .field-validation-error {
+            color: red;
+        }
+    </style>
+
 </head>
-
-
-
-
 <body>
-    
-    <form></form>
 
-    <a href="@Url.Action("LogOut", "Login")">LogOut</a>
-    </div>
+
+    <h2>Approved Timesheets</h2>
+    @{ string today = DateTime.Now.ToLongDateString();
+        string time = DateTime.Now.ToLongTimeString();}
+    <p id="time">It is @today at @time</p>
+    @Html.DropDownList("Employees", "Select Employees")
+
+
+    <a href="#" onclick="history.back();">Back</a>
 </body>
 </html>
+
+
+
