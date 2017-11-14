@@ -181,6 +181,25 @@ namespace Timesheet.Models
             return Convert.ToInt32(totalHours);
         }
 
+        //Calculating the total Weekly Hours worked
+        public int WeeklyHoursWorked(int empId, List<string> dates)
+        {
+            string wEnd = dates[0].Trim();
+            var sheets = from tsheets in db.TimeSheets
+                         where tsheets.EmpId == empId && tsheets.WeekEnding == wEnd
+                         select tsheets;
+
+            foreach (TimeSheet sheet in sheets)
+            {
+                int tally = Convert.ToInt32(sheet.TotalHoursWorked);
+                tally = tally + tally;
+                tally++;
+                Console.WriteLine("current tally" + tally);  
+            }
+
+            return totalWeekly;
+        }
+
         //This method determines the curent date and then derives the dates for each day of the week
         public List<string> GetDates()
         {
