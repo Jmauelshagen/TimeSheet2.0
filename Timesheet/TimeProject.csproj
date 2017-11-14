@@ -158,7 +158,6 @@
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\SupervisorController.cs" />
     <Compile Include="Controllers\TimesheetController.cs" />
-    <Compile Include="Controllers\TimesheetReportsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -268,7 +267,6 @@
     <Content Include="Views\Timesheet\Timesheet.cshtml" />
     <Content Include="Views\Supervisor\Index.cshtml" />
     <Content Include="Views\HR\Index.cshtml" />
-    <Content Include="Views\TimesheetReports\TimesheetReports.cshtml" />
     <Content Include="Views\Reports\Reports.cshtml" />
     <Content Include="Views\ApprovedTimesheets\ApprovedTimesheets.cshtml" />
     <Content Include="Views\Timesheet\Error.cshtml" />

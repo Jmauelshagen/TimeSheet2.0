@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Timesheet.Models;
 
 namespace ApprovedTimesheets.Controllers
 {
@@ -11,6 +12,9 @@ namespace ApprovedTimesheets.Controllers
         // GET: ApprovedTimesheets
         public ActionResult ApprovedTimesheets()
         {
+            LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
+
+            ViewBag.Employees = new SelectList(db.Employees, "EmpId", "FirstName");
             return View();
         }
     }

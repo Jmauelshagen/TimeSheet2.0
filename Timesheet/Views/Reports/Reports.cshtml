@@ -46,28 +46,22 @@
     <h2>Reports</h2>
     @{ string today = DateTime.Now.ToLongDateString();
         string time = DateTime.Now.ToLongTimeString();}
+    <p id="time">It is @today at @time</p>
+    <a href="#" class="previous">&laquo; Previous</a>
+    <a href="#" class="next">Next &raquo;</a>
 
-    <p id="Time">It is @today at @time</p>
-
+    <a href="#" class="previous round">&#8249;</a>
+    <a href="#" class="next round">&#8250;</a> 
    @Html.DropDownList("Employees", "Select Employees")
 
 
-    <table style="width:100%" cellpadding="4">
+    
 
-        <!DOCTYPE html>
-
-        <html>
-        <body>
-
-            <p id="Time"></p>
-
-
-
-        </body>
-    </html>
+  
         <p>
         <a href="@Url.Action("Approve", "Deny")">Approve</a>
         <a href="@Url.Action("Approve", "Deny")">Deny</a>
         </p>
         <a href="#" onclick="history.back();">Back</a>
+    </body>
 </html>
