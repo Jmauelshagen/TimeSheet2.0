@@ -16,6 +16,7 @@
     Employee emp = (Employee)Session["Employee"];
     List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
     List<string> dates = (List<string>)Session["Dates"];
+    string message = (string)Session["Message"];
 
 }
 
@@ -49,7 +50,7 @@
 
 </head>
 <body>
-
+    
     <h2>Time Sheet</h2>
     @{ string today = DateTime.Now.ToLongDateString();
         string time = DateTime.Now.ToLongTimeString();}

@@ -104,12 +104,18 @@ namespace Timesheet.Controllers
         public ActionResult SubmitTimesheet(TimeSheet model)
         {
             Employee emp = (Employee)Session["Employee"];
+            List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
 
-          
-            model.Submitted = "True";
+            foreach(TimeSheet sheet in tsheets)
+            {
+                sheet.Submitted = "True";
+                sheet.UpdateTimeSheet(sheet);
+            }
+            string message = "Your time sheet was successfully submitted.";
+            Session["Message"] = message;
             
 
-            return RedirectToAction("Index", "Employees");
+            return RedirectToAction("Timesheet", "Timesheet");
         }
        }
 }
