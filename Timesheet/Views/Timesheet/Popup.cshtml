@@ -1,0 +1,24 @@
+﻿@model Timesheet.Models.TimeSheet
+@using Timesheet.Models
+
+@{
+    Layout = null;
+}
+
+@{
+    ViewBag.Title = "Popup";
+}
+
+<h2>I acknowledge that the times I have inputted are correct</h2>
+@{
+    using (Html.BeginForm("SubmitTimesheet", "Timesheet", FormMethod.Post))
+    {
+       
+        @Html.HiddenFor(model => model.Submitted, new { @Value = "True" })
+
+<input class="button" id="submit" type="submit" value="Confirm">
+
+        }
+    }
+
+

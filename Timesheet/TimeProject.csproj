@@ -269,6 +269,7 @@
     <Content Include="Views\Reports\Reports.cshtml" />
     <Content Include="Views\ApprovedTimesheets\ApprovedTimesheets.cshtml" />
     <Content Include="Views\Timesheet\Error.cshtml" />
+    <Content Include="Views\Timesheet\Popup.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

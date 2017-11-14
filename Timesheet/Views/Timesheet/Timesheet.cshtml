@@ -124,27 +124,18 @@
             <td><input type="text" name="overtime" /></td>
         </tr>
     </table>
-    <script>
-        function disableSubmit() {
-            document.getElementById("submit").disabled = true;
+    
+    <input type="button" id="btn" value="Submit Week" onclick="ShowPopup();" />
+
+    <script type="text/javascript">
+        ShowPopup = function () {
+            alert("I acknowledge that the times I have inputted are correct");
+            window.location = "Timesheet";
+
+            //window.open('/Timesheet/Popup', "PopupWindow", 'width=400px,height=400px,top=150,left=250');
         }
-
-        function activateButton(element) {
-
-            if (element.checked) {
-                document.getElementById("submit").disabled = false;
-            }
-            else {
-                document.getElementById("submit").disabled = true;
-            }
-
-        }
-    </script>
-
-    <input type="checkbox" name="terms" id="terms" onchange="activateButton(this)">  I Agree to the above timesheet
-    <br><br>
-    <input type="submit" name="submit" id="submit">
-
+    </script>  
+    </br></br>
     <a href="@Url.Action("LogOut", "Login")">LogOut</a>
 
 </body>

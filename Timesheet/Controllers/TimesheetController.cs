@@ -20,6 +20,15 @@ namespace Timesheet.Controllers
             return View();
         }
 
+        public ActionResult Popup()
+
+        {
+
+            return View();
+            
+
+        }
+
         public ActionResult GetTimeSheet()
         {
             //Remove the TimeSheet variable from the session if it exists
@@ -91,6 +100,16 @@ namespace Timesheet.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult SubmitTimesheet(TimeSheet model)
+        {
+            Employee emp = (Employee)Session["Employee"];
 
-    }
+          
+            model.Submitted = "True";
+            
+
+            return RedirectToAction("Index", "Employees");
+        }
+       }
 }
