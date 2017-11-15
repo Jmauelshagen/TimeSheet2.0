@@ -13,6 +13,7 @@ namespace Timesheet.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
+    using System.Web.Mvc;
 
     public partial class TimeSheet
     {
@@ -34,6 +35,7 @@ namespace Timesheet.Models
         public string Submitted { get; set; }
         public string AuthorizedBySupervisor { get; set; }
         public Nullable<int> EmpId { get; set; }
+        public IEnumerable<SelectListItem> WeekEndingDates { get; set; }
 
         //Constructors
         //no-args constructor
@@ -356,5 +358,19 @@ namespace Timesheet.Models
             }
             return dates;
         }
+
+        public List<string> GetWeekEndingDateList()
+        {
+            var wED = (from sheets in db.TimeSheets
+                                select sheets.WeekEnding).Distinct().OrderBy(WeekEnding=>WeekEnding);
+
+            List<string> weekEndDates = new List<string>();
+            foreach (string date in wED)
+            {
+                weekEndDates.Add(date);
+            }
+            return weekEndDates;
+        }
+
     }
 }
