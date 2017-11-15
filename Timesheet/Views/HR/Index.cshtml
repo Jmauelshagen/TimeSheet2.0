@@ -1,4 +1,5 @@
 ﻿@using Timesheet.Models
+@model Timesheet.Models.TimeSheet
 @{
     Layout = null;
 }
@@ -8,7 +9,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>HR</title>
+    <title>Pay Sheet Summaries</title>
     <style>
         body {
             background-color: cadetblue;
@@ -25,22 +26,81 @@
         .field-validation-error {
             color: red;
         }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
-    @{var emp = (Employee)Session["Employee"]; }
+    @{var emp = (Employee)Session["Employee"];
+        var paySumList = (List<PaySummary>)Session["PaySummaryList"];
+        }
     <div>
         <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
     </div>
     <div>
-        <h1>HR</h1>
+        <h1>Pay Sheet Summaries</h1>
         <p>Welcome @emp.FirstName @emp.LastName!</p>
-        <ul>
-            <li>
-                <a href="http://localhost:59443/Reports/Reports">Timesheet Reports</a>
-            </li>
-        </ul>
+
+        <br />
+        <p>Select a week to review employee pay sheet summaries.</p>
+        @using (Html.BeginForm("GetPayData", "HR", FormMethod.Post, new { role = "form" }))
+        {
+            @Html.LabelFor(m => m.WeekEnding)
+            @Html.DropDownListFor(m => m.WeekEnding,
+           Model.WeekEndingDates,
+           " - Please select a date - ",
+           new { @class = "form-control"})
+            <button type="submit">Search</button>
+        }
+        <br />
+
+                    <table style="width:100%" cellpadding="4">
+                        
+                        <tr>
+                            <th>Employee Name</th>
+                            <th>Total Hours</th>
+                            <th>Over Time</th>
+                            <th>Time Sheet Status</th>
+                            <th>Supervisor</th>
+                        </tr>
+                        @{
+                            if (@paySumList != null)
+                            {
+                                foreach (PaySummary paySum in @paySumList)
+                                {
+                                    <tr>
+                                        <td>
+                                            @paySum.EmpName
+                                        </td>
+                                        <td>
+                                            @paySum.TotalHours
+                                        </td>
+                                        <td>
+                                            @paySum.OverTimeHours
+                                        </td>
+                                        <td>
+                                            @paySum.TimeSheetStatus
+                                        </td>
+                                        <td>
+                                            @paySum.SuperName
+                                        </td>
+                                    </tr>
+                                }
+
+                            }
+
+                        }
+                    </table>
+                
+              
+            
+
+          
 
         <a href="@Url.Action("LogOut", "Login")">LogOut</a>
     </div>
