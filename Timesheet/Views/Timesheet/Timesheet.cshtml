@@ -16,6 +16,17 @@
     Employee emp = (Employee)Session["Employee"];
     List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
     List<string> dates = (List<string>)Session["Dates"];
+    
+
+    //Calculating the total Weekly Hours worked
+    int totalWeekly = 0;
+    foreach (TimeSheet sheet in tsheets)
+       {
+          totalWeekly += sheet.CalculateTotalHoursWorked(sheet);
+          Console.WriteLine("Running total:" + totalWeekly);
+       }
+
+
 
 }
 
@@ -117,13 +128,16 @@
             <th colspan="8">Total absent Hours</th>
             <td><input type="text" name="totalAbsent" /></td>
             <th>Total weekly hours</th>
-            <td><input type="text" name="totalWeekly" /></td>
+            <td>@totalWeekly</td>
 
         <tr>
             <th colspan="11">Overtime hours x1.5 to be added to prior FLSA comp balance</th>
             <td><input type="text" name="overtime" /></td>
         </tr>
     </table>
+
+    
+
     <script>
         function disableSubmit() {
             document.getElementById("submit").disabled = true;
@@ -132,13 +146,13 @@
         function activateButton(element) {
 
             if (element.checked) {
-                document.getElementById("submit").disabled = false;
-            }
+                    document.getElementById("submit").disabled = false;
+                }
             else {
-                document.getElementById("submit").disabled = true;
-            }
+                    document.getElementById("submit").disabled = true;
+                }
 
-        }
+                }
     </script>
 
     <input type="checkbox" name="terms" id="terms" onchange="activateButton(this)">  I Agree to the above timesheet
