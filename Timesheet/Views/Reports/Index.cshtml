@@ -1,0 +1,133 @@
+﻿@using Timesheet.Models
+@model Timesheet.Models.TimeSheet
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Reports</title>
+    <style>
+        body {
+            background-color: cadetblue;
+            font-family: Arial;
+        }
+
+        .field-validation-error {
+            color: red;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    @{var emp = (Employee)Session["Employee"];
+        var reportTimeList = (List<TimeSheet>)Session["TimeSheetList"];
+
+    }
+
+    <div>
+        <center>
+            <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        </center>
+    </div>
+    <div>
+        <h1>Reports</h1>
+        <br />
+        <p>Select Employee</p>
+        @using (Html.BeginForm("ReportData", "Reports", FormMethod.Post))
+        {
+            @Html.LabelFor(x => x.Name)
+            @Html.DropDownListFor(x => x.Name,
+           Model.EmpNames,
+           "-Select Employee-",
+           new { @class = "form-control" })
+            @Html.LabelFor(x => x.WeekEnding)
+            @Html.DropDownListFor(x => x.WeekEnding,
+           Model.WeekEndingDates,
+           "-Select A Date-",
+           new { @class = "form-control" })
+
+            <button type="submit">Search</button>
+        }
+        <br />
+        <table style="width:100%" cellpadding="4">
+            <tr>
+                <th></th>
+                <th>Week end</th>
+                <th>Date</th>
+                <th>Start/ Time In</th>
+                <th>Meal/ Time Out</th>
+                <th>Meal/ Time In</th>
+                <th>Finish/ Time Out</th>
+                <th>Type of absence</th>
+                <th>Absent hours</th>
+                <th>Additional Hours</th>
+                <th>Hours Worked</th>
+                <th>Over Time</th>
+            </tr>
+            @{
+                if (@reportTimeList != null)
+                {
+                    foreach (TimeSheet reporttime in @reportTimeList)
+                    {
+                        <tr>
+                            <td>
+                                @reporttime.WeekEnding
+                            </td>
+                            <td>
+                                @reporttime.Date
+                            </td>
+                            <td>
+                                @reporttime.TimeIn
+                            </td>
+                            <td>
+                                @reporttime.OutForLunch
+                            </td>
+                            <td>
+                                @reporttime.InFromLunch
+                            </td>
+                            <td>
+                                @reporttime.LeaveId
+                            </td>
+                            <td>
+                                @reporttime.LeaveHours
+                            </td>
+                            <td>
+                                @reporttime.AdditionalHours
+                            </td>
+                            <td>
+                                @reporttime.TotalHoursWorked
+                            </td>
+                            <td>
+                                @reporttime.AuthorizedBySupervisor
+                            </td>
+                            <td>
+                                @reporttime.Submitted
+                            </td>
+
+                        </tr>
+
+                    }
+                }
+
+            }
+
+        </table>
+
+
+        <a href="@Url.Action("LogOut","Login")">LogOut</a>
+    </div>
+</body>
+</html>
+
+
+
+
+
+

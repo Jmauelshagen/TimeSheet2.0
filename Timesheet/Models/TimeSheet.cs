@@ -36,6 +36,9 @@ namespace Timesheet.Models
         public string AuthorizedBySupervisor { get; set; }
         public Nullable<int> EmpId { get; set; }
         public IEnumerable<SelectListItem> WeekEndingDates { get; set; }
+        public IEnumerable<SelectListItem> EmpNames { get; set; }
+        public string Name { get; set; }
+
 
         //Constructors
         //no-args constructor
@@ -179,7 +182,7 @@ namespace Timesheet.Models
             double hoursAfterLunch = (tOut - lIn).TotalMilliseconds; //Calculate the number of hours worked after lunch in milliseconds
             double addlHours = ((double)sheet.AdditionalHours) * 3600000; //Convert additional hours value to milliseconds
             double leaveHours = ((double)sheet.LeaveHours) * 3600000; //Convert leave hours value uto milliseconds
-            double totalHours = ((hoursBeforeLunch + hoursAfterLunch + addlHours) - (leaveHours))/3600000; //Do the arithmetic and convert from millis to hours
+            double totalHours = ((hoursBeforeLunch + hoursAfterLunch + addlHours) - (leaveHours)) / 3600000; //Do the arithmetic and convert from millis to hours
             return Convert.ToInt32(totalHours);
         }
 
@@ -359,7 +362,7 @@ namespace Timesheet.Models
         public List<string> GetWeekEndingDateList()
         {
             var wED = (from sheets in db.TimeSheets
-                                select sheets.WeekEnding).Distinct().OrderBy(WeekEnding=>WeekEnding);
+                       select sheets.WeekEnding).Distinct().OrderBy(WeekEnding => WeekEnding);
 
             List<string> weekEndDates = new List<string>();
             foreach (string date in wED)
@@ -367,6 +370,26 @@ namespace Timesheet.Models
                 weekEndDates.Add(date);
             }
             return weekEndDates;
+        }
+        public List<string> GetEmployeeNames()
+        {
+            List<string> names = new List<string>();
+            var Id = (from sheets in db.TimeSheets
+                      select sheets.EmpId).Distinct();
+            foreach (int id in Id)
+            {
+                var fname = (from emps in db.Employees
+                             where emps.EmpId == id
+                             select emps.FirstName).FirstOrDefault();
+                var lname = (from emps in db.Employees
+                             where emps.EmpId == id
+                             select emps.LastName).FirstOrDefault();
+                string fullname = fname + " " + lname;
+                names.Add(fullname);
+
+            }
+            return names;
+
         }
 
     }
