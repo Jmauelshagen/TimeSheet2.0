@@ -27,6 +27,8 @@
     }
 
 
+    double overtimeHours = 1.5 * (totalWeekly - 40);
+
   }
 
             
@@ -130,6 +132,7 @@
             <th colspan="8">Total absent Hours</th>
             <td><input type="text" name="totalAbsent" /></td>
             <th>Total Weekly Hours</th>
+            <!-- code for the color warning system--> 
             @{ if (totalWeekly > 30)
                 {
                 <td bgcolor="red">@totalWeekly</td> }
@@ -140,12 +143,20 @@
 
                 else
                 {
-                 <td bgcolor="yellow"> @totalWeekly </td > }
+                 <td bgcolor="yellow"> @totalWeekly</td > }
 
             }
         <tr>
             <th colspan="11">Overtime hours x1.5 to be added to prior FLSA comp balance.</th>
-            <td><input type="text" name="overtime" /></td>
+            @{ if (overtimeHours > 0)
+               {
+                <td>@overtimeHours</td> }
+
+                else
+                {
+                    <td></td>
+                }
+             }
         </tr>
     </table>
 
