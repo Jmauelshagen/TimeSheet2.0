@@ -28,7 +28,6 @@
 <body>
     @{var emp = (Employee)Session["Employee"];
         var reportTimeList = (List<TimeSheet>)Session["TimeSheetList"];
-
     }
 
     <div>
@@ -77,6 +76,7 @@
                     foreach (TimeSheet reporttime in @reportTimeList)
                     {
                         <tr>
+                            <td></td>
                             <td>
                                 @reporttime.WeekEnding
                             </td>

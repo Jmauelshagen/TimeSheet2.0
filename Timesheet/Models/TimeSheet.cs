@@ -128,6 +128,31 @@ namespace Timesheet.Models
             return timesheets;
         }
 
+        //Method to retrieve list of TimeSheet objects by employee name and week ending date
+        public List<TimeSheet> GetTimeSheetByNameAndDate(string name, string wED)
+        {
+            List<TimeSheet> timesheets = new List<TimeSheet>();
+            string[] splitNames = name.Split();
+            string fName = splitNames[0].Trim();
+            string lName = splitNames[1].Trim();
+            //Find the employee id based on the name passed in to the method
+            var empId = (from emps in db.Employees
+                         where emps.FirstName == fName && emps.LastName == lName
+                         select emps.EmpId).FirstOrDefault();
+            //Select the TimeSheet objects based on the employee id and week ending date
+            var sheets = from tsheets in db.TimeSheets
+                         where tsheets.EmpId == empId && tsheets.WeekEnding == wED
+                         orderby tsheets.Id ascending
+                         select tsheets;
+
+            foreach (TimeSheet sheet in sheets)
+            {
+                timesheets.Add(sheet);
+            }
+
+            return timesheets;
+        }
+
         //Method to get the max id from the TimeSheet data table
         public int GetMaxTimeSheetId()
         {

@@ -54,8 +54,8 @@ namespace Timesheet.Controllers
         {
             List<TimeSheet> reportList = new List<TimeSheet>();
             TimeSheet timeSheet = new TimeSheet();
-            var names = model.EmpId;
-            //List<int>empname=timeSheet.
+            reportList = timeSheet.GetTimeSheetByNameAndDate(model.Name, model.WeekEnding);
+            Session["TimeSheetList"] = reportList;
 
             return RedirectToAction("Index", "Reports");
         }
