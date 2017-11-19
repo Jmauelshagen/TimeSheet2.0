@@ -71,7 +71,7 @@
                 <th>Over Time</th>
             </tr>
             @{
-                if (@reportTimeList != null)
+                if (@reportTimeList.Count() > 0)
                 {
                     foreach (TimeSheet reporttime in @reportTimeList)
                     {
