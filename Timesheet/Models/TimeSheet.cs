@@ -12,6 +12,7 @@ namespace Timesheet.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Diagnostics;
     using System.Linq;
     using System.Web.Mvc;
 
@@ -131,8 +132,9 @@ namespace Timesheet.Models
         //Method to retrieve list of TimeSheet objects by employee name and week ending date
         public List<TimeSheet> GetTimeSheetByNameAndDate(string name, string wED)
         {
+            Debug.WriteLine("Name value is: " + name);
             List<TimeSheet> timesheets = new List<TimeSheet>();
-            string[] splitNames = name.Split();
+            string[] splitNames = name.Split(' ');
             string fName = splitNames[0].Trim();
             string lName = splitNames[1].Trim();
             //Find the employee id based on the name passed in to the method
@@ -409,7 +411,7 @@ namespace Timesheet.Models
                 var lname = (from emps in db.Employees
                              where emps.EmpId == id
                              select emps.LastName).FirstOrDefault();
-                string fullname = fname + " " + lname;
+                string fullname = fname.Trim() + " " + lname.Trim();
                 names.Add(fullname);
 
             }
