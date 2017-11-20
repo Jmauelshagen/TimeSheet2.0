@@ -39,7 +39,7 @@
         <h1>Reports</h1>
         <br />
         <p>Select Employee</p>
-        @using (Html.BeginForm("ReportData", "Reports", FormMethod.Post))
+        @using (Html.BeginForm("ReportData", "Reports", FormMethod.Post,new {role="form" }))
         {
             @Html.LabelFor(x => x.Name)
             @Html.DropDownListFor(x => x.Name,
@@ -73,42 +73,42 @@
             @{
                 if (@reportTimeList != null)
                 {
-                    foreach (TimeSheet reporttime in @reportTimeList)
+                    foreach (TimeSheet timeSheet in @reportTimeList)
                     {
                         <tr>
                             <td></td>
                             <td>
-                                @reporttime.WeekEnding
+                                @timeSheet.WeekEnding
                             </td>
                             <td>
-                                @reporttime.Date
+                                @timeSheet.Date
                             </td>
                             <td>
-                                @reporttime.TimeIn
+                                @timeSheet.TimeIn
                             </td>
                             <td>
-                                @reporttime.OutForLunch
+                                @timeSheet.OutForLunch
                             </td>
                             <td>
-                                @reporttime.InFromLunch
+                                @timeSheet.InFromLunch
                             </td>
                             <td>
-                                @reporttime.LeaveId
+                                @timeSheet.LeaveId
                             </td>
                             <td>
-                                @reporttime.LeaveHours
+                                @timeSheet.LeaveHours
                             </td>
                             <td>
-                                @reporttime.AdditionalHours
+                                @timeSheet.AdditionalHours
                             </td>
                             <td>
-                                @reporttime.TotalHoursWorked
+                                @timeSheet.TotalHoursWorked
                             </td>
                             <td>
-                                @reporttime.AuthorizedBySupervisor
+                                @timeSheet.AuthorizedBySupervisor
                             </td>
                             <td>
-                                @reporttime.Submitted
+                                @timeSheet.Submitted
                             </td>
 
                         </tr>
