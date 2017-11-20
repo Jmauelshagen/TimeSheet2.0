@@ -28,6 +28,7 @@
 <body>
     @{var emp = (Employee)Session["Employee"];
         var reportTimeList = (List<TimeSheet>)Session["TimeSheetList"];
+        var message = (string)Session["Message"];
     }
 
     <div>
@@ -39,22 +40,30 @@
         <h1>Reports</h1>
         <br />
         <p>Select Employee</p>
-        @using (Html.BeginForm("ReportData", "Reports", FormMethod.Post))
+        @using (Html.BeginForm("ReportData", "Reports", FormMethod.Post, new { role = "form" }))
         {
             @Html.LabelFor(x => x.Name)
             @Html.DropDownListFor(x => x.Name,
-           Model.EmpNames,
-           "-Select Employee-",
-           new { @class = "form-control" })
+        Model.EmpNames,
+        "-Select Employee-",
+        new { @class = "form-control" })
+
             @Html.LabelFor(x => x.WeekEnding)
             @Html.DropDownListFor(x => x.WeekEnding,
-           Model.WeekEndingDates,
-           "-Select A Date-",
-           new { @class = "form-control" })
+        Model.WeekEndingDates,
+        "-Select A Date-",
+        new { @class = "form-control" })
 
             <button type="submit">Search</button>
         }
         <br />
+        @{ 
+            if(@message != null)
+            {
+                <p style="text-align: center; color: white;">@message</p>
+            }
+        }
+
         <table style="width:100%" cellpadding="4">
             <tr>
                 <th></th>
@@ -69,58 +78,61 @@
                 <th>Additional Hours</th>
                 <th>Hours Worked</th>
                 <th>Over Time</th>
+                <th>Submitted</th>
+                <th>Authorized</th>
             </tr>
             @{
-                if (@reportTimeList.Count() > 0)
+                if (@reportTimeList != null)
                 {
                     foreach (TimeSheet reporttime in @reportTimeList)
                     {
                         <tr>
                             <td></td>
+                            <td>@reporttime.WeekEnding</td>
+                            <td>@reporttime.Date</td>
+                            <td>@reporttime.TimeIn</td>
+                            <td>@reporttime.OutForLunch</td>
+                            <td>@reporttime.InFromLunch</td>
+                            <td>@reporttime.TimeOut</td>
+                            <td>@reporttime.LeaveId</td>
+                            <td>@reporttime.LeaveHours</td>
+                            <td>@reporttime.AdditionalHours</td>
+                            <td>@reporttime.TotalHoursWorked</td>
                             <td>
-                                @reporttime.WeekEnding
-                            </td>
-                            <td>
-                                @reporttime.Date
-                            </td>
-                            <td>
-                                @reporttime.TimeIn
-                            </td>
-                            <td>
-                                @reporttime.OutForLunch
-                            </td>
-                            <td>
-                                @reporttime.InFromLunch
-                            </td>
-                            <td>
-                                @reporttime.LeaveId
-                            </td>
-                            <td>
-                                @reporttime.LeaveHours
-                            </td>
-                            <td>
-                                @reporttime.AdditionalHours
-                            </td>
-                            <td>
-                                @reporttime.TotalHoursWorked
-                            </td>
-                            <td>
-                                @reporttime.AuthorizedBySupervisor
-                            </td>
-                            <td>
-                                @reporttime.Submitted
-                            </td>
+                                @{
+                                    int overtime;
+                                    if (reporttime.TotalHoursWorked <= 8)
+                                    {
+                                        overtime = 0;
+                                    }
+                                    else
+                                    {
+                                        overtime = (int)reporttime.TotalHoursWorked - 8;
+                                    }
 
-                        </tr>
+                            }
+                            @overtime
+                            </td>
+                            <td>@reporttime.Submitted</td>
+                            <td>@reporttime.AuthorizedBySupervisor</td>
+                         </tr>
 
-                    }
-                }
+                                        }
+                                    }
 
             }
 
         </table>
-
-
+        <br />
+        @using (Html.BeginForm("Approve", "Reports", FormMethod.Post, new { role = "form" }))
+        {
+            <button type="submit">Approve</button>
+        }
+        @using (Html.BeginForm("Deny", "Reports", FormMethod.Post, new { role = "form" }))
+        {
+        <button type="submit">Deny</button>
+        }
+        <br />
         <a href="@Url.Action("LogOut","Login")">LogOut</a>
     </div>
 </body>

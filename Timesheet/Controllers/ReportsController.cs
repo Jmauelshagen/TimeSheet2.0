@@ -52,14 +52,47 @@ namespace Timesheet.Controllers
         [HttpPost]
         public ActionResult ReportData(TimeSheet model)
         {
-            List<TimeSheet> reportList = new List<TimeSheet>();
+            if(Session["Message"] != null)
+            {
+                Session.Remove("Message");
+            }
             TimeSheet timeSheet = new TimeSheet();
-            reportList = timeSheet.GetTimeSheetByNameAndDate(model.Name, model.WeekEnding);
+            var name = model.Name.Trim();
+            var wED = model.WeekEnding.Trim();
+            List<TimeSheet> reportList = timeSheet.GetTimeSheetByNameAndDate(name, wED);
             Session["TimeSheetList"] = reportList;
 
             return RedirectToAction("Index", "Reports");
         }
 
+        [HttpPost]
+        public ActionResult Approve()
+        {
+            List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetList"];
+            foreach(TimeSheet sheet in list)
+            {
+                sheet.AuthorizedBySupervisor = "True";
+                sheet.UpdateTimeSheet(sheet);
+            }
+            string message = "Time sheet is approved.";
+            Session["Message"] = message;
+            return RedirectToAction("Index", "Reports");
+        }
+
+        [HttpPost]
+        public ActionResult Deny()
+        {
+            List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetList"];
+            foreach (TimeSheet sheet in list)
+            {
+                sheet.Submitted = "False";
+                sheet.UpdateTimeSheet(sheet);
+            }
+            string message = "Time sheet is denied. Contact employee to have corrections made.";
+            Session["Message"] = message;
+            return RedirectToAction("Index", "Reports");
+        }
+        
 
     }
 }
