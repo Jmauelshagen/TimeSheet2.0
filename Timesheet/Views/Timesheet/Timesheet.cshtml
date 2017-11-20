@@ -73,6 +73,7 @@
             <th>Additional Hours</th>
             <th>Hours Worked</th>
             <th>Over Time</th>
+            <th>Submitted</th>
         </tr>
         @{   for (int i = 0; i < 7; i++)
             {
@@ -105,7 +106,7 @@
                             }
                             @overtime
                         </td>
-                        <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
+                        <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                         <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
                         <td>@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
                         <td><input class="button" id="submit" type="submit" value="Save" /></td>
@@ -125,17 +126,10 @@
             <td><input type="text" name="overtime" /></td>
         </tr>
     </table>
+
     
-    <input type="button" id="btn" value="Submit Week" onclick="ShowPopup();" />
+    @Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new {@onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })
 
-    <script type="text/javascript">
-        ShowPopup = function () {
-            alert("I acknowledge that the times I have inputted are correct");
-            window.location = "Timesheet";
-
-            //window.open('/Timesheet/Popup', "PopupWindow", 'width=400px,height=400px,top=150,left=250');
-        }
-    </script>  
     </br></br>
     <a href="@Url.Action("LogOut", "Login")">LogOut</a>
 
