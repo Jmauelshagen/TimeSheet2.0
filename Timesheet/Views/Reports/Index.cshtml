@@ -4,6 +4,9 @@
 @{
     Layout = null;
 }
+
+<!--This is the Supervisor role's view of time sheets, and has the capability to approve or deny
+    a time sheet.-->
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +29,7 @@
     </style>
 </head>
 <body>
+    <!--Get employee, time sheet list and message objects from the session.-->
     @{var emp = (Employee)Session["Employee"];
         var reportTimeList = (List<TimeSheet>)Session["TimeSheetList"];
         var message = (string)Session["Message"];
@@ -39,6 +43,7 @@
     <div>
         <h1>Reports</h1>
         <br />
+        <!--Form for supervisor to select an employee by name and a week ending date.-->
         <p>Select Employee</p>
         @using (Html.BeginForm("ReportData", "Reports", FormMethod.Post, new { role = "form" }))
         {
@@ -57,6 +62,7 @@
             <button type="submit">Search</button>
         }
         <br />
+        <!--Display message content if it exists.-->
         @{ 
             if(@message != null)
             {
@@ -64,6 +70,7 @@
             }
         }
 
+        <!--Table for viewing time sheet data.-->
         <table style="width:100%" cellpadding="4">
             <tr>
                 <th></th>
@@ -124,6 +131,7 @@
 
         </table>
         <br />
+        <!--Forms to approve or deny time sheet.-->
         @using (Html.BeginForm("Approve", "Reports", FormMethod.Post, new { role = "form" }))
         {
             <button type="submit">Approve</button>
@@ -133,6 +141,7 @@
         <button type="submit">Deny</button>
         }
         <br />
+        <!--Log out link.-->
         <a href="@Url.Action("LogOut","Login")">LogOut</a>
     </div>
 </body>

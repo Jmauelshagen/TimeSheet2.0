@@ -3,6 +3,9 @@
     Layout = null;
 }
 
+<!--This is the dashboard for anyone that logs in with the Supervisor role. It displays links to the
+    reports and approved timesheet views.-->
+
 <!DOCTYPE html>
 
 <html>
@@ -29,23 +32,28 @@
 </head>
 
 <body>
+    <!--Get employee object from the session.-->
     @{var emp = (Employee)Session["Employee"]; }
     <div>
         <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
     </div>
     <div>
         <h1>Supervisor</h1>
+        <!--Display employee first and last name.-->
         <p>Welcome @emp.FirstName @emp.LastName!</p>
+
+        <!--Links to reports and approved time sheets-->
         <ul>
             <li>
-                <a href="http://localhost:59443/Reports/Index"> Reports</a>
+                <a href="@Url.Action("Index", "Reports")"> Reports</a>
             </li>
             <li>
-                <a href="http://localhost:59443/ApprovedTimesheets/ApprovedTimesheets">Approved Timesheet</a>
+                <a href="@Url.Action("ApprovedTimesheets", "ApprovedTimesheets")">Approved Timesheet</a>
             </li>
             
         </ul>
 
+        <!--Log out link-->
         <a href="@Url.Action("LogOut", "Login")">LogOut</a>
     </div>
 </body>

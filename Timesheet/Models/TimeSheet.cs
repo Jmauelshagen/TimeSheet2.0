@@ -386,6 +386,7 @@ namespace Timesheet.Models
             return dates;
         }
 
+        //Queries the TimeSheet table and obtains a list of distinct week ending dates that exist on the table
         public List<string> GetWeekEndingDateList()
         {
             var wED = (from sheets in db.TimeSheets
@@ -398,6 +399,9 @@ namespace Timesheet.Models
             }
             return weekEndDates;
         }
+
+        //Obtains the fist and list names for a distinct list of employee ids that exist on the
+        //TimeSheet db table
         public List<string> GetEmployeeNames()
         {
             List<string> names = new List<string>();

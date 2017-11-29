@@ -9,8 +9,10 @@ namespace Timesheet.Controllers
 {
     public class HRController : Controller
     {
+        //Declares/establishes the database connection
         LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
         // GET: HR
+        //Routes users to the HR screen after obtaining a list of weekending dates from the db
         public ActionResult Index()
         {
             var model = new TimeSheet();
@@ -18,6 +20,7 @@ namespace Timesheet.Controllers
             return View(model);
         }
 
+        //This controller obtains a list of pay summary objects for the week selected in the UI
         public ActionResult GetPayData(TimeSheet model)
         {
             List<PaySummary> paySumList = new List<PaySummary>();
@@ -34,16 +37,20 @@ namespace Timesheet.Controllers
             return RedirectToAction("Index", "HR");
         }
 
+        //Not used currently
         public ActionResult ApprovedTimesheets()
         {
             return View();
         }
 
+        //Not used currently
         public ActionResult TimesheetReports()
         {
             return View();
         }
 
+        //Takes the list of week ending dates from the db and turns it into a select list
+        //Used in the UI date menu
         private IEnumerable<SelectListItem> GetWeekEndingDateList()
         {
             TimeSheet tsheet = new TimeSheet();

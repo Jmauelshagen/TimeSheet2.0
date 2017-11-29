@@ -4,7 +4,9 @@
     Layout = null;
 }
 
+<!--Screen that appears if an error occurs on the timesheet.-->
 
+<!--Get employee, timesheet list and date list from the session.-->
 @{
     ViewBag.Title = "Error";
     <div>
@@ -52,12 +54,13 @@
     <h3 align="center"><b>All time in/out information needs to be in a 0:00am/pm format</b></h3>
     <h3 align="center"><b>All other information is numeric only</b></h3>
     <h2>Time Sheet</h2>
+    <!--Get and display current date and time.-->
     @{ string today = DateTime.Now.ToLongDateString();
         string time = DateTime.Now.ToLongTimeString();}
 
     <p id="Time">It is @today at @time</p>
 
-
+    <!--Table to display time sheet inputs-->
     <table style="width:100%" cellpadding="4">
         <colgroup span="4"></colgroup>
         <tr>
@@ -130,7 +133,7 @@
         </tr>
     </table>
 
-
+    <!--Log out link-->
     <a href="@Url.Action("LogOut", "Login")">LogOut</a>
 
 </body>
