@@ -3,8 +3,9 @@
 @{
     Layout = null;
 }
+<!--Screen for employees to input time sheet data.-->
 
-
+<!--Get employee, time sheet and date objects from session.-->
 @{
     ViewBag.Title = "TimeSheet";
     <div>
@@ -51,12 +52,14 @@
 <body>
 
     <h2>Time Sheet</h2>
+    <!--Get and display current date and time.-->
     @{ string today = DateTime.Now.ToLongDateString();
         string time = DateTime.Now.ToLongTimeString();}
 
     <p id="Time">It is @today at @time</p>
     <p style="text-align: center; color: white;">***Remember to enter your time in HH:MM AM/PM format***</p>
 
+    <!--Table to display time sheet input form.-->
     <table style="width:100%" cellpadding="4">
         <colgroup span="4"></colgroup>
         <tr>
@@ -145,6 +148,7 @@
     <br><br>
     <input type="submit" name="submit" id="submit">
 
+    <!--Log out link-->
     <a href="@Url.Action("LogOut", "Login")">LogOut</a>
 
 </body>

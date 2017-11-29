@@ -3,6 +3,9 @@
 @{
     Layout = null;
 }
+<!--This screen renders after someone with the HR role logs in. It displays a menu for week ending date.
+    After selection is submitted, a summary of hours worked by each employee that logged time that week
+    is displayed.-->
 
 <!DOCTYPE html>
 
@@ -36,6 +39,7 @@
 </head>
 
 <body>
+    <!--Get employee and pay summary objects from the session.-->
     @{var emp = (Employee)Session["Employee"];
         var paySumList = (List<PaySummary>)Session["PaySummaryList"];
         }
@@ -44,10 +48,12 @@
     </div>
     <div>
         <h1>Pay Sheet Summaries</h1>
+        <!--Display HR person's first and last name-->
         <p>Welcome @emp.FirstName @emp.LastName!</p>
 
         <br />
         <p>Select a week to review employee pay sheet summaries.</p>
+        <!--Form for selecting a week and viewing pay summaries-->
         @using (Html.BeginForm("GetPayData", "HR", FormMethod.Post, new { role = "form" }))
         {
             @Html.LabelFor(m => m.WeekEnding)
@@ -59,6 +65,7 @@
         }
         <br />
 
+        <!--Table to display pay summaries from the session-->
                     <table style="width:100%" cellpadding="4">
                         
                         <tr>
@@ -101,7 +108,7 @@
             
 
           
-
+        <!--Log out link-->
         <a href="@Url.Action("LogOut", "Login")">LogOut</a>
     </div>
 </body>

@@ -4,6 +4,8 @@
     Layout = null;
 }
 
+<!--This is the employee dashboard screen. It renders after someone with the employee role logs in-->
+
 <!DOCTYPE html>
 
 <html>
@@ -31,6 +33,7 @@
 </head>
 
 <body>
+    <!--Get the employee object out of the session-->
     @{var emp = (Employee)Session["Employee"]; }
 
     <div>
@@ -38,15 +41,16 @@
     </div>
     <div>
         <h1>Employees</h1>
+        <!--Display the employee's first and last name-->
         <p>Welcome @emp.FirstName @emp.LastName!  Click below to record your time.</p>
             
             <ul>
                 <li>
-
+                    <!--Link to get to the timesheet input screen-->
                     <a href="@Url.Action("GetTimeSheet","Timesheet")">Timesheet</a>
                 </li>
             </ul>
-        
+        <!--Log out link-->
         <a href="@Url.Action("LogOut", "Login")">LogOut</a>
     </div>
 </body>
