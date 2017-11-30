@@ -127,26 +127,9 @@
             <td><input type="text" name="overtime" /></td>
         </tr>
     </table>
-    <script>
-        function disableSubmit() {
-            document.getElementById("submit").disabled = true;
-        }
-
-        function activateButton(element) {
-
-            if (element.checked) {
-                document.getElementById("submit").disabled = false;
-            }
-            else {
-                document.getElementById("submit").disabled = true;
-            }
-
-        }
-    </script>
-
-    <input type="checkbox" name="terms" id="terms" onchange="activateButton(this)">  I Agree to the above timesheet
-    <br><br>
-    <input type="submit" name="submit" id="submit">
+    
+    <!--Submit Week button with popup validation-->
+    @Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new { @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })
 
     <!--Log out link-->
     <a href="@Url.Action("LogOut", "Login")">LogOut</a>
