@@ -18,6 +18,17 @@
     List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
     List<string> dates = (List<string>)Session["Dates"];
 
+    //Calculating the total Weekly Hours worked
+    int totalWeekly = 0;
+    foreach (TimeSheet sheet in tsheets)
+    {
+        totalWeekly += sheet.CalculateTotalHoursWorked(sheet);
+        Console.WriteLine("Running total:" + totalWeekly);
+    }
+
+
+    double overtimeHours = 1.5 * (totalWeekly - 40);
+
 }
 
 <!DOCTYPE html>
@@ -117,14 +128,34 @@
                                 }
         }
         <tr>
-            <th colspan="8">Total absent Hours</th>
+            <th colspan="8">Total Absent Hours</th>
             <td><input type="text" name="totalAbsent" /></td>
-            <th>Total weekly hours</th>
-            <td><input type="text" name="totalWeekly" /></td>
+            <th>Total Weekly Hours</th>
+            <!-- code for the color warning system-->
+            @{ if (totalWeekly > 30)
+                {
+                    <td bgcolor="red">@totalWeekly</td> }
 
+                else if (totalWeekly < 20)
+                {
+                    <td bgcolor="green">@totalWeekly</td> }
+
+                else
+                {
+                    <td bgcolor="yellow"> @totalWeekly</td> }
+
+            }
         <tr>
-            <th colspan="11">Overtime hours x1.5 to be added to prior FLSA comp balance</th>
-            <td><input type="text" name="overtime" /></td>
+            <th colspan="11">Overtime hours x1.5 to be added to prior FLSA comp balance.</th>
+            @{ if (overtimeHours > 0)
+                {
+                    <td>@overtimeHours</td> }
+
+                else
+                {
+                    <td></td>
+                }
+            }
         </tr>
     </table>
     
