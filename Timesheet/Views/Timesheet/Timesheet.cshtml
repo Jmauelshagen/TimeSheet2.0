@@ -131,7 +131,7 @@
     
     <!--Submit Week button with popup validation-->
     @Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new { @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })
-
+    <br /><br />
     <!--Log out link-->
     <a href="@Url.Action("LogOut", "Login")">LogOut</a>
 
