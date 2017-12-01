@@ -107,7 +107,7 @@
                             }
                             @overtime
                         </td>
-                        <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
+                        <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                         <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
                         <td>@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
                         <td><input class="button" id="submit" type="submit" value="Save" /></td>
