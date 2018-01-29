@@ -60,7 +60,7 @@ namespace Timesheet.Models
                       select logins;
             Login login = (Login)log.FirstOrDefault();
 
-            if (login.EmpId == 0)
+            if (login == null)
             {
                 return false;
             }
