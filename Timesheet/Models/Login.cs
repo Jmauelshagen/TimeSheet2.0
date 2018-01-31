@@ -59,13 +59,11 @@ namespace Timesheet.Models
                       where logins.Username == uname && logins.Password == pword
                       select logins;
             Login login = (Login)log.FirstOrDefault();
-<<<<<<< HEAD
-            //RANDOM CHANGE #1
-            if (login == null)
-=======
+
+           
 
             if (login == null)//Fixed and error when logging in, it used to fail when you logged in wrong.
->>>>>>> master
+
             {
                 return false;
             }
