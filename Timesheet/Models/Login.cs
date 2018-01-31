@@ -60,7 +60,10 @@ namespace Timesheet.Models
                       select logins;
             Login login = (Login)log.FirstOrDefault();
 
+           
+
             if (login == null)//Fixed and error when logging in, it used to fail when you logged in wrong.
+
             {
                 return false;
             }
