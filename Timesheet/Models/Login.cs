@@ -59,7 +59,7 @@ namespace Timesheet.Models
                       where logins.Username == uname && logins.Password == pword
                       select logins;
             Login login = (Login)log.FirstOrDefault();
-
+            //RANDOM CHANGE #1
             if (login == null)
             {
                 return false;
