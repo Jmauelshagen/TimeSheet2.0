@@ -17,5 +17,6 @@ namespace Timesheet.Models
         public int EmpId { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
+        //This is a test!
     }
 }
