@@ -17,6 +17,8 @@ namespace Timesheet.Models
 
     public partial class Login
     {
+        //Added a random comment
+
         //Instance variables
         LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
 
