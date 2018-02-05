@@ -17,7 +17,7 @@ namespace Timesheet.Models
 
     public partial class Login
     {
-
+        //Testing Christina
         //final test
         //Instance variables
         LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
