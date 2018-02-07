@@ -205,15 +205,25 @@ namespace Timesheet.Models
             DateTime lIn = DateTime.Parse(sheet.InFromLunch);
             DateTime tOut = DateTime.Parse(sheet.TimeOut);
 
+            
             double hoursBeforeLunch = (lOut - tIn).TotalMilliseconds; //Calculate the number of hours worked before lunch in milliseconds
             double hoursAfterLunch = (tOut - lIn).TotalMilliseconds; //Calculate the number of hours worked after lunch in milliseconds
             double addlHours = ((double)sheet.AdditionalHours) * 3600000; //Convert additional hours value to milliseconds
             double leaveHours = ((double)sheet.LeaveHours) * 3600000; //Convert leave hours value uto milliseconds
             double totalHours = ((hoursBeforeLunch + hoursAfterLunch + addlHours) - (leaveHours)) / 3600000; //Do the arithmetic and convert from millis to hours
+            /*
+            TimeSpan hoursBeforeLunch = tIn.Subtract(lOut);
+            TimeSpan hoursAfterLunch = lIn.Subtract(tOut);
+            DateTime date4 = date4.Add(hoursBeforeLunch);
+            double addlHours = ((double)sheet.AdditionalHours) * 3600000; //Convert additional hours value to milliseconds
+            double leaveHours = ((double)sheet.LeaveHours) * 3600000; //Convert leave hours value uto milliseconds
+            double totalHours = ((timeIn + timeOut + addlHours) - (leaveHours)) / 3600000;
+            */
+            /************************************/
             return Convert.ToInt32(totalHours);
         }
 
-        //This method determines the curent date and then derives the dates for each day of the week
+        //This method determines the current date and then derives the dates for each day of the week
         public List<string> GetDates()
         {
             List<string> dates = new List<string>();
