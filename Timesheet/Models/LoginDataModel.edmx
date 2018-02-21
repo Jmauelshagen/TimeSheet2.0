@@ -77,7 +77,7 @@
           <Property Name="LeaveId" Type="int" />
           <Property Name="LeaveHours" Type="int" />
           <Property Name="AdditionalHours" Type="int" />
-          <Property Name="TotalHoursWorked" Type="int" />
+          <Property Name="TotalHoursWorked" Type="nchar" />
           <Property Name="Submitted" Type="nchar" MaxLength="10" />
           <Property Name="AuthorizedBySupervisor" Type="nchar" MaxLength="10" />
           <Property Name="EmpId" Type="int" />
@@ -168,7 +168,7 @@
           <Property Name="LeaveId" Type="Int32" />
           <Property Name="LeaveHours" Type="Int32" />
           <Property Name="AdditionalHours" Type="Int32" />
-          <Property Name="TotalHoursWorked" Type="Int32" />
+          <Property Name="TotalHoursWorked" Type="String" />
           <Property Name="Submitted" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="AuthorizedBySupervisor" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="EmpId" Type="Int32" />

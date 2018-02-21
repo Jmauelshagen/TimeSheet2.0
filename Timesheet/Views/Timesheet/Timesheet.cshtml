@@ -74,7 +74,7 @@
     <table style="width:100%" cellpadding="4">
         <colgroup span="4"></colgroup>
         <tr>
-            <th></th>
+            <th>Banner ID</th>
             <th>Week end</th>
             <th>Date</th>
             <th>Start/ Time In</th>
@@ -87,6 +87,9 @@
             <th>Hours Worked</th>
             <th>Over Time</th>
             <th>Submitted</th>
+            <th>Approved</th>
+            <th>Emp ID</th>
+            
         </tr>
         @{   for (int i = 0; i < 7; i++)
             {
@@ -105,7 +108,7 @@
                         <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim(), style = "width: 75px;" })</td>
                         <td>@Html.TextBoxFor(model => model.TotalHoursWorked, new { @Value = @tsheets[i].TotalHoursWorked.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                         <td>
-                            @{
+                          /*  @{
                                 int overtime;
                                 if (tsheets[i].TotalHoursWorked <= 8)
                                 {
@@ -124,7 +127,6 @@
                         <td>@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
                         <td><input class="button" id="submit" type="submit" value="Save" /></td>
                     </tr>
-
                                     }
                                 }
         }

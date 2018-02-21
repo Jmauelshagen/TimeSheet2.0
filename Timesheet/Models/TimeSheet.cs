@@ -32,7 +32,7 @@ namespace Timesheet.Models
         public Nullable<int> LeaveId { get; set; }
         public Nullable<int> LeaveHours { get; set; }
         public Nullable<int> AdditionalHours { get; set; }
-        public Nullable<int> TotalHoursWorked { get; set; }
+        public string TotalHoursWorked { get; set; }
         public string Submitted { get; set; }
         public string AuthorizedBySupervisor { get; set; }
         public Nullable<int> EmpId { get; set; }
