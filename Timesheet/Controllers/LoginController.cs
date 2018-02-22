@@ -48,19 +48,35 @@ namespace Timesheet.Controllers
                     case 1:
                         {
                             return RedirectToAction("Index", "Employees");
+<<<<<<< HEAD
+=======
+                            
+>>>>>>> syncro
                         }
                     case 2:
                         {
                             return RedirectToAction("Index", "Supervisor");
+<<<<<<< HEAD
+=======
+                            
+>>>>>>> syncro
                         }
                     case 3:
                         {
                             return RedirectToAction("Index", "HR");
+<<<<<<< HEAD
+=======
+                            
+>>>>>>> syncro
                         }
                     default:
                         {
                             model.LoginErrorMessage = "An error has occurred.";
                             return RedirectToAction("Index", "Login");
+<<<<<<< HEAD
+=======
+                            
+>>>>>>> syncro
                         }
                 }
 
