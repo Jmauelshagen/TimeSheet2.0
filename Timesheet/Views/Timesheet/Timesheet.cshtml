@@ -26,6 +26,7 @@
 
     foreach (TimeSheet sheet in tsheets)
     {
+<<<<<<< HEAD
         string hoursWorked = sheet.CalculateTotalHoursWorked(sheet);
         hour += Convert.ToInt16(hoursWorked.Split(':')[0]);
         minute += Convert.ToInt16(hoursWorked.Split(':')[1]);
@@ -36,6 +37,10 @@
         }
         totalHours = hour + ":" + minute;
         Console.WriteLine("Running total: " + totalHours);
+=======
+        totalWeekly += Convert.ToInt32(sheet.CalculateTotalHoursWorked(sheet));
+        Console.WriteLine("Running total:" + totalWeekly);
+>>>>>>> temp fixes
     }
 
     string overTime = "";
@@ -150,11 +155,17 @@
                         <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim(), style = "width: 75px;" })</td>
                         <td>@Html.TextBoxFor(model => model.TotalHoursWorked, new { @Value = @tsheets[i].TotalHoursWorked.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                         <td>
+<<<<<<< HEAD
                             @{
                                 string overtime;
                                 int hoursWorked = Convert.ToInt16(tsheets[i].TotalHoursWorked.Split(':')[0]);
                                 int minutesWorked = Convert.ToInt16(tsheets[i].TotalHoursWorked.Split(':')[1]);
                                 if (hoursWorked < 8)
+=======
+                          /*  @{
+                                double overtime;
+                                if (tsheets[i].TotalHoursWorked <= 8)
+>>>>>>> temp fixes
                                 {
                                     overtime = "";
                                 }

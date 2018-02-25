@@ -53,8 +53,13 @@ namespace Timesheet.Models
             InFromLunch = "";
             TimeOut = "";
             LeaveId = 0;
+<<<<<<< HEAD
             LeaveHours = "";
             AdditionalHours = "";
+=======
+            LeaveHours = 0;
+            AdditionalHours = 0;
+>>>>>>> temp fixes
             TotalHoursWorked = "";
             Submitted = "False";
             AuthorizedBySupervisor = "False";
@@ -63,7 +68,11 @@ namespace Timesheet.Models
 
         //all-args constructor
         public TimeSheet(int id, string wEnd, string date, string inT, string outL, string inL, string outT,
+<<<<<<< HEAD
             int leaveId, string leaveHrs, string addlHrs, string tlHrs, string sub, string auth, int empId)
+=======
+            int leaveId, int leaveHrs, int addlHrs, string tlHrs, string sub, string auth, int empId)
+>>>>>>> temp fixes
         {
             Id = id;
             WeekEnding = wEnd;
@@ -107,8 +116,13 @@ namespace Timesheet.Models
                         InFromLunch = "00:00:00",
                         TimeOut = "0:00",
                         LeaveId = 0,
+<<<<<<< HEAD
                         LeaveHours = "0:00",
                         AdditionalHours = "0:00",
+=======
+                        LeaveHours = 0,
+                        AdditionalHours = 0,
+>>>>>>> temp fixes
                         TotalHoursWorked = "0:00",
                         Submitted = "False",
                         AuthorizedBySupervisor = "False",
@@ -189,7 +203,7 @@ namespace Timesheet.Models
             tsheet.LeaveId = sheet.LeaveId;
             tsheet.LeaveHours = sheet.LeaveHours;
             tsheet.AdditionalHours = sheet.AdditionalHours;
-            tsheet.TotalHoursWorked = tsheet.CalculateTotalHoursWorked(sheet);
+            tsheet.TotalHoursWorked =  tsheet.CalculateTotalHoursWorked(sheet);
             tsheet.Submitted = sheet.Submitted;
             tsheet.AuthorizedBySupervisor = sheet.AuthorizedBySupervisor;
             tsheet.EmpId = sheet.EmpId;
@@ -198,7 +212,11 @@ namespace Timesheet.Models
         }
 
         //Method to calculate total hours worked
+<<<<<<< HEAD
         public string CalculateTotalHoursWorked(TimeSheet sheet)
+=======
+        public String CalculateTotalHoursWorked(TimeSheet sheet)
+>>>>>>> temp fixes
         {
             DateTime tIn = RoundToNearest(DateTime.Parse(sheet.TimeIn), TimeSpan.FromMinutes(15)); ;
             DateTime lOut = RoundToNearest(DateTime.Parse(sheet.OutForLunch), TimeSpan.FromMinutes(15));
@@ -227,7 +245,11 @@ namespace Timesheet.Models
             double totalHours = ((timeIn + timeOut + addlHours) - (leaveHours)) / 3600000;
             */
             /************************************/
+<<<<<<< HEAD
             return totalHours;
+=======
+            return System.Convert.ToString(totalHours);
+>>>>>>> temp fixes
         }
 
         //This method determines the current date and then derives the dates for each day of the week
