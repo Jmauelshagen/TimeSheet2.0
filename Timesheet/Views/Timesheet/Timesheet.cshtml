@@ -164,16 +164,23 @@
 =======
                           /*  @{
                                 double overtime;
+<<<<<<< HEAD
                                 if (tsheets[i].TotalHoursWorked <= 8)
 >>>>>>> temp fixes
+=======
+                                if (Convert.ToInt32(tsheets[i].TotalHoursWorked) <= 8)
+>>>>>>> temp changes
                                 {
                                     overtime = "";
                                 }
                                 else
                                 {
+<<<<<<< HEAD
                                     overtime = (hoursWorked - 8) +":"+ minutesWorked;
+=======
+                                    overtime = Convert.ToDouble(tsheets[i].TotalHoursWorked) - 8.0;
+>>>>>>> temp changes
                                 }
-
                             }
                             @overtime
                         </td>
