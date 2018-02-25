@@ -111,15 +111,14 @@
                         <td>
                           /*  @{
                                 double overtime;
-                                if (tsheets[i].TotalHoursWorked <= 8)
+                                if (Convert.ToInt32(tsheets[i].TotalHoursWorked) <= 8)
                                 {
                                     overtime = 0;
                                 }
                                 else
                                 {
-                                    overtime = (int)tsheets[i].TotalHoursWorked - 8;
+                                    overtime = Convert.ToDouble(tsheets[i].TotalHoursWorked) - 8.0;
                                 }
-
                             }
                             @overtime
                         </td>
