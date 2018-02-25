@@ -43,7 +43,7 @@ namespace Timesheet.Models
         {
             //Code to calculate total hours worked in a week and time sheet status
             string status = "Unknown";
-            int totalHours = 0;
+            String totalHours = "";
             var tsheets = (from sheets in db.TimeSheets
                            where sheets.EmpId == empId && sheets.WeekEnding == wED
                            select sheets);
@@ -68,7 +68,7 @@ namespace Timesheet.Models
             this.TotalHours = totalHours.ToString();
 
             //Calculate overtime hours
-            int overTime = totalHours - 40;
+            double overTime = Convert.ToDouble(totalHours) - 40.0;
             if(overTime<=0)
             {
                 overTime = 0;
