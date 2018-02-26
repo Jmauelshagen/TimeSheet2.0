@@ -38,8 +38,9 @@
     <title>Timesheet</title>
     <style>
         body {
-            background-color: cadetblue;
-            font-family: Arial;
+            background-color: lightgray;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 0.98em;
         }
 
         #login-div {
@@ -88,7 +89,7 @@
             <th>Over Time</th>
             <th>Submitted</th>
         </tr>
-        @{   for (int i = 0; i < 7; i++)
+        @{ for (int i = 0; i < 7; i++)
             {
                 using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post))
                 {
@@ -96,7 +97,7 @@
                         <td>@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "display: none; width: 100px;" })</td>
                         <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                         <td>@Html.TextBoxFor(model => model.Date, new { @Value = @tsheets[i].Date.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                        <td>@Html.TextBoxFor(model => model.TimeIn, new { @Value = @tsheets[i].TimeIn.ToString().Trim(), style = "width: 75px;" })</td>
+                        <td> <input type="time" name="time" value=@Html.TextBoxFor(model => model.TimeIn, new { @Value = @tsheets[i].TimeIn.ToString() }) </td>
                         <td>@Html.TextBoxFor(model => model.OutForLunch, new { @Value = @tsheets[i].OutForLunch.ToString().Trim(), style = "width: 75px;" })</td>
                         <td>@Html.TextBoxFor(model => model.InFromLunch, new { @Value = @tsheets[i].InFromLunch.ToString().Trim(), style = "width: 75px;" })</td>
                         <td>@Html.TextBoxFor(model => model.TimeOut, new { @Value = @tsheets[i].TimeOut.ToString().Trim(), style = "width: 75px;" })</td>
@@ -125,8 +126,8 @@
                         <td><input class="button" id="submit" type="submit" value="Save" /></td>
                     </tr>
 
-                                    }
-                                }
+                }
+            }
         }
         <tr>
             <th colspan="8">Total Absent Hours</th>
@@ -159,12 +160,22 @@
             }
         </tr>
     </table>
-    
+
     <!--Submit Week button with popup validation-->
-    @Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new { @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })
+
+   <form action= "@Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" },
+                 new { @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })">
+
+       <input type="submit" value="Submit Week" />
+   </form>
     <br /><br />
+
     <!--Log out link-->
-    <a href="@Url.Action("LogOut", "Login")">LogOut</a>
+
+    <form action="@Url.Action("LogOut", "Login")">
+        <input type="submit" value="LogOut" />
+    </form>
+    <!-- <a href=" @Url.Action("LogOut", "Login")">LogOut</a> -->
 
 </body>
 
