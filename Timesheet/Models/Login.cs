@@ -27,11 +27,11 @@ namespace Timesheet.Models
         public int EmpId { get; set; }
         [DisplayName("User Name")]
         [Required(ErrorMessage = "This Field is required")]
-        [StringLength(20,MinimumLength = 4,ErrorMessage = "UserName must be between 4 and 20 characters")]
+        [StringLength(20, MinimumLength = 4, ErrorMessage = "UserName must be between 4 and 20 characters")]
         public string Username { get; set; }
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "This Field is required")]
-        [StringLength(30,MinimumLength = 4,ErrorMessage = "Password must be between 4 and 30 characters")]
+        [StringLength(30, MinimumLength = 4, ErrorMessage = "Password must be between 4 and 30 characters")]
         public string Password { get; set; }
         public string LoginErrorMessage { get; set; }
 
@@ -63,7 +63,7 @@ namespace Timesheet.Models
                       select logins;
             Login login = (Login)log.FirstOrDefault();
 
-           
+
 
             if (login == null)///Fixed and error when logging in, it used to fail when you logged in wrong.
 

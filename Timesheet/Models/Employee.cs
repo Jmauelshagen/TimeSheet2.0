@@ -14,7 +14,7 @@ namespace Timesheet.Models
     using System.Linq;
 
     public partial class Employee
-    {
+    {        
         //Instance variables
         LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
 

@@ -30,9 +30,9 @@ namespace Timesheet.Models
         public string InFromLunch { get; set; }
         public string TimeOut { get; set; }
         public Nullable<int> LeaveId { get; set; }
-        public Nullable<int> LeaveHours { get; set; }
-        public Nullable<int> AdditionalHours { get; set; }
-        public Nullable<int> TotalHoursWorked { get; set; }
+        public string LeaveHours { get; set; }
+        public string AdditionalHours { get; set; }
+        public string TotalHoursWorked { get; set; }
         public string Submitted { get; set; }
         public string AuthorizedBySupervisor { get; set; }
         public Nullable<int> EmpId { get; set; }
@@ -53,9 +53,9 @@ namespace Timesheet.Models
             InFromLunch = "";
             TimeOut = "";
             LeaveId = 0;
-            LeaveHours = 0;
-            AdditionalHours = 0;
-            TotalHoursWorked = 0;
+            LeaveHours = "";
+            AdditionalHours = "";
+            TotalHoursWorked = "";
             Submitted = "False";
             AuthorizedBySupervisor = "False";
             EmpId = 0;
@@ -63,7 +63,7 @@ namespace Timesheet.Models
 
         //all-args constructor
         public TimeSheet(int id, string wEnd, string date, string inT, string outL, string inL, string outT,
-            int leaveId, int leaveHrs, int addlHrs, int tlHrs, string sub, string auth, int empId)
+            int leaveId, string leaveHrs, string addlHrs, string tlHrs, string sub, string auth, int empId)
         {
             Id = id;
             WeekEnding = wEnd;
@@ -102,14 +102,14 @@ namespace Timesheet.Models
                         Id = this.GetMaxTimeSheetId() + 1,
                         WeekEnding = dates[0].Trim(),
                         Date = dates[i].Trim(),
-                        TimeIn = "0:00",
-                        OutForLunch = "0:00",
-                        InFromLunch = "0:00",
+                        TimeIn = "00:00:00",
+                        OutForLunch = "00:00:00",
+                        InFromLunch = "00:00:00",
                         TimeOut = "0:00",
                         LeaveId = 0,
-                        LeaveHours = 0,
-                        AdditionalHours = 0,
-                        TotalHoursWorked = 0,
+                        LeaveHours = "0:00",
+                        AdditionalHours = "0:00",
+                        TotalHoursWorked = "0:00",
                         Submitted = "False",
                         AuthorizedBySupervisor = "False",
                         EmpId = empId
@@ -198,14 +198,21 @@ namespace Timesheet.Models
         }
 
         //Method to calculate total hours worked
-        public int CalculateTotalHoursWorked(TimeSheet sheet)
+        public string CalculateTotalHoursWorked(TimeSheet sheet)
         {
-            DateTime tIn = DateTime.Parse(sheet.TimeIn);
-            DateTime lOut = DateTime.Parse(sheet.OutForLunch);
-            DateTime lIn = DateTime.Parse(sheet.InFromLunch);
-            DateTime tOut = DateTime.Parse(sheet.TimeOut);
+            DateTime tIn = RoundToNearest(DateTime.Parse(sheet.TimeIn), TimeSpan.FromMinutes(15)); ;
+            DateTime lOut = RoundToNearest(DateTime.Parse(sheet.OutForLunch), TimeSpan.FromMinutes(15));
+            DateTime lIn = RoundToNearest(DateTime.Parse(sheet.InFromLunch), TimeSpan.FromMinutes(15));
+            DateTime tOut = RoundToNearest(DateTime.Parse(sheet.TimeOut), TimeSpan.FromMinutes(15));
 
-            
+            TimeSpan hoursWorked = lOut.Subtract(tIn).Add(tOut.Subtract(lIn));
+            int hour = Convert.ToInt16(hoursWorked.TotalHours);
+            int minute = Convert.ToInt16(hoursWorked.TotalMinutes) - (hour * 60);
+
+
+            string totalHours = hour.ToString() + ":" + minute.ToString();
+
+            /*
             double hoursBeforeLunch = (lOut - tIn).TotalMilliseconds; //Calculate the number of hours worked before lunch in milliseconds
             double hoursAfterLunch = (tOut - lIn).TotalMilliseconds; //Calculate the number of hours worked after lunch in milliseconds
             double addlHours = ((double)sheet.AdditionalHours) * 3600000; //Convert additional hours value to milliseconds
@@ -220,7 +227,7 @@ namespace Timesheet.Models
             double totalHours = ((timeIn + timeOut + addlHours) - (leaveHours)) / 3600000;
             */
             /************************************/
-            return Convert.ToInt32(totalHours);
+            return totalHours;
         }
 
         //This method determines the current date and then derives the dates for each day of the week
@@ -431,6 +438,16 @@ namespace Timesheet.Models
             }
             return names;
 
+        }
+
+        /* Method Rounds to the nearest 15 minutes and returns a DateTime variable */
+        public DateTime RoundToNearest(DateTime dt, TimeSpan d)
+        {
+            var delta = dt.Ticks % d.Ticks;
+            bool roundUp = delta > d.Ticks / 2;
+            var offset = roundUp ? d.Ticks : 0;
+
+            return new DateTime(dt.Ticks + offset - delta, dt.Kind);
         }
 
     }
