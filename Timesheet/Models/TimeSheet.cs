@@ -11,17 +11,9 @@ namespace Timesheet.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.Web.Mvc;
-
+    
     public partial class TimeSheet
     {
-        //Instance Variables
-        LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
-
-        //Class properties
         public int Id { get; set; }
         public string WeekEnding { get; set; }
         public string Date { get; set; }
@@ -36,6 +28,7 @@ namespace Timesheet.Models
         public string Submitted { get; set; }
         public string AuthorizedBySupervisor { get; set; }
         public Nullable<int> EmpId { get; set; }
+<<<<<<< HEAD
         public IEnumerable<SelectListItem> WeekEndingDates { get; set; }
         public IEnumerable<SelectListItem> EmpNames { get; set; }
         public string Name { get; set; }
@@ -472,5 +465,7 @@ namespace Timesheet.Models
             return new DateTime(dt.Ticks + offset - delta, dt.Kind);
         }
 
+=======
+>>>>>>> place holder
     }
 }
