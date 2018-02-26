@@ -94,17 +94,16 @@
                         <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim(), style = "width: 75px;" })</td>
                         <td>@Html.TextBoxFor(model => model.TotalHoursWorked, new { @Value = @tsheets[i].TotalHoursWorked.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                         <td>
-                            @{
-                            int overtime;
-                            if (tsheets[i].TotalHoursWorked <= 8)
+                       @{
+                            string overtime;
+                            if (Convert.ToDouble(tsheets[i].TotalHoursWorked) <= 8)
                             {
-                                overtime = 0;
+                                overtime = "0";
                             }
                             else
                             {
-                                overtime = (int)tsheets[i].TotalHoursWorked - 8;
+                                overtime = Convert.ToString(Convert.ToDouble(tsheets[i].TotalHoursWorked) - 8.0);
                             }
-
                         }
                         @overtime
                     </td>
