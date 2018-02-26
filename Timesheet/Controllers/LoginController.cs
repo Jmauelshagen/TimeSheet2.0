@@ -47,6 +47,7 @@ namespace Timesheet.Controllers
                 {
                     case 1:
                         {
+<<<<<<< HEAD
                             return RedirectToAction("Index", "Employees");
 <<<<<<< HEAD
 =======
@@ -68,15 +69,30 @@ namespace Timesheet.Controllers
 =======
                             
 >>>>>>> syncro
+=======
+                            return RedirectToAction("Index", "Employees");                            
+                        }
+                    case 2:
+                        {
+                            return RedirectToAction("Index", "Supervisor");                            
+                        }
+                    case 3:
+                        {
+                            return RedirectToAction("Index", "HR");                           
+>>>>>>> another place holder for updating field types
                         }
                     default:
                         {
                             model.LoginErrorMessage = "An error has occurred.";
+<<<<<<< HEAD
                             return RedirectToAction("Index", "Login");
 <<<<<<< HEAD
 =======
                             
 >>>>>>> syncro
+=======
+                            return RedirectToAction("Index", "Login");                           
+>>>>>>> another place holder for updating field types
                         }
                 }
 

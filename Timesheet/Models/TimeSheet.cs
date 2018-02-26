@@ -11,9 +11,17 @@ namespace Timesheet.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Web.Mvc;
+
     public partial class TimeSheet
     {
+        //Instance Variables
+        LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
+
+        //Class properties
         public int Id { get; set; }
         public string WeekEnding { get; set; }
         public string Date { get; set; }
@@ -22,13 +30,16 @@ namespace Timesheet.Models
         public string InFromLunch { get; set; }
         public string TimeOut { get; set; }
         public Nullable<int> LeaveId { get; set; }
-        public string LeaveHours { get; set; }
-        public string AdditionalHours { get; set; }
-        public string TotalHoursWorked { get; set; }
+        public String LeaveHours { get; set; }
+        public String AdditionalHours { get; set; }
+        public String TotalHoursWorked { get; set; }
         public string Submitted { get; set; }
         public string AuthorizedBySupervisor { get; set; }
         public Nullable<int> EmpId { get; set; }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> another place holder for updating field types
         public IEnumerable<SelectListItem> WeekEndingDates { get; set; }
         public IEnumerable<SelectListItem> EmpNames { get; set; }
         public string Name { get; set; }
@@ -47,12 +58,17 @@ namespace Timesheet.Models
             TimeOut = "";
             LeaveId = 0;
 <<<<<<< HEAD
+<<<<<<< HEAD
             LeaveHours = "";
             AdditionalHours = "";
 =======
             LeaveHours = 0;
             AdditionalHours = 0;
 >>>>>>> temp fixes
+=======
+            LeaveHours = "";
+            AdditionalHours = "";
+>>>>>>> another place holder for updating field types
             TotalHoursWorked = "";
             Submitted = "False";
             AuthorizedBySupervisor = "False";
@@ -62,10 +78,14 @@ namespace Timesheet.Models
         //all-args constructor
         public TimeSheet(int id, string wEnd, string date, string inT, string outL, string inL, string outT,
 <<<<<<< HEAD
+<<<<<<< HEAD
             int leaveId, string leaveHrs, string addlHrs, string tlHrs, string sub, string auth, int empId)
 =======
             int leaveId, int leaveHrs, int addlHrs, string tlHrs, string sub, string auth, int empId)
 >>>>>>> temp fixes
+=======
+            int leaveId, String leaveHrs, String addlHrs, String tlHrs, string sub, string auth, int empId)
+>>>>>>> another place holder for updating field types
         {
             Id = id;
             WeekEnding = wEnd;
@@ -104,6 +124,7 @@ namespace Timesheet.Models
                         Id = this.GetMaxTimeSheetId() + 1,
                         WeekEnding = dates[0].Trim(),
                         Date = dates[i].Trim(),
+<<<<<<< HEAD
                         TimeIn = "00:00:00",
                         OutForLunch = "00:00:00",
                         InFromLunch = "00:00:00",
@@ -117,6 +138,16 @@ namespace Timesheet.Models
                         AdditionalHours = 0,
 >>>>>>> temp fixes
                         TotalHoursWorked = "0:00",
+=======
+                        TimeIn = "0:00",
+                        OutForLunch = "0:00",
+                        InFromLunch = "0:00",
+                        TimeOut = "0:00",
+                        LeaveId = 0,
+                        LeaveHours = "0:00",
+                        AdditionalHours = "0:00",
+                        TotalHoursWorked = "0:00:",
+>>>>>>> another place holder for updating field types
                         Submitted = "False",
                         AuthorizedBySupervisor = "False",
                         EmpId = empId
@@ -196,7 +227,11 @@ namespace Timesheet.Models
             tsheet.LeaveId = sheet.LeaveId;
             tsheet.LeaveHours = sheet.LeaveHours;
             tsheet.AdditionalHours = sheet.AdditionalHours;
+<<<<<<< HEAD
             tsheet.TotalHoursWorked =  tsheet.CalculateTotalHoursWorked(sheet);
+=======
+            tsheet.TotalHoursWorked = tsheet.CalculateTotalHoursWorked(sheet);
+>>>>>>> another place holder for updating field types
             tsheet.Submitted = sheet.Submitted;
             tsheet.AuthorizedBySupervisor = sheet.AuthorizedBySupervisor;
             tsheet.EmpId = sheet.EmpId;
@@ -205,6 +240,7 @@ namespace Timesheet.Models
         }
 
         //Method to calculate total hours worked
+<<<<<<< HEAD
 <<<<<<< HEAD
         public string CalculateTotalHoursWorked(TimeSheet sheet)
 =======
@@ -246,6 +282,24 @@ namespace Timesheet.Models
         }
 
         //This method determines the current date and then derives the dates for each day of the week
+=======
+        public string CalculateTotalHoursWorked(TimeSheet sheet)
+        {
+            DateTime tIn = DateTime.Parse(sheet.TimeIn);
+            DateTime lOut = DateTime.Parse(sheet.OutForLunch);
+            DateTime lIn = DateTime.Parse(sheet.InFromLunch);
+            DateTime tOut = DateTime.Parse(sheet.TimeOut);
+
+            double hoursBeforeLunch = (lOut - tIn).TotalMilliseconds; //Calculate the number of hours worked before lunch in milliseconds
+            double hoursAfterLunch = (tOut - lIn).TotalMilliseconds; //Calculate the number of hours worked after lunch in milliseconds
+            double addlHours = Convert.ToDouble(sheet.AdditionalHours) * 3600000; //Convert additional hours value to milliseconds
+            double leaveHours = Convert.ToDouble(sheet.LeaveHours) * 3600000; //Convert leave hours value uto milliseconds
+            double totalHours = ((hoursBeforeLunch + hoursAfterLunch + addlHours) - (leaveHours)) / 3600000; //Do the arithmetic and convert from millis to hours
+            return Convert.ToString(totalHours);
+        }
+
+        //This method determines the curent date and then derives the dates for each day of the week
+>>>>>>> another place holder for updating field types
         public List<string> GetDates()
         {
             List<string> dates = new List<string>();
@@ -455,6 +509,7 @@ namespace Timesheet.Models
 
         }
 
+<<<<<<< HEAD
         /* Method Rounds to the nearest 15 minutes and returns a DateTime variable */
         public DateTime RoundToNearest(DateTime dt, TimeSpan d)
         {
@@ -467,5 +522,7 @@ namespace Timesheet.Models
 
 =======
 >>>>>>> place holder
+=======
+>>>>>>> another place holder for updating field types
     }
 }
