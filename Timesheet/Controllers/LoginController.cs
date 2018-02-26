@@ -63,8 +63,6 @@ namespace Timesheet.Controllers
                             return RedirectToAction("Index", "Login");                           
                         }
                 }
-
-
             }
         }
 

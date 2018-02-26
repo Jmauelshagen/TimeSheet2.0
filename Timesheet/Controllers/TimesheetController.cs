@@ -22,6 +22,7 @@ namespace Timesheet.Controllers
 
         public ActionResult GetTimeSheet()
         {
+            Console.WriteLine("In GetTimeSheet");
             //Remove the TimeSheet variable from the session if it exists
             if (Session["TimeSheetData"] != null)
             {

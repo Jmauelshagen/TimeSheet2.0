@@ -30,9 +30,9 @@ namespace Timesheet.Models
         public string InFromLunch { get; set; }
         public string TimeOut { get; set; }
         public Nullable<int> LeaveId { get; set; }
-        public String LeaveHours { get; set; }
-        public String AdditionalHours { get; set; }
-        public String TotalHoursWorked { get; set; }
+        public string LeaveHours { get; set; }
+        public string AdditionalHours { get; set; }
+        public string TotalHoursWorked { get; set; }
         public string Submitted { get; set; }
         public string AuthorizedBySupervisor { get; set; }
         public Nullable<int> EmpId { get; set; }
@@ -63,7 +63,7 @@ namespace Timesheet.Models
 
         //all-args constructor
         public TimeSheet(int id, string wEnd, string date, string inT, string outL, string inL, string outT,
-            int leaveId, String leaveHrs, String addlHrs, String tlHrs, string sub, string auth, int empId)
+            int leaveId, string leaveHrs, string addlHrs, string tlHrs, string sub, string auth, int empId)
         {
             Id = id;
             WeekEnding = wEnd;
