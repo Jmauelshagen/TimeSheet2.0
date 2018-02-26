@@ -19,15 +19,59 @@
     List<string> dates = (List<string>)Session["Dates"];
 
     //Calculating the total Weekly Hours worked
-    int totalWeekly = 0;
+    string totalHours = "";
+    int hour = 0;
+    int minute = 0;
+
+
     foreach (TimeSheet sheet in tsheets)
     {
-        totalWeekly += sheet.CalculateTotalHoursWorked(sheet);
-        Console.WriteLine("Running total:" + totalWeekly);
+        string hoursWorked = sheet.CalculateTotalHoursWorked(sheet);
+        hour += Convert.ToInt16(hoursWorked.Split(':')[0]);
+        minute += Convert.ToInt16(hoursWorked.Split(':')[1]);
+        if (minute >= 60)
+        {
+            minute = minute - 60;
+            hour = hour + 1;
+        }
+        totalHours = hour + ":" + minute;
+        Console.WriteLine("Running total: " + totalHours);
     }
 
+    string overTime = "";
+    if (hour >= 40)
+    {
+        overTime = (hour - 40).ToString() + ":" + minute;
+        int overtimeHours = 0;
+        int overtimeMinutes = ((hour - 40) * 60 + minute) + (((hour -40)* 60 + minute) / 2);
+        while (overtimeMinutes >= 60)
+        {
+            overtimeHours = overtimeHours + 1;
+            overtimeMinutes = overtimeMinutes - 60;
+        }
+        if (overtimeMinutes >= 53)
+        {
+            overTime = (overtimeHours + 1)+":00";
+        }
+        if (overtimeMinutes >= 38 && overtimeMinutes <=52 )
+        {
+            overTime = overtimeHours + ":45";
+        }
+        if (overtimeMinutes >= 23 && overtimeMinutes <= 37)
+        {
+            overTime = overtimeHours + ":30";
+        }
+        if (overtimeMinutes <= 22 && overtimeMinutes >= 8)
+        {
+            overTime = overtimeHours + ":15";
+        }
+        if (overtimeMinutes <= 7)
+        {
+            overTime = overtimeHours + ":00";
 
-    double overtimeHours = 1.5 * (totalWeekly - 40);
+        }
+    }
+    //double overtimeHours = 1.5 * (totalWeekly - 40);
 
 }
 
@@ -106,14 +150,16 @@
                         <td>@Html.TextBoxFor(model => model.TotalHoursWorked, new { @Value = @tsheets[i].TotalHoursWorked.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                         <td>
                             @{
-                                int overtime;
-                                if (tsheets[i].TotalHoursWorked <= 8)
+                                string overtime;
+                                int hoursWorked = Convert.ToInt16(tsheets[i].TotalHoursWorked.Split(':')[0]);
+                                int minutesWorked = Convert.ToInt16(tsheets[i].TotalHoursWorked.Split(':')[1]);
+                                if (hoursWorked < 8)
                                 {
-                                    overtime = 0;
+                                    overtime = "";
                                 }
                                 else
                                 {
-                                    overtime = (int)tsheets[i].TotalHoursWorked - 8;
+                                    overtime = (hoursWorked - 8) +":"+ minutesWorked;
                                 }
 
                             }
@@ -133,24 +179,29 @@
             <td><input type="text" name="totalAbsent" /></td>
             <th>Total Weekly Hours</th>
             <!-- code for the color warning system-->
-            @{ if (totalWeekly > 30)
+            @{ 
+                if (hour > 30)
                 {
-                    <td bgcolor="red">@totalWeekly</td> }
+                    <td bgcolor="red">@totalHours</td> 
+                }
 
-                else if (totalWeekly < 20)
+                else if (hour < 20)
                 {
-                    <td bgcolor="green">@totalWeekly</td> }
+                    <td bgcolor="green">@totalHours</td> 
+                }
 
                 else
                 {
-                    <td bgcolor="yellow"> @totalWeekly</td> }
+                    <td bgcolor="yellow"> @totalHours</td> 
+                    }
 
             }
         <tr>
             <th colspan="11">Overtime hours x1.5 to be added to prior FLSA comp balance.</th>
-            @{ if (overtimeHours > 0)
+            @{ if (!overTime.Equals(""))
                 {
-                    <td>@overtimeHours</td> }
+                    <td>@overTime</td> 
+                }
 
                 else
                 {
