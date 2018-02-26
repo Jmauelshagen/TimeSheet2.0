@@ -9,13 +9,26 @@
 
 namespace Timesheet.Models
 {
+    //another test
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+
     public partial class Login
     {
+
+        //final test
+        //Instance variables
+        LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
+
+        //Class properties
         public int EmpId { get; set; }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> more testing
         [DisplayName("User Name")]
         [Required(ErrorMessage = "This Field is required")]
         [StringLength(20, MinimumLength = 4, ErrorMessage = "UserName must be between 4 and 20 characters")]
@@ -77,9 +90,12 @@ namespace Timesheet.Models
             Login login = (Login)log.FirstOrDefault();
             return login;
         }
+<<<<<<< HEAD
 =======
         public string Username { get; set; }
         public string Password { get; set; }
 >>>>>>> place holder
+=======
+>>>>>>> more testing
     }
 }
