@@ -107,9 +107,9 @@ namespace Timesheet.Models
                         InFromLunch = "0:00",
                         TimeOut = "0:00",
                         LeaveId = 0,
-                        LeaveHours = "0:00",
-                        AdditionalHours = "0:00",
-                        TotalHoursWorked = "0:00:",
+                        LeaveHours = "0",
+                        AdditionalHours = "0",
+                        TotalHoursWorked = "0",
                         Submitted = "False",
                         AuthorizedBySupervisor = "False",
                         EmpId = empId
