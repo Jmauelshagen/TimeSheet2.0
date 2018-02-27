@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Diagnostics;
 using Timesheet.Models;
 
 namespace Timesheet.Controllers
@@ -22,13 +23,14 @@ namespace Timesheet.Controllers
 
         public ActionResult GetTimeSheet()
         {
+            Console.WriteLine("In GetTimeSheet");
             //Remove the TimeSheet variable from the session if it exists
             if (Session["TimeSheetData"] != null)
             {
                 Session.Remove("TimeSheetData");
             }
             //Pull the employee object from the session.
-            Employee emp = (Employee)Session["Employee"];
+            Employee emp = (Employee)Session["Employee"];        
 
 
             //Instantiate a TimeSheet object
@@ -53,7 +55,8 @@ namespace Timesheet.Controllers
             {
                 //Pull the employee object from the session.
                 Employee emp = (Employee)Session["Employee"];
-                List<string> dates = (List<string>)Session["Dates"];
+                List<string> dates = (List<string>)Session["Dates"];  
+                Debug.WriteLine((string)Session["timein"]);
 
                 //Instantiate TimeSheet object with data from form
                 TimeSheet sheet = new TimeSheet
@@ -61,10 +64,10 @@ namespace Timesheet.Controllers
                     Id = model.Id,
                     WeekEnding = model.WeekEnding,
                     Date = model.Date,
-                    TimeIn = model.TimeIn,
-                    OutForLunch = model.OutForLunch,
-                    InFromLunch = model.InFromLunch,
-                    TimeOut = model.TimeOut,
+                    TimeIn = (string)Session["timein"],
+                    OutForLunch = (string)Session["luno"],
+                    InFromLunch = (string)Session["lunin"],
+                    TimeOut = (string)Session["timeout"],
                     LeaveId = model.LeaveId,
                     LeaveHours = model.LeaveHours,
                     AdditionalHours = model.AdditionalHours,
@@ -84,9 +87,11 @@ namespace Timesheet.Controllers
                 return RedirectToAction("Timesheet", "Timesheet");
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                Debug.WriteLine(ex);
+                Debug.WriteLine(ex);
+                Debug.WriteLine(ex);
                 return RedirectToAction("Error");
             }
         }
