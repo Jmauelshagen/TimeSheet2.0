@@ -258,14 +258,18 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Login\Index.cshtml">
+      <BrowseToURL>http://localhost:59443/Login/Index</BrowseToURL>
+    </Content>
     <Content Include="Views\Employees\Index.cshtml" />
     <Content Include="Views\Timesheet\Timesheet.cshtml" />
     <Content Include="Views\Supervisor\Index.cshtml" />
