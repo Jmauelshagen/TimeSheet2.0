@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Timesheet.Models;
+using System.Diagnostics;
 
 namespace Timesheet.Controllers
 {
@@ -55,6 +56,7 @@ namespace Timesheet.Controllers
                 //Pull the employee object from the session.
                 Employee emp = (Employee)Session["Employee"];
                 List<string> dates = (List<string>)Session["Dates"];
+                Debug.WriteLine((string)Session["timein"] + "in the action result");
 
                 //Instantiate TimeSheet object with data from form
                 TimeSheet sheet = new TimeSheet
@@ -72,9 +74,9 @@ namespace Timesheet.Controllers
                     TotalHoursWorked = model.TotalHoursWorked,
                     Submitted = model.Submitted,
                     AuthorizedBySupervisor = model.AuthorizedBySupervisor,
-                    EmpId = model.EmpId
+                    EmpId = model.EmpId                    
                 };
-
+                Debug.WriteLine(sheet.TimeIn + "in the actionresult 2");
                 sheet.UpdateTimeSheet(sheet);
 
                 //Get list of TimeSheet objects based on date and employee id and add list to session
@@ -87,7 +89,7 @@ namespace Timesheet.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Debug.WriteLine(ex);
                 return RedirectToAction("Error");
             }
         }

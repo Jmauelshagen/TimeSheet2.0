@@ -200,6 +200,7 @@ namespace Timesheet.Models
         //Method to calculate total hours worked
         public string CalculateTotalHoursWorked(TimeSheet sheet)
         {
+            Debug.WriteLine(TimeIn +"in timesheet model");
             DateTime tIn = RoundToNearest(DateTime.Parse(sheet.TimeIn), TimeSpan.FromMinutes(15)); ;
             DateTime lOut = RoundToNearest(DateTime.Parse(sheet.OutForLunch), TimeSpan.FromMinutes(15));
             DateTime lIn = RoundToNearest(DateTime.Parse(sheet.InFromLunch), TimeSpan.FromMinutes(15));
@@ -208,8 +209,6 @@ namespace Timesheet.Models
             TimeSpan hoursWorked = lOut.Subtract(tIn).Add(tOut.Subtract(lIn));
             int hour = Convert.ToInt16(hoursWorked.TotalHours);
             int minute = Convert.ToInt16(hoursWorked.TotalMinutes) - (hour * 60);
-
-
             string totalHours = hour.ToString() + ":" + minute.ToString();
 
             /*
