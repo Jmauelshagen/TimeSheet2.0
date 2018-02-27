@@ -13,15 +13,11 @@ namespace Timesheet.Models
     using System.Collections.Generic;
     
     public partial class Employee
-<<<<<<< HEAD
     {        
         //Instance variables
         LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
 
         //Class properties
-=======
-    {
->>>>>>> place holder
         public int EmpId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

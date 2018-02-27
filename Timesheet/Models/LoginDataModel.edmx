@@ -75,19 +75,11 @@
           <Property Name="InFromLunch" Type="nchar" MaxLength="16" />
           <Property Name="TimeOut" Type="nchar" MaxLength="16" />
           <Property Name="LeaveId" Type="int" />
-<<<<<<< HEAD
           <Property Name="LeaveHours" Type="nchar" MaxLength="16" />
           <Property Name="AdditionalHours" Type="nchar" MaxLength="16" />
           <Property Name="TotalHoursWorked" Type="nchar" MaxLength="16" />
           <Property Name="Submitted" Type="nchar" MaxLength="16" />
           <Property Name="AuthorizedBySupervisor" Type="nchar" MaxLength="16" />
-=======
-          <Property Name="LeaveHours" Type="nchar" />
-          <Property Name="AdditionalHours" Type="nchar" />
-          <Property Name="TotalHoursWorked" Type="nchar" />
-          <Property Name="Submitted" Type="nchar" MaxLength="10" />
-          <Property Name="AuthorizedBySupervisor" Type="nchar" MaxLength="10" />
->>>>>>> place holder
           <Property Name="EmpId" Type="int" />
         </EntityType>
         <EntityContainer Name="LoginDatabaseModelStoreContainer">

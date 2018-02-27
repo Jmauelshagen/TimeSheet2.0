@@ -25,10 +25,6 @@ namespace Timesheet.Models
 
         //Class properties
         public int EmpId { get; set; }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> more testing
         [DisplayName("User Name")]
         [Required(ErrorMessage = "This Field is required")]
         [StringLength(20, MinimumLength = 4, ErrorMessage = "UserName must be between 4 and 20 characters")]
@@ -90,12 +86,5 @@ namespace Timesheet.Models
             Login login = (Login)log.FirstOrDefault();
             return login;
         }
-<<<<<<< HEAD
-=======
-        public string Username { get; set; }
-        public string Password { get; set; }
->>>>>>> place holder
-=======
->>>>>>> more testing
     }
 }

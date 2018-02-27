@@ -43,13 +43,9 @@ namespace Timesheet.Models
         {
             //Code to calculate total hours worked in a week and time sheet status
             string status = "Unknown";
-<<<<<<< HEAD
             string totalHours = "";
             int hour = 0;
             int minute = 0;
-=======
-            String totalHours = "";
->>>>>>> temp fixes
             var tsheets = (from sheets in db.TimeSheets
                            where sheets.EmpId == empId && sheets.WeekEnding == wED
                            select sheets);
@@ -84,13 +80,8 @@ namespace Timesheet.Models
             this.TotalHours = totalHours.ToString();
 
             //Calculate overtime hours
-<<<<<<< HEAD
             string overTime = "";
             if(hour >= 40)
-=======
-            double overTime = Convert.ToDouble(totalHours) - 40.0;
-            if(overTime<=0)
->>>>>>> temp fixes
             {
                 overTime = (hour - 40).ToString() +":"+ minute;
             }
