@@ -151,36 +151,40 @@
                         <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                         <td>@Html.TextBoxFor(model => model.Date, new { @Value = @tsheets[i].Date.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                         <td>
-                            <input type="time" id="timein">
+                            @Html.TextBoxFor(model => model.TimeIn, new { type = "time", Value = @tsheets[i].TimeOut.ToString().Trim(), style = "width: 100px;" })
+                            <!--<input type="time" id="timein">
                             <script>
                                 document.getElementById("timein").value = tsheets[i].TimeIn.ToString().Trim();
                                 var input = document.getElementByID("timein").value;
                                 sessionStorage.setItem('timein', input);
-                            </script>
+                            </script>-->
                         </td>
                         <td>
-                            <input type="time" id="luno">
+                             @Html.TextBoxFor(model => model.OutForLunch, new {type ="time", Value = @tsheets[i].TimeOut.ToString().Trim(), style = "width: 100px;"})
+                        <!--<input type="time" id="luno">
                             <script>
                                 document.getElementByID("luno").value = tsheets[i].OutForLunch.ToString().Trim();
                                 var input = document.getElementByID("luno").value;
                                 sessionStorage.setItem('luno', input);
-                            </script>
+                            </script>-->
                         </td>
                         <td>
-                            <input type="time" id="lunin">
+                             @Html.TextBoxFor(model => model.InFromLunch, new {type ="time", Value = @tsheets[i].TimeOut.ToString().Trim(), style = "width: 100px;"})
+                        <!--<input type="time" id="lunin">
                             <script>
                                 document.getElementByID("lunin").value = tsheets[i].InFromLunch.ToString().Trim();
                                 var input = document.getElementByID("lunin").value;
                                 sessionStorage.setItem('lunin', input);
-                            </script>
+                            </script>-->
                         </td>
                         <td>
-                            <input type="time" id="timeout">
+                            @Html.TextBoxFor(model => model.TimeOut, new {type ="time", Value = @tsheets[i].TimeOut.ToString().Trim(), style = "width: 100px;"})
+                            <!--<input type="time" id="timeout">
                             <script>
                                 document.getElementByID("timeout").value = tsheets[i].TimeOut.ToString().Trim();
                                 var input = document.getElementByID("timeout").value;
                                 sessionStorage.setItem('timeout', input);
-                            </script>
+                            </script>-->
                         </td>
                         <td>@Html.TextBoxFor(model => model.LeaveId, new { @Value = @tsheets[i].LeaveId.ToString().Trim(), style = "width: 75px;" })</td>
                         <td>@Html.TextBoxFor(model => model.LeaveHours, new { @Value = @tsheets[i].LeaveHours.ToString().Trim(), style = "width: 50px;" })</td>
@@ -212,14 +216,13 @@
                                     overtime = (hoursWorked2 - 8) + ":" + minutesWorked;
                                 }
                             }
-                            @overtime
+                            @overtime                          
                         </td>
                         <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                         <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
                         <td>@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
                         <td><input class="button" id="submit" type="submit" value="Save" /></td>
                     </tr>
-
                 }
             }
         }
@@ -261,20 +264,19 @@
     </table>
 
     <!--Submit Week button with popup validation-->
-    <%=Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" },new { onclick ="myFunction();"}) %>
-    <script type="text/javascript">
+    @Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" },new { onclick ="myFunction();"}) %>
+   <!-- <script type="text/javascript">
         function myFunction() {          
             var input = document.getElementByID("timein").value.ToString();
-            sessionStorage.setItem('timein', input);           ;
+            sessionStorage.setItem('timein', input);                          
             var input = document.getElementByID("luno").value.ToString();
             sessionStorage.setItem('luno', input);
             var input = document.getElementByID("lunin").value.ToString();
             sessionStorage.setItem('lunin', input);
             var input = document.getElementByID("timeout").value.ToString();
-            sessionStorage.setItem('timeout', input);
-            
+            sessionStorage.setItem('timeout', input);            
         }
-    </script>
+    </script>-->
     <br /><br />
     <!--Log out link-->
     <a href="@Url.Action("LogOut", "Login")">LogOut</a>
