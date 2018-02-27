@@ -47,52 +47,24 @@ namespace Timesheet.Controllers
                 {
                     case 1:
                         {
-<<<<<<< HEAD
                             return RedirectToAction("Index", "Employees");
-<<<<<<< HEAD
-=======
-                            
->>>>>>> syncro
+                            break;
                         }
                     case 2:
                         {
                             return RedirectToAction("Index", "Supervisor");
-<<<<<<< HEAD
-=======
-                            
->>>>>>> syncro
+                            break;
                         }
                     case 3:
                         {
                             return RedirectToAction("Index", "HR");
-<<<<<<< HEAD
-=======
-                            
->>>>>>> syncro
-=======
-                            return RedirectToAction("Index", "Employees");                            
-                        }
-                    case 2:
-                        {
-                            return RedirectToAction("Index", "Supervisor");                            
-                        }
-                    case 3:
-                        {
-                            return RedirectToAction("Index", "HR");                           
->>>>>>> another place holder for updating field types
+                            break;
                         }
                     default:
                         {
                             model.LoginErrorMessage = "An error has occurred.";
-<<<<<<< HEAD
                             return RedirectToAction("Index", "Login");
-<<<<<<< HEAD
-=======
-                            
->>>>>>> syncro
-=======
-                            return RedirectToAction("Index", "Login");                           
->>>>>>> another place holder for updating field types
+                            break;
                         }
                 }
 
