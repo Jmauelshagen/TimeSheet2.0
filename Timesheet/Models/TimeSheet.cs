@@ -30,13 +30,12 @@ namespace Timesheet.Models
         public string InFromLunch { get; set; }
         public string TimeOut { get; set; }
         public Nullable<int> LeaveId { get; set; }
-        public String LeaveHours { get; set; }
-        public String AdditionalHours { get; set; }
-        public String TotalHoursWorked { get; set; }
+        public string LeaveHours { get; set; }
+        public string AdditionalHours { get; set; }
+        public string TotalHoursWorked { get; set; }
         public string Submitted { get; set; }
         public string AuthorizedBySupervisor { get; set; }
         public Nullable<int> EmpId { get; set; }
-        //another place holder for updating field types
         public IEnumerable<SelectListItem> WeekEndingDates { get; set; }
         public IEnumerable<SelectListItem> EmpNames { get; set; }
         public string Name { get; set; }
@@ -54,8 +53,6 @@ namespace Timesheet.Models
             InFromLunch = "";
             TimeOut = "";
             LeaveId = 0;
-            LeaveHours = "";
-            AdditionalHours = "";
             LeaveHours = "";
             AdditionalHours = "";
             TotalHoursWorked = "";
@@ -120,6 +117,7 @@ namespace Timesheet.Models
                     this.InsertTimeSheet(sheet);
                     timesheets.Add(sheet);
                 }
+
             }
             else
             {
@@ -210,6 +208,8 @@ namespace Timesheet.Models
             TimeSpan hoursWorked = lOut.Subtract(tIn).Add(tOut.Subtract(lIn));
             int hour = Convert.ToInt16(hoursWorked.TotalHours);
             int minute = Convert.ToInt16(hoursWorked.TotalMinutes) - (hour * 60);
+
+
             string totalHours = hour.ToString() + ":" + minute.ToString();
 
             /*
@@ -230,7 +230,7 @@ namespace Timesheet.Models
             return totalHours;
         }
 
-        //This method determines the curent date and then derives the dates for each day of the week
+        //This method determines the current date and then derives the dates for each day of the week
         public List<string> GetDates()
         {
             List<string> dates = new List<string>();
@@ -444,6 +444,7 @@ namespace Timesheet.Models
             var delta = dt.Ticks % d.Ticks;
             bool roundUp = delta > d.Ticks / 2;
             var offset = roundUp ? d.Ticks : 0;
+
             return new DateTime(dt.Ticks + offset - delta, dt.Kind);
         }
     }
