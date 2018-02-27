@@ -85,9 +85,9 @@ namespace Timesheet.Controllers
                 return RedirectToAction("Timesheet", "Timesheet");
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                Console.WriteLine(ex);
                 return RedirectToAction("Error");
             }
         }
