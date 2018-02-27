@@ -23,7 +23,7 @@ namespace Timesheet.Controllers
 
         public ActionResult GetTimeSheet()
         {
-            Console.WriteLine("In GetTimeSheet");
+            Debug.WriteLine("In GetTimeSheet");
             //Remove the TimeSheet variable from the session if it exists
             if (Session["TimeSheetData"] != null)
             {
@@ -56,7 +56,7 @@ namespace Timesheet.Controllers
                 //Pull the employee object from the session.
                 Employee emp = (Employee)Session["Employee"];
                 List<string> dates = (List<string>)Session["Dates"];
-                Debug.WriteLine((string)Session["timein"] + "in the action result");
+                Debug.WriteLine((string)model.TimeIn + "in the action result");
 
                 //Instantiate TimeSheet object with data from form
                 TimeSheet sheet = new TimeSheet
@@ -76,7 +76,7 @@ namespace Timesheet.Controllers
                     AuthorizedBySupervisor = model.AuthorizedBySupervisor,
                     EmpId = model.EmpId                    
                 };
-                Debug.WriteLine(sheet.TimeIn + "in the actionresult 2");
+                Debug.WriteLine((string)model.TimeIn + "in the actionresult 2");
                 sheet.UpdateTimeSheet(sheet);
 
                 //Get list of TimeSheet objects based on date and employee id and add list to session
