@@ -47,28 +47,28 @@
         <!--Form for supervisor to select an employee by name and a week ending date.-->
         <p>Select Employee</p>
         @using (Html.BeginForm("ReportData", "Reports", FormMethod.Post, new { role = "form" }))
-        {
-            @Html.LabelFor(x => x.Name)
-            @Html.DropDownListFor(x => x.Name,
-        Model.EmpNames,
-        "-Select Employee-",
-        new { @class = "form-control" })
+    {
+        @Html.LabelFor(x => x.Name)
+        @Html.DropDownListFor(x => x.Name,
+     Model.EmpNames,
+     "-Select Employee-",
+     new { @class = "form-control" })
 
-            @Html.LabelFor(x => x.WeekEnding)
-            @Html.DropDownListFor(x => x.WeekEnding,
-        Model.WeekEndingDates,
-        "-Select A Date-",
-        new { @class = "form-control" })
+        @Html.LabelFor(x => x.WeekEnding)
+        @Html.DropDownListFor(x => x.WeekEnding,
+     Model.WeekEndingDates,
+     "-Select A Date-",
+     new { @class = "form-control" })
 
-            <button type="submit">Search</button>
-        }
+        <button type="submit">Search</button>
+}
         <br />
         <!--Display message content if it exists.-->
-        @{ 
-            if(@message != null)
-            {
-                <p style="text-align: center; color: white;">@message</p>
-            }
+        @{
+        if (@message != null)
+        {
+            <p style="text-align: center; color: white;">@message</p>
+    }
         }
 
         <!--Table for viewing time sheet data.-->
@@ -90,56 +90,59 @@
                 <th>Authorized</th>
             </tr>
             @{
-                if (@reportTimeList != null)
+            if (@reportTimeList != null)
+            {
+                foreach (TimeSheet reporttime in @reportTimeList)
                 {
-                    foreach (TimeSheet reporttime in @reportTimeList)
-                    {
-                        <tr>
-                            <td></td>
-                            <td>@reporttime.WeekEnding</td>
-                            <td>@reporttime.Date</td>
-                            <td>@reporttime.TimeIn</td>
-                            <td>@reporttime.OutForLunch</td>
-                            <td>@reporttime.InFromLunch</td>
-                            <td>@reporttime.TimeOut</td>
-                            <td>@reporttime.LeaveId</td>
-                            <td>@reporttime.LeaveHours</td>
-                            <td>@reporttime.AdditionalHours</td>
-                            <td>@reporttime.TotalHoursWorked</td>
-                            <td>
-                                @{
-                                    string overtime;
-                                    Debug.WriteLine(reporttime.TotalHoursWorked);
-                                    int hoursWorked = Convert.ToInt16(reporttime.TotalHoursWorked.Split(':')[0]);
-                                    int minutesWorked = Convert.ToInt16(reporttime.TotalHoursWorked.Split(':')[1]);
-                                    if (hoursWorked < 8)
-                                    {
-                                        overtime = "0:0";
-                                    }
-                                    else
-                                    {
-                                        overtime = (hoursWorked - 8) + ":" + minutesWorked;
-                                    }
-                                }
+                    <tr>
+                        <td></td>
+                        <td>@reporttime.WeekEnding</td>
+                        <td>@reporttime.Date</td>
+                        <td>@reporttime.TimeIn</td>
+                        <td>@reporttime.OutForLunch</td>
+                        <td>@reporttime.InFromLunch</td>
+                        <td>@reporttime.TimeOut</td>
+                        <td>@reporttime.LeaveId</td>
+                        <td>@reporttime.LeaveHours</td>
+                        <td>@reporttime.AdditionalHours</td>
+                        <td>@reporttime.TotalHoursWorked</td>
+                        <td>
+                            @{
+                            string overtime;
+                            Debug.WriteLine(reporttime.TotalHoursWorked);
+                            int hoursWorked = Convert.ToInt16(reporttime.TotalHoursWorked.Split(':')[0]);
+                            int minutesWorked = Convert.ToInt16(reporttime.TotalHoursWorked.Split(':')[1]);
+                            if (hoursWorked < 8)
+                            {
+                                overtime = "0:0";
+                            }
+                            else
+                            {
+                                overtime = (hoursWorked - 8) + ":" + minutesWorked;
+                            }
+                            }
                             @overtime
-                            </td>
-                            <td>@reporttime.Submitted</td>
-                            <td>@reporttime.AuthorizedBySupervisor</td>
-                         </tr>
-                    }
-                }
+                        </td>
+                        <td>@reporttime.Submitted</td>
+                        <td>@reporttime.AuthorizedBySupervisor</td>
+                    </tr>
+            }
+        }
             }
         </table>
         <br />
         <!--Forms to approve or deny time sheet.-->
         @using (Html.BeginForm("Approve", "Reports", FormMethod.Post, new { role = "form" }))
-        {
-            <button type="submit">Approve</button>
-        }
+    {
+        <button type="submit">Approve</button>
+}
         @using (Html.BeginForm("Deny", "Reports", FormMethod.Post, new { role = "form" }))
-        {
+    {
         <button type="submit">Deny</button>
-        }
+}
+        <br />
+        <!--Like to go back-->
+        <a href="#" onclick="history.back();">Back</a>
         <br />
         <!--Log out link.-->
         <a href="@Url.Action("LogOut","Login")">LogOut</a>
