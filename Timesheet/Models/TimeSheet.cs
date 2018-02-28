@@ -230,7 +230,8 @@ namespace Timesheet.Models
             }
             catch (ArgumentException ae)
             {
-                return "";
+
+                return "0:0";
             }
         }
 
