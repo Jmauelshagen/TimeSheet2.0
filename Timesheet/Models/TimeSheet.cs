@@ -11,7 +11,6 @@ namespace Timesheet.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
     using System.Linq;
     using System.Web.Mvc;
@@ -92,7 +91,7 @@ namespace Timesheet.Models
                          orderby tsheets.Id ascending
                          select tsheets;
             var count = sheets.Count();
-            Console.WriteLine("TimeSheet count is: " + count.ToString());
+            Debug.WriteLine("TimeSheet count is: " + count.ToString());
             if (count == 0)
             {
                 for (int i = 1; i < 8; i++)
@@ -117,7 +116,6 @@ namespace Timesheet.Models
                     this.InsertTimeSheet(sheet);
                     timesheets.Add(sheet);
                 }
-
             }
             else
             {
@@ -205,10 +203,14 @@ namespace Timesheet.Models
             DateTime lOut = RoundToNearest(DateTime.Parse(sheet.OutForLunch), TimeSpan.FromMinutes(15));
             DateTime lIn = RoundToNearest(DateTime.Parse(sheet.InFromLunch), TimeSpan.FromMinutes(15));
             DateTime tOut = RoundToNearest(DateTime.Parse(sheet.TimeOut), TimeSpan.FromMinutes(15));
-
-            TimeSpan hoursWorked = lOut.Subtract(tIn).Add(tOut.Subtract(lIn));
+            Debug.WriteLine(tIn);
+            Debug.WriteLine(lOut);
+            Debug.WriteLine(lIn);
+            Debug.WriteLine(tOut);
+            TimeSpan hoursWorked = tOut.Subtract(tIn).Subtract(lIn.Subtract(lOut));
             int hour = Convert.ToInt16(hoursWorked.TotalHours);
-            int minute = Convert.ToInt16(hoursWorked.TotalMinutes) - (hour * 60);
+            //int minute = Convert.ToInt16(hoursWorked.TotalMinutes) - (hour * 60);
+            int minute = Convert.ToInt16(hoursWorked.Minutes);
             string totalHours = hour.ToString() + ":" + minute.ToString();
 
             /*

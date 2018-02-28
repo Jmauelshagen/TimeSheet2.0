@@ -20,30 +20,35 @@
 
     //Calculating the total Weekly Hours worked
     string totalHours = "";
+    string totalweekly = "";
     int hour = 0;
+    int hours = 0;
     int minute = 0;
+    int minutes = 0;
 
 
     foreach (TimeSheet sheet in tsheets)
     {
-        string hoursWorked = sheet.CalculateTotalHoursWorked(sheet);      
-        hour += Convert.ToInt16(hoursWorked.Split(':')[0]);
-        minute += Convert.ToInt16(hoursWorked.Split(':')[1]);
-        if (minute >= 60)
+        string hoursWorked = sheet.CalculateTotalHoursWorked(sheet);
+        hours += Convert.ToInt16(hoursWorked.Split(':')[0]);
+        minutes += Convert.ToInt16(hoursWorked.Split(':')[1]);
+        if (minutes >= 60)
         {
-            minute = minute - 60;
-            hour = hour + 1;
+            minutes = minutes - 60;
+            hours = hours + 1;
         }
-        totalHours = hour + ":" + minute;
-        Debug.WriteLine("Running total: " + totalHours);
-    }
+        totalHours = hours + ":" + minutes;
+        totalweekly = totalHours;
 
-    string overTime = "";
-    if (hour >= 40)
+        Debug.WriteLine("Running total: " + totalHours);
+        Debug.WriteLine("Running total by the hours: " + hours);
+    }
+    string overTime = "0:0";
+    if (hours >= 40)
     {
-        overTime = (hour - 40).ToString() + ":" + minute;
+        overTime = (hours - 40).ToString() + ":" + minute;
         int overtimeHours = 0;
-        int overtimeMinutes = ((hour - 40) * 60 + minute) + (((hour - 40) * 60 + minute) / 2);
+        int overtimeMinutes = ((hours - 40) * 60 + minute) + (((hours - 40) * 60 + minute) / 2);
         while (overtimeMinutes >= 60)
         {
             overtimeHours = overtimeHours + 1;
@@ -150,9 +155,9 @@
                         <td>
                             @{                                
                                 Debug.WriteLine(tsheets[i].TotalHoursWorked + "in the table");
-                                string hoursWorked = tsheets[i].CalculateTotalHoursWorked(tsheets[i]);
-                                hour += Convert.ToInt16(hoursWorked.Split(':')[0]);
-                                minute += Convert.ToInt16(hoursWorked.Split(':')[1]);
+                                string hoursWorked = tsheets[i].CalculateTotalHoursWorked(tsheets[i]);                                
+                                hour = Convert.ToInt16(hoursWorked.Split(':')[0]);
+                                minute = Convert.ToInt16(hoursWorked.Split(':')[1]);
                                 if (minute >= 60)
                                 {
                                     minute = minute - 60;
@@ -188,19 +193,20 @@
             <th>Total Weekly Hours</th>
             <!-- code for the color warning system-->
             @{
-                if (hour > 30)
+                Debug.WriteLine("The Final weekly hours: " + totalweekly);
+                if (hours > 30)
                 {
-                    <td bgcolor="red">@totalHours</td>
+                    <td bgcolor="red">@totalweekly</td>
                 }
 
-                else if (hour < 20)
+                else if (hours < 20)
                 {
-                    <td bgcolor="green">@totalHours</td>
+                    <td bgcolor="green">@totalweekly</td>
                 }
 
                 else
                 {
-                    <td bgcolor="yellow"> @totalHours</td>
+                    <td bgcolor="yellow"> @totalweekly</td>
                 }
 
             }
