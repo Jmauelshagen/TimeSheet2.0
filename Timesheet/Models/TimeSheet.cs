@@ -11,7 +11,6 @@ namespace Timesheet.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
     using System.Linq;
     using System.Web.Mvc;
@@ -92,7 +91,7 @@ namespace Timesheet.Models
                          orderby tsheets.Id ascending
                          select tsheets;
             var count = sheets.Count();
-            Console.WriteLine("TimeSheet count is: " + count.ToString());
+            Debug.WriteLine("TimeSheet count is: " + count.ToString());
             if (count == 0)
             {
                 for (int i = 1; i < 8; i++)
@@ -117,7 +116,6 @@ namespace Timesheet.Models
                     this.InsertTimeSheet(sheet);
                     timesheets.Add(sheet);
                 }
-
             }
             else
             {
@@ -197,40 +195,40 @@ namespace Timesheet.Models
             db.SaveChanges();
         }
 
-        //Method to calculate total hours worked
+        /**Method to calculate total hours worked daily by taking the time in/out
+         * and the lunch time out and returned from lunch then rounds to nearest 15th minute mark
+         * **/
         public string CalculateTotalHoursWorked(TimeSheet sheet)
         {
-            DateTime tIn = RoundToNearest(DateTime.Parse(sheet.TimeIn), TimeSpan.FromMinutes(15)); ;
-            DateTime lOut = RoundToNearest(DateTime.Parse(sheet.OutForLunch), TimeSpan.FromMinutes(15));
-            DateTime lIn = RoundToNearest(DateTime.Parse(sheet.InFromLunch), TimeSpan.FromMinutes(15));
-            DateTime tOut = RoundToNearest(DateTime.Parse(sheet.TimeOut), TimeSpan.FromMinutes(15));
-
-            TimeSpan hoursWorked = lOut.Subtract(tIn).Add(tOut.Subtract(lIn));
-            int hour = Convert.ToInt16(hoursWorked.TotalHours);
-            int minute = Convert.ToInt16(hoursWorked.TotalMinutes) - (hour * 60);
-
-
-            string totalHours = hour.ToString() + ":" + minute.ToString();
-
-            /*
-            double hoursBeforeLunch = (lOut - tIn).TotalMilliseconds; //Calculate the number of hours worked before lunch in milliseconds
-            double hoursAfterLunch = (tOut - lIn).TotalMilliseconds; //Calculate the number of hours worked after lunch in milliseconds
-            double addlHours = ((double)sheet.AdditionalHours) * 3600000; //Convert additional hours value to milliseconds
-            double leaveHours = ((double)sheet.LeaveHours) * 3600000; //Convert leave hours value uto milliseconds
-            double totalHours = ((hoursBeforeLunch + hoursAfterLunch + addlHours) - (leaveHours)) / 3600000; //Do the arithmetic and convert from millis to hours
-            /*
-            TimeSpan hoursBeforeLunch = tIn.Subtract(lOut);
-            TimeSpan hoursAfterLunch = lIn.Subtract(tOut);
-            DateTime date4 = date4.Add(hoursBeforeLunch);
-            double addlHours = ((double)sheet.AdditionalHours) * 3600000; //Convert additional hours value to milliseconds
-            double leaveHours = ((double)sheet.LeaveHours) * 3600000; //Convert leave hours value uto milliseconds
-            double totalHours = ((timeIn + timeOut + addlHours) - (leaveHours)) / 3600000;
-            */
-            /************************************/
-            return totalHours;
+            try
+            {
+                Debug.WriteLine(TimeIn + "in timesheet model");
+                DateTime tIn = RoundToNearest(DateTime.Parse(sheet.TimeIn), TimeSpan.FromMinutes(15)); ;
+                DateTime lOut = RoundToNearest(DateTime.Parse(sheet.OutForLunch), TimeSpan.FromMinutes(15));
+                DateTime lIn = RoundToNearest(DateTime.Parse(sheet.InFromLunch), TimeSpan.FromMinutes(15));
+                DateTime tOut = RoundToNearest(DateTime.Parse(sheet.TimeOut), TimeSpan.FromMinutes(15));
+                //used to view the incoming values
+                Debug.WriteLine(tIn);
+                Debug.WriteLine(lOut);
+                Debug.WriteLine(lIn);
+                Debug.WriteLine(tOut);
+                if (tIn > lOut || lOut > lIn || lIn > tOut)
+                {
+                    throw new System.ArgumentException("Later clock times must come after previous ones");
+                }
+                TimeSpan hoursWorked = tOut.Subtract(tIn).Subtract(lIn.Subtract(lOut));
+                int hour = Convert.ToInt16(hoursWorked.TotalHours);
+                int minute = Convert.ToInt16(hoursWorked.Minutes);
+                string totalHours = hour.ToString() + ":" + minute.ToString();
+                return totalHours;
+            }
+            catch (ArgumentException ae)
+            {
+                return "";
+            }
         }
 
-        //This method determines the current date and then derives the dates for each day of the week
+        /**This method determines the current date and then derives the dates for each day of the week **/
         public List<string> GetDates()
         {
             List<string> dates = new List<string>();
@@ -437,18 +435,16 @@ namespace Timesheet.Models
 
             }
             return names;
-
         }
-
-        /* Method Rounds to the nearest 15 minutes and returns a DateTime variable */
+        /** Method Rounds to the nearest 15 minutes and returns a DateTime variable **/
         public DateTime RoundToNearest(DateTime dt, TimeSpan d)
         {
             var delta = dt.Ticks % d.Ticks;
             bool roundUp = delta > d.Ticks / 2;
             var offset = roundUp ? d.Ticks : 0;
-
             return new DateTime(dt.Ticks + offset - delta, dt.Kind);
         }
-
     }
 }
+
+
