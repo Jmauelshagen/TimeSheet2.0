@@ -97,8 +97,8 @@
                         <td>@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "display: none; width: 100px;" })</td>
                         <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                         <td>@Html.TextBoxFor(model => model.Date, new { @Value = @tsheets[i].Date.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                        <td> <input type="time" name="time" value=@Html.TextBoxFor(model => model.TimeIn, new { @Value = @tsheets[i].TimeIn.ToString() }) </td>
-                        <td>@Html.TextBoxFor(model => model.OutForLunch, new { @Value = @tsheets[i].OutForLunch.ToString().Trim(), style = "width: 75px;" })</td>
+                        <td> <input type="time" name="time1" value=@Html.TextBoxFor(model => model.TimeIn, new { @Value = @tsheets[i].TimeIn.ToString() }) </td>
+                        <td>  <input type="time" name="time2" value=@Html.TextBoxFor(model => model.OutForLunch, new { @Value = @tsheets[i].OutForLunch.ToString().Trim() })</td>
                         <td>@Html.TextBoxFor(model => model.InFromLunch, new { @Value = @tsheets[i].InFromLunch.ToString().Trim(), style = "width: 75px;" })</td>
                         <td>@Html.TextBoxFor(model => model.TimeOut, new { @Value = @tsheets[i].TimeOut.ToString().Trim(), style = "width: 75px;" })</td>
                         <td>@Html.TextBoxFor(model => model.LeaveId, new { @Value = @tsheets[i].LeaveId.ToString().Trim(), style = "width: 75px;" })</td>
@@ -163,10 +163,12 @@
 
     <!--Submit Week button with popup validation-->
 
-   <form action= "@Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" },
-                 new { @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })">
+    <form action="@Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" })"/>
 
-       <input type="submit" value="Submit Week" />
+
+                <!-- new {  onclick = "return confirm('I acknowledge that the times I have inputted are correct')" }) -->
+
+       <input type="submit" value="Submit Week"/>
    </form>
     <br /><br />
 
@@ -175,7 +177,7 @@
     <form action="@Url.Action("LogOut", "Login")">
         <input type="submit" value="LogOut" />
     </form>
-    <!-- <a href=" @Url.Action("LogOut", "Login")">LogOut</a> -->
+    <!-- <a href="  Url.Action("LogOut", "Login")">LogOut</a> -->
 
 </body>
 
