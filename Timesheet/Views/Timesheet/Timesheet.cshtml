@@ -26,10 +26,10 @@
     int minute = 0;
     int minutes = 0;
 
-
+    /**Calculates the total hours for the week**/
     foreach (TimeSheet sheet in tsheets)
     {
-        string hoursWorked = sheet.CalculateTotalHoursWorked(sheet);
+        string hoursWorked = sheet.CalculateTotalHoursWorked(sheet);        
         hours += Convert.ToInt16(hoursWorked.Split(':')[0]);
         minutes += Convert.ToInt16(hoursWorked.Split(':')[1]);
         if (minutes >= 60)
@@ -43,6 +43,8 @@
         Debug.WriteLine("Running total: " + totalHours);
         Debug.WriteLine("Running total by the hours: " + hours);
     }
+
+    /**Calculates total overtime that was made**/
     string overTime = "0:0";
     if (hours >= 40)
     {
@@ -140,11 +142,11 @@
             {
                 using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post))
                 {
-                    <tr>                        
+                    <tr> <!--Converted some of the textboxes to time input to reduce user error-->                       
                         <td>@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "display: none; width: 100px;" })</td>
                         <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                         <td>@Html.TextBoxFor(model => model.Date, new { @Value = @tsheets[i].Date.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                        <td> @Html.TextBoxFor(model => model.TimeIn, new { type = "time", Value = @tsheets[i].TimeIn.ToString().Trim(), style = "width: 100px;" })</td>
+                        <td>@Html.TextBoxFor(model => model.TimeIn, new { type = "time", Value = @tsheets[i].TimeIn.ToString().Trim(), style = "width: 100px;" })</td>
                         <td>@Html.TextBoxFor(model => model.OutForLunch, new { type = "time", Value = @tsheets[i].OutForLunch.ToString().Trim(), style = "width: 100px;" })</td>
                         <td>@Html.TextBoxFor(model => model.InFromLunch, new { type = "time", Value = @tsheets[i].InFromLunch.ToString().Trim(), style = "width: 100px;" })</td>
                         <td>@Html.TextBoxFor(model => model.TimeOut, new { type = "time", Value = @tsheets[i].TimeOut.ToString().Trim(), style = "width: 100px;" })</td>
@@ -153,7 +155,7 @@
                         <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim(), style = "width: 75px;" })</td>
                         <td>@Html.TextBoxFor(model => model.TotalHoursWorked, new { @Value = @tsheets[i].TotalHoursWorked.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                         <td>
-                            @{                                
+                            @{  /** Calculates the hours worked for the day **/                              
                                 Debug.WriteLine(tsheets[i].TotalHoursWorked + "in the table");
                                 string hoursWorked = tsheets[i].CalculateTotalHoursWorked(tsheets[i]);                                
                                 hour = Convert.ToInt16(hoursWorked.Split(':')[0]);
@@ -165,12 +167,13 @@
                                 }
                                 totalHours = hour + ":" + minute;
 
+                                /** Calculates and overtime for the day **/
                                 string overtime;
                                 int hoursWorked2 = Convert.ToInt16(totalHours.Split(':')[0]);
                                 int minutesWorked = Convert.ToInt16(totalHours.Split(':')[1]);
                                 if (hoursWorked2 < 8)
                                 {
-                                    overtime = "";
+                                    overtime = "0:0";
                                 }
                                 else
                                 {
@@ -191,7 +194,7 @@
             <th colspan="8">Total Absent Hours</th>
             <td><input type="text" name="totalAbsent" /></td>
             <th>Total Weekly Hours</th>
-            <!-- code for the color warning system-->
+            <!-- code for the color warning system for total hours worked-->
             @{
                 Debug.WriteLine("The Final weekly hours: " + totalweekly);
                 if (hours > 30)
@@ -210,7 +213,7 @@
                 }
 
             }
-        <tr>
+        <tr><!--Displays the total overtime-->
             <th colspan="11">Overtime hours x1.5 to be added to prior FLSA comp balance.</th>
             @{ if (!overTime.Equals(""))
                 {
@@ -224,7 +227,6 @@
             }
         </tr>
     </table>
-
     <!--Submit Week button with popup validation-->
     @Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new { @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })
     <br /><br />

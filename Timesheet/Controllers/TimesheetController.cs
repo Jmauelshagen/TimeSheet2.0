@@ -75,8 +75,7 @@ namespace Timesheet.Controllers
                     Submitted = model.Submitted,
                     AuthorizedBySupervisor = model.AuthorizedBySupervisor,
                     EmpId = model.EmpId                    
-                };
-                Debug.WriteLine((string)model.TimeIn + "in the actionresult 2");
+                };                
                 sheet.UpdateTimeSheet(sheet);
 
                 //Get list of TimeSheet objects based on date and employee id and add list to session
