@@ -1,8 +1,16 @@
 ﻿@using Timesheet.Models
 @model Timesheet.Models.TimeSheet
+@using System.Diagnostics
+
 
 @{
     Layout = null;
+    string totalHours = "";
+    string totalweekly = "";
+    int hour = 0;
+    int hours = 0;
+    int minute = 0;
+    int minutes = 0;
 }
 
 <!--This is the Supervisor role's view of time sheets, and has the capability to approve or deny
@@ -49,22 +57,22 @@
         {
             @Html.LabelFor(x => x.Name)
             @Html.DropDownListFor(x => x.Name,
-        Model.EmpNames,
-        "-Select Employee-",
-        new { @class = "form-control" })
+             Model.EmpNames,
+             "-Select Employee-",
+             new { @class = "form-control" })
 
             @Html.LabelFor(x => x.WeekEnding)
             @Html.DropDownListFor(x => x.WeekEnding,
-        Model.WeekEndingDates,
-        "-Select A Date-",
-        new { @class = "form-control" })
+             Model.WeekEndingDates,
+             "-Select A Date-",
+             new { @class = "form-control" })
 
             <button type="submit">Search</button>
         }
         <br />
         <!--Display message content if it exists.-->
-        @{ 
-            if(@message != null)
+        @{
+            if (@message != null)
             {
                 <p style="text-align: center; color: white;">@message</p>
             }
@@ -93,39 +101,76 @@
                 {
                     foreach (TimeSheet reporttime in @reportTimeList)
                     {
-                        <tr>
-                            <td></td>
-                            <td>@reporttime.WeekEnding</td>
-                            <td>@reporttime.Date</td>
-                            <td>@reporttime.TimeIn</td>
-                            <td>@reporttime.OutForLunch</td>
-                            <td>@reporttime.InFromLunch</td>
-                            <td>@reporttime.TimeOut</td>
-                            <td>@reporttime.LeaveId</td>
-                            <td>@reporttime.LeaveHours</td>
-                            <td>@reporttime.AdditionalHours</td>
-                            <td>@reporttime.TotalHoursWorked</td>
-                            <td>
-                                @{
-                                    int overtime;
-                                    if (reporttime.TotalHoursWorked <= 8)
-                                    {
-                                        overtime = 0;
-                                    }
-                                    else
-                                    {
-                                        overtime = (int)reporttime.TotalHoursWorked - 8;
-                                    }
+            <tr>
+                <td></td>
+                <td>@reporttime.WeekEnding</td>
+                <td>@reporttime.Date</td>
+                <td>@reporttime.TimeIn</td>
+                <td>@reporttime.OutForLunch</td>
+                <td>@reporttime.InFromLunch</td>
+                <td>@reporttime.TimeOut</td>
+                <td>@reporttime.LeaveId</td>
+                <td>@reporttime.LeaveHours</td>
+                <td>@reporttime.AdditionalHours</td>
+                    @{ /** Calculates the hours worked for the day **/
+                        string TotalHoursWorked;
+                        Debug.WriteLine(reporttime.TotalHoursWorked + "in total Hours");
+                        if (!String.IsNullOrEmpty(reporttime.TotalHoursWorked.ToString().Trim())) //&& !tsheets[i].TotalHoursWorked.ToString().Trim().Equals("0"))
+                        {
+                            Debug.WriteLine("Passed the if");
+                            TotalHoursWorked = reporttime.TotalHoursWorked.ToString().Trim();
+                            <td>@TotalHoursWorked</td>
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Failed the if");
+                            TotalHoursWorked = "Error";
+                            <td bgcolor="red">@TotalHoursWorked</td>
+                        }
+                    }
+                    <td>
+                        @{ /** Calculates the hours worked for the day **/
+                            Debug.WriteLine(reporttime.TotalHoursWorked + "in the table");
+                            string hoursWorked = reporttime.CalculateTotalHoursWorked(reporttime);
+                            string overtime;
 
+                            if (!String.IsNullOrEmpty(hoursWorked))
+                            {
+                                hour = Convert.ToInt16(hoursWorked.Split(':')[0]);
+                                minute = Convert.ToInt16(hoursWorked.Split(':')[1]);
+                                if (minute >= 60)
+                                {
+                                    minute = minute - 60;
+                                    hour = hour + 1;
+                                }
+                                totalHours = hour + ":" + minute;
+
+                                /** Calculates and overtime for the day **/
+                                int hoursWorked2 = Convert.ToInt16(totalHours.Split(':')[0]);
+                                int minutesWorked = Convert.ToInt16(totalHours.Split(':')[1]);
+                                if (hoursWorked2 < 8)
+                                {
+                                    overtime = "0:0";
+                                }
+                                else
+                                {
+                                    overtime = (hoursWorked2 - 8) + ":" + minutesWorked;
+                                }
                             }
-                            @overtime
-                            </td>
-                            <td>@reporttime.Submitted</td>
-                            <td>@reporttime.AuthorizedBySupervisor</td>
-                         </tr>
+                            else
+                            {
+                                overtime = "0:0";
+                            }
 
-                                        }
-                                    }
+                        }
+                        @overtime
+                    </td>
+                    <td>@reporttime.Submitted</td>
+                    <td>@reporttime.AuthorizedBySupervisor</td>
+                </tr>
+
+                    }
+                }
 
             }
 
@@ -138,7 +183,7 @@
         }
         @using (Html.BeginForm("Deny", "Reports", FormMethod.Post, new { role = "form" }))
         {
-        <button type="submit">Deny</button>
+            <button type="submit">Deny</button>
         }
         <br />
         <!--Log out link.-->

@@ -29,19 +29,26 @@
     /**Calculates the total hours for the week**/
     foreach (TimeSheet sheet in tsheets)
     {
-        string hoursWorked = sheet.CalculateTotalHoursWorked(sheet);        
-        hours += Convert.ToInt16(hoursWorked.Split(':')[0]);
-        minutes += Convert.ToInt16(hoursWorked.Split(':')[1]);
-        if (minutes >= 60)
+        string hoursWorked = sheet.CalculateTotalHoursWorked(sheet);
+        if (!String.IsNullOrEmpty(hoursWorked))
         {
-            minutes = minutes - 60;
-            hours = hours + 1;
-        }
-        totalHours = hours + ":" + minutes;
-        totalweekly = totalHours;
+            hours += Convert.ToInt16(hoursWorked.Split(':')[0]);
+            minutes += Convert.ToInt16(hoursWorked.Split(':')[1]);
+            if (minutes >= 60)
+            {
+                minutes = minutes - 60;
+                hours = hours + 1;
+            }
+            totalHours = hours + ":" + minutes;
+            totalweekly = totalHours;
 
-        Debug.WriteLine("Running total: " + totalHours);
-        Debug.WriteLine("Running total by the hours: " + hours);
+            Debug.WriteLine("Running total: " + totalHours);
+            Debug.WriteLine("Running total by the hours: " + hours);
+        }
+        else
+        {
+            totalweekly = "Error";
+        }
     }
 
     /**Calculates total overtime that was made**/
@@ -79,7 +86,7 @@
         }
     }
     //double overtimeHours = 1.5 * (totalWeekly - 40);
-}
+    }
 
 <!DOCTYPE html>
 <html>
@@ -139,10 +146,11 @@
             <th>Submitted</th>
         </tr>
         @{ for (int i = 0; i < 7; i++)
-            {
+           {
                 using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post))
                 {
-                    <tr> <!--Converted some of the textboxes to time input to reduce user error-->                       
+                    <tr>
+                        <!--Converted some of the textboxes to time input to reduce user error-->
                         <td>@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "display: none; width: 100px;" })</td>
                         <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                         <td>@Html.TextBoxFor(model => model.Date, new { @Value = @tsheets[i].Date.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
@@ -153,31 +161,56 @@
                         <td>@Html.TextBoxFor(model => model.LeaveId, new { @Value = @tsheets[i].LeaveId.ToString().Trim(), style = "width: 75px;" })</td>
                         <td>@Html.TextBoxFor(model => model.LeaveHours, new { @Value = @tsheets[i].LeaveHours.ToString().Trim(), style = "width: 50px;" })</td>
                         <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim(), style = "width: 75px;" })</td>
-                        <td>@Html.TextBoxFor(model => model.TotalHoursWorked, new { @Value = @tsheets[i].TotalHoursWorked.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                        <td>
-                            @{  /** Calculates the hours worked for the day **/                              
-                                Debug.WriteLine(tsheets[i].TotalHoursWorked + "in the table");
-                                string hoursWorked = tsheets[i].CalculateTotalHoursWorked(tsheets[i]);                                
-                                hour = Convert.ToInt16(hoursWorked.Split(':')[0]);
-                                minute = Convert.ToInt16(hoursWorked.Split(':')[1]);
-                                if (minute >= 60)
-                                {
-                                    minute = minute - 60;
-                                    hour = hour + 1;
-                                }
-                                totalHours = hour + ":" + minute;
 
-                                /** Calculates and overtime for the day **/
-                                string overtime;
-                                int hoursWorked2 = Convert.ToInt16(totalHours.Split(':')[0]);
-                                int minutesWorked = Convert.ToInt16(totalHours.Split(':')[1]);
-                                if (hoursWorked2 < 8)
+                            @{ /** Calculates the hours worked for the day **/
+                                string TotalHoursWorked;
+                                Debug.WriteLine(tsheets[i].TotalHoursWorked + "in total Hours");
+                                if (!String.IsNullOrEmpty(tsheets[i].TotalHoursWorked.ToString().Trim())) //&& !tsheets[i].TotalHoursWorked.ToString().Trim().Equals("0"))
                                 {
-                                    overtime = "0:0";
+                                    Debug.WriteLine("Passed the if");
+                                    TotalHoursWorked = tsheets[i].TotalHoursWorked.ToString().Trim();
+                                    <td>@TotalHoursWorked</td>
                                 }
                                 else
                                 {
-                                    overtime = (hoursWorked2 - 8) + ":" + minutesWorked;
+                                    Debug.WriteLine("Failed the if");
+                                    TotalHoursWorked = "Error";
+                                    <td bgcolor = "red">@TotalHoursWorked</td>
+                                }
+                            }
+                        <td>
+                            @{ /** Calculates the hours worked for the day **/
+                                Debug.WriteLine(tsheets[i].TotalHoursWorked + "in the table");
+                                string hoursWorked = tsheets[i].CalculateTotalHoursWorked(tsheets[i]);
+                                string overtime;
+                                Debug.WriteLine(hoursWorked + "   " + i + " in the table");
+                                if (!String.IsNullOrEmpty(hoursWorked))
+                                {
+                                    hour = Convert.ToInt16(hoursWorked.Split(':')[0]);
+                                    minute = Convert.ToInt16(hoursWorked.Split(':')[1]);
+                                    if (minute >= 60)
+                                    {
+                                        minute = minute - 60;
+                                        hour = hour + 1;
+                                    }
+                                    totalHours = hour + ":" + minute;
+
+                                    /** Calculates and overtime for the day **/
+                                    int hoursWorked2 = Convert.ToInt16(totalHours.Split(':')[0]);
+                                    int minutesWorked = Convert.ToInt16(totalHours.Split(':')[1]);
+                                    if (hoursWorked2 < 8)
+                                    {
+                                        overtime = "0:0";
+                                    }
+                                    else
+                                    {
+                                        overtime = (hoursWorked2 - 8) + ":" + minutesWorked;
+                                    }
+                                }
+                                else
+                                {
+                                    hoursWorked = "Error";
+                                    overtime = "0:0";
                                 }
                             }
                             @overtime
@@ -197,7 +230,7 @@
             <!-- code for the color warning system for total hours worked-->
             @{
                 Debug.WriteLine("The Final weekly hours: " + totalweekly);
-                if (hours > 30)
+                if (hours >= 40)
                 {
                     <td bgcolor="red">@totalweekly</td>
                 }
