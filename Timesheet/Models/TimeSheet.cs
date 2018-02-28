@@ -212,14 +212,20 @@ namespace Timesheet.Models
                 Debug.WriteLine(lOut);
                 Debug.WriteLine(lIn);
                 Debug.WriteLine(tOut);
+                string totalHours;
                 if (tIn > lOut || lOut > lIn || lIn > tOut)
                 {
+                    totalHours = "";
                     throw new System.ArgumentException("Later clock times must come after previous ones");
+                    
                 }
-                TimeSpan hoursWorked = tOut.Subtract(tIn).Subtract(lIn.Subtract(lOut));
-                int hour = Convert.ToInt16(hoursWorked.TotalHours);
-                int minute = Convert.ToInt16(hoursWorked.Minutes);
-                string totalHours = hour.ToString() + ":" + minute.ToString();
+                else
+                {
+                    TimeSpan hoursWorked = tOut.Subtract(tIn).Subtract(lIn.Subtract(lOut));
+                    int hour = Convert.ToInt16(hoursWorked.TotalHours);
+                    int minute = Convert.ToInt16(hoursWorked.Minutes);
+                    totalHours = hour.ToString() + ":" + minute.ToString();
+                }
                 return totalHours;
             }
             catch (ArgumentException ae)
