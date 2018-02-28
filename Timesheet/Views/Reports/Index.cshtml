@@ -55,8 +55,8 @@
                   "-Select A Date-",
                   new { @class = "form-control" })
 
-            <button type="submit">Search</button>
-        }
+        <button type="submit">Search</button>
+}
         <br />
         <!--Display message content if it exists.-->
         @{
@@ -172,13 +172,16 @@
         <br />
         <!--Forms to approve or deny time sheet.-->
         @using (Html.BeginForm("Approve", "Reports", FormMethod.Post, new { role = "form" }))
-        {
-            <button type="submit">Approve</button>
-        }
+    {
+        <button type="submit">Approve</button>
+}
         @using (Html.BeginForm("Deny", "Reports", FormMethod.Post, new { role = "form" }))
-        {
-            <button type="submit">Deny</button>
-        }
+    {
+        <button type="submit">Deny</button>
+}
+        <br />
+        <!--Like to go back-->
+        <a href="#" onclick="history.back();">Back</a>
         <br />
         <!--Log out link.-->
         <a href="@Url.Action("LogOut","Login")">LogOut</a>
