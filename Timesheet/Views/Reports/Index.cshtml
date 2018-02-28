@@ -1,4 +1,5 @@
 ﻿@using Timesheet.Models
+@using System.Diagnostics
 @model Timesheet.Models.TimeSheet
 @using System.Diagnostics
 
@@ -25,7 +26,7 @@
 </head>
 <body>
     <!--Get employee, time sheet list and message objects from the session.-->
-    @{var emp = (Employee)Session["Employee"];
+    @{  var emp = (Employee)Session["Employee"];
         var reportTimeList = (List<TimeSheet>)Session["TimeSheetList"];
         var message = (string)Session["Message"];
     }
@@ -167,7 +168,6 @@
                 }
 
             }
-
         </table>
         <br />
         <!--Forms to approve or deny time sheet.-->
