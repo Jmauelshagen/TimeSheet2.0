@@ -145,6 +145,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ApprovedTimesheetsController.cs" />
+    <Compile Include="Controllers\DailyTimesheetController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HRController.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DailyTimeSheet.cs" />
     <Compile Include="Models\Emp.cs">
       <DependentUpon>LoginDataModel.tt</DependentUpon>
     </Compile>
@@ -269,7 +271,7 @@
     <Content Include="Views\Supervisor\Index.cshtml" />
     <Content Include="Views\HR\Index.cshtml" />
     <Content Include="Views\ApprovedTimesheets\ApprovedTimesheets.cshtml" />
-    <Content Include="Views\Timesheet\Error.cshtml" />
+    <Content Include="Views\Timesheet\DailyTimesheet.cshtml" />
     <Content Include="Views\Reports\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
