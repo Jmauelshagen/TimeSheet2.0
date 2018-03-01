@@ -14,9 +14,8 @@
     <title>Employee</title>
     <style>
         body {
-            background-color: lightgrey;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 0.98em;
+            background-color: cadetblue;
+            font-family: Arial;
         }
 
         #login-div {
@@ -38,37 +37,25 @@
     @{var emp = (Employee)Session["Employee"]; }
 
     <div>
-        <center>
-
-        
-        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520"
-             
-         </center>
-
-
+        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
     </div>
     <div>
         <h1>Employees</h1>
         <!--Display the employee's first and last name-->
         <p>Welcome @emp.FirstName @emp.LastName!  Click below to record your time.</p>
+            
+            <ul>
+                <li>
+                    <!--Link to get to the timesheet input screen-->
+                    <a href="@Url.Action("GetTimeSheet","Timesheet")">Timesheet</a>
 
-        
-            
-                <!--Link to get to the timesheet input screen-->
-                <form action="@Url.Action("GetTimeSheet","Timesheet")">
-                    <input type="submit" value="TimeSheet" />
-                </form>
-                <!-- <a href="@Url.Action("GetTimeSheet","Timesheet")">Timesheet</a> -->
-            <br/>
-            
-        
+                </li>
+                <li>
+                    <a href="@Url.Action("GetDailyTimeSheet","Timesheet")">Daily Timesheet</a>
+                </li>
+            </ul>
         <!--Log out link-->
-        <form action="@Url.Action("LogOut", "Login")">
-            <input type="submit" value="LogOut" />
-        </form>
-
-
-        <!--  <a href="@Url.Action("LogOut", "Login")">LogOut</a> -->
+        <a href="@Url.Action("LogOut", "Login")">LogOut</a>
     </div>
 </body>
 </html>
