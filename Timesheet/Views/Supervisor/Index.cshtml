@@ -10,13 +10,11 @@
 
 <html>
 <head>
+    <link rel="stylesheet" href="~/Content/main.css" type="text/css" />
     <meta name="viewport" content="width=device-width" />
     <title>Supervisor</title>
     <style>
-        body {
-            background-color: cadetblue;
-            font-family: Arial;
-        }
+
 
         #login-div {
             position: absolute;
@@ -35,7 +33,9 @@
     <!--Get employee object from the session.-->
     @{var emp = (Employee)Session["Employee"]; }
     <div>
-        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        <center>
+            <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        </center>
     </div>
     <div>
         <h1>Supervisor</h1>
@@ -43,18 +43,33 @@
         <p>Welcome @emp.FirstName @emp.LastName!</p>
 
         <!--Links to reports and approved time sheets-->
-        <ul>
-            <li>
-                <a href="@Url.Action("Index", "Reports")"> Reports</a>
-            </li>
-            <li>
-                <a href="@Url.Action("ApprovedTimesheets", "ApprovedTimesheets")">Approved Timesheet</a>
-            </li>
+       
             
-        </ul>
+                <form action="@Url.Action("Index", "Reports")">
+                    <input type="submit" value="Reports">
+
+                </form>
+                </br>
+                <!-- <a href="Url.Action("Index", "Reports")"> Reports</a> -->
+            
+            
+                <form action="@Url.Action("ApprovedTimesheets", "ApprovedTimesheets")">
+                    <input type="submit" value="Approved Timesheet">
+
+                </form>
+                </br>
+                <!--    <a href="Url.Action("ApprovedTimesheets", "ApprovedTimesheets")">Approved Timesheet</a> -->
+            
+
+        
 
         <!--Log out link-->
-        <a href="@Url.Action("LogOut", "Login")">LogOut</a>
+        <form action="@Url.Action("LogOut", "Login")">
+            <input type="submit" value="LogOut">
+
+        </form>
+
+        <!-- <a href="Url.Action("LogOut", "Login")">LogOut</a> -->
     </div>
 </body>
 </html>

@@ -7,7 +7,9 @@
 @{
     ViewBag.Title = "Approved Timesheets";
     <div>
-        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        <center>
+            <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        </center>
     </div>
 
     Employee emp = (Employee)Session["Employee"];
@@ -21,13 +23,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="~/Content/main.css" type="text/css" />
     <meta name="viewport" content="width=device-width" />
     <title>Timesheet</title>
     <style>
-        body {
-            background-color: cadetblue;
-            font-family: Arial;
-        }
+
 
         #login-div {
             position: absolute;
@@ -51,8 +51,14 @@
     <p id="time">It is @today at @time</p>
     @Html.DropDownList("Employees", "Select Employees")
 
+    </br>
+    </br>
 
-    <a href="#" onclick="history.back();">Back</a>
+    <form action="history.back();">
+        <input type="">
+
+    </form>
+    <!-- <a href="#" onclick="history.back();">Back</a> -->
 </body>
 </html>
 

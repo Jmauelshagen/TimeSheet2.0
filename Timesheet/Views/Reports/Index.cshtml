@@ -18,13 +18,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="~/Content/main.css" type="text/css" />
     <meta name="viewport" content="width=device-width" />
     <title>Reports</title>
     <style>
-        body {
-            background-color: cadetblue;
-            font-family: Arial;
-        }
+       
 
         .field-validation-error {
             color: red;
@@ -54,28 +52,28 @@
         <!--Form for supervisor to select an employee by name and a week ending date.-->
         <p>Select Employee</p>
         @using (Html.BeginForm("ReportData", "Reports", FormMethod.Post, new { role = "form" }))
-        {
-            @Html.LabelFor(x => x.Name)
-            @Html.DropDownListFor(x => x.Name,
-             Model.EmpNames,
-             "-Select Employee-",
-             new { @class = "form-control" })
+    {
+        @Html.LabelFor(x => x.Name)
+        @Html.DropDownListFor(x => x.Name,
+           Model.EmpNames,
+           "-Select Employee-",
+           new { @class = "form-control" })
 
-            @Html.LabelFor(x => x.WeekEnding)
-            @Html.DropDownListFor(x => x.WeekEnding,
-             Model.WeekEndingDates,
-             "-Select A Date-",
-             new { @class = "form-control" })
+        @Html.LabelFor(x => x.WeekEnding)
+        @Html.DropDownListFor(x => x.WeekEnding,
+           Model.WeekEndingDates,
+           "-Select A Date-",
+           new { @class = "form-control" })
 
-            <button type="submit">Search</button>
-        }
+        <button type="submit">Search</button>
+}
         <br />
         <!--Display message content if it exists.-->
         @{
-            if (@message != null)
-            {
-                <p style="text-align: center; color: white;">@message</p>
-            }
+        if (@message != null)
+        {
+            <p style="text-align: center; color: white;">@message</p>
+    }
         }
 
         <!--Table for viewing time sheet data.-->
@@ -97,22 +95,22 @@
                 <th>Authorized</th>
             </tr>
             @{
-                if (@reportTimeList != null)
+            if (@reportTimeList != null)
+            {
+                foreach (TimeSheet reporttime in @reportTimeList)
                 {
-                    foreach (TimeSheet reporttime in @reportTimeList)
-                    {
-            <tr>
-                <td></td>
-                <td>@reporttime.WeekEnding</td>
-                <td>@reporttime.Date</td>
-                <td>@reporttime.TimeIn</td>
-                <td>@reporttime.OutForLunch</td>
-                <td>@reporttime.InFromLunch</td>
-                <td>@reporttime.TimeOut</td>
-                <td>@reporttime.LeaveId</td>
-                <td>@reporttime.LeaveHours</td>
-                <td>@reporttime.AdditionalHours</td>
-                    @{ /** Calculates the hours worked for the day **/
+                    <tr>
+                        <td></td>
+                        <td>@reporttime.WeekEnding</td>
+                        <td>@reporttime.Date</td>
+                        <td>@reporttime.TimeIn</td>
+                        <td>@reporttime.OutForLunch</td>
+                        <td>@reporttime.InFromLunch</td>
+                        <td>@reporttime.TimeOut</td>
+                        <td>@reporttime.LeaveId</td>
+                        <td>@reporttime.LeaveHours</td>
+                        <td>@reporttime.AdditionalHours</td>
+                        @{ /** Calculates the hours worked for the day **/
                         string TotalHoursWorked;
                         Debug.WriteLine(reporttime.TotalHoursWorked + "in total Hours");
                         if (!String.IsNullOrEmpty(reporttime.TotalHoursWorked.ToString().Trim())) //&& !tsheets[i].TotalHoursWorked.ToString().Trim().Equals("0"))
@@ -120,16 +118,16 @@
                             Debug.WriteLine("Passed the if");
                             TotalHoursWorked = reporttime.TotalHoursWorked.ToString().Trim();
                             <td>@TotalHoursWorked</td>
-                        }
-                        else
-                        {
-                            Debug.WriteLine("Failed the if");
-                            TotalHoursWorked = "Error";
-                            <td bgcolor="red">@TotalHoursWorked</td>
-                        }
                     }
-                    <td>
-                        @{ /** Calculates the hours worked for the day **/
+                    else
+                    {
+                        Debug.WriteLine("Failed the if");
+                        TotalHoursWorked = "Error";
+                        <td bgcolor="red">@TotalHoursWorked</td>
+                }
+                        }
+                        <td>
+                            @{ /** Calculates the hours worked for the day **/
                             Debug.WriteLine(reporttime.TotalHoursWorked + "in the table");
                             string hoursWorked = reporttime.CalculateTotalHoursWorked(reporttime);
                             string overtime;
@@ -162,15 +160,15 @@
                                 overtime = "0:0";
                             }
 
-                        }
-                        @overtime
-                    </td>
-                    <td>@reporttime.Submitted</td>
-                    <td>@reporttime.AuthorizedBySupervisor</td>
-                </tr>
+                            }
+                            @overtime
+                        </td>
+                        <td>@reporttime.Submitted</td>
+                        <td>@reporttime.AuthorizedBySupervisor</td>
+                    </tr>
 
-                    }
-                }
+            }
+        }
 
             }
 
@@ -178,16 +176,21 @@
         <br />
         <!--Forms to approve or deny time sheet.-->
         @using (Html.BeginForm("Approve", "Reports", FormMethod.Post, new { role = "form" }))
-        {
-            <button type="submit">Approve</button>
-        }
+    {
+        <button type="submit">Approve</button>
+}
+        </br>
         @using (Html.BeginForm("Deny", "Reports", FormMethod.Post, new { role = "form" }))
-        {
-            <button type="submit">Deny</button>
-        }
+    {
+        <button type="submit">Deny</button>
+}
         <br />
         <!--Log out link.-->
-        <a href="@Url.Action("LogOut","Login")">LogOut</a>
+        <form action="@Url.Action("LogOut", "Login")">
+            <input type="submit" value="LogOut">
+
+        </form>
+        <!--  <a href="Url.Action("LogOut","Login")">LogOut</a> -->
     </div>
 </body>
 </html>
