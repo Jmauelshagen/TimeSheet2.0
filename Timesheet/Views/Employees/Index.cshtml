@@ -8,15 +8,12 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Employee</title>
+    <link rel="stylesheet" href="~/Content/main.css" type="text/css"/>
+
+   <meta name="viewport" content="width=device-width" /> 
     <style>
-        body {
-            background-color: cadetblue;
-            font-family: Arial;
-        }
 
         #login-div {
             position: absolute;
@@ -29,6 +26,7 @@
             color: red;
         }
     </style>
+    <title>Employee</title>
 
 </head>
 
@@ -37,25 +35,41 @@
     @{var emp = (Employee)Session["Employee"]; }
 
     <div>
-        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        <center>
+            <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        </center>
     </div>
     <div>
         <h1>Employees</h1>
         <!--Display the employee's first and last name-->
         <p>Welcome @emp.FirstName @emp.LastName!  Click below to record your time.</p>
-            
-            <ul>
-                <li>
-                    <!--Link to get to the timesheet input screen-->
-                    <a href="@Url.Action("GetTimeSheet","Timesheet")">Timesheet</a>
 
-                </li>
-                <li>
-                    <a href="@Url.Action("GetDailyTimeSheet","Timesheet")">Daily Timesheet</a>
-                </li>
-            </ul>
+        
+           
+                <!--Link to get to the timesheet input screen-->
+                <form action="@Url.Action("GetTimeSheet", "Timesheet")">
+                    <input type="submit" value="Weekly Timesheet">
+
+
+                </form>
+                </br>
+
+                <!--     <a href=" Url.Action("GetTimeSheet","Timesheet")">Timesheet</a> -->
+
+           
+            
+                <form action="@Url.Action("GetDailyTimeSheet","Timesheet")">
+                    <input type="submit" value="Daily Timesheet">
+
+                </form>
+                <!--      <a href="Url.Action("GetDailyTimeSheet","Timesheet")">Daily Timesheet</a> -->
+            </br>
         <!--Log out link-->
-        <a href="@Url.Action("LogOut", "Login")">LogOut</a>
-    </div>
+
+        <form action="@Url.Action("LogOut", "Login")">
+            <input type="submit" value="LogOut">
+            </form>
+            <!--    <a href="Url.Action("LogOut", "Login")">LogOut</a> -->
+</div>
 </body>
 </html>

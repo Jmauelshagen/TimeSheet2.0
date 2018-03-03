@@ -91,13 +91,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="~/Content/main.css" type="text/css" />
     <meta name="viewport" content="width=device-width" />
     <title>Timesheet</title>
     <style>
-        body {
-            background-color: cadetblue;
-            font-family: Arial;
-        }
+        
 
         #login-div {
             position: absolute;
@@ -130,7 +128,14 @@
     <p id="Time">It is @today at @time</p>
     <p style="text-align: center; color: white;"><button>Record Current Time</button></p>
     <p style="text-align: center; color: white;">***Remember to enter your time in HH:MM AM/PM format***</p>
-    <p style="text-align: right; color: white;"><a href="@Url.Action("GetTimeSheet","Timesheet")" class="button">View Weelky Timesheet</a></p>
+    <p style="text-align: right; color: white;">
+
+
+        <form action="@Url.Action("GetTimeSheet","Timesheet")">
+            <input type="submit" value="View Weekly Timesheet">
+            </form>
+            <!--  <a href="Url.Action("GetTimeSheet","Timesheet")" class="button">View Weelky Timesheet</a> -->
+</p>
 
     <!--Table to display time sheet input form.-->
     <table style="width:100%" cellpadding="4">
@@ -272,14 +277,30 @@
             }
         </tr>
     </table>
-    <br /><br />
-    <a href="@Url.Action("Index", "Employees")" class="button">Home</a>
-    <br /><br />
+    <br />
+    <form action="@Url.Action("Index", "Employees")">
+        <input type="submit" value="Home">
+
+    </form>
+
+    <!--<a href="Url.Action("Index", "Employees")" class="button">Home</a> -->
+
+    <br />
     <!--Submit Week button with popup validation-->
-    @Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new { @class="button", @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })
+    <form action=" @Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" },
+                  new { @class = "button", @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })">
+        <input type="submit" value="Submit Week">
+
+    </form>
+    <!--  Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new { class = "button", onclick = "return confirm('I acknowledge that the times I have inputted are correct')" }) -->
     <br /><br />
     <!--Log out link-->
-    <a href="@Url.Action("LogOut", "Login")" class="button">LogOut</a>
+
+    <form action="@Url.Action("LogOut", "Login")">
+        <input type="submit" value="LogOut">
+
+    </form>
+    <!-- <a href="Url.Action("LogOut", "Login")" class="button">LogOut</a>-->
 
 </body>
 
