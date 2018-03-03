@@ -226,23 +226,8 @@
             <th>Approved</th>
             <th>Emp ID#</th>
         </tr>
-        <!--<td>@{ /*Html.TextBox("models[" + i + "].ID", tsheets[i].Id.ToString().Trim(), new { @readonly = "readonly", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].WeekEnding", tsheets[i].WeekEnding.ToString().Trim(), new { @readonly = "readonly", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].Date", tsheets[i].Date.ToString().Trim(), new { @readonly = "readonly", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].TimeIn", tsheets[i].TimeIn.ToString().Trim(), new { type = "time", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].OutForLunch", tsheets[i].OutForLunch.ToString().Trim(), new { type = "time", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].InFromLunch", tsheets[i].InFromLunch.ToString().Trim(), new { type = "time", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].TimeOut", tsheets[i].TimeOut.ToString().Trim(), new { type = "time", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].LeaveId", tsheets[i].LeaveId.ToString().Trim(), new { style = "width: 75px;" })</td>
-              <td>@Html.TextBox("models[" + i + "]", tsheets[i].LeaveHours.ToString().Trim(), new { style = "width: 50px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].AdditionalHours", tsheets[i].AdditionalHours.ToString().Trim(), new { style = "width: 75px;" })
-              <td>@Html.TextBox("models[" + i + "].Submitted", tsheets[i].Submitted.ToString().Trim(), new { @readonly = "readonly", style = "width: 75px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].AuthorizedBySupervisor", tsheets[i].AuthorizedBySupervisor.ToString().Trim(), new { @readonly = "readonly", style = "width: 75px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].EmpId", tsheets[i].EmpId.ToString().Trim(), new { @readonly = "readonly", style = "display: none; width: 75px" })</td>
-              */
-              }-->
         @{ for (int i = 0; i < 7; i++)
-            {
+           {
                 using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post))
                 {
                     if (tsheets[i].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
@@ -488,7 +473,6 @@
     <br /><br />
     <!--Log out link-->
     <a href="@Url.Action("LogOut", "Login")" class="button">LogOut</a>
-
 
 </body>
 
