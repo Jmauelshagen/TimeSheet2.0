@@ -101,9 +101,9 @@ namespace Timesheet.Models
                         Id = this.GetMaxTimeSheetId() + 1,
                         WeekEnding = dates[0].Trim(),
                         Date = dates[i].Trim(),
-                        TimeIn = "00:00:00",
-                        OutForLunch = "00:00:00",
-                        InFromLunch = "00:00:00",
+                        TimeIn = "0:00",
+                        OutForLunch = "0:00",
+                        InFromLunch = "0:00",
                         TimeOut = "0:00",
                         LeaveId = 0,
                         LeaveHours = "0:00",
@@ -173,17 +173,44 @@ namespace Timesheet.Models
         //Method to update TimeSheet data in the TimeSheet data table
         public void UpdateTimeSheet(TimeSheet sheet)
         {
+            Debug.WriteLine("in database save 1");
+            string timeIn = "";
+            string outForLunch = "";
+            string inFromLunch = "";
+            string timeOut = "";
+
+            if (!String.IsNullOrEmpty(sheet.TimeIn) && !sheet.TimeIn.ToString().Trim().Equals("0:00"))
+            {
+                timeIn = sheet.TimeIn;
+            }
+            else { timeIn = "0:00"; }
+            if (!String.IsNullOrEmpty(sheet.OutForLunch) && !sheet.OutForLunch.ToString().Trim().Equals("0:00"))
+            {
+                outForLunch = sheet.OutForLunch;
+            }
+            else { outForLunch = "0:00"; }
+            if (!String.IsNullOrEmpty(sheet.InFromLunch) && !sheet.InFromLunch.ToString().Trim().Equals("0:00"))
+            {
+                inFromLunch = sheet.InFromLunch;
+            }
+            else { inFromLunch = "0:00"; }
+            if (!String.IsNullOrEmpty(sheet.TimeOut) && !sheet.TimeOut.ToString().Trim().Equals("0:00"))
+            {
+                timeOut = sheet.TimeOut;
+            }
+            else { timeOut = "0:00"; }
+
             TimeSheet tsheet = (from tsheets in db.TimeSheets
                                 where tsheets.Id == sheet.Id
-                                select tsheets).First();
+                                select tsheets).Single();
 
             tsheet.Id = sheet.Id;
             tsheet.WeekEnding = sheet.WeekEnding;
             tsheet.Date = sheet.Date;
-            tsheet.TimeIn = sheet.TimeIn;
-            tsheet.OutForLunch = sheet.OutForLunch;
-            tsheet.InFromLunch = sheet.InFromLunch;
-            tsheet.TimeOut = sheet.TimeOut;
+            tsheet.TimeIn = timeIn;
+            tsheet.OutForLunch = outForLunch;
+            tsheet.InFromLunch = inFromLunch;
+            tsheet.TimeOut = timeOut;
             tsheet.LeaveId = sheet.LeaveId;
             tsheet.LeaveHours = sheet.LeaveHours;
             tsheet.AdditionalHours = sheet.AdditionalHours;
@@ -202,34 +229,103 @@ namespace Timesheet.Models
         {
             try
             {
-                Debug.WriteLine(TimeIn + "in timesheet model");
-                DateTime tIn = RoundToNearest(DateTime.Parse(sheet.TimeIn), TimeSpan.FromMinutes(15)); ;
-                DateTime lOut = RoundToNearest(DateTime.Parse(sheet.OutForLunch), TimeSpan.FromMinutes(15));
-                DateTime lIn = RoundToNearest(DateTime.Parse(sheet.InFromLunch), TimeSpan.FromMinutes(15));
-                DateTime tOut = RoundToNearest(DateTime.Parse(sheet.TimeOut), TimeSpan.FromMinutes(15));
-                //used to view the incoming values
-                Debug.WriteLine(tIn);
-                Debug.WriteLine(lOut);
-                Debug.WriteLine(lIn);
-                Debug.WriteLine(tOut);
-                string totalHours;
-                if (tIn > lOut || lOut > lIn || lIn > tOut)
+                if (!sheet.TimeIn.ToString().Trim().Equals("0:00") && !sheet.OutForLunch.ToString().Trim().Equals("0:00") && sheet.InFromLunch.ToString().Trim().Equals("0:00") && sheet.TimeOut.ToString().Trim().Equals("0:00"))
                 {
-                    totalHours = "";
-                    throw new System.ArgumentException("Later clock times must come after previous ones");
-                    
+                    Debug.WriteLine("Calculating the first 2 punches");
+                    DateTime tIn = RoundToNearest(DateTime.Parse(sheet.TimeIn), TimeSpan.FromMinutes(15)); ;
+                    DateTime lOut = RoundToNearest(DateTime.Parse(sheet.OutForLunch), TimeSpan.FromMinutes(15));
+                    //used to view the incoming values
+                    Debug.WriteLine("Clocked in at " + tIn + " in 2 Punches");
+                    Debug.WriteLine("Clocked out for lunch at " + lOut + " in 2 Punches");
+                    string totalHours;
+                    if (tIn > lOut)
+                    {
+                        totalHours = "Error";
+                    }
+                    else
+                    {
+                        /*
+                        
+                        Once the verification it the LeaveHours and AdditionalHours are added we can unblock the following code!
+
+                        string leaveTime = sheet.LeaveHours.ToString().Trim();
+                        int leaveHour = Convert.ToInt16(leaveTime.Split(':')[0]);
+                        int LeaveMinute = Convert.ToInt16(leaveTime.Split(':')[1]);
+
+                        string AdditionalHours = sheet.AdditionalHours.ToString().Trim();
+                        int addHour = Convert.ToInt16(AdditionalHours.Split(':')[0]);
+                        int addMinute = Convert.ToInt16(AdditionalHours.Split(':')[1]);
+                        */
+
+                        TimeSpan hoursWorked = lOut.Subtract(tIn);
+                        int hour = Convert.ToInt16(hoursWorked.TotalHours); // + leaveHour + addHour;
+                        int minute = Convert.ToInt16(hoursWorked.Minutes); // + leaveMinute + addMinute;
+                        totalHours = hour.ToString() + ":" + minute.ToString();
+                    }
+                    Debug.WriteLine("TotalHours from the first 2 punches :"+ totalHours);
+                    return totalHours;
                 }
+
+                else if (!String.IsNullOrEmpty(sheet.TimeIn.ToString().Trim()) && !sheet.TimeIn.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(sheet.OutForLunch.ToString().Trim()) && !sheet.OutForLunch.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(sheet.InFromLunch.ToString().Trim()) && !sheet.InFromLunch.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(sheet.TimeOut.ToString().Trim()) && !sheet.TimeOut.ToString().Trim().Equals("0:00"))
+                {
+                    Debug.WriteLine("Calculating all times");
+                    DateTime tIn = RoundToNearest(DateTime.Parse(sheet.TimeIn), TimeSpan.FromMinutes(15)); ;
+                    DateTime lOut = RoundToNearest(DateTime.Parse(sheet.OutForLunch), TimeSpan.FromMinutes(15));
+                    DateTime lIn = RoundToNearest(DateTime.Parse(sheet.InFromLunch), TimeSpan.FromMinutes(15));
+                    DateTime tOut = RoundToNearest(DateTime.Parse(sheet.TimeOut), TimeSpan.FromMinutes(15));
+                    //used to view the incoming values
+                    Debug.WriteLine("Clocked in at " + tIn + " in 4 Punches");
+                    Debug.WriteLine("Clocked out for lunch at " + lOut + " in 4 Punches");
+                    Debug.WriteLine("Clocked in from lunch at " + lIn + " in 4 Punches");
+                    Debug.WriteLine("Clocked out at " + tOut + " in 4 Punches");
+                    string totalHours;
+                    if (tIn > lOut || lOut > lIn || lIn > tOut)
+                    {
+                        totalHours = "Error";
+                    }
+                    else
+                    {
+                        /*
+                         
+                        Once the verification it the LeaveHours and AdditionalHours are added we can unblock the following code!
+ 
+                        string leaveTime = sheet.LeaveHours.ToString().Trim();
+                        int leaveHour = Convert.ToInt16(leaveTime.Split(':')[0]);
+                        int LeaveMinute = Convert.ToInt16(leaveTime.Split(':')[1]);
+
+                        string AdditionalHours = sheet.AdditionalHours.ToString().Trim();
+                        int addHour = Convert.ToInt16(AdditionalHours.Split(':')[0]);
+                        int addMinute = Convert.ToInt16(AdditionalHours.Split(':')[1]);
+                        */
+                        TimeSpan hoursWorked = tOut.Subtract(tIn).Subtract(lIn.Subtract(lOut));
+                        int hour = Convert.ToInt16(hoursWorked.TotalHours); // + leaveHour + addHour;
+                        int minute = Convert.ToInt16(hoursWorked.Minutes); // + leaveMinute + addMinute;
+                        Debug.WriteLine("************************************** " + hour + " ************* " + minute);
+                        totalHours = hour.ToString() + ":" + minute.ToString();
+                    }
+                    return totalHours;
+                }
+
+                else if (sheet.TimeIn.ToString().Trim().Equals("0:00") && sheet.OutForLunch.ToString().Trim().Equals("0:00") && sheet.InFromLunch.ToString().Trim().Equals("0:00") && sheet.TimeOut.ToString().Trim().Equals("0:00"))
+                {
+                    Debug.WriteLine("Skipping over empty day not filled out yet.");
+                    string totalHours;
+                    totalHours = "NoTime";
+                    return totalHours;
+                }
+
                 else
                 {
-                    TimeSpan hoursWorked = tOut.Subtract(tIn).Subtract(lIn.Subtract(lOut));
-                    int hour = Convert.ToInt16(hoursWorked.TotalHours);
-                    int minute = Convert.ToInt16(hoursWorked.Minutes);
-                    totalHours = hour.ToString() + ":" + minute.ToString();
+                    Debug.WriteLine("Sending 'Error' hours for the day because punches are missing. only gets called for 1 punch and 3 punches");
+                    string totalHours;
+                    totalHours = "Error";
+                    return totalHours;
                 }
-                return totalHours;
+
             }
             catch (ArgumentException ae)
             {
+                Debug.WriteLine(ae);
                 return "";
             }
         }
