@@ -182,6 +182,7 @@ namespace Timesheet.Controllers
                     {
                         timeOut = model.TimeOut;
                     }
+                    Debug.WriteLine(model.TimeIn);
                     model.Id = model.Id;
                     model.WeekEnding = model.WeekEnding;
                     model.Date = model.Date;
