@@ -179,9 +179,9 @@
             <th>Approved</th>
             <th>Emp ID#</th>
         </tr>
-        @{ for (int i = 0; i < 7; i++)
-           {
-                using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post))
+        @{using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post))
+            {
+                for(int i = 0;0 < 7; i++)
                 {
                 <tr>
                     <!--Converted some of the textboxes to time input to reduce user error-->
@@ -257,12 +257,9 @@
                     </td>
                     <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                     <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                    <td>@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "display: none; width: 75px" })</td>
-                    <td><input id="submit" type="submit" value="Save" /></td>
+                    <td>@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "display: none; width: 75px" })</td>                  
                 </tr>
-                }
-            }
-        }
+                }                       
                     <tr>
                         <th colspan="8">Total Absent Hours</th>
                         <td><input type="text" name="totalAbsent" /></td>
@@ -288,7 +285,10 @@
                                 <td bgcolor="yellow"> @totalweekly </td>
                             }
                         }
+                         <td><input id="submit" type="submit" value="Save" /></td>
                     </tr>
+            }
+        }     
         <tr>
             <!--Displays the total overtime-->
             <th colspan="11">Overtime hours x1.5 to be added to prior FLSA comp balance.</th>
