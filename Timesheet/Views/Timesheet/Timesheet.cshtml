@@ -196,16 +196,16 @@
                     <td>Html.TextBoxFor(model => model.LeaveHours, new { Value = tsheets[i].LeaveHours.ToString().Trim(), style = "width: 50px;" })</td>
                     <td>Html.TextBoxFor(model => model.AdditionalHours, new { Value = tsheets[i].AdditionalHours.ToString().Trim(), style = "width: 75px;" })</td>-->
 
-                    <td>@Html.TextBox("models[" + i + "].ID", new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                    <td>@Html.TextBox("models[" + i + "].WeekEnding", new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                    <td>@Html.TextBox("models[" + i + "].Date", new { @Value = @tsheets[i].Date.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                    <td>@Html.TextBox("models[" + i + "].TimeIn", new { type = "time", Value = @tsheets[i].TimeIn.ToString().Trim(), style = "width: 100px;" })</td>
-                    <td>@Html.TextBox("models[" + i + "].OutForLunch", new { type = "time", Value = @tsheets[i].OutForLunch.ToString().Trim(), style = "width: 100px;" })</td>
-                    <td>@Html.TextBox("models[" + i + "].InFromLunch", new { type = "time", Value = @tsheets[i].InFromLunch.ToString().Trim(), style = "width: 100px;" })</td>
-                    <td>@Html.TextBox("models[" + i + "].TimeOut", new { type = "time", Value = @tsheets[i].TimeOut.ToString().Trim(), style = "width: 100px;" })</td>
-                    <td>@Html.TextBox("models[" + i + "].LeaveId", new { @Value = @tsheets[i].LeaveId.ToString().Trim(), style = "width: 75px;" })</td>
-                    <td>@Html.TextBox("models[" + i + "]", new { @Value = @tsheets[i].LeaveHours.ToString().Trim(), style = "width: 50px;" })</td>
-                    <td>@Html.TextBox("models[" + i + "].AdditionalHours", new { @Value = @tsheets[i].AdditionalHours.ToString().Trim(), style = "width: 75px;" })
+                    <td>@Html.TextBox("models[" + i + "].ID", tsheets[i].Id.ToString().Trim(),new {@readonly = "readonly", style = "width: 100px;" })</td>
+                    <td>@Html.TextBox("models[" + i + "].WeekEnding", tsheets[i].WeekEnding.ToString().Trim(), new {@readonly = "readonly", style = "width: 100px;" })</td>
+                    <td>@Html.TextBox("models[" + i + "].Date", tsheets[i].Date.ToString().Trim(), new { @readonly = "readonly", style = "width: 100px;" })</td>
+                    <td>@Html.TextBox("models[" + i + "].TimeIn", tsheets[i].TimeIn.ToString().Trim(), new {type = "time", style = "width: 100px;" })</td>
+                    <td>@Html.TextBox("models[" + i + "].OutForLunch", tsheets[i].OutForLunch.ToString().Trim(), new { type = "time", style = "width: 100px;" })</td>
+                    <td>@Html.TextBox("models[" + i + "].InFromLunch", tsheets[i].InFromLunch.ToString().Trim(), new { type = "time", style = "width: 100px;" })</td>
+                    <td>@Html.TextBox("models[" + i + "].TimeOut", tsheets[i].TimeOut.ToString().Trim(), new { type = "time", style = "width: 100px;" })</td>
+                    <td>@Html.TextBox("models[" + i + "].LeaveId", tsheets[i].LeaveId.ToString().Trim(), new { style = "width: 75px;" })</td>
+                    <td>@Html.TextBox("models[" + i + "]",  tsheets[i].LeaveHours.ToString().Trim(), new { style = "width: 50px;" })</td>
+                    <td>@Html.TextBox("models[" + i + "].AdditionalHours", tsheets[i].AdditionalHours.ToString().Trim(), new { style = "width: 75px;" })
 
                     @{ /** Calculates the hours worked for the day and check the return from TimeSheet.CalculateTotalHoursWorked to see if it is the first time through with no data, if its got 1 or 3 punches, or if 2 or 4 punches. **/
                         string TotalHoursWorked = tsheets[i].CalculateTotalHoursWorked(tsheets[i]);
@@ -270,12 +270,12 @@
                     <td>Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { Value = tsheets[i].AuthorizedBySupervisor.ToString().Trim(), readonly = "readonly", style = "width: 75px;" })</td>
                     <td>Html.TextBoxFor(model => model.EmpId, new { Value = tsheets[i].EmpId.ToString().Trim(), readonly = "readonly", style = "display: none; width: 75px" })</td>-->
                     
-                    <td>@Html.TextBox("models[" + i + "].Submitted", new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                    <td>@Html.TextBox("models[" + i + "].AuthorizedBySupervisor", new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                    <td>@Html.TextBox("models[" + i + "].EmpId", new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "display: none; width: 75px" })</td>
+                    <td>@Html.TextBox("models[" + i + "].Submitted", tsheets[i].Submitted.ToString().Trim(), new { @readonly = "readonly", style = "width: 75px;" })</td>
+                    <td>@Html.TextBox("models[" + i + "].AuthorizedBySupervisor",tsheets[i].AuthorizedBySupervisor.ToString().Trim(), new { @readonly = "readonly", style = "width: 75px;" })</td>
+                    <td>@Html.TextBox("models[" + i + "].EmpId",tsheets[i].EmpId.ToString().Trim(), new { @readonly = "readonly", style = "display: none; width: 75px" })</td>
 </tr>
                 }                       
-                    <tr>
+                <tr>
                         <th colspan="8">Total Absent Hours</th>
                         <td><input type="text" name="totalAbsent" /></td>
                         <th>Total Weekly Hours</th>
