@@ -25,7 +25,7 @@ namespace Timesheet.Controllers
             Login log = new Login();
             if (!log.ValidateLogin(model.Username, model.Password))
             {
-                string error = "Invalid user.";
+                string error = "Invalid username or Password. Please try again.";
                 Session["Error"] = error;
                 return RedirectToAction("Index", "Login");
             }

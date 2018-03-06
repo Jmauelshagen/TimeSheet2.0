@@ -1,4 +1,5 @@
 ﻿@using Timesheet.Models
+@using System.Diagnostics
 @model Timesheet.Models.TimeSheet
 @using System.Diagnostics
 
@@ -25,7 +26,7 @@
 </head>
 <body>
     <!--Get employee, time sheet list and message objects from the session.-->
-    @{var emp = (Employee)Session["Employee"];
+    @{  var emp = (Employee)Session["Employee"];
         var reportTimeList = (List<TimeSheet>)Session["TimeSheetList"];
         var message = (string)Session["Message"];
     }
@@ -54,8 +55,8 @@
                   "-Select A Date-",
                   new { @class = "form-control" })
 
-            <button type="submit">Search</button>
-        }
+        <button type="submit">Search</button>
+}
         <br />
         <!--Display message content if it exists.-->
         @{
@@ -167,18 +168,20 @@
                 }
 
             }
-
         </table>
         <br />
         <!--Forms to approve or deny time sheet.-->
         @using (Html.BeginForm("Approve", "Reports", FormMethod.Post, new { role = "form" }))
-        {
-            <button type="submit">Approve</button>
-        }
+    {
+        <button type="submit">Approve</button>
+}
         @using (Html.BeginForm("Deny", "Reports", FormMethod.Post, new { role = "form" }))
-        {
-            <button type="submit">Deny</button>
-        }
+    {
+        <button type="submit">Deny</button>
+}
+        <br />
+        <!--Like to go back-->
+        <a href="#" onclick="history.back();">Back</a>
         <br />
         <!--Log out link.-->
         <a href="@Url.Action("LogOut","Login")">LogOut</a>
