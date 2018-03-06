@@ -244,10 +244,7 @@ namespace Timesheet.Models
                     }
                     else
                     {
-                        /*
-                        
-                        Once the verification it the LeaveHours and AdditionalHours are added we can unblock the following code!
-
+                        /*Once the verification it the LeaveHours and AdditionalHours are added we can unblock the following code!*/
                         string leaveTime = sheet.LeaveHours.ToString().Trim();
                         int leaveHour = Convert.ToInt16(leaveTime.Split(':')[0]);
                         int LeaveMinute = Convert.ToInt16(leaveTime.Split(':')[1]);
@@ -255,12 +252,13 @@ namespace Timesheet.Models
                         string AdditionalHours = sheet.AdditionalHours.ToString().Trim();
                         int addHour = Convert.ToInt16(AdditionalHours.Split(':')[0]);
                         int addMinute = Convert.ToInt16(AdditionalHours.Split(':')[1]);
-                        */
+                        
 
                         TimeSpan hoursWorked = lOut.Subtract(tIn);
-                        int hour = Convert.ToInt16(Math.Truncate(hoursWorked.TotalHours)); // + leaveHour + addHour;
-                        int minute = Convert.ToInt16(hoursWorked.Minutes); // + leaveMinute + addMinute;
+                        int hour = Convert.ToInt16(Math.Truncate(hoursWorked.TotalHours + leaveHour + addHour)); // + leaveHour + addHour;
+                        int minute = Convert.ToInt16(hoursWorked.Minutes + LeaveMinute + addMinute); // + leaveMinute + addMinute;
                         totalHours = hour.ToString() + ":" + minute.ToString();
+                        Debug.WriteLine(hoursWorked + "************* " + hoursWorked.TotalHours + "************************* " + hour + " ************* " + minute + "leave time " + leaveTime + " add time " + AdditionalHours);                        
                     }
                     Debug.WriteLine("TotalHours from the first 2 punches :"+ totalHours);
                     return totalHours;
@@ -285,10 +283,7 @@ namespace Timesheet.Models
                     }
                     else
                     {
-                        /*
-                         
-                        Once the verification it the LeaveHours and AdditionalHours are added we can unblock the following code!
- 
+                        /*Once the verification it the LeaveHours and AdditionalHours are added we can unblock the following code!*/ 
                         string leaveTime = sheet.LeaveHours.ToString().Trim();
                         int leaveHour = Convert.ToInt16(leaveTime.Split(':')[0]);
                         int LeaveMinute = Convert.ToInt16(leaveTime.Split(':')[1]);
@@ -296,11 +291,11 @@ namespace Timesheet.Models
                         string AdditionalHours = sheet.AdditionalHours.ToString().Trim();
                         int addHour = Convert.ToInt16(AdditionalHours.Split(':')[0]);
                         int addMinute = Convert.ToInt16(AdditionalHours.Split(':')[1]);
-                        */
+                        
                         TimeSpan hoursWorked = tOut.Subtract(tIn).Subtract(lIn.Subtract(lOut));
-                        int hour = Convert.ToInt16(Math.Truncate(hoursWorked.TotalHours)); // + leaveHour + addHour;
-                        int minute = Convert.ToInt16(hoursWorked.Minutes); // + leaveMinute + addMinute;
-                        Debug.WriteLine(hoursWorked + "************* " +hoursWorked.TotalHours + "************************* " + hour + " ************* " + minute);
+                        int hour = Convert.ToInt16(Math.Truncate(hoursWorked.TotalHours + leaveHour + addHour)); // + leaveHour + addHour;
+                        int minute = Convert.ToInt16(hoursWorked.Minutes + LeaveMinute + addMinute); // + leaveMinute + addMinute;
+                        Debug.WriteLine(hoursWorked + "************* " +hoursWorked.TotalHours + "************************* " + hour + " ************* " + minute + "leave time " + leaveTime + " add time " + AdditionalHours);
                         totalHours = hour.ToString() + ":" + minute.ToString();
                     }
                     return totalHours;

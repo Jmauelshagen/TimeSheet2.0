@@ -73,7 +73,7 @@ namespace Timesheet.Controllers
             return RedirectToAction("Timesheet", "Timesheet");
         }
 
-        /*[HttpPost]
+        [HttpPost]
         public ActionResult SaveTimeSheet(TimeSheet model)
         {
             try
@@ -110,21 +110,21 @@ namespace Timesheet.Controllers
                     {
                         timeOut = model.TimeOut;
                     }
-                    sheet.Id = model.Id;
-                    sheet.WeekEnding = model.WeekEnding;
-                    sheet.Date = model.Date;
-                    sheet.TimeIn = timeIn;
-                    sheet.OutForLunch = outForLunch;
-                    sheet.InFromLunch = inFromLunch;
-                    sheet.TimeOut = timeOut;
-                    sheet.LeaveId = model.LeaveId;
-                    sheet.LeaveHours = model.LeaveHours;
-                    sheet.AdditionalHours = model.AdditionalHours;
-                    sheet.TotalHoursWorked = model.TotalHoursWorked;
-                    sheet.Submitted = model.Submitted;
-                    sheet.AuthorizedBySupervisor = model.AuthorizedBySupervisor;
-                    sheet.EmpId = model.EmpId;
-                    sheet.UpdateTimeSheet(sheet);
+                    tsheets[i].Id = model.Id;
+                    tsheets[i].WeekEnding = model.WeekEnding;
+                    tsheets[i].Date = model.Date;
+                    tsheets[i].TimeIn = timeIn;
+                    tsheets[i].OutForLunch = outForLunch;
+                    tsheets[i].InFromLunch = inFromLunch;
+                    tsheets[i].TimeOut = timeOut;
+                    tsheets[i].LeaveId = model.LeaveId;
+                    tsheets[i].LeaveHours = model.LeaveHours;
+                    tsheets[i].AdditionalHours = model.AdditionalHours;
+                    tsheets[i].TotalHoursWorked = model.TotalHoursWorked;
+                    tsheets[i].Submitted = model.Submitted;
+                    tsheets[i].AuthorizedBySupervisor = model.AuthorizedBySupervisor;
+                    tsheets[i].EmpId = model.EmpId;
+                    tsheets[i].UpdateTimeSheet();
                 }
                 //Instantiate TimeSheet object with data from form
                 TimeSheet sheets = new TimeSheet();                
@@ -143,9 +143,9 @@ namespace Timesheet.Controllers
                 Debug.WriteLine(ex);
                 return RedirectToAction("Timesheet", "Timesheet");
             }
-        }*/
+        }
 
-        [HttpPost]
+       /* [HttpPost]
         public ActionResult SaveTimeSheet(List<TimeSheet> models)
         {
             try
@@ -216,7 +216,7 @@ namespace Timesheet.Controllers
                 Debug.WriteLine(ex);
                 return RedirectToAction("Timesheet", "Timesheet");
             }
-        }
+        }*/
 
         [HttpPost]
         public ActionResult SaveDailyTimeSheet(TimeSheet model)
