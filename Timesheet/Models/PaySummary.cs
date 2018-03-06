@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 
@@ -54,14 +55,23 @@ namespace Timesheet.Models
             {
 
                 string hoursWorked = sheet.CalculateTotalHoursWorked(sheet);
-                hour += Convert.ToInt16(hoursWorked.Split(':')[0]);
-                minute += Convert.ToInt16(hoursWorked.Split(':')[1]);
-                if(minute >= 60)
+                if (hoursWorked.Equals("NoTime"))
                 {
-                    minute = minute - 60;
-                    hour = hour + 1;
+
                 }
-                totalHours = hour + ":" + minute;
+                else if (!String.IsNullOrEmpty(hoursWorked) && !hoursWorked.Equals("Error"))
+                {
+                    hour += Convert.ToInt16(hoursWorked.Split(':')[0]);
+                    minute += Convert.ToInt16(hoursWorked.Split(':')[1]);
+                    if (minute >= 60)
+                    {
+                        minute = minute - 60;
+                        hour = hour + 1;
+                    }
+                    totalHours = hour + ":" + minute;
+                    Debug.WriteLine("Running total: " + totalHours);
+                    Debug.WriteLine("Running total by the hours: " + hour);
+                }
 
                 if (sheet.Submitted.Equals("True") && sheet.AuthorizedBySupervisor.Equals("True"))
                 {

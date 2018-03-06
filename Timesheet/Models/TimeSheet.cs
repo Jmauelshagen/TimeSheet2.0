@@ -258,7 +258,7 @@ namespace Timesheet.Models
                         */
 
                         TimeSpan hoursWorked = lOut.Subtract(tIn);
-                        int hour = Convert.ToInt16(hoursWorked.TotalHours); // + leaveHour + addHour;
+                        int hour = Convert.ToInt16(Math.Truncate(hoursWorked.TotalHours)); // + leaveHour + addHour;
                         int minute = Convert.ToInt16(hoursWorked.Minutes); // + leaveMinute + addMinute;
                         totalHours = hour.ToString() + ":" + minute.ToString();
                     }
@@ -298,9 +298,9 @@ namespace Timesheet.Models
                         int addMinute = Convert.ToInt16(AdditionalHours.Split(':')[1]);
                         */
                         TimeSpan hoursWorked = tOut.Subtract(tIn).Subtract(lIn.Subtract(lOut));
-                        int hour = Convert.ToInt16(hoursWorked.TotalHours); // + leaveHour + addHour;
+                        int hour = Convert.ToInt16(Math.Truncate(hoursWorked.TotalHours)); // + leaveHour + addHour;
                         int minute = Convert.ToInt16(hoursWorked.Minutes); // + leaveMinute + addMinute;
-                        Debug.WriteLine("************************************** " + hour + " ************* " + minute);
+                        Debug.WriteLine(hoursWorked + "************* " +hoursWorked.TotalHours + "************************* " + hour + " ************* " + minute);
                         totalHours = hour.ToString() + ":" + minute.ToString();
                     }
                     return totalHours;
