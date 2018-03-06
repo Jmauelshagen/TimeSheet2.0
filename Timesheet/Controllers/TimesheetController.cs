@@ -78,60 +78,58 @@ namespace Timesheet.Controllers
         {
             try
             {
+                //Pull the employee object from the session.
                 Employee emp = (Employee)Session["Employee"];
                 List<string> dates = (List<string>)Session["Dates"];
-                List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
-                for(int i = 0; i < 7; i++)
+                Debug.WriteLine((string)model.TimeIn + " 1 in the weekly save result");
+                Debug.WriteLine((string)model.OutForLunch + " 2 in the weekly save result");
+                Debug.WriteLine((string)model.InFromLunch + " 3 in the weekly save result");
+                Debug.WriteLine((string)model.TimeOut + " 4 in the weekly save result");
+
+                string timeIn = "";
+                string outForLunch = "";
+                string inFromLunch = "";
+                string timeOut = "";
+
+                if (!String.IsNullOrEmpty(model.TimeIn) && !model.TimeIn.ToString().Trim().Equals("0:00"))
                 {
-                    //Pull the employee object from the session.                   
-                    Debug.WriteLine((string)model.TimeIn + " 1 in the weekly save result");
-                    Debug.WriteLine((string)model.OutForLunch + " 2 in the weekly save result");
-                    Debug.WriteLine((string)model.InFromLunch + " 3 in the weekly save result");
-                    Debug.WriteLine((string)model.TimeOut + " 4 in the weekly save result");
-
-                    string timeIn = "";
-                    string outForLunch = "";
-                    string inFromLunch = "";
-                    string timeOut = "";
-
-                    if (!String.IsNullOrEmpty(tsheets[i].TimeIn) && !model.TimeIn.ToString().Trim().Equals("0:00"))
-                    {
-                        timeIn = model.TimeIn;
-                    }
-                    if (!String.IsNullOrEmpty(model.OutForLunch) && !model.OutForLunch.ToString().Trim().Equals("0:00"))
-                    {
-                        outForLunch = model.OutForLunch;
-                    }
-                    if (!String.IsNullOrEmpty(model.InFromLunch) && !model.InFromLunch.ToString().Trim().Equals("0:00"))
-                    {
-                        inFromLunch = model.InFromLunch;
-                    }
-                    if (!String.IsNullOrEmpty(model.TimeOut) && !model.TimeOut.ToString().Trim().Equals("0:00"))
-                    {
-                        timeOut = model.TimeOut;
-                    }
-                    tsheets[i].Id = model.Id;
-                    tsheets[i].WeekEnding = model.WeekEnding;
-                    tsheets[i].Date = model.Date;
-                    tsheets[i].TimeIn = timeIn;
-                    tsheets[i].OutForLunch = outForLunch;
-                    tsheets[i].InFromLunch = inFromLunch;
-                    tsheets[i].TimeOut = timeOut;
-                    tsheets[i].LeaveId = model.LeaveId;
-                    tsheets[i].LeaveHours = model.LeaveHours;
-                    tsheets[i].AdditionalHours = model.AdditionalHours;
-                    tsheets[i].TotalHoursWorked = model.TotalHoursWorked;
-                    tsheets[i].Submitted = model.Submitted;
-                    tsheets[i].AuthorizedBySupervisor = model.AuthorizedBySupervisor;
-                    tsheets[i].EmpId = model.EmpId;
-                    tsheets[i].UpdateTimeSheet();
+                    timeIn = model.TimeIn;
                 }
+                if (!String.IsNullOrEmpty(model.OutForLunch) && !model.OutForLunch.ToString().Trim().Equals("0:00"))
+                {
+                    outForLunch = model.OutForLunch;
+                }
+                if (!String.IsNullOrEmpty(model.InFromLunch) && !model.InFromLunch.ToString().Trim().Equals("0:00"))
+                {
+                    inFromLunch = model.InFromLunch;
+                }
+                if (!String.IsNullOrEmpty(model.TimeOut) && !model.TimeOut.ToString().Trim().Equals("0:00"))
+                {
+                    timeOut = model.TimeOut;
+                }
+
                 //Instantiate TimeSheet object with data from form
-                TimeSheet sheets = new TimeSheet();                
+                TimeSheet sheet = new TimeSheet
+                {
+                    Id = model.Id,
+                    WeekEnding = model.WeekEnding,
+                    Date = model.Date,
+                    TimeIn = timeIn,
+                    OutForLunch = outForLunch,
+                    InFromLunch = inFromLunch,
+                    TimeOut = timeOut,
+                    LeaveId = model.LeaveId,
+                    LeaveHours = model.LeaveHours,
+                    AdditionalHours = model.AdditionalHours,
+                    TotalHoursWorked = model.TotalHoursWorked,
+                    Submitted = model.Submitted,
+                    AuthorizedBySupervisor = model.AuthorizedBySupervisor,
+                    EmpId = model.EmpId
+                };
+                sheet.UpdateTimeSheet(sheet);
 
                 //Get list of TimeSheet objects based on date and employee id and add list to session
-
-                tsheets = sheets.GetTimeSheetByWeek(emp.EmpId, dates);
+                List<TimeSheet> tsheets = sheet.GetTimeSheetByWeek(emp.EmpId, dates);
                 Session["TimeSheetData"] = tsheets;
 
                 //Return the TimeSheet view
@@ -145,78 +143,78 @@ namespace Timesheet.Controllers
             }
         }
 
-       /* [HttpPost]
-        public ActionResult SaveTimeSheet(List<TimeSheet> models)
-        {
-            try
-            {
-                Employee emp = (Employee)Session["Employee"];
-                List<string> dates = (List<string>)Session["Dates"];
-                List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
-                foreach (TimeSheet model in models)
-                {
-                    //Pull the employee object from the session.                   
-                    Debug.WriteLine((string)model.TimeIn + " 1 in the weekly save result");
-                    Debug.WriteLine((string)model.OutForLunch + " 2 in the weekly save result");
-                    Debug.WriteLine((string)model.InFromLunch + " 3 in the weekly save result");
-                    Debug.WriteLine((string)model.TimeOut + " 4 in the weekly save result");
+        /* [HttpPost]
+         public ActionResult SaveTimeSheet(List<TimeSheet> models)
+         {
+             try
+             {
+                 Employee emp = (Employee)Session["Employee"];
+                 List<string> dates = (List<string>)Session["Dates"];
+                 List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
+                 foreach (TimeSheet model in models)
+                 {
+                     //Pull the employee object from the session.                   
+                     Debug.WriteLine((string)model.TimeIn + " 1 in the weekly save result");
+                     Debug.WriteLine((string)model.OutForLunch + " 2 in the weekly save result");
+                     Debug.WriteLine((string)model.InFromLunch + " 3 in the weekly save result");
+                     Debug.WriteLine((string)model.TimeOut + " 4 in the weekly save result");
 
-                    string timeIn = "";
-                    string outForLunch = "";
-                    string inFromLunch = "";
-                    string timeOut = "";
+                     string timeIn = "";
+                     string outForLunch = "";
+                     string inFromLunch = "";
+                     string timeOut = "";
 
-                    if (!String.IsNullOrEmpty(model.TimeIn) && !model.TimeIn.ToString().Trim().Equals("0:00"))
-                    {
-                        timeIn = model.TimeIn;
-                    }
-                    if (!String.IsNullOrEmpty(model.OutForLunch) && !model.OutForLunch.ToString().Trim().Equals("0:00"))
-                    {
-                        outForLunch = model.OutForLunch;
-                    }
-                    if (!String.IsNullOrEmpty(model.InFromLunch) && !model.InFromLunch.ToString().Trim().Equals("0:00"))
-                    {
-                        inFromLunch = model.InFromLunch;
-                    }
-                    if (!String.IsNullOrEmpty(model.TimeOut) && !model.TimeOut.ToString().Trim().Equals("0:00"))
-                    {
-                        timeOut = model.TimeOut;
-                    }
-                    Debug.WriteLine(model.TimeIn);
-                    model.Id = model.Id;
-                    model.WeekEnding = model.WeekEnding;
-                    model.Date = model.Date;
-                    model.TimeIn = timeIn;
-                    model.OutForLunch = outForLunch;
-                    model.InFromLunch = inFromLunch;
-                    model.TimeOut = timeOut;
-                    model.LeaveId = model.LeaveId;
-                    model.LeaveHours = model.LeaveHours;
-                    model.AdditionalHours = model.AdditionalHours;
-                    model.TotalHoursWorked = model.TotalHoursWorked;
-                    model.Submitted = model.Submitted;
-                    model.AuthorizedBySupervisor = model.AuthorizedBySupervisor;
-                    model.EmpId = model.EmpId;
-                    model.UpdateTimeSheet(model);
-                }
-                //Instantiate TimeSheet object with data from form
-                TimeSheet sheets = new TimeSheet();
+                     if (!String.IsNullOrEmpty(model.TimeIn) && !model.TimeIn.ToString().Trim().Equals("0:00"))
+                     {
+                         timeIn = model.TimeIn;
+                     }
+                     if (!String.IsNullOrEmpty(model.OutForLunch) && !model.OutForLunch.ToString().Trim().Equals("0:00"))
+                     {
+                         outForLunch = model.OutForLunch;
+                     }
+                     if (!String.IsNullOrEmpty(model.InFromLunch) && !model.InFromLunch.ToString().Trim().Equals("0:00"))
+                     {
+                         inFromLunch = model.InFromLunch;
+                     }
+                     if (!String.IsNullOrEmpty(model.TimeOut) && !model.TimeOut.ToString().Trim().Equals("0:00"))
+                     {
+                         timeOut = model.TimeOut;
+                     }
+                     Debug.WriteLine(model.TimeIn);
+                     model.Id = model.Id;
+                     model.WeekEnding = model.WeekEnding;
+                     model.Date = model.Date;
+                     model.TimeIn = timeIn;
+                     model.OutForLunch = outForLunch;
+                     model.InFromLunch = inFromLunch;
+                     model.TimeOut = timeOut;
+                     model.LeaveId = model.LeaveId;
+                     model.LeaveHours = model.LeaveHours;
+                     model.AdditionalHours = model.AdditionalHours;
+                     model.TotalHoursWorked = model.TotalHoursWorked;
+                     model.Submitted = model.Submitted;
+                     model.AuthorizedBySupervisor = model.AuthorizedBySupervisor;
+                     model.EmpId = model.EmpId;
+                     model.UpdateTimeSheet(model);
+                 }
+                 //Instantiate TimeSheet object with data from form
+                 TimeSheet sheets = new TimeSheet();
 
-                //Get list of TimeSheet objects based on date and employee id and add list to session
+                 //Get list of TimeSheet objects based on date and employee id and add list to session
 
-                tsheets = sheets.GetTimeSheetByWeek(emp.EmpId, dates);
-                Session["TimeSheetData"] = tsheets;
+                 tsheets = sheets.GetTimeSheetByWeek(emp.EmpId, dates);
+                 Session["TimeSheetData"] = tsheets;
 
-                //Return the TimeSheet view
-                return RedirectToAction("Timesheet", "Timesheet");
+                 //Return the TimeSheet view
+                 return RedirectToAction("Timesheet", "Timesheet");
 
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-                return RedirectToAction("Timesheet", "Timesheet");
-            }
-        }*/
+             }
+             catch (Exception ex)
+             {
+                 Debug.WriteLine(ex);
+                 return RedirectToAction("Timesheet", "Timesheet");
+             }
+         }*/
 
         [HttpPost]
         public ActionResult SaveDailyTimeSheet(TimeSheet model)
