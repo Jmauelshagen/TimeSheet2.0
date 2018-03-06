@@ -20,18 +20,19 @@
 
     //Calculating the total Weekly Hours worked
     string totalHours = "";
+    string totalWorked = "";
     string totalweekly = "";
-    String totalabsent = "";
+    string totalabsent = "";
     int Error = 0;
     int hour = 0;
     int hours = 0;
     int minute = 0;
     int minutes = 0;
 
-    /**Calculates the total hours for the week**/
+    /**Calculates the total hours workecd for the week**/
     foreach (TimeSheet sheet in tsheets)
     {
-        string hoursWorked = sheet.CalculateTotalHoursWorked(sheet);
+        string hoursWorked = sheet.CalculateWorkedHours(sheet);
         if (hoursWorked.Equals("NoTime"))
         {
 
@@ -40,16 +41,16 @@
         {
             hours += Convert.ToInt16(hoursWorked.Split(':')[0]);
             minutes += Convert.ToInt16(hoursWorked.Split(':')[1]);
-            if (minutes >= 60)
+            while (minutes >= 60)
             {
                 minutes = minutes - 60;
                 hours = hours + 1;
-            }               
+            }
             totalHours = hours + ":" + minutes;
-            totalweekly = totalHours;
+            totalWorked = totalHours;
 
-            Debug.WriteLine("Running total: " + totalHours);
-            Debug.WriteLine("Running total by the hours: " + hours);
+            Debug.WriteLine("Running Worked total: " + totalWorked);
+            Debug.WriteLine("Running Worked total by the hours: " + hours);
         }
         else
         {
@@ -90,6 +91,39 @@
         }
     }
 
+    hours = 0;
+    minutes = 0;
+
+    /**Calculates the total hours for the week**/
+    foreach (TimeSheet sheet in tsheets)
+    {
+        string hoursWorked = sheet.CalculateTotalHoursWorked(sheet);
+
+        if (hoursWorked.Equals("NoTime"))
+        {
+
+        }
+        else if (!String.IsNullOrEmpty(hoursWorked) && !hoursWorked.Equals("Error"))
+        {
+            hours += Convert.ToInt16(hoursWorked.Split(':')[0]);
+            minutes += Convert.ToInt16(hoursWorked.Split(':')[1]);
+            Debug.WriteLine("Here is the minutes : " + minutes);
+            while (minutes >= 60)
+            {
+                minutes = minutes - 60;
+                hours = hours + 1;
+            }
+            totalHours = hours + ":" + minutes;
+            totalweekly = totalHours;
+
+            Debug.WriteLine("Running total: " + totalHours);
+            Debug.WriteLine("Running total by the hours: " + hours);
+        }
+        else
+        {
+            Error = Error + 1;
+        }
+    }
 
     /**Calculates total overtime that was made**/
     string overTime = "0";
@@ -240,7 +274,7 @@
                                 <td>@Html.TextBoxFor(model => model.LeaveHours, new { @Value = @tsheets[i].LeaveHours.ToString().Trim(), pattern = "(1[0-2]|0?[0-9]):([14][5]|[03][0])$", title = "Please enter time as hours and minutes in format ##:## rounded to nearest 15", style = "width: 50px;" })</td>
                                 <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim(), pattern = "(1[0-2]|0?[0-9]):([14][5]|[03][0])$$", title = "Please enter time as hours and minutes in format ##:## rounded to nearest 15", style = "width: 75px;" })</td>
                                 @{ /** Calculates the hours worked for the day and check the return from TimeSheet.CalculateTotalHoursWorked to see if it is the first time through with no data, if its got 1 or 3 punches, or if 2 or 4 punches. **/
-                                    string TotalHoursWorked = tsheets[i].CalculateTotalHoursWorked(tsheets[i]);
+                                    string TotalHoursWorked = tsheets[i].CalculateWorkedHours(tsheets[i]);
                                     Debug.WriteLine(TotalHoursWorked + "in total Hours");
                                     if (TotalHoursWorked.Equals("NoTime"))
                                     {
@@ -331,7 +365,7 @@
                                 <td>@Html.TextBoxFor(model => model.LeaveHours, new { @Value = @tsheets[i].LeaveHours.ToString().Trim(), pattern = "(1[0-2]|0?[0-9]):([14][5]|[03][0])$", title = "Please enter time as hours and minutes in format ##:## rounded to nearest 15", @readonly = "readonly", style = "width: 50px;" })</td>
                                 <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim(), pattern = "(1[0-2]|0?[0-9]):([14][5]|[03][0])$$", title = "Please enter time as hours and minutes in format ##:## rounded to nearest 15", @readonly = "readonly", style = "width: 75px;" })</td>
                                 @{ /** Calculates the hours worked for the day and check the return from TimeSheet.CalculateTotalHoursWorked to see if it is the first time through with no data, if its got 1 or 3 punches, or if 2 or 4 punches. **/
-                                    string TotalHoursWorked = tsheets[i].CalculateTotalHoursWorked(tsheets[i]);
+                                    string TotalHoursWorked = tsheets[i].CalculateWorkedHours(tsheets[i]);
                                     Debug.WriteLine(TotalHoursWorked + "in total Hours");
                                     if (TotalHoursWorked.Equals("NoTime"))
                                     {
@@ -414,7 +448,7 @@
                 }   
                 <tr>
                     <th colspan="8">Total Absent Hours</th>
-                    <td><input type="text" name="totalAbsent" value="@totalabsent"/></td>
+                    <td><input type="text" name="totalAbsent" value="@totalabsent" /></td>
                     <th>Total Weekly Hours</th>
                     <!-- code for the color warning system for total hours worked-->
                     @{
@@ -426,17 +460,19 @@
                         }
                         else if (hours >= 40)
                         {
-                                    <td bgcolor="red">@totalweekly</td>
+                            <td bgcolor="red">@totalWorked</td>
                         }
                         else if (hours < 20)
                         {
-                                    <td bgcolor="green"> @totalweekly </td>
+                            <td bgcolor="green"> @totalWorked </td>
                         }
                         else
                         {
-                                    <td bgcolor="yellow"> @totalweekly </td>
+                            <td bgcolor="yellow"> @totalWorked </td>
                         }
                     }
+                    <th> Total Weekly Hours</th>
+                    <td>@totalweekly</td>
                 </tr>
                 <tr>
                     <!--Displays the total overtime-->
