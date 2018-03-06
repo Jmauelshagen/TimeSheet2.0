@@ -20,10 +20,6 @@ namespace Timesheet.Controllers
             return View();
         }
 
-        public ActionResult Error()
-        {
-            return View();
-        }
         public ActionResult GetDailyTimeSheet()
         {
             Debug.WriteLine("In GetDailyTimeSheet");
