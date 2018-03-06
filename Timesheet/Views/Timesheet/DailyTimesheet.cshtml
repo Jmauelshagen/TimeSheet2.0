@@ -189,19 +189,19 @@
         var h = today.getHours();
         var m = today.getMinutes();
         m = checkTime(m);
-        if (document.getElementById("TimeIn").value == "0:00") {
+        if (document.getElementById("TimeIn").value == "") {
             document.getElementById("TimeIn").value = String(h) + ":" + String(m);
         }
         else {
-            if (document.getElementById("OutForLunch").value == "0:00") {
+            if (document.getElementById("OutForLunch").value == "") {
                 document.getElementById("OutForLunch").value = String(h) + ":" + String(m);
             }
             else {
-                if (document.getElementById("InFromLunch").value == "0:00") {
+                if (document.getElementById("InFromLunch").value == "") {
                     document.getElementById("InFromLunch").value = String(h) + ":" + String(m);
                 }
                 else {
-                    if (document.getElementById("TimeOut").value == "0:00") {
+                    if (document.getElementById("TimeOut").value == "") {
                         document.getElementById("TimeOut").value = String(h) + ":" + String(m);
                     }
                 }
