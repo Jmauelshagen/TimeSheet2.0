@@ -125,36 +125,36 @@
 
     <p id="Time">It is @today at @time</p>
     <p style="text-align: center; color: black;">***Remember to enter your time in HH:MM AM/PM format***</p>
-    <p style= "text-align: right; color: black;">
+    <p style="text-align: right; color: black;">
 
         <form action="@Url.Action("GetDailyTimeSheet","Timesheet")">
             <input type="submit" value="View Daily Timesheet">
-            
-        </form>
-        </p>
 
-        <!-- <a href="Url.Action("GetDailyTimeSheet","Timesheet")" class="button">View Daily Timesheet</a></p> -->
-        <!--Table to display time sheet input form.-->
-        <table style="width:100%" cellpadding="4">
-            <colgroup span="4"></colgroup>
-            <tr>
-                <th>ID #</th>
-                <th>Week end</th>
-                <th>Date</th>
-                <th>Start/ Time In</th>
-                <th>Meal/ Time Out</th>
-                <th>Meal/ Time In</th>
-                <th>Finish/ Time Out</th>
-                <th>Type of absence</th>
-                <th>Absent hours</th>
-                <th>Additional Hours</th>
-                <th>Hours Worked</th>
-                <th>Over Time</th>
-                <th>Submitted</th>
-                <th>Approved</th>
-                <th>Emp ID#</th>
-            </tr>
-            @{ for (int i = 0; i < 7; i++)
+        </form>
+    </p>
+
+    <!-- <a href="Url.Action("GetDailyTimeSheet","Timesheet")" class="button">View Daily Timesheet</a></p> -->
+    <!--Table to display time sheet input form.-->
+    <table style="width:100%" cellpadding="4">
+        <colgroup span="4"></colgroup>
+        <tr>
+            <th>ID #</th>
+            <th>Week end</th>
+            <th>Date</th>
+            <th>Start/ Time In</th>
+            <th>Meal/ Time Out</th>
+            <th>Meal/ Time In</th>
+            <th>Finish/ Time Out</th>
+            <th>Type of absence</th>
+            <th>Absent hours</th>
+            <th>Additional Hours</th>
+            <th>Hours Worked</th>
+            <th>Over Time</th>
+            <th>Submitted</th>
+            <th>Approved</th>
+            <th>Emp ID#</th>
+        </tr>
+        @{ for (int i = 0; i < 7; i++)
             {
                 using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post))
                 {
@@ -168,59 +168,59 @@
                         <td>@Html.TextBoxFor(model => model.InFromLunch, new { type = "time", Value = @tsheets[i].InFromLunch.ToString().Trim(), style = "width: 100px;" })</td>
                         <td>@Html.TextBoxFor(model => model.TimeOut, new { type = "time", Value = @tsheets[i].TimeOut.ToString().Trim(), style = "width: 100px;" })</td>
                         <td>@Html.TextBoxFor(model => model.LeaveId, new { @Value = @tsheets[i].LeaveId.ToString().Trim(), style = "width: 75px;" })</td>
-                        <td>@Html.TextBoxFor(model => model.LeaveHours, new { @Value = @tsheets[i].LeaveHours.ToString().Trim(), style = "width: 50px;" })</td>
-                        <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim(), style = "width: 75px;" })</td>
+                        <td>@Html.TextBoxFor(model => model.LeaveHours, new { @Value = @tsheets[i].LeaveHours.ToString().Trim(), style = "width: 50px;", pattern = "(1[0-2]|0?[1-9]):([14][5]|[03][0])$", title = "Please Enter time in 12 hour format ##:##  With Time rounded to nearest 15" })</td>
+                        <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim(), style = "width: 75px;", pattern = "(1[0-2]|0?[1-9]):([14][5]|[03][0])$", title = "Please Enter time in 12 hour format ##:##  With Time rounded to nearest 15" })</td>
 
                         @{ /** Calculates the hours worked for the day **/
-                        string TotalHoursWorked;
-                        Debug.WriteLine(tsheets[i].TotalHoursWorked + "in total Hours");
-                        if (!String.IsNullOrEmpty(tsheets[i].TotalHoursWorked.ToString().Trim())) //&& !tsheets[i].TotalHoursWorked.ToString().Trim().Equals("0"))
-                        {
-                            Debug.WriteLine("Passed the if");
-                            TotalHoursWorked = tsheets[i].TotalHoursWorked.ToString().Trim();
-                            <td>@TotalHoursWorked</td>
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Failed the if");
-                        TotalHoursWorked = "Error";
-                        <td bgcolor="red">@TotalHoursWorked</td>
-                }
-                        }
-                        <td>
-                            @{ /** Calculates the hours worked for the day **/
-                            Debug.WriteLine(tsheets[i].TotalHoursWorked + "in the table");
-                            string hoursWorked = tsheets[i].CalculateTotalHoursWorked(tsheets[i]);
-                            string overtime;
-                            Debug.WriteLine(hoursWorked + "   " + i + " in the table");
-                            if (!String.IsNullOrEmpty(hoursWorked))
+                            string TotalHoursWorked;
+                            Debug.WriteLine(tsheets[i].TotalHoursWorked + "in total Hours");
+                            if (!String.IsNullOrEmpty(tsheets[i].TotalHoursWorked.ToString().Trim())) //&& !tsheets[i].TotalHoursWorked.ToString().Trim().Equals("0"))
                             {
-                                hour = Convert.ToInt16(hoursWorked.Split(':')[0]);
-                                minute = Convert.ToInt16(hoursWorked.Split(':')[1]);
-                                if (minute >= 60)
-                                {
-                                    minute = minute - 60;
-                                    hour = hour + 1;
-                                }
-                                totalHours = hour + ":" + minute;
-
-                                /** Calculates and overtime for the day **/
-                                int hoursWorked2 = Convert.ToInt16(totalHours.Split(':')[0]);
-                                int minutesWorked = Convert.ToInt16(totalHours.Split(':')[1]);
-                                if (hoursWorked2 < 8)
-                                {
-                                    overtime = "0:0";
-                                }
-                                else
-                                {
-                                    overtime = (hoursWorked2 - 8) + ":" + minutesWorked;
-                                }
+                                Debug.WriteLine("Passed the if");
+                                TotalHoursWorked = tsheets[i].TotalHoursWorked.ToString().Trim();
+                                <td>@TotalHoursWorked</td>
                             }
                             else
                             {
-                                hoursWorked = "Error";
-                                overtime = "0:0";
+                                Debug.WriteLine("Failed the if");
+                                TotalHoursWorked = "Error";
+                                <td bgcolor="red">@TotalHoursWorked</td>
                             }
+                        }
+                        <td>
+                            @{ /** Calculates the hours worked for the day **/
+                                Debug.WriteLine(tsheets[i].TotalHoursWorked + "in the table");
+                                string hoursWorked = tsheets[i].CalculateTotalHoursWorked(tsheets[i]);
+                                string overtime;
+                                Debug.WriteLine(hoursWorked + "   " + i + " in the table");
+                                if (!String.IsNullOrEmpty(hoursWorked))
+                                {
+                                    hour = Convert.ToInt16(hoursWorked.Split(':')[0]);
+                                    minute = Convert.ToInt16(hoursWorked.Split(':')[1]);
+                                    if (minute >= 60)
+                                    {
+                                        minute = minute - 60;
+                                        hour = hour + 1;
+                                    }
+                                    totalHours = hour + ":" + minute;
+
+                                    /** Calculates and overtime for the day **/
+                                    int hoursWorked2 = Convert.ToInt16(totalHours.Split(':')[0]);
+                                    int minutesWorked = Convert.ToInt16(totalHours.Split(':')[1]);
+                                    if (hoursWorked2 < 8)
+                                    {
+                                        overtime = "0:0";
+                                    }
+                                    else
+                                    {
+                                        overtime = (hoursWorked2 - 8) + ":" + minutesWorked;
+                                    }
+                                }
+                                else
+                                {
+                                    hoursWorked = "Error";
+                                    overtime = "0:0";
+                                }
                             }
                             @overtime
                         </td>
@@ -229,71 +229,72 @@
                         <td>@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "display: none;" })</td>
                         <td><input class="button" id="submit" type="submit" value="Save" /></td>
                     </tr>
+                }
             }
         }
-            }
-            <tr>
-                <th colspan="8">Total Absent Hours</th>
-                <td><input type="text" name="totalAbsent" /></td>
-                <th>Total Weekly Hours</th>
-                <!-- code for the color warning system for total hours worked-->
-                @{
+        <tr>
+            <th colspan="8">Total Absent Hours</th>
+            <td><input type="text" name="totalAbsent" /></td>
+            <th>Total Weekly Hours</th>
+            <!-- code for the color warning system for total hours worked-->
+            @{
                 Debug.WriteLine("The Final weekly hours: " + totalweekly);
                 if (hours >= 40)
                 {
                     <td bgcolor="red">@totalweekly</td>
-            }
-
-            else if (hours < 20)
-            {
-                <td bgcolor="green">@totalweekly</td>
-        }
-
-        else
-        {
-            <td bgcolor="yellow"> @totalweekly</td>
-    }
-
                 }
-            <tr>
-                <!--Displays the total overtime-->
-                <th colspan="11">Overtime hours x1.5 to be added to prior FLSA comp balance.</th>
-                @{ if (!overTime.Equals(""))
+
+                else if (hours < 20)
+                {
+                    <td bgcolor="green">@totalweekly</td>
+                }
+
+                else
+                {
+                    <td bgcolor="yellow"> @totalweekly</td>
+                }
+
+            }
+        <tr>
+            <!--Displays the total overtime-->
+            <th colspan="11">Overtime hours x1.5 to be added to prior FLSA comp balance.</th>
+            @{ if (!overTime.Equals(""))
                 {
                     <td>@overTime</td>
-            }
-
-            else
-            {
-                <td></td>
-        }
                 }
-            </tr>
-        </table>
-        <br /><br />
 
-        <form action="@Url.Action("Index", "Employees")">
-            <input type="submit" value="Home">
+                else
+                {
+                    <td></td>
+                }
+            }
+        </tr>
+    </table>
+    <br /><br />
 
-        </form>
+   <form action="@Url.Action("Index", "Employees")">
+        <input type="submit" value="Home">
 
-        <!-- <a href="Url.Action("Index", "Employees")" class="button">Home</a>-->
+    </form> 
+
+    <!-- <a href="Url.Action("Index", "Employees")" class="button">Home</a>-->
+    <br />
+    <!--Submit Week button with popup validation-->
+    <!--  <form action="Html.ActionLink("SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" },
+               new { class = "button", onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })"> 
+    <input type="submit" value="Submit Week">
+
+    </form> -->
+    <button>
+        @Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new { @class = "button", @style= " text-decoration: none;", @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })
+    </button>
         <br />
-        <!--Submit Week button with popup validation-->
+    <!--Log out link-->
+    <form action="@Url.Action("LogOut", "Login")">
+        <input type="submit" value="LogOut">
 
-        <form action="@Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" },
-                 new { @class = "button", @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })" />
-        <input type="submit" value="Submit Week">
-
-        </form>
-        <!--Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new { class = "button", onclick = "return confirm('I acknowledge that the times I have inputted are correct')" }) -->
-        <br />
-        <!--Log out link-->
-        <form action="@Url.Action("LogOut", "Login")">
-            <input type="submit" value="LogOut">
-
-        </form>
-        <!-- <a href="Url.Action("LogOut", "Login")" class="button">LogOut</a> -->
+    </form>
+    <!-- <a href="Url.Action("LogOut", "Login")" class="button">LogOut</a> -->
 
 </body>
 

@@ -173,8 +173,8 @@
                             <td>@Html.TextBoxFor(model => model.InFromLunch, new { type = "time", Value = @tsheets[i].InFromLunch.ToString().Trim(), style = "width: 100px;" })</td>
                             <td>@Html.TextBoxFor(model => model.TimeOut, new { type = "time", Value = @tsheets[i].TimeOut.ToString().Trim(), style = "width: 100px;" })</td>
                             <td>@Html.TextBoxFor(model => model.LeaveId, new { @Value = @tsheets[i].LeaveId.ToString().Trim(), style = "width: 75px;" })</td>
-                            <td>@Html.TextBoxFor(model => model.LeaveHours, new { @Value = @tsheets[i].LeaveHours.ToString().Trim(), style = "width: 50px;" })</td>
-                            <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim(), style = "width: 75px;" })</td>
+                            <td>@Html.TextBoxFor(model => model.LeaveHours, new { @Value = @tsheets[i].LeaveHours.ToString().Trim(), style = "width: 50px;", pattern = "(1[0-2]|0?[1-9]):([14][5]|[03][0])$", title = "Please Enter time in 12 hour format ##:##  With Time rounded to nearest 15" })</td>
+                            <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim(), style = "width: 75px;", pattern = "(1[0-2]|0?[1-9]):([14][5]|[03][0])$", title = "Please Enter time in 12 hour format ##:##  With Time rounded to nearest 15" })</td>
 
                             @{ /** Calculates the hours worked for the day **/
                                 string TotalHoursWorked;
@@ -287,13 +287,19 @@
 
     <br />
     <!--Submit Week button with popup validation-->
-    <form action=" @Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" },
-                  new { @class = "button", @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })">
-        <input type="submit" value="Submit Week">
+    <!-- <form action=" Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" },
+                   new { class = "button", onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })">
+    <input type="submit" value="Submit Week">
 
-    </form>
-    <!--  Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new { class = "button", onclick = "return confirm('I acknowledge that the times I have inputted are correct')" }) -->
-    <br /><br />
+    </form>  -->
+
+    <button>
+        @Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new { @class = "button", @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })
+    </button>
+  
+           <br /><br />
+
+
     <!--Log out link-->
 
     <form action="@Url.Action("LogOut", "Login")">
