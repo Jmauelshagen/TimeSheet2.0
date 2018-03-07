@@ -19,12 +19,6 @@ namespace Timesheet.Controllers
         {
             return View();
         }
-        /*
-        public ActionResult QuickTimeStamp()
-        {
-            return View();
-        }
-        */
         public ActionResult GetDailyTimeSheet()
         {
             Debug.WriteLine("In GetDailyTimeSheet");
@@ -289,7 +283,7 @@ namespace Timesheet.Controllers
                             EmpId = tsheets[i].EmpId
                         };
                         sheet.UpdateTimeSheet(sheet);
-                        message = "1st punch has been added.";
+                        message = "1st punch has been added at: "+ DateTime.Now.ToString("h:mm:ss tt");
                         Session["QuickTimeStamp"] = message;
                     }
                     else
@@ -315,7 +309,7 @@ namespace Timesheet.Controllers
                                 EmpId = tsheets[i].EmpId
                             };
                             sheet.UpdateTimeSheet(sheet);
-                            message = "2nd punch has been added.";
+                            message = "2nd punch has been added at: " + DateTime.Now.ToString("h:mm:ss tt");
                             Session["QuickTimeStamp"] = message;
                         }
                         else
@@ -341,7 +335,7 @@ namespace Timesheet.Controllers
                                     EmpId = tsheets[i].EmpId
                                 };
                                 sheet.UpdateTimeSheet(sheet);
-                                message = "3rd punch has been added.";
+                                message = "3rd punch has been added at: " + DateTime.Now.ToString("h:mm:ss tt");
                                 Session["QuickTimeStamp"] = message;
                             }
                             else
@@ -367,7 +361,7 @@ namespace Timesheet.Controllers
                                         EmpId = tsheets[i].EmpId
                                     };
                                     sheet.UpdateTimeSheet(sheet);
-                                    message = "4th punch has been added.";
+                                    message = "4th punch has been added at: " + DateTime.Now.ToString("h:mm:ss tt");
                                     Session["QuickTimeStamp"] = message;
                                 }
                                 else
