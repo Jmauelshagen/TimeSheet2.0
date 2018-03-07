@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 
@@ -43,15 +44,36 @@ namespace Timesheet.Models
         {
             //Code to calculate total hours worked in a week and time sheet status
             string status = "Unknown";
-            int totalHours = 0;
+            string totalHours = "";
+            int hour = 0;
+            int minute = 0;
             var tsheets = (from sheets in db.TimeSheets
                            where sheets.EmpId == empId && sheets.WeekEnding == wED
                            select sheets);
 
             foreach(TimeSheet sheet in tsheets)
             {
-                totalHours += sheet.CalculateTotalHoursWorked(sheet);
-                if(sheet.Submitted.Equals("True") && sheet.AuthorizedBySupervisor.Equals("True"))
+
+                string hoursWorked = sheet.CalculateTotalHoursWorked(sheet);
+                if (hoursWorked.Equals("NoTime"))
+                {
+
+                }
+                else if (!String.IsNullOrEmpty(hoursWorked) && !hoursWorked.Equals("Error"))
+                {
+                    hour += Convert.ToInt16(hoursWorked.Split(':')[0]);
+                    minute += Convert.ToInt16(hoursWorked.Split(':')[1]);
+                    if (minute >= 60)
+                    {
+                        minute = minute - 60;
+                        hour = hour + 1;
+                    }
+                    totalHours = hour + ":" + minute;
+                    Debug.WriteLine("Running total: " + totalHours);
+                    Debug.WriteLine("Running total by the hours: " + hour);
+                }
+
+                if (sheet.Submitted.Equals("True") && sheet.AuthorizedBySupervisor.Equals("True"))
                 {
                     status = "Authorized";
                 }
@@ -68,12 +90,12 @@ namespace Timesheet.Models
             this.TotalHours = totalHours.ToString();
 
             //Calculate overtime hours
-            int overTime = totalHours - 40;
-            if(overTime<=0)
+            string overTime = "";
+            if(hour >= 40)
             {
-                overTime = 0;
+                overTime = (hour - 40).ToString() +":"+ minute;
             }
-            this.OverTimeHours = overTime.ToString();
+            this.OverTimeHours = overTime;
 
             //Code to get the employee name and Supervisor name by employee id
             var fname = (from emps in db.Employees

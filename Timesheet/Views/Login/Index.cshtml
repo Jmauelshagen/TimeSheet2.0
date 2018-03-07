@@ -1,5 +1,5 @@
-﻿  @model Timesheet.Models.Login
-    
+﻿@model Timesheet.Models.Login
+
 @{
     Layout = null;
 }
@@ -8,6 +8,7 @@
     the solution runs.-->
 
 <!DOCTYPE html>
+<link rel="stylesheet" href="~/Content/Style.css" type="text/css" />
 
 <html>
 <head>
@@ -15,83 +16,72 @@
     <title>Login</title>
     <!--Style info for the screen-->
     <style>
-        body {
-            background-color: cadetblue;
-            font-family: Arial;
-            text-align: center;
-        }
-         #login-div {
-             position: absolute;
-             left: 40%;
-             top: 40%;
-             
-             padding: 10px 10px;
-         }
-        .field-validation-error {
-            color: red;
+        table, th, td {
+            border: none;
         }
     </style>
 </head>
 <body>
-<div>
-    <img src="~/Content/ChatLogo.jpg" alt="ChatLogo"height="250"width="1520" />
-</div>
-<div id="login-div">
+    <div>
+        <center>
+            <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        </center>
+    </div>
+    <div id="login-div">
 
 
-    <!--The login form-->
-    @using (Html.BeginForm("Authorize", "Login", FormMethod.Post))
-    {
-        <table>
-            <tr>
-                <td></td>
-                <td style="text-decoration: underline"></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.Username)
-                </td>
-                <td>
-                    @Html.EditorFor(model => model.Username)
+        <!--The login form-->
+        @using (Html.BeginForm("Authorize", "Login", FormMethod.Post))
+        {
+            <table>
+                <tr>
+                    <td></td>
+                    <td style="text-decoration: underline"></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Username)
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.Username)
 
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    @Html.ValidationMessageFor(model => model.Username)
-                </td>
-            </tr>
-            <tr>
-                <td>@Html.LabelFor(model => model.Password)</td>
-                <td>@Html.EditorFor(model => model.Password)</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    @Html.ValidationMessageFor(model => model.Password)
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    
-                    <label class="field-validation-error">@Html.DisplayFor(model => Session["Error"])</label>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <input type="Submit"name="name"value="Login"/>
-                    <input type="reset"name="name"value="Clear"/>
-                </td>
-            </tr>
-        </table>
-    }
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.Username)
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.Password)</td>
+                    <td>@Html.EditorFor(model => model.Password)</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        @Html.ValidationMessageFor(model => model.Password)
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label class="field-validation-error" style="color:red">@Html.DisplayFor(model => Session["Error"])</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <Button type="Submit" name="name" value="Login">Login</Button>
+                        <button type="reset" name="name" value="Clear">Clear</button>
+                    </td>
+                </tr>
+            </table>
+        }
 
-</div>
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 </body>
 </html>
