@@ -204,7 +204,7 @@
 
     <p id="Time">It is @today at <div id="time"></div></p>
     <p style="text-align: center; color: white;">***Remember to enter your time in HH:MM AM/PM format***</p>
-    <p style="text-align: right; color: white;"><a href="@Url.Action("GetDailyTimeSheet","Timesheet")" class="button">View Daily Timesheet</a></p>
+    <p style="text-align: right; color: white;"><a href="@Url.Action("GetDailyTimeSheet", "Timesheet")" class="button">View Daily Timesheet</a></p>
 
     <!--Table to display time sheet input form.-->
     <table style="width:100%" cellpadding="4">
@@ -458,14 +458,18 @@
                     <td>@overTime</td>
                 }
 
-        else
-        {
-            <td></td>
-    }
+                else
+                {
+                    <td></td>
+                }
             }
         </tr>
     </table>
     <br /><br />
+    @{ //rests the QuickTimeStamp message to blank so when you load the home screen it doesn't show up.
+        string message = "";
+        Session["QuickTimeStamp"] = message;
+    }
     <a href="@Url.Action("Index", "Employees")" class="button">Home</a>
     <br /><br />
     <!--Submit Week button with popup validation-->

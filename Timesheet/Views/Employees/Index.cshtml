@@ -3,6 +3,15 @@
 @{
     Layout = null;
 }
+<script type="text/javascript">
+    window.setTimeout(function() {
+        // This will execute 5 seconds later
+        var label = document.getElementById('QuickTimeStampMessage');
+        if (label != null) {
+            label.style.display = 'none';
+        }
+    }, 4000);
+</script>
 
 <!--This is the employee dashboard screen. It renders after someone with the employee role logs in-->
 
@@ -41,6 +50,9 @@
             </li>
             <li>
                 <a href="@Url.Action("GetDailyTimeSheet","Timesheet")">Daily Timesheet</a>
+            </li>
+            <li>
+                <a href="@Url.Action("QuickTimeStamp","Timesheet")">Quick Time Stamp</a>        <label id="QuickTimeStampMessage" >@Html.DisplayFor(model => Session["QuickTimeStamp"])</label>
             </li>
         </ul>
         <!--Log out link-->

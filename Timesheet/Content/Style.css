@@ -82,6 +82,7 @@ button:active {
     left: 40%;
     top: 40%;
     padding: 10px 10px;
+    text-align:center;
 }
 
 table, th, td {

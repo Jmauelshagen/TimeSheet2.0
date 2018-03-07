@@ -164,7 +164,7 @@
 <script>
 
     function checkTime(i) {
-        if (i < 10 && i != 00) { i = "0" + i };  // add zero in front of numbers < 10
+        if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
         return i;
     }
 
@@ -173,7 +173,7 @@
         var hours = today.getHours();
         var minutes = today.getMinutes();
         var seconds = today.getSeconds();
-        minutes = checkTime(minutes);
+        //minutes = checkTime(minutes);
         seconds = checkTime(seconds);
         var ampm = hours >= 12 ? 'PM' : 'AM';
         hours = hours % 12;
@@ -189,20 +189,25 @@
         var h = today.getHours();
         var m = today.getMinutes();
         m = checkTime(m);
-        if (document.getElementById("TimeIn").value == "") {
-            document.getElementById("TimeIn").value = String(h) + ":" + String(m);
-        }
-        else {
-            if (document.getElementById("OutForLunch").value == "") {
-                document.getElementById("OutForLunch").value = String(h) + ":" + String(m);
+        if (document.getElementById("AuthorizedBySupervisor").value == "False") {
+            message = "";
+            Session["ApprovedTimeSheet"] = message;
+
+            if (document.getElementById("TimeIn").value == "") {
+                document.getElementById("TimeIn").value = String(h) + ":" + String(m);
             }
             else {
-                if (document.getElementById("InFromLunch").value == "") {
-                    document.getElementById("InFromLunch").value = String(h) + ":" + String(m);
+                if (document.getElementById("OutForLunch").value == "") {
+                    document.getElementById("OutForLunch").value = String(h) + ":" + String(m);
                 }
                 else {
-                    if (document.getElementById("TimeOut").value == "") {
-                        document.getElementById("TimeOut").value = String(h) + ":" + String(m);
+                    if (document.getElementById("InFromLunch").value == "") {
+                        document.getElementById("InFromLunch").value = String(h) + ":" + String(m);
+                    }
+                    else {
+                        if (document.getElementById("TimeOut").value == "") {
+                            document.getElementById("TimeOut").value = String(h) + ":" + String(m);
+                        }
                     }
                 }
             }
@@ -219,8 +224,7 @@
     <title>Timesheet</title>
 </head>
 <body onload="formatAMPM()">
-    @{
-        using (Html.BeginForm("SaveDailyTimeSheet", "Timesheet", FormMethod.Post))
+    @{using (Html.BeginForm("SaveDailyTimeSheet", "Timesheet", FormMethod.Post))
         {
             <h2>Time Sheet</h2>
             <!--Get and display current date and time.-->
@@ -258,7 +262,7 @@
                     {
                         if (@tsheets[i].Date.ToString().Trim().Equals(CurrentDate))
                         {
-                            if (tsheets[i].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
+                            if (@tsheets[i].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
                             {
                             <tr>
                                 <!--Converted some of the textboxes to time input to reduce user error-->
@@ -490,16 +494,21 @@
                     }
                 </tr>
             </table>
-            <br /><br />
-            <a href="@Url.Action("Index", "Employees")" class="button">Home</a>
-            <br /><br />
-            <!--Submit Week button with popup validation-->
-            @Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new { @class = "button", @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })
-            <br /><br />
-            <!--Log out link-->
-            <a href="@Url.Action("LogOut", "Login")" class="button">LogOut</a>
         }
     }
+    <br /><br />
+    @{ //rests the QuickTimeStamp message to blank so when you load the home screen it doesn't show up.
+        string message = "";
+        Session["QuickTimeStamp"] = message;
+    }
+    <a href="@Url.Action("Index", "Employees")" class="button">Home</a>
+    <br /><br />
+    <!--Submit Week button with popup validation-->
+    @Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new { @class = "button", @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })
+    <br /><br />
+    <!--Log out link-->
+    <a href="@Url.Action("LogOut", "Login")" class="button">LogOut</a>
+
 </body>
 
 </html>
