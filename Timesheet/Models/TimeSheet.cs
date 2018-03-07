@@ -11,7 +11,6 @@ namespace Timesheet.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
     using System.Linq;
     using System.Web.Mvc;
@@ -30,9 +29,9 @@ namespace Timesheet.Models
         public string InFromLunch { get; set; }
         public string TimeOut { get; set; }
         public Nullable<int> LeaveId { get; set; }
-        public Nullable<int> LeaveHours { get; set; }
-        public Nullable<int> AdditionalHours { get; set; }
-        public Nullable<int> TotalHoursWorked { get; set; }
+        public string LeaveHours { get; set; }
+        public string AdditionalHours { get; set; }
+        public string TotalHoursWorked { get; set; }
         public string Submitted { get; set; }
         public string AuthorizedBySupervisor { get; set; }
         public Nullable<int> EmpId { get; set; }
@@ -53,9 +52,9 @@ namespace Timesheet.Models
             InFromLunch = "";
             TimeOut = "";
             LeaveId = 0;
-            LeaveHours = 0;
-            AdditionalHours = 0;
-            TotalHoursWorked = 0;
+            LeaveHours = "";
+            AdditionalHours = "";
+            TotalHoursWorked = "";
             Submitted = "False";
             AuthorizedBySupervisor = "False";
             EmpId = 0;
@@ -63,7 +62,7 @@ namespace Timesheet.Models
 
         //all-args constructor
         public TimeSheet(int id, string wEnd, string date, string inT, string outL, string inL, string outT,
-            int leaveId, int leaveHrs, int addlHrs, int tlHrs, string sub, string auth, int empId)
+            int leaveId, string leaveHrs, string addlHrs, string tlHrs, string sub, string auth, int empId)
         {
             Id = id;
             WeekEnding = wEnd;
@@ -92,7 +91,7 @@ namespace Timesheet.Models
                          orderby tsheets.Id ascending
                          select tsheets;
             var count = sheets.Count();
-            Console.WriteLine("TimeSheet count is: " + count.ToString());
+            Debug.WriteLine("TimeSheet count is: " + count.ToString());
             if (count == 0)
             {
                 for (int i = 1; i < 8; i++)
@@ -107,9 +106,9 @@ namespace Timesheet.Models
                         InFromLunch = "0:00",
                         TimeOut = "0:00",
                         LeaveId = 0,
-                        LeaveHours = 0,
-                        AdditionalHours = 0,
-                        TotalHoursWorked = 0,
+                        LeaveHours = "0:00",
+                        AdditionalHours = "0:00",
+                        TotalHoursWorked = "0:00",
                         Submitted = "False",
                         AuthorizedBySupervisor = "False",
                         EmpId = empId
@@ -117,7 +116,6 @@ namespace Timesheet.Models
                     this.InsertTimeSheet(sheet);
                     timesheets.Add(sheet);
                 }
-
             }
             else
             {
@@ -175,17 +173,44 @@ namespace Timesheet.Models
         //Method to update TimeSheet data in the TimeSheet data table
         public void UpdateTimeSheet(TimeSheet sheet)
         {
+            Debug.WriteLine("in database save 1");
+            string timeIn = "";
+            string outForLunch = "";
+            string inFromLunch = "";
+            string timeOut = "";
+
+            if (!String.IsNullOrEmpty(sheet.TimeIn) && !sheet.TimeIn.ToString().Trim().Equals("0:00"))
+            {
+                timeIn = sheet.TimeIn;
+            }
+            else { timeIn = "0:00"; }
+            if (!String.IsNullOrEmpty(sheet.OutForLunch) && !sheet.OutForLunch.ToString().Trim().Equals("0:00"))
+            {
+                outForLunch = sheet.OutForLunch;
+            }
+            else { outForLunch = "0:00"; }
+            if (!String.IsNullOrEmpty(sheet.InFromLunch) && !sheet.InFromLunch.ToString().Trim().Equals("0:00"))
+            {
+                inFromLunch = sheet.InFromLunch;
+            }
+            else { inFromLunch = "0:00"; }
+            if (!String.IsNullOrEmpty(sheet.TimeOut) && !sheet.TimeOut.ToString().Trim().Equals("0:00"))
+            {
+                timeOut = sheet.TimeOut;
+            }
+            else { timeOut = "0:00"; }
+
             TimeSheet tsheet = (from tsheets in db.TimeSheets
                                 where tsheets.Id == sheet.Id
-                                select tsheets).First();
+                                select tsheets).Single();
 
             tsheet.Id = sheet.Id;
             tsheet.WeekEnding = sheet.WeekEnding;
             tsheet.Date = sheet.Date;
-            tsheet.TimeIn = sheet.TimeIn;
-            tsheet.OutForLunch = sheet.OutForLunch;
-            tsheet.InFromLunch = sheet.InFromLunch;
-            tsheet.TimeOut = sheet.TimeOut;
+            tsheet.TimeIn = timeIn;
+            tsheet.OutForLunch = outForLunch;
+            tsheet.InFromLunch = inFromLunch;
+            tsheet.TimeOut = timeOut;
             tsheet.LeaveId = sheet.LeaveId;
             tsheet.LeaveHours = sheet.LeaveHours;
             tsheet.AdditionalHours = sheet.AdditionalHours;
@@ -197,23 +222,204 @@ namespace Timesheet.Models
             db.SaveChanges();
         }
 
-        //Method to calculate total hours worked
-        public int CalculateTotalHoursWorked(TimeSheet sheet)
+        /**Method to calculate total hours worked daily by taking the time in/out
+         * and the lunch time out and returned from lunch then rounds to nearest 15th minute mark
+         * **/
+        public string CalculateTotalHoursWorked(TimeSheet sheet)
         {
-            DateTime tIn = DateTime.Parse(sheet.TimeIn);
-            DateTime lOut = DateTime.Parse(sheet.OutForLunch);
-            DateTime lIn = DateTime.Parse(sheet.InFromLunch);
-            DateTime tOut = DateTime.Parse(sheet.TimeOut);
+            try
+            {
+                if (!sheet.TimeIn.ToString().Trim().Equals("0:00") && !sheet.OutForLunch.ToString().Trim().Equals("0:00") && sheet.InFromLunch.ToString().Trim().Equals("0:00") && sheet.TimeOut.ToString().Trim().Equals("0:00"))
+                {
+                    Debug.WriteLine("Calculating the first 2 punches");
+                    DateTime tIn = RoundToNearest(DateTime.Parse(sheet.TimeIn), TimeSpan.FromMinutes(15)); ;
+                    DateTime lOut = RoundToNearest(DateTime.Parse(sheet.OutForLunch), TimeSpan.FromMinutes(15));
+                    //used to view the incoming values
+                    Debug.WriteLine("Clocked in at " + tIn + " in 2 Punches");
+                    Debug.WriteLine("Clocked out for lunch at " + lOut + " in 2 Punches");
+                    string totalHours;
+                    if (tIn > lOut)
+                    {
+                        totalHours = "Error";
+                    }
+                    else
+                    {
+                        /*Once the verification it the LeaveHours and AdditionalHours are added we can unblock the following code!*/
+                        string leaveTime = sheet.LeaveHours.ToString().Trim();
+                        int leaveHour = Convert.ToInt16(leaveTime.Split(':')[0]);
+                        int LeaveMinute = Convert.ToInt16(leaveTime.Split(':')[1]);
 
-            double hoursBeforeLunch = (lOut - tIn).TotalMilliseconds; //Calculate the number of hours worked before lunch in milliseconds
-            double hoursAfterLunch = (tOut - lIn).TotalMilliseconds; //Calculate the number of hours worked after lunch in milliseconds
-            double addlHours = ((double)sheet.AdditionalHours) * 3600000; //Convert additional hours value to milliseconds
-            double leaveHours = ((double)sheet.LeaveHours) * 3600000; //Convert leave hours value uto milliseconds
-            double totalHours = ((hoursBeforeLunch + hoursAfterLunch + addlHours) - (leaveHours)) / 3600000; //Do the arithmetic and convert from millis to hours
-            return Convert.ToInt32(totalHours);
+                        string AdditionalHours = sheet.AdditionalHours.ToString().Trim();
+                        int addHour = Convert.ToInt16(AdditionalHours.Split(':')[0]);
+                        int addMinute = Convert.ToInt16(AdditionalHours.Split(':')[1]);
+                        
+
+                        TimeSpan hoursWorked = lOut.Subtract(tIn);
+                        int hour = Convert.ToInt16(Math.Truncate(hoursWorked.TotalHours + leaveHour + addHour)); // + leaveHour + addHour;
+                        int minute = Convert.ToInt16(hoursWorked.Minutes + LeaveMinute + addMinute); // + leaveMinute + addMinute;
+                        totalHours = hour.ToString() + ":" + minute.ToString();
+                        Debug.WriteLine(hoursWorked + "************* " + hoursWorked.TotalHours + "************************* " + hour + " ************* " + minute + " leave time " + leaveHour + " add time " + AdditionalHours);                        
+                    }
+                    Debug.WriteLine("TotalHours from the first 2 punches :"+ totalHours);
+                    return totalHours;
+                }
+
+                else if (!String.IsNullOrEmpty(sheet.TimeIn.ToString().Trim()) && !sheet.TimeIn.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(sheet.OutForLunch.ToString().Trim()) && !sheet.OutForLunch.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(sheet.InFromLunch.ToString().Trim()) && !sheet.InFromLunch.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(sheet.TimeOut.ToString().Trim()) && !sheet.TimeOut.ToString().Trim().Equals("0:00"))
+                {
+                    Debug.WriteLine("Calculating all times");
+                    DateTime tIn = RoundToNearest(DateTime.Parse(sheet.TimeIn), TimeSpan.FromMinutes(15)); ;
+                    DateTime lOut = RoundToNearest(DateTime.Parse(sheet.OutForLunch), TimeSpan.FromMinutes(15));
+                    DateTime lIn = RoundToNearest(DateTime.Parse(sheet.InFromLunch), TimeSpan.FromMinutes(15));
+                    DateTime tOut = RoundToNearest(DateTime.Parse(sheet.TimeOut), TimeSpan.FromMinutes(15));
+                    //used to view the incoming values
+                    Debug.WriteLine("Clocked in at " + tIn + " in 4 Punches");
+                    Debug.WriteLine("Clocked out for lunch at " + lOut + " in 4 Punches");
+                    Debug.WriteLine("Clocked in from lunch at " + lIn + " in 4 Punches");
+                    Debug.WriteLine("Clocked out at " + tOut + " in 4 Punches");
+                    string totalHours;
+                    if (tIn > lOut || lOut > lIn || lIn > tOut)
+                    {
+                        totalHours = "Error";
+                    }
+                    else
+                    {
+                        /*Once the verification it the LeaveHours and AdditionalHours are added we can unblock the following code!*/ 
+                        string leaveTime = sheet.LeaveHours.ToString().Trim();
+                        int leaveHour = Convert.ToInt16(leaveTime.Split(':')[0]);
+                        int LeaveMinute = Convert.ToInt16(leaveTime.Split(':')[1]);
+
+                        string AdditionalHours = sheet.AdditionalHours.ToString().Trim();
+                        int addHour = Convert.ToInt16(AdditionalHours.Split(':')[0]);
+                        int addMinute = Convert.ToInt16(AdditionalHours.Split(':')[1]);
+                        
+                        TimeSpan hoursWorked = tOut.Subtract(tIn).Subtract(lIn.Subtract(lOut));
+                        int hour = Convert.ToInt16(Math.Truncate(hoursWorked.TotalHours + leaveHour + addHour)); // + leaveHour + addHour;
+                        int minute = Convert.ToInt16(hoursWorked.Minutes + LeaveMinute + addMinute); // + leaveMinute + addMinute;
+                        Debug.WriteLine(hoursWorked + "************* " +hoursWorked.TotalHours + "************************* " + hour + " ************* " + minute + " leave time " + leaveTime + " add time " + AdditionalHours);
+                        totalHours = hour.ToString() + ":" + minute.ToString();
+                    }
+                    return totalHours;
+                }
+
+                else if (sheet.TimeIn.ToString().Trim().Equals("0:00") && sheet.OutForLunch.ToString().Trim().Equals("0:00") && sheet.InFromLunch.ToString().Trim().Equals("0:00") && sheet.TimeOut.ToString().Trim().Equals("0:00"))
+                {
+                    Debug.WriteLine("Skipping over empty day not filled out yet.");
+                    string totalHours;
+                    totalHours = "NoTime";
+                    return totalHours;
+                }
+
+                else
+                {
+                    Debug.WriteLine("Sending 'Error' hours for the day because punches are missing. only gets called for 1 punch and 3 punches");
+                    string totalHours;
+                    totalHours = "Error";
+                    return totalHours;
+                }
+
+            }
+            catch (ArgumentException ae)
+            {
+                Debug.WriteLine(ae);
+                return "";
+            }
         }
 
-        //This method determines the curent date and then derives the dates for each day of the week
+        public string CalculateWorkedHours(TimeSheet sheet)
+        {
+            try
+            {
+                if (!sheet.TimeIn.ToString().Trim().Equals("0:00") && !sheet.OutForLunch.ToString().Trim().Equals("0:00") && sheet.InFromLunch.ToString().Trim().Equals("0:00") && sheet.TimeOut.ToString().Trim().Equals("0:00"))
+                {
+                    Debug.WriteLine("Calculating the first 2 punches");
+                    DateTime tIn = RoundToNearest(DateTime.Parse(sheet.TimeIn), TimeSpan.FromMinutes(15)); ;
+                    DateTime lOut = RoundToNearest(DateTime.Parse(sheet.OutForLunch), TimeSpan.FromMinutes(15));
+                    //used to view the incoming values
+                    Debug.WriteLine("Clocked in at " + tIn + " in 2 Punches");
+                    Debug.WriteLine("Clocked out for lunch at " + lOut + " in 2 Punches");
+                    string totalHours;
+                    if (tIn > lOut)
+                    {
+                        totalHours = "Error";
+                    }
+                    else
+                    {
+                        /*Once the verification it the LeaveHours and AdditionalHours are added we can unblock the following code!*/                     
+
+                        string AdditionalHours = sheet.AdditionalHours.ToString().Trim();
+                        int addHour = Convert.ToInt16(AdditionalHours.Split(':')[0]);
+                        int addMinute = Convert.ToInt16(AdditionalHours.Split(':')[1]);
+
+
+                        TimeSpan hoursWorked = lOut.Subtract(tIn);
+                        int hour = Convert.ToInt16(Math.Truncate(hoursWorked.TotalHours + addHour)); // + leaveHour + addHour;
+                        int minute = Convert.ToInt16(hoursWorked.Minutes + addMinute); // + leaveMinute + addMinute;
+                        totalHours = hour.ToString() + ":" + minute.ToString();
+                        Debug.WriteLine(hoursWorked + "************* " + hoursWorked.TotalHours + "************************* " + hour + " ************* " + minute + " add time " + AdditionalHours);
+                    }
+                    Debug.WriteLine("TotalHours from the first 2 punches :" + totalHours);
+                    return totalHours;
+                }
+
+                else if (!String.IsNullOrEmpty(sheet.TimeIn.ToString().Trim()) && !sheet.TimeIn.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(sheet.OutForLunch.ToString().Trim()) && !sheet.OutForLunch.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(sheet.InFromLunch.ToString().Trim()) && !sheet.InFromLunch.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(sheet.TimeOut.ToString().Trim()) && !sheet.TimeOut.ToString().Trim().Equals("0:00"))
+                {
+                    Debug.WriteLine("Calculating all times");
+                    DateTime tIn = RoundToNearest(DateTime.Parse(sheet.TimeIn), TimeSpan.FromMinutes(15)); ;
+                    DateTime lOut = RoundToNearest(DateTime.Parse(sheet.OutForLunch), TimeSpan.FromMinutes(15));
+                    DateTime lIn = RoundToNearest(DateTime.Parse(sheet.InFromLunch), TimeSpan.FromMinutes(15));
+                    DateTime tOut = RoundToNearest(DateTime.Parse(sheet.TimeOut), TimeSpan.FromMinutes(15));
+                    //used to view the incoming values
+                    Debug.WriteLine("Clocked in at " + tIn + " in 4 Punches");
+                    Debug.WriteLine("Clocked out for lunch at " + lOut + " in 4 Punches");
+                    Debug.WriteLine("Clocked in from lunch at " + lIn + " in 4 Punches");
+                    Debug.WriteLine("Clocked out at " + tOut + " in 4 Punches");
+                    string totalHours;
+                    if (tIn > lOut || lOut > lIn || lIn > tOut)
+                    {
+                        totalHours = "Error";
+                    }
+                    else
+                    {
+                        /*Once the verification it the LeaveHours and AdditionalHours are added we can unblock the following code!*/           
+
+                        string AdditionalHours = sheet.AdditionalHours.ToString().Trim();
+                        int addHour = Convert.ToInt16(AdditionalHours.Split(':')[0]);
+                        int addMinute = Convert.ToInt16(AdditionalHours.Split(':')[1]);
+
+                        TimeSpan hoursWorked = tOut.Subtract(tIn).Subtract(lIn.Subtract(lOut));
+                        int hour = Convert.ToInt16(Math.Truncate(hoursWorked.TotalHours + addHour)); // + leaveHour + addHour;
+                        int minute = Convert.ToInt16(hoursWorked.Minutes + addMinute); // + leaveMinute + addMinute;
+                        Debug.WriteLine(hoursWorked + "************* " + hoursWorked.TotalHours + "************************* " + hour + " ************* " + minute + " add time " + AdditionalHours);
+                        totalHours = hour.ToString() + ":" + minute.ToString();
+                    }
+                    return totalHours;
+                }
+
+                else if (sheet.TimeIn.ToString().Trim().Equals("0:00") && sheet.OutForLunch.ToString().Trim().Equals("0:00") && sheet.InFromLunch.ToString().Trim().Equals("0:00") && sheet.TimeOut.ToString().Trim().Equals("0:00"))
+                {
+                    Debug.WriteLine("Skipping over empty day not filled out yet.");
+                    string totalHours;
+                    totalHours = "NoTime";
+                    return totalHours;
+                }
+
+                else
+                {
+                    Debug.WriteLine("Sending 'Error' hours for the day because punches are missing. only gets called for 1 punch and 3 punches");
+                    string totalHours;
+                    totalHours = "Error";
+                    return totalHours;
+                }
+
+            }
+            catch (ArgumentException ae)
+            {
+                Debug.WriteLine(ae);
+                return "";
+            }
+        }
+
+        /**This method determines the current date and then derives the dates for each day of the week **/
         public List<string> GetDates()
         {
             List<string> dates = new List<string>();
@@ -420,8 +626,16 @@ namespace Timesheet.Models
 
             }
             return names;
-
         }
-
+        /** Method Rounds to the nearest 15 minutes and returns a DateTime variable **/
+        public DateTime RoundToNearest(DateTime dt, TimeSpan d)
+        {
+            var delta = dt.Ticks % d.Ticks;
+            bool roundUp = delta > d.Ticks / 2;
+            var offset = roundUp ? d.Ticks : 0;
+            return new DateTime(dt.Ticks + offset - delta, dt.Kind);
+        }
     }
 }
+
+

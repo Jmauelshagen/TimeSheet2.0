@@ -7,28 +7,12 @@
     reports and approved timesheet views.-->
 
 <!DOCTYPE html>
+<link rel="stylesheet" href="~/Content/Style.css" type="text/css" />
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Supervisor</title>
-    <style>
-        body {
-            background-color: cadetblue;
-            font-family: Arial;
-        }
-
-        #login-div {
-            position: absolute;
-            left: 40%;
-            top: 40%;
-            padding: 10px 10px;
-        }
-
-        .field-validation-error {
-            color: red;
-        }
-    </style>
 </head>
 
 <body>
@@ -43,18 +27,18 @@
         <p>Welcome @emp.FirstName @emp.LastName!</p>
 
         <!--Links to reports and approved time sheets-->
-        <ul>
+        <ul class="unstyled">
             <li>
                 <a href="@Url.Action("Index", "Reports")"> Reports</a>
             </li>
             <li>
                 <a href="@Url.Action("ApprovedTimesheets", "ApprovedTimesheets")">Approved Timesheet</a>
             </li>
-            
+            <li>
+                <!--Log out link-->
+                <a href="@Url.Action("LogOut", "Login")">LogOut</a>
+            </li>
         </ul>
-
-        <!--Log out link-->
-        <a href="@Url.Action("LogOut", "Login")">LogOut</a>
     </div>
 </body>
 </html>
