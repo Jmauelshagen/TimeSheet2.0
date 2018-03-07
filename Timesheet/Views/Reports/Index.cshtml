@@ -16,11 +16,14 @@
 <!--This is the Supervisor role's view of time sheets, and has the capability to approve or deny
     a time sheet.-->
 <!DOCTYPE html>
+<link rel="stylesheet" href="~/Content/Style.css" type="text/css" />
+
 <html>
 <head>
     <link rel="stylesheet" href="~/Content/main.css" type="text/css" />
     <meta name="viewport" content="width=device-width" />
     <title>Reports</title>
+<<<<<<< HEAD
     <style>
        
 
@@ -33,6 +36,8 @@
             border-collapse: collapse;
         }
     </style>
+=======
+>>>>>>> master
 </head>
 <body>
     <!--Get employee, time sheet list and message objects from the session.-->
@@ -52,6 +57,7 @@
         <!--Form for supervisor to select an employee by name and a week ending date.-->
         <p>Select Employee</p>
         @using (Html.BeginForm("ReportData", "Reports", FormMethod.Post, new { role = "form" }))
+<<<<<<< HEAD
     {
         @Html.LabelFor(x => x.Name)
         @Html.DropDownListFor(x => x.Name,
@@ -67,6 +73,23 @@
 
         <button type="submit">Search</button>
 }
+=======
+        {
+            @Html.LabelFor(x => x.Name)
+            @Html.DropDownListFor(x => x.Name,
+                  Model.EmpNames,
+                  "-Select Employee-",
+                  new { @class = "form-control" })
+
+            @Html.LabelFor(x => x.WeekEnding)
+            @Html.DropDownListFor(x => x.WeekEnding,
+                  Model.WeekEndingDates,
+                  "-Select A Date-",
+                  new { @class = "form-control" })
+
+            <button type="submit">Search</button>
+        }
+>>>>>>> master
         <br />
         <!--Display message content if it exists.-->
         @{
@@ -99,6 +122,11 @@
             {
                 foreach (TimeSheet reporttime in @reportTimeList)
                 {
+<<<<<<< HEAD
+=======
+                    foreach (TimeSheet reporttime in @reportTimeList)
+                    {
+>>>>>>> master
                     <tr>
                         <td></td>
                         <td>@reporttime.WeekEnding</td>
@@ -111,6 +139,7 @@
                         <td>@reporttime.LeaveHours</td>
                         <td>@reporttime.AdditionalHours</td>
                         @{ /** Calculates the hours worked for the day **/
+<<<<<<< HEAD
                         string TotalHoursWorked;
                         Debug.WriteLine(reporttime.TotalHoursWorked + "in total Hours");
                         if (!String.IsNullOrEmpty(reporttime.TotalHoursWorked.ToString().Trim())) //&& !tsheets[i].TotalHoursWorked.ToString().Trim().Equals("0"))
@@ -130,12 +159,40 @@
                             @{ /** Calculates the hours worked for the day **/
                             Debug.WriteLine(reporttime.TotalHoursWorked + "in the table");
                             string hoursWorked = reporttime.CalculateTotalHoursWorked(reporttime);
-                            string overtime;
-
-                            if (!String.IsNullOrEmpty(hoursWorked))
+=======
+                            string TotalHoursWorked = reporttime.TotalHoursWorked.ToString().Trim();
+                            Debug.WriteLine(TotalHoursWorked + "in total Hours");
+                            if (TotalHoursWorked.Equals("NoTime"))
                             {
-                                hour = Convert.ToInt16(hoursWorked.Split(':')[0]);
-                                minute = Convert.ToInt16(hoursWorked.Split(':')[1]);
+                                TotalHoursWorked = "0";
+                                <td>@TotalHoursWorked</td>
+                            }
+                            else if (!TotalHoursWorked.Equals("Error"))//&& !tsheets[i].TotalHoursWorked.ToString().Trim().Equals("0"))
+                            {
+                                Debug.WriteLine("Passed the if");
+                                <td>@TotalHoursWorked</td>
+                            }
+                            else
+                            {
+                                Debug.WriteLine("Failed the if");
+                                TotalHoursWorked = "Error";
+                                <td bgcolor="red">@TotalHoursWorked</td>
+                            }
+                        }
+                        <td>
+                        @{ /** Calculates the hours worked for the day **/
+                            Debug.WriteLine(TotalHoursWorked + "DailyTimesheet TotalHours Test 2 for overtime");
+>>>>>>> master
+                            string overtime;
+                            if (TotalHoursWorked.Equals("0"))
+                            {
+                                overtime = "0";
+                            }
+                            else if (!TotalHoursWorked.Equals("Error"))
+                            {
+                                Debug.WriteLine("Calculating Hours Worked in the DailyTimesheet");
+                                hour = Convert.ToInt16(TotalHoursWorked.Split(':')[0]);
+                                minute = Convert.ToInt16(TotalHoursWorked.Split(':')[1]);
                                 if (minute >= 60)
                                 {
                                     minute = minute - 60;
@@ -148,7 +205,7 @@
                                 int minutesWorked = Convert.ToInt16(totalHours.Split(':')[1]);
                                 if (hoursWorked2 < 8)
                                 {
-                                    overtime = "0:0";
+                                     overtime = "0";
                                 }
                                 else
                                 {
@@ -157,11 +214,16 @@
                             }
                             else
                             {
-                                overtime = "0:0";
+                                overtime = "0";
                             }
 
+<<<<<<< HEAD
                             }
                             @overtime
+=======
+                        }
+                        @overtime
+>>>>>>> master
                         </td>
                         <td>@reporttime.Submitted</td>
                         <td>@reporttime.AuthorizedBySupervisor</td>

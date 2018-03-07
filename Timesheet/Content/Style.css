@@ -1,0 +1,97 @@
+﻿body {
+    background-color: lightgray;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.98em;
+    display:block;
+}
+
+a {
+    list-style: none;
+    padding: 5px;
+    font: bold 14px "times new roman";
+    -webkit-transition-duration: 0.5s; /* Safari */
+    transition-duration: 0.5s;
+    background-color: lightgray;
+    border: solid .5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+a:link {
+    color: Black;
+    background-color: lightgray;
+    text-decoration: none
+}
+
+a:hover {
+    color: black;
+    background-color: darkgray;
+    text-decoration: none
+}
+
+a:visited {
+    color: black;
+    background-color: transparent;
+    text-decoration: none
+}
+
+a:active {
+    color: green;
+    background-color: transparent;
+    text-decoration: none
+}
+
+button {
+    list-style: none;
+    padding: 5px;
+    font: bold 14px "times new roman";
+    -webkit-transition-duration: 0.5s; /* Safari */
+    transition-duration: 0.5s;
+    background-color: lightgray;
+    border: solid .5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:link {
+        color: Black;
+        background-color: lightgray;
+        text-decoration: none
+}
+
+button:hover {
+        color: black;
+        background-color: darkgray;
+        text-decoration: none
+}
+
+button:visited {
+        color: black;
+        background-color: transparent;
+        text-decoration: none
+}
+
+button:active {
+        color: black;
+        background-color: transparent;
+        text-decoration: none
+}
+
+#login-div {
+    position: absolute;
+    left: 40%;
+    top: 40%;
+    padding: 10px 10px;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+ul {
+    list-style-type: none;
+}
+li {
+    padding: 30px;
+    margin: 30px;
+}

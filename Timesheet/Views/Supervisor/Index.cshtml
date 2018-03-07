@@ -7,12 +7,14 @@
     reports and approved timesheet views.-->
 
 <!DOCTYPE html>
+<link rel="stylesheet" href="~/Content/Style.css" type="text/css" />
 
 <html>
 <head>
     <link rel="stylesheet" href="~/Content/main.css" type="text/css" />
     <meta name="viewport" content="width=device-width" />
     <title>Supervisor</title>
+<<<<<<< HEAD
     <style>
 
 
@@ -27,6 +29,8 @@
             color: red;
         }
     </style>
+=======
+>>>>>>> master
 </head>
 
 <body>
@@ -43,6 +47,7 @@
         <p>Welcome @emp.FirstName @emp.LastName!</p>
 
         <!--Links to reports and approved time sheets-->
+<<<<<<< HEAD
        
             
                 <form action="@Url.Action("Index", "Reports")">
@@ -70,6 +75,20 @@
         </form>
 
         <!-- <a href="Url.Action("LogOut", "Login")">LogOut</a> -->
+=======
+        <ul class="unstyled">
+            <li>
+                <a href="@Url.Action("Index", "Reports")"> Reports</a>
+            </li>
+            <li>
+                <a href="@Url.Action("ApprovedTimesheets", "ApprovedTimesheets")">Approved Timesheet</a>
+            </li>
+            <li>
+                <!--Log out link-->
+                <a href="@Url.Action("LogOut", "Login")">LogOut</a>
+            </li>
+        </ul>
+>>>>>>> master
     </div>
 </body>
 </html>

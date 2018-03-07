@@ -7,6 +7,7 @@
 <!--This is the employee dashboard screen. It renders after someone with the employee role logs in-->
 
 <!DOCTYPE html>
+<link rel="stylesheet" href="~/Content/Style.css" type="text/css" />
 
 <html lang="en">
 <head>
@@ -14,6 +15,7 @@
 
    <meta name="viewport" content="width=device-width" /> 
     <style>
+<<<<<<< HEAD
 
         #login-div {
             position: absolute;
@@ -28,6 +30,12 @@
     </style>
     <title>Employee</title>
 
+=======
+        table, th, td {
+            border: none;
+        }
+    </style>
+>>>>>>> master
 </head>
 
 <body>
@@ -44,6 +52,7 @@
         <!--Display the employee's first and last name-->
         <p>Welcome @emp.FirstName @emp.LastName!  Click below to record your time.</p>
 
+<<<<<<< HEAD
         
            
                 <!--Link to get to the timesheet input screen-->
@@ -64,6 +73,17 @@
                 </form>
                 <!--      <a href="Url.Action("GetDailyTimeSheet","Timesheet")">Daily Timesheet</a> -->
             </br>
+=======
+        <ul>
+            <li>
+                <!--Link to get to the timesheet input screen-->
+                <a href="@Url.Action("GetTimeSheet","Timesheet")">Weekly Timesheet</a>
+            </li>
+            <li>
+                <a href="@Url.Action("GetDailyTimeSheet","Timesheet")">Daily Timesheet</a>
+            </li>
+        </ul>
+>>>>>>> master
         <!--Log out link-->
 
         <form action="@Url.Action("LogOut", "Login")">
