@@ -3,6 +3,36 @@
 @{
     Layout = null;
 }
+<script type="text/javascript">
+    window.setTimeout(function () {
+        // This will execute 5 seconds later
+        var label = document.getElementById('QuickTimeStampMessage');
+        if (label != null) {
+            label.style.display = 'none';
+        }
+    }, 4000);
+
+    function checkTime(i) {
+        if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
+        return i;
+    }
+
+    function formatAMPM() {
+        var today = new Date();
+        var hours = today.getHours();
+        var minutes = today.getMinutes();
+        var seconds = today.getSeconds();
+        //minutes = checkTime(minutes);
+        seconds = checkTime(seconds);
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        var strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+        document.getElementById('time').innerHTML = strTime;
+        var t = setTimeout(formatAMPM, 500);
+    }
+</script>
 
 <!--This is the employee dashboard screen. It renders after someone with the employee role logs in-->
 
@@ -13,16 +43,16 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Employee</title>
-    <style>
-        table, th, td {
-            border: none;
-        }
-    </style>
 </head>
 
-<body>
+<body onload="formatAMPM()">
     <!--Get the employee object out of the session-->
-    @{var emp = (Employee)Session["Employee"]; }
+    @{
+        var emp = (Employee)Session["Employee"];
+        string today = DateTime.Now.ToLongDateString();
+        string time = DateTime.Now.ToLongTimeString();
+        string CurrentDate = DateTime.Now.ToShortDateString();
+    }
 
     <div>
         <center>
@@ -30,9 +60,9 @@
         </center>
     </div>
     <div>
-        <h1>Employees</h1>
         <!--Display the employee's first and last name-->
-        <p>Welcome @emp.FirstName @emp.LastName!  Click below to record your time.</p>
+        <h3 style="text-align: center;">Welcome @emp.FirstName @emp.LastName!</h3>
+        <p id="Time" style="text-align: center;">@today <div id="time" style="text-align: center;"></div></p>
 
         <ul>
             <li>
@@ -41,6 +71,9 @@
             </li>
             <li>
                 <a href="@Url.Action("GetDailyTimeSheet","Timesheet")">Daily Timesheet</a>
+            </li>
+            <li>
+                <a href="@Url.Action("QuickTimeStamp","Timesheet")">Quick Time Stamp</a><label id="QuickTimeStampMessage">@Html.DisplayFor(model => Session["QuickTimeStamp"])</label>
             </li>
         </ul>
         <!--Log out link-->
