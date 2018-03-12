@@ -8,9 +8,9 @@
     Layout = null;
     string totalHours = "";
     int hour = 0;
-    int hours = 0;
+    //int hours = 0;
     int minute = 0;
-    int minutes = 0;
+    //int minutes = 0;
 }
 
 <!--This is the Supervisor role's view of time sheets, and has the capability to approve or deny
@@ -25,7 +25,7 @@
 </head>
 <body>
     <!--Get employee, time sheet list and message objects from the session.-->
-    @{  var emp = (Employee)Session["Employee"];
+    @{  Employee emp = (Employee)Session["Employee"];
         var reportTimeList = (List<TimeSheet>)Session["TimeSheetList"];
         var message = (string)Session["Message"];
     }
@@ -39,6 +39,12 @@
         <h1>Reports</h1>
         <br />
         <!--Form for supervisor to select an employee by name and a week ending date.-->
+         @{
+             if ((reportTimeList != null) && reportTimeList.Any())
+             {
+                <p>This is @emp.FirstName 's timesheet for the week of @reportTimeList[0].WeekEnding</p><br />
+            }
+          }
         <p>Select Employee</p>
         @using (Html.BeginForm("ReportData", "Reports", FormMethod.Post, new { role = "form" }))
     {
@@ -54,8 +60,8 @@
                   "-Select A Date-",
                   new { @class = "form-control" })
 
-        <button type="submit">Search</button>
-}
+            <button type="submit">Search</button>            
+        }
         <br />
         <!--Display message content if it exists.-->
         @{
@@ -192,7 +198,7 @@ TotalHoursWorked = "Error";
         <!--Forms to approve or deny time sheet.-->
         @using (Html.BeginForm("Approve", "Reports", FormMethod.Post, new { role = "form" }))
     {
-        <button type="submit">Approve</button>
+        <button type="submit">Approve</button><br />
 }
         @using (Html.BeginForm("Deny", "Reports", FormMethod.Post, new { role = "form" }))
     {
@@ -201,7 +207,7 @@ TotalHoursWorked = "Error";
         <br />
         <!--Like to go back-->
         <a href="#" onclick="history.back();">Back</a>
-        <br />
+        <br /><br />
         <!--Log out link.-->
         <a href="@Url.Action("LogOut","Login")">LogOut</a>
     </div>
