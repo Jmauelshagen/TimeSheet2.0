@@ -19,7 +19,7 @@ a {
 
 a:link {
     color: Black;
-    background-color: lightgray;
+    background-color: red;
     text-decoration: none
 }
 
@@ -54,7 +54,7 @@ button {
 }
 
 button:link {
-        color: Black;
+        color: blue;
         background-color: lightgray;
         text-decoration: none
 }
@@ -94,4 +94,8 @@ ul {
 li {
     padding: 30px;
     margin: 30px;
+}
+#chatpic {
+   
+
 }
