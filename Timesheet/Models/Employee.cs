@@ -26,6 +26,7 @@ namespace Timesheet.Models
         public int RoleId { get; set; }
         public string Department { get; set; }
         public int Supervisor { get; set; }
+        public List<string> notes { get; set; }
 
         //Constructors
         //0-arg constructor

@@ -34,6 +34,7 @@ namespace Timesheet.Models
         public string TotalHoursWorked { get; set; }
         public string Submitted { get; set; }
         public string AuthorizedBySupervisor { get; set; }
+        public List <List<string>> notes { get; set; }
         public Nullable<int> EmpId { get; set; }
         public IEnumerable<SelectListItem> WeekEndingDates { get; set; }
         public IEnumerable<SelectListItem> EmpNames { get; set; }
@@ -55,9 +56,9 @@ namespace Timesheet.Models
             LeaveHours = "";
             AdditionalHours = "";
             TotalHoursWorked = "";
-            Submitted = "False";
+            Submitted = "No";
             AuthorizedBySupervisor = "False";
-            EmpId = 0;
+            EmpId = 0;            
         }
 
         //all-args constructor
@@ -109,7 +110,7 @@ namespace Timesheet.Models
                         LeaveHours = "0:00",
                         AdditionalHours = "0:00",
                         TotalHoursWorked = "0:00",
-                        Submitted = "False",
+                        Submitted = "No",
                         AuthorizedBySupervisor = "False",
                         EmpId = empId
                     };

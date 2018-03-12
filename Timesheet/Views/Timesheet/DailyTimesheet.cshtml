@@ -229,7 +229,9 @@
             string time = DateTime.Now.ToLongTimeString();
             string CurrentDate = DateTime.Now.ToShortDateString();
 
+            <p> This is @emp.FirstName 's for the week of @tsheets[0].WeekEnding</p>
             <p id="Time">It is @today at <div id="time"></div></p>
+            
             <p style="text-align: center; color: white;"><button type="submit" onclick="recordTime()">Record Current Time</button></p>
             <p style="text-align: center; color: white;">***Remember to enter your time in HH:MM AM/PM format***</p>
             <p style="text-align: right; color: white;"><a href="@Url.Action("GetTimeSheet", "Timesheet")">View Weelky Timesheet</a></p>
