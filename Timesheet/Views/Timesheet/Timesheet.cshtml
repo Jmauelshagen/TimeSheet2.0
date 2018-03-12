@@ -204,7 +204,7 @@
 
     <p id="Time">It is @today at <div id="time"></div></p>
     <p style="text-align: center; color: white;">***Remember to enter your time in HH:MM AM/PM format***</p>
-    <p style="text-align: right; color: white;"><a href="@Url.Action("GetDailyTimeSheet","Timesheet")" class="button">View Daily Timesheet</a></p>
+    <p style="text-align: right; color: white;"><a href="@Url.Action("GetDailyTimeSheet", "Timesheet")" class="button">View Daily Timesheet</a></p>
 
     <!--Table to display time sheet input form.-->
     <table style="width:100%" cellpadding="4">
@@ -227,19 +227,19 @@
             <th>Emp ID#</th>
         </tr>
         <!--<td>@{ /*Html.TextBox("models[" + i + "].ID", tsheets[i].Id.ToString().Trim(), new { @readonly = "readonly", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].WeekEnding", tsheets[i].WeekEnding.ToString().Trim(), new { @readonly = "readonly", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].Date", tsheets[i].Date.ToString().Trim(), new { @readonly = "readonly", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].TimeIn", tsheets[i].TimeIn.ToString().Trim(), new { type = "time", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].OutForLunch", tsheets[i].OutForLunch.ToString().Trim(), new { type = "time", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].InFromLunch", tsheets[i].InFromLunch.ToString().Trim(), new { type = "time", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].TimeOut", tsheets[i].TimeOut.ToString().Trim(), new { type = "time", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].LeaveId", tsheets[i].LeaveId.ToString().Trim(), new { style = "width: 75px;" })</td>
-              <td>@Html.TextBox("models[" + i + "]", tsheets[i].LeaveHours.ToString().Trim(), new { style = "width: 50px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].AdditionalHours", tsheets[i].AdditionalHours.ToString().Trim(), new { style = "width: 75px;" })
-              <td>@Html.TextBox("models[" + i + "].Submitted", tsheets[i].Submitted.ToString().Trim(), new { @readonly = "readonly", style = "width: 75px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].AuthorizedBySupervisor", tsheets[i].AuthorizedBySupervisor.ToString().Trim(), new { @readonly = "readonly", style = "width: 75px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].EmpId", tsheets[i].EmpId.ToString().Trim(), new { @readonly = "readonly", style = "display: none; width: 75px" })</td>
-              */
+<td>@Html.TextBox("models[" + i + "].WeekEnding", tsheets[i].WeekEnding.ToString().Trim(), new { @readonly = "readonly", style = "width: 100px;" })</td>
+<td>@Html.TextBox("models[" + i + "].Date", tsheets[i].Date.ToString().Trim(), new { @readonly = "readonly", style = "width: 100px;" })</td>
+<td>@Html.TextBox("models[" + i + "].TimeIn", tsheets[i].TimeIn.ToString().Trim(), new { type = "time", style = "width: 100px;" })</td>
+<td>@Html.TextBox("models[" + i + "].OutForLunch", tsheets[i].OutForLunch.ToString().Trim(), new { type = "time", style = "width: 100px;" })</td>
+<td>@Html.TextBox("models[" + i + "].InFromLunch", tsheets[i].InFromLunch.ToString().Trim(), new { type = "time", style = "width: 100px;" })</td>
+<td>@Html.TextBox("models[" + i + "].TimeOut", tsheets[i].TimeOut.ToString().Trim(), new { type = "time", style = "width: 100px;" })</td>
+<td>@Html.TextBox("models[" + i + "].LeaveId", tsheets[i].LeaveId.ToString().Trim(), new { style = "width: 75px;" })</td>
+<td>@Html.TextBox("models[" + i + "]", tsheets[i].LeaveHours.ToString().Trim(), new { style = "width: 50px;" })</td>
+<td>@Html.TextBox("models[" + i + "].AdditionalHours", tsheets[i].AdditionalHours.ToString().Trim(), new { style = "width: 75px;" })
+<td>@Html.TextBox("models[" + i + "].Submitted", tsheets[i].Submitted.ToString().Trim(), new { @readonly = "readonly", style = "width: 75px;" })</td>
+<td>@Html.TextBox("models[" + i + "].AuthorizedBySupervisor", tsheets[i].AuthorizedBySupervisor.ToString().Trim(), new { @readonly = "readonly", style = "width: 75px;" })</td>
+<td>@Html.TextBox("models[" + i + "].EmpId", tsheets[i].EmpId.ToString().Trim(), new { @readonly = "readonly", style = "display: none; width: 75px" })</td>
+*/
               }-->
         @{ for (int i = 0; i < 7; i++)
             {
@@ -337,9 +337,9 @@
                             <td>@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "display: none; width: 75px" })</td>
                             <td><button id="submit" type="submit" value="Save">Save</button></td>
                         </tr>
-                    }
-                    else
-                    {
+                                    }
+                                    else
+                                    {
                         <tr>
                             <!--Converted some of the textboxes to time input to reduce user error-->
                             <td>@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
@@ -431,9 +431,9 @@
                             <td><button id="submit" type="submit" value="Save">Save</button></td>
                         </tr>
 
-                    }
-                }
-            }
+                                            }
+                                        }
+                                    }
         }
         <tr>
             <th colspan="8">Total Absent Hours</th>
@@ -480,6 +480,8 @@
             }
         </tr>
     </table>
+    <p>@Html.Label("List Reasons for additional hours and other comments", new { @style = "size: 1.2em" })</p>
+    <p>@Html.TextArea("HR Comments","",10,50, new { @style = "align: right" })</p>
     <br /><br />
     <a href="@Url.Action("Index", "Employees")" class="button">Home</a>
     <br /><br />
