@@ -63,7 +63,6 @@ namespace Timesheet.Controllers
         public ActionResult ReportData(TimeSheet model)
         {
             Debug.WriteLine("Name : " + model.Name + " and Weekending : " + model.WeekEnding + " ]]");
-            
             if (Session["Message"] != null)
             {
                 Session.Remove("Message");
@@ -78,10 +77,13 @@ namespace Timesheet.Controllers
             var name = model.Name.Trim();
             var wED = model.WeekEnding.Trim();
             List<TimeSheet> reportList = timeSheet.GetTimeSheetByNameAndDate(name, wED);
-            Session["TimeSheetList"] = reportList;          
-            Employee ep = new Employee().GetEmployee((Convert.ToInt16(reportList[0].EmpId)));
-            Debug.WriteLine("Emp Name is again: " + ep.FirstName);
-            Session["Employee"] = ep;
+            Session["TimeSheetList"] = reportList; 
+            if(reportList.ElementAtOrDefault(0) != null)
+            {
+                Employee ep = new Employee().GetEmployee((Convert.ToInt16(reportList[0].EmpId)));
+                Debug.WriteLine("Emp Name is again: " + ep.FirstName);
+                Session["Employee"] = ep;
+            }     
             return RedirectToAction("Index", "Reports");
         }
 
