@@ -37,7 +37,7 @@ namespace Timesheet.Models
         public Nullable<int> EmpId { get; set; }
         public IEnumerable<SelectListItem> WeekEndingDates { get; set; }
         public IEnumerable<SelectListItem> EmpNames { get; set; }
-        public string note { get; set; }
+        public string Note { get; set; }
         public string Name { get; set; }
 
 
@@ -59,7 +59,7 @@ namespace Timesheet.Models
             Submitted = "No";
             AuthorizedBySupervisor = "False";
             EmpId = 0;
-            note = "";
+            Note = "";
         }
 
         //all-args constructor
@@ -80,7 +80,7 @@ namespace Timesheet.Models
             Submitted = sub;
             AuthorizedBySupervisor = auth;
             EmpId = empId;
-            note = n;
+            Note = n;
         }
 
         //Method to get list of Timesheet objects by employee id and week ending date
@@ -115,7 +115,7 @@ namespace Timesheet.Models
                         Submitted = "No",
                         AuthorizedBySupervisor = "False",
                         EmpId = empId,
-                        note = ""
+                        Note = ""
                     };
                     this.InsertTimeSheet(sheet);
                     timesheets.Add(sheet);
@@ -245,6 +245,7 @@ namespace Timesheet.Models
             tsheet.Submitted = sheet.Submitted;
             tsheet.AuthorizedBySupervisor = sheet.AuthorizedBySupervisor;
             tsheet.EmpId = sheet.EmpId;
+            tsheet.Note = sheet.Note;
 
             db.SaveChanges();
         }

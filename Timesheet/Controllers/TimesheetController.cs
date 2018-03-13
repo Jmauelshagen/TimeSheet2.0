@@ -153,7 +153,7 @@ namespace Timesheet.Controllers
                     Submitted = model.Submitted,
                     AuthorizedBySupervisor = model.AuthorizedBySupervisor,
                     EmpId = model.EmpId,
-                    note = model.note
+                    Note = model.Note
                 };
 
                 sheet.UpdateTimeSheet(sheet);
@@ -207,7 +207,7 @@ namespace Timesheet.Controllers
                 {
                     timeOut = model.TimeOut;
                 }
-
+                Debug.WriteLine("The textarea says : [" + model.Note + "]");
                 //Instantiate TimeSheet object with data from form
                 TimeSheet sheet = new TimeSheet
                 {
@@ -225,7 +225,7 @@ namespace Timesheet.Controllers
                     Submitted = model.Submitted,
                     AuthorizedBySupervisor = model.AuthorizedBySupervisor,
                     EmpId = model.EmpId,
-                    note = model.note
+                    Note = model.Note
                 };
 
                 Debug.WriteLine(model.Id + "      Model ID");
