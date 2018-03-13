@@ -228,7 +228,7 @@
 </head>
 <body onload="formatAMPM()">
     @{using (Html.BeginForm("SaveDailyTimeSheet", "Timesheet", FormMethod.Post))
-        {
+      {
             <h2 style="text-align: center;">Daily Time Sheet</h2>
             <h3 style="text-align: center;">@emp.FirstName @emp.LastName</h3>
             <!--Get and display current date and time.-->
@@ -375,6 +375,15 @@
                                     <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td> 
                                     <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>                                    <td><button id="submit" type="submit" value="Save">Save</button></td>
                                 </tr>
+                                if (!String.IsNullOrEmpty(@tsheets[i].Note))
+                                {
+                                <tr>
+                                    <th colspan="4">Notes for additional hours worked</th>
+                                    <td colspan="4" style="background-color:white">@tsheets[i].Note.ToString().Trim()</td>
+                                </tr>
+                                }
+                                
+
                             }
                             else
                             {
@@ -465,6 +474,16 @@
                                     <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                                     <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                 </tr>
+
+                                if (!String.IsNullOrEmpty(@tsheets[i].Note))
+                                {
+                                <tr>
+                                    <td colspan="4">Notes for additional hours worked</td>
+                                    <td colspan="4">@tsheets[i].Note.ToString().Trim()</td>
+                                </tr>
+                                }
+                                       
+
                             }
 
                         }
@@ -529,8 +548,8 @@
                     }
                 </tr>
             </table>
-            <p>@Html.Label("List Reasons for additional hours and other comments", new { @style = "size: 1.2em" })</p>
-            <p>@Html.TextAreaFor(model => model.Note, 10, 50,null)</p>
+            <h5 align="center">@Html.Label("List Reasons for additional hours and other comments", new { @style = "size: 1.2em" })</h5>
+            <p align="center">@Html.TextAreaFor(model => model.Note, 10, 50,null)</p>
         }
     }
     <br /><br />
