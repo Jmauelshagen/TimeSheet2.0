@@ -223,11 +223,8 @@ namespace Timesheet.Controllers
                     TotalHoursWorked = model.TotalHoursWorked,
                     Submitted = model.Submitted,
                     AuthorizedBySupervisor = model.AuthorizedBySupervisor,
-                    EmpId = model.EmpId,
+                    EmpId = emp.EmpId,
                 };
-
-                Debug.WriteLine(model.Id + "      Model ID");
-                Debug.WriteLine(model.EmpId + "      Emp ID");
 
                 sheet.UpdateTimeSheet(sheet);
 
