@@ -265,6 +265,7 @@
                 </tr>
                 @{ for (int i = 0; i < 7; i++)
                     {
+                        Debug.WriteLine("The current index is :" + i);
                         if (@tsheets[i].Date.ToString().Trim().Equals(CurrentDate))
                         {
                             if (@tsheets[i].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
@@ -371,8 +372,7 @@
                                         @overtime
                                     </td>
                                     <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                                    <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                                    <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                    <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>                                    
                                     <td><button id="submit" type="submit" value="Save">Save</button></td>
                                 </tr>
                             }
@@ -479,7 +479,7 @@
                     <th>Total Worked Hours</th>
                     <!-- code for the color warning system for total hours worked-->
                     @{
-                        Debug.WriteLine("The Final weekly hours: " + totalweekly);
+                        Debug.WriteLine("The Final weekly hours: " + totalWorked);
                         Debug.WriteLine("Time Punch Errors preventing from calculating full week correctly :" + Error);
                         if (missedpunch >= 1 && Error == 0)
                         {
@@ -529,6 +529,8 @@
                     }
                 </tr>
             </table>
+            <p>@Html.Label("List Reasons for additional hours and other comments", new { @style = "size: 1.2em" })</p>
+            <p>@Html.TextAreaFor(Model => Model.note, 10, 50, new { @Value = @tsheets[0].note.Trim(), @readonly = "readonly", style = "width: 100px;" })</p>
         }
     }
     <br /><br />
