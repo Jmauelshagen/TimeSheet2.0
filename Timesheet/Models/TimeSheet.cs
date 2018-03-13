@@ -33,11 +33,11 @@ namespace Timesheet.Models
         public string AdditionalHours { get; set; }
         public string TotalHoursWorked { get; set; }
         public string Submitted { get; set; }
-        public string AuthorizedBySupervisor { get; set; }
-        public List <List<string>> notes { get; set; }
+        public string AuthorizedBySupervisor { get; set; }        
         public Nullable<int> EmpId { get; set; }
         public IEnumerable<SelectListItem> WeekEndingDates { get; set; }
         public IEnumerable<SelectListItem> EmpNames { get; set; }
+        public string note { get; set; }
         public string Name { get; set; }
 
 
@@ -58,12 +58,13 @@ namespace Timesheet.Models
             TotalHoursWorked = "";
             Submitted = "No";
             AuthorizedBySupervisor = "False";
-            EmpId = 0;            
+            EmpId = 0;
+            note = "";
         }
 
         //all-args constructor
         public TimeSheet(int id, string wEnd, string date, string inT, string outL, string inL, string outT,
-            int leaveId, string leaveHrs, string addlHrs, string tlHrs, string sub, string auth, int empId)
+            int leaveId, string leaveHrs, string addlHrs, string tlHrs, string sub, string auth, int empId, string n)
         {
             Id = id;
             WeekEnding = wEnd;
@@ -79,6 +80,7 @@ namespace Timesheet.Models
             Submitted = sub;
             AuthorizedBySupervisor = auth;
             EmpId = empId;
+            note = n;
         }
 
         //Method to get list of Timesheet objects by employee id and week ending date
@@ -112,7 +114,8 @@ namespace Timesheet.Models
                         TotalHoursWorked = "0:00",
                         Submitted = "No",
                         AuthorizedBySupervisor = "False",
-                        EmpId = empId
+                        EmpId = empId,
+                        note = ""
                     };
                     this.InsertTimeSheet(sheet);
                     timesheets.Add(sheet);

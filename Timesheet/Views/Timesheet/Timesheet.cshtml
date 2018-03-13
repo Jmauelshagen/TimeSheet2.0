@@ -448,10 +448,9 @@
                             <td>@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                             <td><button id="submit" type="submit" value="Save">Save</button></td>
                         </tr>
-
-                                            }
-                                        }
-                                    }
+                    }
+                }
+            }
         }
         <tr>
             <td colspan="4" />
@@ -527,7 +526,7 @@
         </tr>
     </table>
     <p>@Html.Label("List Reasons for additional hours and other comments", new { @style = "size: 1.2em" })</p>
-    <p>@Html.TextArea("HR Comments","",10,50, new { @style = "align: right" })</p>
+    <p>@Html.TextArea("HR Comments",Model.note,10,50, new { @style = "align: right" })</p>
     <br /><br />
     @{ //rests the QuickTimeStamp message to blank so when you load the home screen it doesn't show up.
         string message = "";
