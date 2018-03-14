@@ -13,6 +13,7 @@ namespace Timesheet.Controllers
         // GET: Timesheet
         public ActionResult Timesheet()
         {
+            Session["datelist"] = GetListOfDays();
             return View();
         }
         public ActionResult DailyTimesheet()
@@ -100,6 +101,20 @@ namespace Timesheet.Controllers
             //Return the TimeSheet view
             return RedirectToAction("Timesheet", "Timesheet");
         }
+        private IEnumerable<SelectListItem> GetListOfDays()
+        {
+            TimeSheet tsheet = new TimeSheet();
+            var dateList = new List<SelectListItem>();
+            foreach (string date in tsheet.GetDates())
+            {
+                dateList.Add(new SelectListItem
+                {
+                    Value = date,
+                    Text = date
+                });
+            }
+            return dateList;
+        }
 
         [HttpPost]
         public ActionResult SaveTimeSheet(TimeSheet model)
@@ -109,6 +124,32 @@ namespace Timesheet.Controllers
                 //Pull the employee object from the session.
                 Employee emp = (Employee)Session["Employee"];
                 List<string> dates = (List<string>)Session["Dates"];
+                /**This next seciton returns the stored date selected from the drop down. It then calls a method
+                 * to retrieves a specific timesheet based on the day and user. Then sets the current model
+                 * to the timesheet to ensure integrity and allow the note to be updated below**/
+                string date = Request.Form["Date"].ToString();
+                Debug.WriteLine("The Date String is:" + date + "]");
+                if (!String.IsNullOrEmpty(date))
+                {
+                    string ename = emp.FirstName.Trim() + " " + emp.LastName.Trim();
+                    TimeSheet ts = new TimeSheet();
+                    ts = ts.GetDates(ename, date);
+                    Debug.WriteLine("The new id should be: " + ts);
+                    model.Id = ts.Id;
+                    model.WeekEnding = ts.WeekEnding;
+                    model.Date = ts.Date;
+                    model.TimeIn = ts.TimeIn;
+                    model.OutForLunch = ts.OutForLunch;
+                    model.InFromLunch = ts.InFromLunch;
+                    model.TimeOut = ts.TimeOut;
+                    model.LeaveId = ts.LeaveId;
+                    model.LeaveHours = ts.LeaveHours;
+                    model.AdditionalHours = ts.AdditionalHours;
+                    model.TotalHoursWorked = ts.TotalHoursWorked;
+                    model.Submitted = ts.Submitted;
+                    model.AuthorizedBySupervisor = ts.AuthorizedBySupervisor;
+                    model.EmpId = ts.EmpId;
+                }                
                 Debug.WriteLine((string)model.TimeIn + " 1 in the weekly save result");
                 Debug.WriteLine((string)model.OutForLunch + " 2 in the weekly save result");
                 Debug.WriteLine((string)model.InFromLunch + " 3 in the weekly save result");

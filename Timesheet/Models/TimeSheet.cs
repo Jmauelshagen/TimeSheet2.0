@@ -152,6 +152,35 @@ namespace Timesheet.Models
             return timesheets;
         }
 
+        /**Method to retrieve a TimeSheet object by employee name and weekday**/
+        public TimeSheet GetDates(string name, string wED)
+        {
+            Debug.WriteLine("Name value is: " + name);
+            TimeSheet timesheets = new TimeSheet();
+            string[] splitNames = name.Split(' ');
+            string fName = splitNames[0].Trim();
+            Debug.WriteLine("First name: " + fName);
+            string lName = splitNames[1].Trim();
+            Debug.WriteLine("Last name: " + lName);
+            //Find the employee id based on the name passed in to the method
+            var empId = (from emps in db.Employees
+                         where emps.FirstName == fName && emps.LastName == lName
+                         select emps.EmpId).FirstOrDefault();
+            //Select the TimeSheet objects based on the employee id and week ending date
+            var sheets = from tsheets in db.TimeSheets
+                         where tsheets.EmpId == empId && tsheets.Date == wED
+                         orderby tsheets.Id ascending
+                         select tsheets;
+
+            foreach (TimeSheet sheet in sheets)
+            {
+                timesheets = sheet;
+                Debug.WriteLine("This found sheets id is:" + timesheets.Id);
+                Debug.WriteLine("This found sheets date is:" + timesheets.Date);
+            }            
+            return timesheets;
+        }
+
         //Method to retrieve list of TimeSheet objects by employee name and week ending date
         public List<TimeSheet> GetTimeSheetByNameAndDate(string name, string wED)
         {
@@ -200,6 +229,7 @@ namespace Timesheet.Models
         {
             Debug.WriteLine("in database save 1");
             Debug.WriteLine("******************************************************************************************************** "+sheet.LeaveId);
+            Debug.WriteLine("With sheet id: " + sheet.Id + "]");
 
             string timeIn = "";
             string outForLunch = "";
@@ -230,7 +260,7 @@ namespace Timesheet.Models
             TimeSheet tsheet = (from tsheets in db.TimeSheets
                                 where tsheets.Id == sheet.Id
                                 select tsheets).Single();
-
+            Debug.WriteLine("The sheet is: " + sheet.Note + "]");
             tsheet.Id = sheet.Id;
             tsheet.WeekEnding = sheet.WeekEnding;
             tsheet.Date = sheet.Date;
@@ -246,6 +276,7 @@ namespace Timesheet.Models
             tsheet.AuthorizedBySupervisor = sheet.AuthorizedBySupervisor;
             tsheet.EmpId = sheet.EmpId;
             tsheet.Note = sheet.Note;
+            Debug.WriteLine("The tsheet is :" + tsheet.Note + "]");
 
             db.SaveChanges();
         }
