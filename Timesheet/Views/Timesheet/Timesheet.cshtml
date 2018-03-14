@@ -3,7 +3,7 @@
 @using Timesheet.Models
 @using System.Diagnostics
 @{@model Timesheet.Models.TimeSheet
-Layout = null;
+    Layout = null;   
 }
 <!--Screen for employees to input time sheet data.-->
 <!--Get employee, time sheet and date objects from session.-->
@@ -568,7 +568,7 @@ Layout = null;
     </table>
     @{/**This Text Area is used to give infomation about any additional hours given. It creates
          * another form that saves input to a the model and updates it to the day selected**/}
-    @using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post, new { role = "form" }))
+    @using (Html.BeginForm("SaveTimeNote", "Timesheet", FormMethod.Post))
     {
         <p align="center">@Html.DropDownList("Date", datelist, "Select Day to submit", new { onchange = "this.form.submit();" })</p>
         <h3 align="center">@Html.Label("List Reasons for additional hours and other comments", new { @style = "font-size: 1.1em" })</h3>
