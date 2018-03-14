@@ -105,7 +105,7 @@ namespace Timesheet.Controllers
         {
             TimeSheet tsheet = new TimeSheet();
             var dateList = new List<SelectListItem>();
-            foreach (string date in tsheet.GetDates())
+            foreach (string date in tsheet.GetDates().Skip(1))
             {
                 dateList.Add(new SelectListItem
                 {

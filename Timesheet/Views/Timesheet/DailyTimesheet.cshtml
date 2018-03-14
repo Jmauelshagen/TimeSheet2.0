@@ -378,8 +378,8 @@
                                 /**These add section for notes to be displayed if they exist**/
                                 if (!String.IsNullOrEmpty(tsheets[i].Note)) {
                                 <tr>
-                                    <td colspan="4" style="font-size:1.15em; font-weight:bold;">Notes for additional hours worked</td>
-                                    <td colspan="4" style="font-size:1.15em">@tsheets[i].Note.ToString().Trim()</td>
+                                    <th colspan="4" style="font-weight:bold;">Notes for additional hours worked</th>
+                                    <td colspan="4" style="background-color:white;">@tsheets[i].Note.ToString().Trim()</td>
                                 </tr>
                                 }
                             }
@@ -475,8 +475,8 @@
                                 /**These add section for notes to be displayed if they exist**/
                                 if (!String.IsNullOrEmpty(tsheets[i].Note)) {
                                 <tr>
-                                    <td colspan="4" style="font-size:1.15em; font-weight:bold;">Notes for additional hours worked</td>
-                                    <td colspan="4" style="font-size:1.15em;">@tsheets[i].Note.ToString().Trim()</td>
+                                    <th colspan="4" style="font-weight:bold;">Notes for additional hours worked</th>
+                                    <td colspan="4" style="background-color:white;">@tsheets[i].Note.ToString().Trim()</td>
                                 </tr>
                                 }
                             }
@@ -486,9 +486,9 @@
                 <tr></tr>
                 <tr>
                     <td colspan="4" />
-                    <th>Total Absent Hours</th>
+                    <th>Absent Hours</th>
                     <td>@totalabsent</td>
-                    <th>Total Worked Hours</th>
+                    <th>Worked Hours</th>
                     <!-- code for the color warning system for total hours worked-->
                     @{
                         Debug.WriteLine("The Final weekly hours: " + totalWorked);
@@ -543,7 +543,7 @@
             </table>
             /**This Text Area is used to give infomation about any additional hours given. It saves to the model and
              * to the current day**/
-            <h3 align="center">@Html.Label("List Reasons for additional hours and other comments", new { @style = "font-size: 1.1em" })</h3>
+            <h3 align="center">@Html.Label("Comment for any additional hours worked", new { @style = "font -size: 1.1em" })</h3>
             <p align="center">@Html.TextAreaFor(model => model.Note, 10, 50, new { @placeholder="Comments about additional hours go here, you might want to date the note."})</p>
         }
     }
