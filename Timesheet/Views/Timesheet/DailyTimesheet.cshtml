@@ -228,7 +228,7 @@
 </head>
 <body onload="formatAMPM()">
     @{using (Html.BeginForm("SaveDailyTimeSheet", "Timesheet", FormMethod.Post))
-        {
+      {
             <h2 style="text-align: center;">Daily Time Sheet</h2>
             <h3 style="text-align: center;">@emp.FirstName @emp.LastName</h3>
             <!--Get and display current date and time.-->
@@ -265,6 +265,7 @@
                 </tr>
                 @{ for (int i = 0; i < 7; i++)
                     {
+                        Debug.WriteLine("The current index is :" + i);
                         if (@tsheets[i].Date.ToString().Trim().Equals(CurrentDate))
                         {
                             if (@tsheets[i].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
@@ -371,10 +372,16 @@
                                         @overtime
                                     </td>
                                     <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                                    <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                                    <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                                    <td><button id="submit" type="submit" value="Save">Save</button></td>
+                                    <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td> 
+                                    <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>                                    <td><button id="submit" type="submit" value="Save">Save</button></td>
                                 </tr>
+                                /**These add section for notes to be displayed if they exist**/
+                                if (!String.IsNullOrEmpty(tsheets[i].Note)) {
+                                <tr>
+                                    <th colspan="4" style="font-weight:bold;">Notes for additional hours worked</th>
+                                    <td colspan="4" style="background-color:white;">@tsheets[i].Note.ToString().Trim()</td>
+                                </tr>
+                                }
                             }
                             else
                             {
@@ -460,26 +467,31 @@
                                             }
                                         }
                                         @overtime
-                                    </td>
+                                    </td>                                    
                                     <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                                     <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                                     <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                 </tr>
+                                /**These add section for notes to be displayed if they exist**/
+                                if (!String.IsNullOrEmpty(tsheets[i].Note)) {
+                                <tr>
+                                    <th colspan="4" style="font-weight:bold;">Notes for additional hours worked</th>
+                                    <td colspan="4" style="background-color:white;">@tsheets[i].Note.ToString().Trim()</td>
+                                </tr>
+                                }
                             }
-
                         }
-
                     }
-                }
+                 }
                 <tr></tr>
                 <tr>
                     <td colspan="4" />
-                    <th>Total Absent Hours</th>
+                    <th>Absent Hours</th>
                     <td>@totalabsent</td>
-                    <th>Total Worked Hours</th>
+                    <th>Worked Hours</th>
                     <!-- code for the color warning system for total hours worked-->
                     @{
-                        Debug.WriteLine("The Final weekly hours: " + totalweekly);
+                        Debug.WriteLine("The Final weekly hours: " + totalWorked);
                         Debug.WriteLine("Time Punch Errors preventing from calculating full week correctly :" + Error);
                         if (missedpunch >= 1 && Error == 0)
                         {
@@ -529,6 +541,10 @@
                     }
                 </tr>
             </table>
+            /**This Text Area is used to give infomation about any additional hours given. It saves to the model and
+             * to the current day**/
+            <h3 align="center">@Html.Label("Comment for any additional hours worked", new { @style = "font -size: 1.1em" })</h3>
+            <p align="center">@Html.TextAreaFor(model => model.Note, 10, 50, new { @placeholder="Comments about additional hours go here, you might want to date the note."})</p>
         }
     }
     <br /><br />
