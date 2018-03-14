@@ -386,9 +386,9 @@ namespace Timesheet.Models
 
                 else
                 {
-                    Debug.WriteLine("Sending 'Missing Out' hours for the day because punches are missing. only gets called for 1 punch and 3 punches");
+                    Debug.WriteLine("Sending 'Missing Punch' hours for the day because punches are missing. only gets called for 1 punch and 3 punches");
                     string totalHours;
-                    totalHours = "Missing Out";
+                    totalHours = "Missing Punch";
                     return totalHours;
                 }
 
@@ -488,9 +488,9 @@ namespace Timesheet.Models
 
                 else
                 {
-                    Debug.WriteLine("Sending 'Missing Out' hours for the day because punches are missing. only gets called for 1 punch and 3 punches");
+                    Debug.WriteLine("Sending 'Missing Punch' hours for the day because punches are missing. only gets called for 1 punch and 3 punches");
                     string totalHours;
-                    totalHours = "Missing Out";
+                    totalHours = "Missing Punch";
                     return totalHours;
                 }
 
