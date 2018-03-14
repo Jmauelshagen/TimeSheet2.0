@@ -24,6 +24,7 @@
           <Property Name="RoleId" Type="int" Nullable="false" />
           <Property Name="Department" Type="nchar" MaxLength="10" />
           <Property Name="Supervisor" Type="int" Nullable="false" />
+          <Property Name="Phone" Type="nchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="HR">
           <Key>
@@ -116,6 +117,7 @@
           <Property Name="RoleId" Type="Int32" Nullable="false" />
           <Property Name="Department" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="Supervisor" Type="Int32" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="HR">
           <Key>
@@ -203,6 +205,7 @@
           <EntitySetMapping Name="Employees">
             <EntityTypeMapping TypeName="LoginDatabaseModel.Employee">
               <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="EmpId" ColumnName="EmpId" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
