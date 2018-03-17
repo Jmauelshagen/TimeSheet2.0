@@ -33,17 +33,18 @@
         <!--The login form-->
         @using (Html.BeginForm("Authorize", "Login", FormMethod.Post))
         {
-            <table>
-                <tr>
-                    <td></td>
-                    <td style="text-decoration: underline"></td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.LabelFor(model => model.Username)
-                    </td>
-                    <td>
-                        @Html.EditorFor(model => model.Username)
+        <label class="field-validation-error" style="color:red">@Html.DisplayFor(model => Session["Error"])</label>
+        <table>
+            <tr>
+                <td></td>
+                <td style="text-decoration: underline"></td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Username)
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Username)
 
                     </td>
                 </tr>
@@ -61,11 +62,6 @@
                     <td></td>
                     <td>
                         @Html.ValidationMessageFor(model => model.Password)
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <label class="field-validation-error" style="color:red">@Html.DisplayFor(model => Session["Error"])</label>
                     </td>
                 </tr>
                 <tr>

@@ -24,6 +24,7 @@
     string totalWorked = "";
     string totalweekly = "";
     string totalabsent = "";
+    int missedpunch = 0;
     int Error = 0;
     int hour = 0;
     int hours = 0;
@@ -38,6 +39,10 @@
         {
 
         }
+        else if (hoursWorked.Equals("Missing Out"))
+        {
+            missedpunch = missedpunch + 1;
+        }
         else if (!String.IsNullOrEmpty(hoursWorked) && !hoursWorked.Equals("Error"))
         {
             hours += Convert.ToInt16(hoursWorked.Split(':')[0]);
@@ -47,75 +52,17 @@
                 minutes = minutes - 60;
                 hours = hours + 1;
             }
-            totalHours = hours + ":" + minutes;
+            if (minutes == 0)
+            {
+                totalHours = hours + ":00";
+            }
+            else
+            {
+                totalHours = hours + ":" + minutes;
+            }
             totalWorked = totalHours;
 
             Debug.WriteLine("Running total: " + totalWorked);
-            Debug.WriteLine("Running total by the hours: " + hours);
-        }
-        else
-        {
-            Error = Error + 1;
-        }
-    }
-
-    hours = 0;
-    minutes = 0;
-
-    foreach (TimeSheet sheet in tsheets)
-    {
-        string absHours = "";
-        if (sheet.LeaveHours.Equals("0:00"))
-        {
-
-        }
-        else if (!String.IsNullOrEmpty(sheet.LeaveHours))
-        {
-            absHours = sheet.LeaveHours;
-            Debug.WriteLine("Leave hour : " + sheet.LeaveHours);
-            hours += Convert.ToInt16(absHours.Split(':')[0]);
-            minutes += Convert.ToInt16(absHours.Split(':')[1]);
-            while (minutes >= 60)
-            {
-                minutes = minutes - 60;
-                hours = hours + 1;
-            }
-            totalHours = hours + ":" + minutes;
-            totalabsent = totalHours;
-
-            Debug.WriteLine("Running absents: " + totalHours);
-            Debug.WriteLine("Running absents by the hours: " + hours);
-        }
-        else
-        {
-            Error = Error + 1;
-        }
-    }
-
-    hours = 0;
-    minutes = 0;
-
-    /**Calculates the total hours for the week**/
-    foreach (TimeSheet sheet in tsheets)
-    {
-        string hoursWorked = sheet.CalculateTotalHoursWorked(sheet);
-        if (hoursWorked.Equals("NoTime"))
-        {
-
-        }
-        else if (!String.IsNullOrEmpty(hoursWorked) && !hoursWorked.Equals("Error"))
-        {
-            hours += Convert.ToInt16(hoursWorked.Split(':')[0]);
-            minutes += Convert.ToInt16(hoursWorked.Split(':')[1]);
-            while (minutes >= 60)
-            {
-                minutes = minutes - 60;
-                hours = hours + 1;
-            }
-            totalHours = hours + ":" + minutes;
-            totalweekly = totalHours;
-
-            Debug.WriteLine("Running total: " + totalHours);
             Debug.WriteLine("Running total by the hours: " + hours);
         }
         else
@@ -158,11 +105,88 @@
 
         }
     }
+
+    hours = 0;
+    minutes = 0;
+
+    foreach (TimeSheet sheet in tsheets)
+    {
+        string absHours = "";
+        if (sheet.LeaveHours.Equals("0:00"))
+        {
+
+        }
+        else if (!String.IsNullOrEmpty(sheet.LeaveHours))
+        {
+            absHours = sheet.LeaveHours;
+            Debug.WriteLine("Leave hour : " + sheet.LeaveHours);
+            hours += Convert.ToInt16(absHours.Split(':')[0]);
+            minutes += Convert.ToInt16(absHours.Split(':')[1]);
+            while (minutes >= 60)
+            {
+                minutes = minutes - 60;
+                hours = hours + 1;
+            }
+
+            totalHours = hours + ":" + minutes;
+            totalabsent = totalHours;
+
+            Debug.WriteLine("Running absents: " + totalHours);
+            Debug.WriteLine("Running absents by the hours: " + hours);
+        }
+        else
+        {
+            Error = Error + 1;
+        }
+    }
+
+    hours = 0;
+    minutes = 0;
+
+    /**Calculates the total hours for the week**/
+    foreach (TimeSheet sheet in tsheets)
+    {
+        string hoursWorked = sheet.CalculateTotalHoursWorked(sheet);
+        if (hoursWorked.Equals("NoTime"))
+        {
+        }
+        else if (hoursWorked.Equals("Missing Out"))
+        {
+            missedpunch = missedpunch + 1;
+        }
+        else if (!String.IsNullOrEmpty(hoursWorked) && !hoursWorked.Equals("Error"))
+        {
+            hours += Convert.ToInt16(hoursWorked.Split(':')[0]);
+            minutes += Convert.ToInt16(hoursWorked.Split(':')[1]);
+            while (minutes >= 60)
+            {
+                minutes = minutes - 60;
+                hours = hours + 1;
+            }
+            if (minutes == 0)
+            {
+                totalHours = hours + ":00";
+            }
+            else
+            {
+                totalHours = hours + ":" + minutes;
+            }
+            totalweekly = totalHours;
+
+            Debug.WriteLine("Running total: " + totalHours);
+            Debug.WriteLine("Running total by the hours: " + hours);
+        }
+        else
+        {
+            Error = Error + 1;
+        }
+    }
+
 }
 <script>
     function checkTime(i)//Check for single digit numbers in the seconds and minutes of the live clock
     {
-        if (i < 10 && i != 00) { i = "0" + i };  // add zero in front of numbers < 10
+        if (i < 10 ){ i = "0" + i };  // add zero in front of numbers < 10
         return i;
     }
 
@@ -172,7 +196,6 @@
         var hours = today.getHours();
         var minutes = today.getMinutes();
         var seconds = today.getSeconds();
-        minutes = checkTime(minutes);
         seconds = checkTime(seconds);
         var ampm = hours >= 12 ? 'PM' : 'AM';
         hours = hours % 12;
@@ -182,6 +205,31 @@
         document.getElementById('time').innerHTML = strTime;
         var t = setTimeout(formatAMPM, 500);
     }
+    /**********************************************************************************************
+
+    function leaveFieldEmpty() {
+        var leaveid;
+        var additionalhours;
+        additional = new String(document.getElementById("AdditionalHours").Value);
+        leaveid = new String(document.getElementById("LeaveId").Value);
+        console.log(additionalhours);
+        console.log(leaveFieldEmpty);
+        if (leaveid == "0" && additionalhours == "0:00") {
+            return true;
+        };
+        if (!leaveid == "0" && !additionalhours == "0:00") {
+            return true;
+        };
+        if (!leaveid == "0" && additionalhours == "0:00") {
+            alert("Please make sure to enter Absent Hours");
+            return false;
+        };
+        if (leaveid == "0" && !additionalhours == "0:00") {
+            alert("Please make sure to enter a Absent Type.");
+            return false;
+        };
+    }
+    ****************************************************************************************/
 
 </script>
 
@@ -195,28 +243,30 @@
 </head>
 <body onload="formatAMPM()">
 
-    <h2>Time Sheet</h2>
+    <h2 style="text-align: center;">Weekly Time Sheet</h2>
+    <h3 style="text-align: center;">@emp.FirstName @emp.LastName</h3>
+
     <!--Get and display current date and time.-->
     @{
         string today = DateTime.Now.ToLongDateString();
         string time = DateTime.Now.ToLongTimeString();
     }
 
-    <p id="Time">It is @today at <div id="time"></div></p>
-    <p style="text-align: center; color: white;">***Remember to enter your time in HH:MM AM/PM format***</p>
-    <p style="text-align: right; color: white;"><a href="@Url.Action("GetDailyTimeSheet","Timesheet")" class="button">View Daily Timesheet</a></p>
+    <p id="Time" style="text-align: center;">@today <div id="time" style="text-align: center;"></div></p>
+    <p style="text-align: center;">***Remember to enter your time in HH:MM AM/PM format***</p>
+    <p style="text-align: right;"><a href="@Url.Action("GetDailyTimeSheet", "Timesheet")" class="button">View Daily Timesheet</a></p>
 
     <!--Table to display time sheet input form.-->
     <table style="width:100%" cellpadding="4">
         <colgroup span="4"></colgroup>
         <tr>
-            <th>ID #</th>
+            <th style="display:none;">ID</th>
             <th>Week end</th>
             <th>Date</th>
-            <th>Start/ Time In</th>
-            <th>Meal/ Time Out</th>
-            <th>Meal/ Time In</th>
-            <th>Finish/ Time Out</th>
+            <th>Time In</th>
+            <th>Time Out</th>
+            <th>Time In</th>
+            <th>Time Out</th>
             <th>Type of absence</th>
             <th>Absent hours</th>
             <th>Additional Hours</th>
@@ -224,23 +274,9 @@
             <th>Over Time</th>
             <th>Submitted</th>
             <th>Approved</th>
-            <th>Emp ID#</th>
+            <th style="display:none;">Emp ID</th>
+            <th></th>
         </tr>
-        <!--<td>@{ /*Html.TextBox("models[" + i + "].ID", tsheets[i].Id.ToString().Trim(), new { @readonly = "readonly", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].WeekEnding", tsheets[i].WeekEnding.ToString().Trim(), new { @readonly = "readonly", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].Date", tsheets[i].Date.ToString().Trim(), new { @readonly = "readonly", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].TimeIn", tsheets[i].TimeIn.ToString().Trim(), new { type = "time", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].OutForLunch", tsheets[i].OutForLunch.ToString().Trim(), new { type = "time", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].InFromLunch", tsheets[i].InFromLunch.ToString().Trim(), new { type = "time", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].TimeOut", tsheets[i].TimeOut.ToString().Trim(), new { type = "time", style = "width: 100px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].LeaveId", tsheets[i].LeaveId.ToString().Trim(), new { style = "width: 75px;" })</td>
-              <td>@Html.TextBox("models[" + i + "]", tsheets[i].LeaveHours.ToString().Trim(), new { style = "width: 50px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].AdditionalHours", tsheets[i].AdditionalHours.ToString().Trim(), new { style = "width: 75px;" })
-              <td>@Html.TextBox("models[" + i + "].Submitted", tsheets[i].Submitted.ToString().Trim(), new { @readonly = "readonly", style = "width: 75px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].AuthorizedBySupervisor", tsheets[i].AuthorizedBySupervisor.ToString().Trim(), new { @readonly = "readonly", style = "width: 75px;" })</td>
-              <td>@Html.TextBox("models[" + i + "].EmpId", tsheets[i].EmpId.ToString().Trim(), new { @readonly = "readonly", style = "display: none; width: 75px" })</td>
-              */
-              }-->
         @{ for (int i = 0; i < 7; i++)
             {
                 using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post))
@@ -248,8 +284,8 @@
                     if (tsheets[i].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
                     {
                         <tr>
-                            <!--Converted some of the textboxes to time input to reduce user error-->
-                            <td>@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                            <!--Converted some of the textboxes to time input to reduce user error-->                                    
+                            <td style="display:none;">@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                             <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                             <td>@Html.TextBoxFor(model => model.Date, new { @Value = @tsheets[i].Date.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                             <td>@Html.TextBoxFor(model => model.TimeIn, new { type = "time", Value = @tsheets[i].TimeIn.ToString().Trim(), style = "width: 100px;" })</td>
@@ -258,6 +294,7 @@
                             <td>@Html.TextBoxFor(model => model.TimeOut, new { type = "time", Value = @tsheets[i].TimeOut.ToString().Trim(), style = "width: 100px;" })</td>
                             <td>
                                 @Html.DropDownListFor(model => model.LeaveId, new SelectList(
+<<<<<<< HEAD
                                  new List<object> {
                                  new { value = 0 , text = "None" },
                                  new { value = 1 , text = "Annual" },
@@ -274,6 +311,20 @@
                                                    "text",
                                                      0))  </td>
                                                                                                             
+=======
+                                new List<object> {
+                                new { value = 0 , text = "None" },
+                                new { value = 1 , text = "Annual" },
+                                new { value = 2 , text = "Sick"},
+                                new { value = 3 , text = "Personal"},
+                                new { value = 4 , text = "FLSA Comp"},
+                                new { value = 5 , text = "Holiday"},
+                                new { value = 6 , text = "Military"},
+                                new { value = 7 , text = "Court"},
+                                new { value = 8 , text = "Unpaid Leave" }
+                                }, "value", "text", @tsheets[i].LeaveId))
+                            </td>
+>>>>>>> master
                             <td>@Html.TextBoxFor(model => model.LeaveHours, new { @Value = @tsheets[i].LeaveHours.ToString().Trim(), pattern = "(1[0-2]|0?[0-9]):([14][5]|[03][0])$", title = "Please enter time as hours and minutes in format ##:## rounded to nearest 15", style = "width: 50px;" })</td>
                             <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim(), pattern = "(1[0-2]|0?[0-9]):([14][5]|[03][0])$", title = "Please enter time as hours and minutes in format ##:## rounded to nearest 15", style = "width: 75px;" })</td>
 
@@ -285,9 +336,13 @@
                                     TotalHoursWorked = "0";
                                     <td>@TotalHoursWorked</td>
                                 }
+                                else if (TotalHoursWorked.Equals("Missing Out"))
+                                {
+                                    totalHours = "Missing Out";
+                                    <td bgcolor="lightyellow">@TotalHoursWorked</td>
+                                }
                                 else if (!TotalHoursWorked.Equals("Error"))
                                 {
-                                    Debug.WriteLine("Passed the if");
                                     Debug.WriteLine("Passed the if");
                                     hours = Convert.ToInt16(TotalHoursWorked.Split(':')[0]);
                                     minutes = Convert.ToInt16(TotalHoursWorked.Split(':')[1]);
@@ -307,14 +362,14 @@
                                 {
                                     Debug.WriteLine("Failed the if");
                                     TotalHoursWorked = "Error";
-                                    <td bgcolor="red">@TotalHoursWorked</td>
+                                    <td bgcolor="salmon">@TotalHoursWorked</td>
                                 }
                             }
                             <td>
                                 @{ /** Calculates the hours worked for the day and check the return from TimeSheet.CalculateTotalHoursWorked to see if it is the first time through with no data, if its got 1 or 3 punches, or if 2 or 4 punches. **/
                                     Debug.WriteLine(TotalHoursWorked + " Weekly Timesheet TotalHours Test 2 for overtime");
                                     string overtime;
-                                    if (TotalHoursWorked.Equals("0"))
+                                    if (TotalHoursWorked.Equals("0") || TotalHoursWorked.Equals("Missing Out"))
                                     {
                                         overtime = "0";
                                     }
@@ -351,15 +406,15 @@
                             </td>
                             <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                             <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                            <td>@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "display: none; width: 75px" })</td>
-                            <td><button id="submit" type="submit" value="Save">Save</button></td>
+                            <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                            <td><button id="submit" type="submit" value="Save">Save</button></td> <!--   onclick="return leaveFieldEmpty()"             -->
                         </tr>
                     }
                     else
                     {
                         <tr>
                             <!--Converted some of the textboxes to time input to reduce user error-->
-                            <td>@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                            <td style="display:none;">@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                             <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                             <td>@Html.TextBoxFor(model => model.Date, new { @Value = @tsheets[i].Date.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                             <td>@Html.TextBoxFor(model => model.TimeIn, new { type = "time", Value = @tsheets[i].TimeIn.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
@@ -394,6 +449,11 @@
                                     TotalHoursWorked = "0";
                                     <td>@TotalHoursWorked</td>
                                 }
+                                else if (TotalHoursWorked.Equals("Missing Out"))
+                                {
+                                    totalHours = "Missing Out";
+                                    <td bgcolor="lightyellow">@TotalHoursWorked</td>
+                                }
                                 else if (!TotalHoursWorked.Equals("Error"))
                                 {
                                     Debug.WriteLine("Passed the if");
@@ -416,14 +476,14 @@
                                 {
                                     Debug.WriteLine("Failed the if");
                                     TotalHoursWorked = "Error";
-                                    <td bgcolor="red">@TotalHoursWorked</td>
+                                    <td bgcolor="salmon">@TotalHoursWorked</td>
                                 }
                             }
                             <td>
                                 @{ /** Calculates the hours worked for the day and check the return from TimeSheet.CalculateTotalHoursWorked to see if it is the first time through with no data, if its got 1 or 3 punches, or if 2 or 4 punches. **/
                                     Debug.WriteLine(TotalHoursWorked + " Weekly Timesheet TotalHours Test 2 for overtime");
                                     string overtime;
-                                    if (TotalHoursWorked.Equals("0"))
+                                    if (TotalHoursWorked.Equals("0") || TotalHoursWorked.Equals("Missing Out"))
                                     {
                                         overtime = "0";
                                     }
@@ -460,8 +520,7 @@
                             </td>
                             <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                             <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                            <td>@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "display: none; width: 75px" })</td>
-                            <td><button id="submit" type="submit" value="Save">Save</button></td>
+                            <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                         </tr>
 
                     }
@@ -469,32 +528,45 @@
             }
         }
         <tr>
-            <th colspan="8">Total Absent Hours</th>
-            <td><input type="text" name="totalAbsent" value="@totalabsent" /></td>
-            <th>Total Weekly Hours</th>
+            <td colspan="4" />
+            <th>Total Absent Hours</th>
+            <td>@totalabsent</td>
+            <th>Total Worked Hours</th>
             <!-- code for the color warning system for total hours worked-->
             @{
-                Debug.WriteLine("The Final weekly hours: " + totalweekly);
+
+                Debug.WriteLine("The Final weekly hours: " + totalWorked);
                 Debug.WriteLine("Time Punch Errors preventing from calculating full week correctly :" + Error);
-                if (Error >= 1)
+                if (missedpunch >= 1 && Error == 0)
                 {
-                    <td bgcolor="red">Error</td>
+                    <td bgcolor="lightyellow">Missing Punch</td>
                 }
-                else if (hours >= 40)
+                else if (Error >= 1)
                 {
-                    <td bgcolor="red">@totalWorked</td>
-                }
-                else if (hours < 20)
-                {
-                    <td bgcolor="green"> @totalWorked </td>
+                    <td bgcolor="salmon">Error</td>
                 }
                 else
                 {
-                    <td bgcolor="yellow"> @totalWorked </td>
+                    <td> @totalWorked </td>
                 }
             }
             <th> Total Weekly Hours</th>
-            <td>@totalweekly</td>
+            @{
+                Debug.WriteLine("The Final weekly hours: " + totalweekly);
+                Debug.WriteLine("Time Punch Errors preventing from calculating full week correctly :" + Error);
+                if (missedpunch >= 1 && Error == 0)
+                {
+                    <td bgcolor="lightyellow">Missing Punch</td>
+                }
+                else if (Error >= 1)
+                {
+                    <td bgcolor="salmon">Error</td>
+                }
+                else
+                {
+                    <td> @totalweekly </td>
+                }
+            }
         </tr>
         <tr>
             <!--Displays the total overtime-->
@@ -514,6 +586,10 @@
         </tr>
     </table>
     <br /><br />
+    @{ //rests the QuickTimeStamp message to blank so when you load the home screen it doesn't show up.
+        string message = "";
+        Session["QuickTimeStamp"] = message;
+    }
     <a href="@Url.Action("Index", "Employees")" class="button">Home</a>
     <br /><br />
     <!--Submit Week button with popup validation-->
@@ -521,7 +597,6 @@
     <br /><br />
     <!--Log out link-->
     <a href="@Url.Action("LogOut", "Login")" class="button">LogOut</a>
-
 
 </body>
 
