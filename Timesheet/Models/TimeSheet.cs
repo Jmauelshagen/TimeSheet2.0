@@ -33,10 +33,11 @@ namespace Timesheet.Models
         public string AdditionalHours { get; set; }
         public string TotalHoursWorked { get; set; }
         public string Submitted { get; set; }
-        public string AuthorizedBySupervisor { get; set; }
+        public string AuthorizedBySupervisor { get; set; }        
         public Nullable<int> EmpId { get; set; }
         public IEnumerable<SelectListItem> WeekEndingDates { get; set; }
         public IEnumerable<SelectListItem> EmpNames { get; set; }
+        public string Note { get; set; }
         public string Name { get; set; }
 
 
@@ -55,14 +56,15 @@ namespace Timesheet.Models
             LeaveHours = "";
             AdditionalHours = "";
             TotalHoursWorked = "";
-            Submitted = "False";
+            Submitted = "No";
             AuthorizedBySupervisor = "False";
             EmpId = 0;
+            Note = "";
         }
 
         //all-args constructor
         public TimeSheet(int id, string wEnd, string date, string inT, string outL, string inL, string outT,
-            int leaveId, string leaveHrs, string addlHrs, string tlHrs, string sub, string auth, int empId)
+            int leaveId, string leaveHrs, string addlHrs, string tlHrs, string sub, string auth, int empId, string n)
         {
             Id = id;
             WeekEnding = wEnd;
@@ -78,6 +80,7 @@ namespace Timesheet.Models
             Submitted = sub;
             AuthorizedBySupervisor = auth;
             EmpId = empId;
+            Note = n;
         }
 
         //Method to get list of Timesheet objects by employee id and week ending date
@@ -109,9 +112,10 @@ namespace Timesheet.Models
                         LeaveHours = "0:00",
                         AdditionalHours = "0:00",
                         TotalHoursWorked = "0:00",
-                        Submitted = "False",
+                        Submitted = "No",
                         AuthorizedBySupervisor = "False",
-                        EmpId = empId
+                        EmpId = empId,
+                        Note = ""
                     };
                     this.InsertTimeSheet(sheet);
                     timesheets.Add(sheet);
@@ -124,6 +128,58 @@ namespace Timesheet.Models
                     timesheets.Add(sheet);
                 }
             }
+            return timesheets;
+        }
+
+        public List<TimeSheet> GetApprovedTimesheets(string emp)
+        {
+            List<TimeSheet> timesheets = new List<TimeSheet>();
+            int iemp = Convert.ToInt32(emp);
+            Debug.WriteLine("Iemp value is : " + iemp + " ]");
+            var sheets = from tsheets in db.TimeSheets
+                         where tsheets.AuthorizedBySupervisor.Equals("True") && tsheets.EmpId == iemp
+                         group tsheets by tsheets.WeekEnding into weekgroup
+                         orderby weekgroup.Key ascending
+                         select weekgroup;
+            foreach (var weekgroup in sheets)
+            {
+                Debug.WriteLine("Key is: [0]" + weekgroup.Key + "}}");
+                foreach (TimeSheet sheet in weekgroup)
+                {
+                    
+                }               
+            }
+            return timesheets;
+        }
+
+        /**Method to retrieve a TimeSheet object by employee name and weekday**/
+        public TimeSheet GetDates(int id, string wED)
+        {
+            Debug.WriteLine("ID value is: " + id);
+            TimeSheet timesheets = new TimeSheet();
+            /****
+             string[] splitNames = name.Split(' ');
+             string fName = splitNames[0].Trim();
+             Debug.WriteLine("First name: " + fName);
+             string lName = splitNames[1].Trim();
+             Debug.WriteLine("Last name: " + lName);
+             //Find the employee id based on the name passed in to the method
+             var empId = (from emps in db.Employees
+                          where emps.FirstName == fName && emps.LastName == lName
+                          select emps.EmpId).FirstOrDefault();
+                          **/
+            //Select the TimeSheet objects based on the employee id and week ending date
+            var sheets = from tsheets in db.TimeSheets
+                         where tsheets.EmpId == id && tsheets.Date == wED
+                         orderby tsheets.Id ascending
+                         select tsheets;
+
+            foreach (TimeSheet sheet in sheets)
+            {
+                timesheets = sheet;
+                Debug.WriteLine("This found sheets id is:" + timesheets.Id);
+                Debug.WriteLine("This found sheets date is:" + timesheets.Date);
+            }            
             return timesheets;
         }
 
@@ -175,6 +231,7 @@ namespace Timesheet.Models
         {
             Debug.WriteLine("in database save 1");
             Debug.WriteLine("******************************************************************************************************** "+sheet.LeaveId);
+            Debug.WriteLine("With sheet id: " + sheet.Id + "]");
 
             string timeIn = "";
             string outForLunch = "";
@@ -205,7 +262,7 @@ namespace Timesheet.Models
             TimeSheet tsheet = (from tsheets in db.TimeSheets
                                 where tsheets.Id == sheet.Id
                                 select tsheets).Single();
-
+            Debug.WriteLine("The sheet is: " + sheet.Note + "]");
             tsheet.Id = sheet.Id;
             tsheet.WeekEnding = sheet.WeekEnding;
             tsheet.Date = sheet.Date;
@@ -220,6 +277,8 @@ namespace Timesheet.Models
             tsheet.Submitted = sheet.Submitted;
             tsheet.AuthorizedBySupervisor = sheet.AuthorizedBySupervisor;
             tsheet.EmpId = sheet.EmpId;
+            tsheet.Note = sheet.Note;
+            Debug.WriteLine("The tsheet is :" + tsheet.Note + "]");
 
             db.SaveChanges();
         }
@@ -329,9 +388,9 @@ namespace Timesheet.Models
 
                 else
                 {
-                    Debug.WriteLine("Sending 'Missing Out' hours for the day because punches are missing. only gets called for 1 punch and 3 punches");
+                    Debug.WriteLine("Sending 'Missing Punch' hours for the day because punches are missing. only gets called for 1 punch and 3 punches");
                     string totalHours;
-                    totalHours = "Missing Out";
+                    totalHours = "Missing Punch";
                     return totalHours;
                 }
 
@@ -431,9 +490,9 @@ namespace Timesheet.Models
 
                 else
                 {
-                    Debug.WriteLine("Sending 'Missing Out' hours for the day because punches are missing. only gets called for 1 punch and 3 punches");
+                    Debug.WriteLine("Sending 'Missing Punch' hours for the day because punches are missing. only gets called for 1 punch and 3 punches");
                     string totalHours;
-                    totalHours = "Missing Out";
+                    totalHours = "Missing Punch";
                     return totalHours;
                 }
 
