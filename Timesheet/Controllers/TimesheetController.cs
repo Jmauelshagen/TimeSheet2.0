@@ -25,7 +25,7 @@ namespace Timesheet.Controllers
         {
             Employee emp = (Employee)Session["Employee"];
             List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
-
+            
 
             foreach (TimeSheet sheet in tsheets)
             {
@@ -66,6 +66,9 @@ namespace Timesheet.Controllers
             Session["QuickTimeStamp"] = message;
             Session["DailyMessage"] = message;
 
+            //Note Error checking
+            Session["Message"] = message;
+
             //Return the TimeSheet view
             return RedirectToAction("DailyTimesheet", "Timesheet");
         }
@@ -98,6 +101,8 @@ namespace Timesheet.Controllers
             Session["QuickTimeStamp"] = message;
             Session["DailyMessage"] = message;
 
+            //Note Error Checking
+            Session["Message"] = message;
             //Return the TimeSheet view
             return RedirectToAction("Timesheet", "Timesheet");
         }
@@ -124,6 +129,8 @@ namespace Timesheet.Controllers
                 //Pull the employee object from the session.
                 Employee emp = (Employee)Session["Employee"];
                 List<string> dates = (List<string>)Session["Dates"];
+                Session["Message"] = "";
+
                 /**This next seciton returns the stored date selected from the drop down. It then calls a method
                  * to retrieves a specific timesheet based on the day and user. Then sets the current model
                  * to the timesheet to ensure integrity and allow the note to be updated below**/
@@ -177,6 +184,21 @@ namespace Timesheet.Controllers
                     timeOut = model.TimeOut;
                 }
 
+                //Slight bit of feedback till error checking can be implimented. If additional hours exist or doesnt with a note or not
+                if (model.AdditionalHours.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(model.Note))
+                {
+                    Debug.WriteLine("In Erro 1");
+                    string mess = "You created a note but have no additional hours. This may be a mistake.";
+                    Session["Message"] = mess;
+                }
+                if (!model.AdditionalHours.ToString().Trim().Equals("0:00") && String.IsNullOrEmpty(model.Note))
+                {
+                    Debug.WriteLine("In Erro 2");
+                    string mess = "You have addtional hours. You might want to make a note.";
+                    Session["Message"] = mess;
+                }
+                Debug.WriteLine("AddH : " + model.AdditionalHours + "/ Note: " + model.Note);
+                Debug.WriteLine("The message says :" + Session["Message"] + "\\");
                 //Instantiate TimeSheet object with data from form
                 TimeSheet sheet = new TimeSheet
                 {
@@ -222,7 +244,8 @@ namespace Timesheet.Controllers
             {
                 //Pull the employee object from the session.
                 Employee emp = (Employee)Session["Employee"];
-                List<string> dates = (List<string>)Session["Dates"];                
+                List<string> dates = (List<string>)Session["Dates"];
+                Session["Message"] = "";
                 Debug.WriteLine((string)model.TimeIn + " 1 in the weekly save result");
                 Debug.WriteLine((string)model.OutForLunch + " 2 in the weekly save result");
                 Debug.WriteLine((string)model.InFromLunch + " 3 in the weekly save result");
@@ -249,7 +272,23 @@ namespace Timesheet.Controllers
                 {
                     timeOut = model.TimeOut;
                 }
-
+                Debug.WriteLine("The old note is: " + model.Note);
+                Debug.WriteLine("The ID is : " + model.Id);                
+                //Slight bit of feedback till error checking can be implimented. If additional hours exist or doesnt with a note or not
+                if (model.AdditionalHours.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(model.Note))
+                {
+                    Debug.WriteLine("In Erro 1");
+                    string mess = "You created a note but have no additional hours. This may be a mistake.";
+                    Session["Message"] = mess;
+                }
+                if (!model.AdditionalHours.ToString().Trim().Equals("0:00") && String.IsNullOrEmpty(model.Note))
+                {
+                    Debug.WriteLine("In Erro 2");
+                    string mess = "You have addtional hours. You might want to make a note.";
+                    Session["Message"] = mess;
+                }
+                Debug.WriteLine("AddH : " + model.AdditionalHours + "/ Note: " + model.Note);
+                Debug.WriteLine("The message says :" + Session["Message"] + "\\");
                 //Instantiate TimeSheet object with data from form
                 TimeSheet sheet = new TimeSheet
                 {
@@ -269,7 +308,7 @@ namespace Timesheet.Controllers
                     EmpId = model.EmpId,
                     Note = model.Note
                 };
-
+                
                 sheet.UpdateTimeSheet(sheet);
 
                 //Get list of TimeSheet objects based on date and employee id and add list to session

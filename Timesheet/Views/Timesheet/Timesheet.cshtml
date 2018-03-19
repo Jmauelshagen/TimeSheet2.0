@@ -19,6 +19,7 @@
     List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
     List<string> dates = (List<string>)Session["Dates"];
     IEnumerable<SelectListItem> datelist = (IEnumerable<SelectListItem>)Session["datelist"];
+    string mess = (string)Session["Message"];
 
    // Calculating the total Weekly Hours worked
    string totalHours = "";
@@ -184,7 +185,7 @@
    }
 
 }
-<script>
+    <script>
     function checkTime(i)//Check for single digit numbers in the seconds and minutes of the live clock
     {
         if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
@@ -230,9 +231,8 @@
             return false;
         };
     }
-    ****************************************************************************************/
-
-</script>
+    ****************************************************************************************/     
+    </script>
 
 <!DOCTYPE html>
 <link rel="stylesheet" href="~/Content/Style.css" type="text/css" />
@@ -255,6 +255,7 @@
 
     <p id="Time" style="text-align: center;">@today <div id="time" style="text-align: center;"></div></p>
     <p style="text-align: center;">***Remember to enter your time in HH:MM AM/PM format***</p>
+    <p style="text-align: center;">@mess</p>
     <p style="text-align: right;"><a href="@Url.Action("GetDailyTimeSheet", "Timesheet")" class="button">View Daily Timesheet</a></p>
 
     <!--Table to display time sheet input form.-->
@@ -396,7 +397,7 @@
                         <tr>
                             <th colspan="4" style="font-weight:bold">Notes for additional hours worked</th>
                             <td colspan="4" style="background-color:white">@tsheets[i].Note.ToString().Trim()</td>
-                            <td colspan="6"></td>
+                            <td style="display:none;">@Html.TextBoxFor(model => model.Note, new { @Value = @tsheets[i].Note.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                         </tr>
                         }
                     }
@@ -502,7 +503,7 @@
                             <tr>
                                 <th colspan="4" style="font-weight:bold">Notes for additional hours worked</th>
                                 <td colspan="4" style="background-color:white">@tsheets[i].Note.ToString().Trim()</td>
-                                <td colspan="6"></td>
+                                <td style="display:none;">@Html.TextBoxFor(model => model.Note, new { @Value = @tsheets[i].Note.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                             </tr>
                         }
                     }
@@ -587,7 +588,13 @@
     @Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new { @class = "button", @style = "text-decoration: none; color: black;", @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })
     <br /><br />
     <!--Log out link-->
-    <a href="@Url.Action("LogOut", "Login")" class="button">LogOut</a>
+    <a href="@Url.Action("LogOut", "Login")" class="button">LogOut</a><
+    <script type="text/javascript">
+        var mes = "@mess";
+        if (mes) {
+            window.onload = function () { alert("@mess"); }
+        }
+    </script>
 
 </body>
 
