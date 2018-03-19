@@ -213,26 +213,26 @@
         document.getElementById('time').innerHTML = strTime;
         var t = setTimeout(formatAMPM, 500);
     }
-    /**********************************************************************************************
 
+    /**********************************************************************************************
     function leaveFieldEmpty() {
         var leaveid;
-        var additionalhours;
-        additional = new String(document.getElementById("AdditionalHours").Value);
+        var LeaveHours;
+        leaveHours = new String(document.getElementById("LeaveHours").Value);
         leaveid = new String(document.getElementById("LeaveId").Value);
         console.log(additionalhours);
         console.log(leaveFieldEmpty);
-        if (leaveid == "0" && additionalhours == "0:00") {
+        if (leaveid == "0" && leaveHours == "0:00") {
             return true;
         };
-        if (!leaveid == "0" && !additionalhours == "0:00") {
+        if (!leaveid == "0" && !leaveHours == "0:00") {
             return true;
         };
-        if (!leaveid == "0" && additionalhours == "0:00") {
+        if (!leaveid == "0" && leaveHours == "0:00") {
             alert("Please make sure to enter Absent Hours");
             return false;
         };
-        if (leaveid == "0" && !additionalhours == "0:00") {
+        if (leaveid == "0" && !leaveHours == "0:00") {
             alert("Please make sure to enter a Absent Type.");
             return false;
         };
