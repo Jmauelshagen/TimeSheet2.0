@@ -56,9 +56,7 @@ namespace Timesheet.Models
 
             foreach(TimeSheet sheet in tsheets)
             {
-
-
-                string hoursWorked = sheet.CalculateTotalHoursWorked(sheet);
+                string hoursWorked = sheet.CalculateWorkedHours(sheet);
                 if (hoursWorked.Equals("NoTime"))
                 {
 
