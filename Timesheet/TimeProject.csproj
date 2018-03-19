@@ -272,6 +272,7 @@
     <Content Include="Views\ApprovedTimesheets\ApprovedTimesheets.cshtml" />
     <Content Include="Views\Timesheet\DailyTimesheet.cshtml" />
     <Content Include="Views\Reports\Index.cshtml" />
+    <Content Include="Views\Timesheet\OldTimesheet.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

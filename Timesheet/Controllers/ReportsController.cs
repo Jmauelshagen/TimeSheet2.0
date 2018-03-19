@@ -77,7 +77,7 @@ namespace Timesheet.Controllers
             var name = model.Name.Trim();
             var wED = model.WeekEnding.Trim();
             List<TimeSheet> reportList = timeSheet.GetTimeSheetByNameAndDate(name, wED);
-            Session["TimeSheetList"] = reportList; 
+            Session["TimeSheetData"] = reportList; 
             if(reportList.ElementAtOrDefault(0) != null)
             {
                 Employee ep = new Employee().GetEmployee((Convert.ToInt16(reportList[0].EmpId)));
@@ -92,7 +92,7 @@ namespace Timesheet.Controllers
         [HttpPost]
         public ActionResult Approve()
         {
-            List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetList"];
+            List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetData"];
             foreach(TimeSheet sheet in list)
             {
                 sheet.AuthorizedBySupervisor = "True";
@@ -108,7 +108,7 @@ namespace Timesheet.Controllers
         [HttpPost]
         public ActionResult Deny()
         {
-            List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetList"];
+            List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetData"];
             foreach (TimeSheet sheet in list)
             {
                 sheet.Submitted = "False";
