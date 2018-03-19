@@ -165,8 +165,7 @@ namespace Timesheet.Controllers
             List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
             Session["TimeSheetData"] = tsheets;
 
-            //string CurrentDate = Request.Form["Date"].ToString();
-            string CurrentDate = model.Date;
+            string CurrentDate = model.Date.Trim();
             string message;
 
             for (int i = 0; i < 7; i++)
@@ -178,7 +177,7 @@ namespace Timesheet.Controllers
                         if (!String.IsNullOrEmpty(model.Note))
                         {
                             if (model.Note.ToString().Equals("None") || model.Note.ToString().Equals("none")) { tsheets[i].Note = ""; }
-                            else { tsheets[i].Note = model.Note; }
+                            else { tsheets[i].Note = model.Note + " - " + model.Date; }
                         }
                         message = "Timesheet Saved Succesfully";
                         Session["WeeklyMessage"] = message;
@@ -455,7 +454,7 @@ namespace Timesheet.Controllers
                         if (!String.IsNullOrEmpty(model.Note))
                         {
                             if (model.Note.ToString().Equals("None") || model.Note.ToString().Equals("none")) { tsheets[i].Note = ""; }
-                            else { tsheets[i].Note = model.Note; }
+                            else { tsheets[i].Note = model.Note + " - " + model.Date; }
                         }
                         message = "Timesheet Saved Succesfully";
                         Session["DailyMessage"] = message;
@@ -681,7 +680,7 @@ namespace Timesheet.Controllers
                         if (!String.IsNullOrEmpty(model.Note))
                         {
                             if (model.Note.ToString().Equals("None") || model.Note.ToString().Equals("none")) { tsheets[i].Note = ""; }
-                            else { tsheets[i].Note = model.Note; }
+                            else { tsheets[i].Note = model.Note + " - " + model.Date; }
                         }
                         message = "Timesheet Saved Succesfully";
                         tsheets[i].UpdateTimeSheet(tsheets[i]);
@@ -765,7 +764,6 @@ namespace Timesheet.Controllers
             string wED = model.WeekEnding.Trim();
             List<TimeSheet> tsheets = model.GetTimeSheetByIdAndDate(emp.EmpId, wED);
             Session["TimeSheetData"] = tsheets;
-            Debug.WriteLine("***********************************************************************************" + model.WeekEnding.Trim());
             IEnumerable<SelectListItem> dateList = GetListOfDays(emp.EmpId, wED);
             Session["dateList"] = dateList;
             List<string> dates = GetDaysInTimeSheet(emp.EmpId, wED);

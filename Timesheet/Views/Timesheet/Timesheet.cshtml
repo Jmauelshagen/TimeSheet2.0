@@ -283,13 +283,13 @@
                 <th>Submitted</th>
                 <th>Approved</th>
                 <th style="display:none;">Emp ID</th>
-                <th></th>
+                <th style="display:none;"></th>
             </tr>
             @{ for (int i = 0; i < 7; i++)
                 {
                     using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post))
                     {
-                        if (tsheets[i].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
+                        if (tsheets[0].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
                         {
                             <tr>
                                 <!--Converted some of the textboxes to time input to reduce user error-->
@@ -300,19 +300,18 @@
                                 <td>@Html.TextBoxFor(model => model.OutForLunch, new { type = "time", Value = @tsheets[i].OutForLunch.ToString().Trim(), style = "width: 100px;" })</td>
                                 <td>@Html.TextBoxFor(model => model.InFromLunch, new { type = "time", Value = @tsheets[i].InFromLunch.ToString().Trim(), style = "width: 100px;" })</td>
                                 <td>@Html.TextBoxFor(model => model.TimeOut, new { type = "time", Value = @tsheets[i].TimeOut.ToString().Trim(), style = "width: 100px;" })</td>
-                                <td>
-                                    @Html.DropDownListFor(model => model.LeaveId, new SelectList(
-                                              new List<object> {
-                                                            new { value = 0 , text = "None" },
-                                                            new { value = 1 , text = "Annual" },
-                                                            new { value = 2 , text = "Sick"},
-                                                            new { value = 3 , text = "Personal"},
-                                                            new { value = 4 , text = "FLSA Comp"},
-                                                            new { value = 5 , text = "Holiday"},
-                                                            new { value = 6 , text = "Military"},
-                                                            new { value = 7 , text = "Court"},
-                                                            new { value = 8 , text = "Unpaid Leave" }
-                                              }, "value", "text", @tsheets[i].LeaveId))
+                                <td>@Html.DropDownListFor(model => model.LeaveId, new SelectList(
+                 new List<object> {
+                                        new { value = 0 , text = "None" },
+                                        new { value = 1 , text = "Annual" },
+                                        new { value = 2 , text = "Sick"},
+                                        new { value = 3 , text = "Personal"},
+                                        new { value = 4 , text = "FLSA Comp"},
+                                        new { value = 5 , text = "Holiday"},
+                                        new { value = 6 , text = "Military"},
+                                        new { value = 7 , text = "Court"},
+                                        new { value = 8 , text = "Unpaid Leave" }
+                 }, "value", "text", @tsheets[i].LeaveId))
                                 </td>
                                 <td>@Html.TextBoxFor(model => model.LeaveHours, new { @Value = @tsheets[i].LeaveHours.ToString().Trim(), pattern = "(1[0-2]|0?[0-9]):([14][5]|[03][0])$", title = "Please enter time as hours and minutes in format ##:## rounded to nearest 15", style = "width: 75px;" })</td>
                                 <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim(), pattern = "(1[0-2]|0?[0-9]):([14][5]|[03][0])$", title = "Please enter time as hours and minutes in format ##:## rounded to nearest 15", style = "width: 75px;" })</td>
@@ -398,17 +397,17 @@
                                 <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                 <td><button id="submit" type="submit" value="Save">Save</button></td> <!--   onclick="return leaveFieldEmpty()"             -->
                             </tr>
-                            /**These add section for notes to be displayed if they exist**/
-                            if (!String.IsNullOrEmpty(tsheets[i].Note))
-                            {
+                                        /**These add section for notes to be displayed if they exist**/
+                                        if (!String.IsNullOrEmpty(tsheets[i].Note))
+                                        {
                                 <tr>
                                     <th colspan="4" style="font-weight:bold">Notes for additional hours worked above ^</th>
                                     <td colspan="10" style="background-color:white">@tsheets[i].Note.ToString().Trim()</td>
                                 </tr>
-                            }
-                        }
-                        else
-                        {
+                                            }
+                                        }
+                                        else
+                                        {
                             <tr>
                                 <!--Converted some of the textboxes to time input to reduce user error-->
                                 <td style="display:none;">@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
@@ -418,7 +417,19 @@
                                 <td>@Html.TextBoxFor(model => model.OutForLunch, new { type = "time", Value = @tsheets[i].OutForLunch.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                 <td>@Html.TextBoxFor(model => model.InFromLunch, new { type = "time", Value = @tsheets[i].InFromLunch.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                 <td>@Html.TextBoxFor(model => model.TimeOut, new { type = "time", Value = @tsheets[i].TimeOut.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                                <td>@Html.TextBoxFor(model => model.LeaveId, new { @Value = @tsheets[i].LeaveId.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
+                                <td>@Html.DropDownListFor(model => model.LeaveId, new SelectList(
+                 new List<object> {
+                                        new { value = 0 , text = "None" },
+                                        new { value = 1 , text = "Annual" },
+                                        new { value = 2 , text = "Sick"},
+                                        new { value = 3 , text = "Personal"},
+                                        new { value = 4 , text = "FLSA Comp"},
+                                        new { value = 5 , text = "Holiday"},
+                                        new { value = 6 , text = "Military"},
+                                        new { value = 7 , text = "Court"},
+                                        new { value = 8 , text = "Unpaid Leave" }
+                 }, "value", "text", @tsheets[i].LeaveId))
+                                </td>                                
                                 <td>@Html.TextBoxFor(model => model.LeaveHours, new { @Value = @tsheets[i].LeaveHours.ToString().Trim(), pattern = "(1[0-2]|0?[0-9]):([14][5]|[03][0])$", title = "Please enter time as hours and minutes in format ##:## rounded to nearest 15", @readonly = "readonly", style = "width: 75px;" })</td>
                                 <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim(), pattern = "(1[0-2]|0?[0-9]):([14][5]|[03][0])$", title = "Please enter time as hours and minutes in format ##:## rounded to nearest 15", @readonly = "readonly", style = "width: 75px;" })</td>
 
@@ -503,17 +514,17 @@
                                 <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                                 <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                             </tr>
-                            /**These add section for notes to be displayed if they exist**/
-                            if (!String.IsNullOrEmpty(tsheets[i].Note))
-                            {
+                                        /**These add section for notes to be displayed if they exist**/
+                                        if (!String.IsNullOrEmpty(tsheets[i].Note))
+                                        {
                                 <tr>
                                     <th colspan="4" style="font-weight:bold">Notes for additional hours worked above ^</th>
-                                    <td colspan="10" style="background-color:white">@tsheets[i].Note.ToString().Trim()</td>
+                                    <td colspan="9" style="background-color:white">@tsheets[i].Note.ToString().Trim()</td>
                                 </tr>
-                            }
-                        }
-                    }
-                }
+                                                    }
+                                                }
+                                            }
+                                        }
             }
         </table>
     </div>
@@ -581,12 +592,17 @@
     </div>
     <div>
         @{/**This Text Area is used to give infomation about any additional hours given. It creates
-             * another form that saves input to a the model and updates it to the day selected**/}
-        @using (Html.BeginForm("SaveTimeNote", "Timesheet", FormMethod.Post))
-        {
-            <h3 align="center">@Html.Label("Comment for any additional hours worked", new { @style = "font-size: 1.1em" })</h3>
-            <p align="center">@Html.TextAreaFor(model => model.Note, 10, 50, new { @placeholder = "Comments about additional hours go here, you might want to date the note." })</p>
-            <p align="center">@Html.DropDownList("Date", datelist, "Select Day to submit", new { onchange = "this.form.submit();" })</p>
+                * another form that saves input to a the model and updates it to the day selected**/
+            if (tsheets[0].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
+            {
+                using (Html.BeginForm("SaveTimeNote", "Timesheet", FormMethod.Post))
+                {
+                    <h3 align="center">@Html.Label("Comment for any additional hours worked", new { @style = "font-size: 1.1em" })</h3>
+                    <p align="center">@Html.TextAreaFor(model => model.Note, 10, 50, new { @placeholder = "Comments about additional hours go here." +
+                                    "\n\nTo clear a note from a day enter 'none' or 'None' in the field and save it, this will remove the note." })</p>
+                    <p align="center">@Html.DropDownList("Date", datelist, "Select Day to submit", new { onchange = "this.form.submit();" })</p>
+                }
+            }
         }
     </div>
     <div>
