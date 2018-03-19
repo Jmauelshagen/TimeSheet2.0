@@ -88,7 +88,7 @@ namespace Timesheet.Models
         public List<TimeSheet> GetTimeSheetByWeek(int empId, List<string> dates)
         {
             List<TimeSheet> timesheets = new List<TimeSheet>();
-            string wEnd = dates[6].Trim();
+            string wEnd = dates[0].Trim();
             var sheets = from tsheets in db.TimeSheets
                          where tsheets.EmpId == empId && tsheets.WeekEnding == wEnd
                          orderby tsheets.Id ascending
@@ -97,7 +97,7 @@ namespace Timesheet.Models
             Debug.WriteLine("TimeSheet count is: " + count.ToString() + "********************************************************************************************************************************");
             if (count == 0)
             {
-                for (int i = 0; i < 7; i++)
+                for (int i = 1; i < 8; i++)
                 {
                     TimeSheet sheet = new TimeSheet
                     {
@@ -152,24 +152,6 @@ namespace Timesheet.Models
             return timesheets;
         }
 
-        /**Method to retrieve a TimeSheet object by employee name and weekday
-        public List<string> GetDates(int id, string wED)
-        {
-            Debug.WriteLine("ID value is: " + id);
-            List<string> dates = new List<string>();
-            //Select the TimeSheet objects based on the employee id and week ending date
-            var sheets = from tsheets in db.TimeSheets
-                         where tsheets.EmpId == id && tsheets.Date == wED
-                         orderby tsheets.Id ascending
-                         select tsheets;
-
-            foreach (TimeSheet sheet in sheets)
-            {
-                dates.Add(sheet.Date);
-            }
-            return dates;
-        }**/
-
         //Method to retrieve list of TimeSheet objects by employee name and week ending date
         public List<TimeSheet> GetTimeSheetByNameAndDate(string name, string wED)
         {
@@ -196,7 +178,7 @@ namespace Timesheet.Models
             return timesheets;
         }
 
-        //Method to retrieve list of TimeSheet objects by employee name and week ending date
+        //Method to retrieve list of TimeSheet objects by employee ID and week ending date
         public List<TimeSheet> GetTimeSheetByIdAndDate(int id, string wED)
         {
             Debug.WriteLine("ID value is: " + id);
@@ -683,6 +665,25 @@ namespace Timesheet.Models
             return dates;
         }
 
+        //Method to retrieve a date List object by employee id and weekday
+        public List<string> GetDates(int id, string wED)
+        {
+            Debug.WriteLine("ID value is: " + id);
+            List<string> dates = new List<string>();
+            //Select the TimeSheet objects based on the employee id and week ending date
+            var sheets = from tsheets in db.TimeSheets
+                         where tsheets.EmpId == id && tsheets.WeekEnding == wED
+                         orderby tsheets.Id ascending
+                         select tsheets;
+
+            foreach (TimeSheet sheet in sheets)
+            {
+                Debug.WriteLine("******************************* DATE SAVED TO LIST *****************************: " + sheet.Date);
+                dates.Add(sheet.Date);
+            }
+            return dates;
+        }
+
         //Queries the TimeSheet table and obtains a list of distinct week ending dates that exist on the table
         public List<string> GetWeekEndingDateList()
         {
@@ -702,20 +703,6 @@ namespace Timesheet.Models
             var wED = (from sheets in db.TimeSheets
                        where sheets.EmpId == id
                        select sheets.WeekEnding).Distinct().OrderBy(WeekEnding => WeekEnding);
-
-            List<string> weekEndDates = new List<string>();
-            foreach (string date in wED)
-            {
-                weekEndDates.Add(date);
-            }
-            return weekEndDates;
-        }
-
-        public List<string> GetDates(int id, string wed)
-        {
-            var wED = (from sheets in db.TimeSheets
-                       where sheets.EmpId == id && sheets.WeekEnding == wed
-                       select sheets.Date).Distinct().OrderBy(WeekEnding => WeekEnding);
 
             List<string> weekEndDates = new List<string>();
             foreach (string date in wED)

@@ -103,7 +103,6 @@ namespace Timesheet.Controllers
             //Pull the employee object from the session.
             Employee emp = (Employee)Session["Employee"];
 
-
             //Instantiate a TimeSheet object
             TimeSheet tsheet = new TimeSheet();
 
@@ -123,6 +122,7 @@ namespace Timesheet.Controllers
             //Return the TimeSheet view
             return RedirectToAction("Timesheet", "Timesheet");
         }
+
         private IEnumerable<SelectListItem> GetListOfDays()
         {
             TimeSheet tsheet = new TimeSheet();
@@ -661,7 +661,7 @@ namespace Timesheet.Controllers
             * to the timesheet to ensure integrity and allow the note to be updated below**/
 
             //Get list of TimeSheet objects based on date and employee id and add list to session
-            List<TimeSheet>  tsheets = (List<TimeSheet>)Session["TimeSheetList"];
+            List<TimeSheet>  tsheets = (List<TimeSheet>)Session["TimeSheetData"];
 
             //string CurrentDate = Request.Form["Date"].ToString().Trim();
             string CurrentDate = model.Date.Trim();
@@ -685,7 +685,7 @@ namespace Timesheet.Controllers
                         }
                         message = "Timesheet Saved Succesfully";
                         tsheets[i].UpdateTimeSheet(tsheets[i]);
-                        Session["TimeSheetList"] = tsheets;
+                        Session["TimeSheetData"] = tsheets;
                         Session["Message"] = message;
 
                     }
@@ -704,7 +704,7 @@ namespace Timesheet.Controllers
         public ActionResult SaveOldTimeSheet(TimeSheet model)
         {
             //Get list of TimeSheet objects based on date and employee id and add list to session
-            List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetList"];
+            List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
 
             //string CurrentDate = Request.Form["Date"].ToString().Trim();
             string CurrentDate = model.Date.Trim();
@@ -727,7 +727,7 @@ namespace Timesheet.Controllers
 
                         message = "Timesheet Saved Succesfully";
                         tsheets[i].UpdateTimeSheet(tsheets[i]);
-                        Session["TimeSheetList"] = tsheets;
+                        Session["TimeSheetData"] = tsheets;
                         Session["Message"] = message;
 
                     }
@@ -763,22 +763,22 @@ namespace Timesheet.Controllers
             }
 
             string wED = model.WeekEnding.Trim();
+            List<TimeSheet> tsheets = model.GetTimeSheetByIdAndDate(emp.EmpId, wED);
+            Session["TimeSheetData"] = tsheets;
             Debug.WriteLine("***********************************************************************************" + model.WeekEnding.Trim());
             IEnumerable<SelectListItem> dateList = GetListOfDays(emp.EmpId, wED);
             Session["dateList"] = dateList;
             List<string> dates = GetDaysInTimeSheet(emp.EmpId, wED);
             Session["dates"] = dates;
-            List<TimeSheet> tsheets = model.GetTimeSheetByWeek(emp.EmpId, dates);
-            Session["TimeSheetList"] = tsheets;
 
             return RedirectToAction("OldTimesheet", "Timesheet");
         }
 
         private IEnumerable<SelectListItem> GetListOfDays(int id, string wed)
         {
-            TimeSheet tsheet = new TimeSheet();
-            var dates = new List<SelectListItem>();
-            foreach (string date in tsheet.GetDates(id,wed))
+            List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
+            List<SelectListItem> dates = new List<SelectListItem>();
+            foreach (string date in tsheets[0].GetDates(id,wed))
             {
                 dates.Add(new SelectListItem
                 {
@@ -790,9 +790,9 @@ namespace Timesheet.Controllers
         }
         private List<string> GetDaysInTimeSheet(int id, string wed)
         {
-            TimeSheet tsheet = new TimeSheet();
-            var dates = new List<string>();
-            foreach (string date in tsheet.GetDates(id, wed))
+            List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
+            List<string> dates = new List<string>();
+            foreach (string date in tsheets[0].GetDates(id, wed))
             {
                 dates.Add(date);
             }
@@ -804,7 +804,7 @@ namespace Timesheet.Controllers
         private IEnumerable<SelectListItem> GetWeekEndingDateList(int id)
         {
             TimeSheet tsheet = new TimeSheet();
-            var dateList = new List<SelectListItem>();
+            List<SelectListItem> dateList = new List<SelectListItem>();
             foreach (string date in tsheet.GetWeekEndingDateList(id))
             {
                 dateList.Add(new SelectListItem

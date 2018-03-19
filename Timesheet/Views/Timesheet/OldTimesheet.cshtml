@@ -11,7 +11,7 @@
 <!--Get employee, time sheet list and message objects from the session.-->
 @{
     Employee emp = (Employee)Session["Employee"];
-    var tsheets = (List<TimeSheet>)Session["TimeSheetList"];
+    var tsheets = (List<TimeSheet>)Session["TimeSheetData"];
     var message = (string)Session["Message"];
     IEnumerable<SelectListItem> dateList = (IEnumerable<SelectListItem>)Session["dateList"];
     IEnumerable<SelectListItem> weekList = (IEnumerable<SelectListItem>)Session["weeklist"];
