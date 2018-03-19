@@ -19,169 +19,170 @@
     List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
     List<string> dates = (List<string>)Session["Dates"];
     IEnumerable<SelectListItem> datelist = (IEnumerable<SelectListItem>)Session["datelist"];
-
+    string mess = (string)Session["Message"];
+    
     // Calculating the total Weekly Hours worked
-   string totalHours = "";
-   string totalWorked = "";
-   string totalweekly = "";
-   string totalabsent = "";
-   int missedpunch = 0;
-   int Error = 0;
-   int hour = 0;
-   int hours = 0;
-   int minute = 0;
-   int minutes = 0;
+    string totalHours = "";
+    string totalWorked = "";
+    string totalweekly = "";
+    string totalabsent = "";
+    int missedpunch = 0;
+    int Error = 0;
+    int hour = 0;
+    int hours = 0;
+    int minute = 0;
+    int minutes = 0;
 
-   /**Calculates the total hours workecd for the week**/
-   foreach (TimeSheet sheet in tsheets)
-   {
-       string hoursWorked = sheet.CalculateWorkedHours(sheet);
-       if (hoursWorked.Equals("NoTime"))
-       {
+    /**Calculates the total hours workecd for the week**/
+    foreach (TimeSheet sheet in tsheets)
+    {
+        string hoursWorked = sheet.CalculateWorkedHours(sheet);
+        if (hoursWorked.Equals("NoTime"))
+        {
 
-       }
-       else if (hoursWorked.Equals("Missing Out"))
-       {
-           missedpunch = missedpunch + 1;
-       }
-       else if (!String.IsNullOrEmpty(hoursWorked) && !hoursWorked.Equals("Error"))
-       {
-           hours += Convert.ToInt16(hoursWorked.Split(':')[0]);
-           minutes += Convert.ToInt16(hoursWorked.Split(':')[1]);
-           while (minutes >= 60)
-           {
-               minutes = minutes - 60;
-               hours = hours + 1;
-           }
-           if (minutes == 0)
-           {
-               totalHours = hours + ":00";
-           }
-           else
-           {
-               totalHours = hours + ":" + minutes;
-           }
-           totalWorked = totalHours;
+        }
+        else if (hoursWorked.Equals("Missing Out"))
+        {
+            missedpunch = missedpunch + 1;
+        }
+        else if (!String.IsNullOrEmpty(hoursWorked) && !hoursWorked.Equals("Error"))
+        {
+            hours += Convert.ToInt16(hoursWorked.Split(':')[0]);
+            minutes += Convert.ToInt16(hoursWorked.Split(':')[1]);
+            while (minutes >= 60)
+            {
+                minutes = minutes - 60;
+                hours = hours + 1;
+            }
+            if (minutes == 0)
+            {
+                totalHours = hours + ":00";
+            }
+            else
+            {
+                totalHours = hours + ":" + minutes;
+            }
+            totalWorked = totalHours;
 
-           Debug.WriteLine("Running total: " + totalWorked);
-           Debug.WriteLine("Running total by the hours: " + hours);
-       }
-       else
-       {
-           Error = Error + 1;
-       }
-   }
+            Debug.WriteLine("Running total: " + totalWorked);
+            Debug.WriteLine("Running total by the hours: " + hours);
+        }
+        else
+        {
+            Error = Error + 1;
+        }
+    }
 
-   /**Calculates total overtime that was made**/
-   string overTime = "0";
-   if (hours >= 40)
-   {
-       overTime = (hours - 40).ToString() + ":" + minutes;
-       int overtimeHours = 0;
-       int overtimeMinutes = ((hours - 40) * 60 + minutes) + (((hours - 40) * 60 + minutes) / 2);
-       while (overtimeMinutes >= 60)
-       {
-           overtimeHours = overtimeHours + 1;
-           overtimeMinutes = overtimeMinutes - 60;
-       }
-       if (overtimeMinutes >= 53)
-       {
-           overTime = (overtimeHours + 1) + ":00";
-       }
-       if (overtimeMinutes >= 38 && overtimeMinutes <= 52)
-       {
-           overTime = overtimeHours + ":45";
-       }
-       if (overtimeMinutes >= 23 && overtimeMinutes <= 37)
-       {
-           overTime = overtimeHours + ":30";
-       }
-       if (overtimeMinutes <= 22 && overtimeMinutes >= 8)
-       {
-           overTime = overtimeHours + ":15";
-       }
-       if (overtimeMinutes <= 7)
-       {
-           overTime = overtimeHours + ":00";
+    /**Calculates total overtime that was made**/
+    string overTime = "0";
+    if (hours >= 40)
+    {
+        overTime = (hours - 40).ToString() + ":" + minutes;
+        int overtimeHours = 0;
+        int overtimeMinutes = ((hours - 40) * 60 + minutes) + (((hours - 40) * 60 + minutes) / 2);
+        while (overtimeMinutes >= 60)
+        {
+            overtimeHours = overtimeHours + 1;
+            overtimeMinutes = overtimeMinutes - 60;
+        }
+        if (overtimeMinutes >= 53)
+        {
+            overTime = (overtimeHours + 1) + ":00";
+        }
+        if (overtimeMinutes >= 38 && overtimeMinutes <= 52)
+        {
+            overTime = overtimeHours + ":45";
+        }
+        if (overtimeMinutes >= 23 && overtimeMinutes <= 37)
+        {
+            overTime = overtimeHours + ":30";
+        }
+        if (overtimeMinutes <= 22 && overtimeMinutes >= 8)
+        {
+            overTime = overtimeHours + ":15";
+        }
+        if (overtimeMinutes <= 7)
+        {
+            overTime = overtimeHours + ":00";
 
-       }
-   }
+        }
+    }
 
-   hours = 0;
-   minutes = 0;
+    hours = 0;
+    minutes = 0;
 
-   foreach (TimeSheet sheet in tsheets)
-   {
-       string absHours = "";
-       if (sheet.LeaveHours.Equals("0:00"))
-       {
+    foreach (TimeSheet sheet in tsheets)
+    {
+        string absHours = "";
+        if (sheet.LeaveHours.Equals("0:00"))
+        {
 
-       }
-       else if (!String.IsNullOrEmpty(sheet.LeaveHours))
-       {
-           absHours = sheet.LeaveHours;
-           Debug.WriteLine("Leave hour : " + sheet.LeaveHours);
-           hours += Convert.ToInt16(absHours.Split(':')[0]);
-           minutes += Convert.ToInt16(absHours.Split(':')[1]);
-           while (minutes >= 60)
-           {
-               minutes = minutes - 60;
-               hours = hours + 1;
-           }
+        }
+        else if (!String.IsNullOrEmpty(sheet.LeaveHours))
+        {
+            absHours = sheet.LeaveHours;
+            Debug.WriteLine("Leave hour : " + sheet.LeaveHours);
+            hours += Convert.ToInt16(absHours.Split(':')[0]);
+            minutes += Convert.ToInt16(absHours.Split(':')[1]);
+            while (minutes >= 60)
+            {
+                minutes = minutes - 60;
+                hours = hours + 1;
+            }
 
-           totalHours = hours + ":" + minutes;
-           totalabsent = totalHours;
+            totalHours = hours + ":" + minutes;
+            totalabsent = totalHours;
 
-           Debug.WriteLine("Running absents: " + totalHours);
-           Debug.WriteLine("Running absents by the hours: " + hours);
-       }
-       else
-       {
-           Error = Error + 1;
-       }
-   }
+            Debug.WriteLine("Running absents: " + totalHours);
+            Debug.WriteLine("Running absents by the hours: " + hours);
+        }
+        else
+        {
+            Error = Error + 1;
+        }
+    }
 
-   hours = 0;
-   minutes = 0;
+    hours = 0;
+    minutes = 0;
 
-   /**Calculates the total hours for the week**/
-   foreach (TimeSheet sheet in tsheets)
-   {
-       string hoursWorked = sheet.CalculateTotalHoursWorked(sheet);
-       if (hoursWorked.Equals("NoTime"))
-       {
-       }
-       else if (hoursWorked.Equals("Missing Out"))
-       {
-           missedpunch = missedpunch + 1;
-       }
-       else if (!String.IsNullOrEmpty(hoursWorked) && !hoursWorked.Equals("Error"))
-       {
-           hours += Convert.ToInt16(hoursWorked.Split(':')[0]);
-           minutes += Convert.ToInt16(hoursWorked.Split(':')[1]);
-           while (minutes >= 60)
-           {
-               minutes = minutes - 60;
-               hours = hours + 1;
-           }
-           if (minutes == 0)
-           {
-               totalHours = hours + ":00";
-           }
-           else
-           {
-               totalHours = hours + ":" + minutes;
-           }
-           totalweekly = totalHours;
+    /**Calculates the total hours for the week**/
+    foreach (TimeSheet sheet in tsheets)
+    {
+        string hoursWorked = sheet.CalculateTotalHoursWorked(sheet);
+        if (hoursWorked.Equals("NoTime"))
+        {
+        }
+        else if (hoursWorked.Equals("Missing Out"))
+        {
+            missedpunch = missedpunch + 1;
+        }
+        else if (!String.IsNullOrEmpty(hoursWorked) && !hoursWorked.Equals("Error"))
+        {
+            hours += Convert.ToInt16(hoursWorked.Split(':')[0]);
+            minutes += Convert.ToInt16(hoursWorked.Split(':')[1]);
+            while (minutes >= 60)
+            {
+                minutes = minutes - 60;
+                hours = hours + 1;
+            }
+            if (minutes == 0)
+            {
+                totalHours = hours + ":00";
+            }
+            else
+            {
+                totalHours = hours + ":" + minutes;
+            }
+            totalweekly = totalHours;
 
-           Debug.WriteLine("Running total: " + totalHours);
-           Debug.WriteLine("Running total by the hours: " + hours);
-       }
-       else
-       {
-           Error = Error + 1;
-       }
-   }
+            Debug.WriteLine("Running total: " + totalHours);
+            Debug.WriteLine("Running total by the hours: " + hours);
+        }
+        else
+        {
+            Error = Error + 1;
+        }
+    }
 
 }
 <script>
@@ -230,8 +231,7 @@
             return false;
         };
     }
-    ****************************************************************************************/
-
+    ****************************************************************************************/  
 </script>
 
 <!DOCTYPE html>
@@ -251,6 +251,12 @@
     @{
         string today = DateTime.Now.ToLongDateString();
         string time = DateTime.Now.ToLongTimeString();
+        if (mess != "")
+        {
+            <script type="text/javascript">
+                alert(@mess);                
+            </script>
+        }
     }
 
     <p id="Time" style="text-align: center;">@today <div id="time" style="text-align: center;"></div></p>
@@ -396,7 +402,7 @@
                         {
                             <tr>
                                 <td colspan="4" style="font-size:1.15em; font-weight:bold;">Notes for additional hours worked</td>
-                                <td colspan="4" style="font-size:1.15em;">@tsheets[i].Note.ToString().Trim()</td>
+                                <td colspan="4" style="font-size:1.15em;">@Html.DisplayFor(model => model.Note)</td>                      
                             </tr>
                         }
                     }
@@ -499,12 +505,12 @@
                         /**These add section for notes to be displayed if they exist**/
                         if (!String.IsNullOrEmpty(tsheets[i].Note))
                         {
-                            <tr>
-                                <td colspan="4" style="font-size:1.15em; font-weight:bold;">Notes for additional hours worked</td>
-                                <td colspan="4" style="font-size:1.15em;">@tsheets[i].Note.ToString().Trim()</td>
-                            </tr>
+                        <tr>
+                            <td colspan="4" style="font-size:1.15em; font-weight:bold;">Notes for additional hours worked</td>
+                            <td colspan="4" style="font-size:1.15em;">@Html.DisplayFor(model => model.Note)</td>                            
+                        </tr>
                         }
-                    }
+                    }                             
                 }
             }
         }
@@ -587,6 +593,8 @@
     <br /><br />
     <!--Log out link-->
     <a href="@Url.Action("LogOut", "Login")" class="button">LogOut</a>
+
+    
 
 </body>
 
