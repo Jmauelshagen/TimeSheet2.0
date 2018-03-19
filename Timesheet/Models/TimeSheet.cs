@@ -153,22 +153,24 @@ namespace Timesheet.Models
         }
 
         /**Method to retrieve a TimeSheet object by employee name and weekday**/
-        public TimeSheet GetDates(string name, string wED)
+        public TimeSheet GetDates(int id, string wED)
         {
-            Debug.WriteLine("Name value is: " + name);
+            Debug.WriteLine("ID value is: " + id);
             TimeSheet timesheets = new TimeSheet();
-            string[] splitNames = name.Split(' ');
-            string fName = splitNames[0].Trim();
-            Debug.WriteLine("First name: " + fName);
-            string lName = splitNames[1].Trim();
-            Debug.WriteLine("Last name: " + lName);
-            //Find the employee id based on the name passed in to the method
-            var empId = (from emps in db.Employees
-                         where emps.FirstName == fName && emps.LastName == lName
-                         select emps.EmpId).FirstOrDefault();
+            /****
+             string[] splitNames = name.Split(' ');
+             string fName = splitNames[0].Trim();
+             Debug.WriteLine("First name: " + fName);
+             string lName = splitNames[1].Trim();
+             Debug.WriteLine("Last name: " + lName);
+             //Find the employee id based on the name passed in to the method
+             var empId = (from emps in db.Employees
+                          where emps.FirstName == fName && emps.LastName == lName
+                          select emps.EmpId).FirstOrDefault();
+                          **/
             //Select the TimeSheet objects based on the employee id and week ending date
             var sheets = from tsheets in db.TimeSheets
-                         where tsheets.EmpId == empId && tsheets.Date == wED
+                         where tsheets.EmpId == id && tsheets.Date == wED
                          orderby tsheets.Id ascending
                          select tsheets;
 
@@ -386,9 +388,9 @@ namespace Timesheet.Models
 
                 else
                 {
-                    Debug.WriteLine("Sending 'Missing Out' hours for the day because punches are missing. only gets called for 1 punch and 3 punches");
+                    Debug.WriteLine("Sending 'Missing Punch' hours for the day because punches are missing. only gets called for 1 punch and 3 punches");
                     string totalHours;
-                    totalHours = "Missing Out";
+                    totalHours = "Missing Punch";
                     return totalHours;
                 }
 
@@ -488,9 +490,9 @@ namespace Timesheet.Models
 
                 else
                 {
-                    Debug.WriteLine("Sending 'Missing Out' hours for the day because punches are missing. only gets called for 1 punch and 3 punches");
+                    Debug.WriteLine("Sending 'Missing Punch' hours for the day because punches are missing. only gets called for 1 punch and 3 punches");
                     string totalHours;
-                    totalHours = "Missing Out";
+                    totalHours = "Missing Punch";
                     return totalHours;
                 }
 

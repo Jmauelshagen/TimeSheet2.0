@@ -63,7 +63,7 @@ namespace Timesheet.Models
                 {
 
                 }
-                else if (hoursWorked.Equals("Missing Out"))
+                else if (hoursWorked.Equals("Missing Punch"))
                 {
                     missedpunch = missedpunch + 1;
                 }

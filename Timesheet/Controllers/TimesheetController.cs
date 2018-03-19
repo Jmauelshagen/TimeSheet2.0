@@ -105,7 +105,7 @@ namespace Timesheet.Controllers
         {
             TimeSheet tsheet = new TimeSheet();
             var dateList = new List<SelectListItem>();
-            foreach (string date in tsheet.GetDates())
+            foreach (string date in tsheet.GetDates().Skip(1))
             {
                 dateList.Add(new SelectListItem
                 {
@@ -132,9 +132,9 @@ namespace Timesheet.Controllers
                 Debug.WriteLine("The Date String is:" + date + "]");
                 if (!String.IsNullOrEmpty(date))
                 {
-                    string ename = emp.FirstName.Trim() + " " + emp.LastName.Trim();
+                    int empId = emp.EmpId;
                     TimeSheet ts = new TimeSheet();
-                    ts = ts.GetDates(ename, date);
+                    ts = ts.GetDates(empId, date);
                     Debug.WriteLine("The new id should be: " + ts);
                     model.Id = ts.Id;
                     model.WeekEnding = ts.WeekEnding;

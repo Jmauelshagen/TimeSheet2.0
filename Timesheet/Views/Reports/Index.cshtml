@@ -188,8 +188,8 @@
                     /**These add section for notes to be displayed if they exist**/
                     if (!String.IsNullOrEmpty(reporttime.Note)) {
                     <tr>
-                        <td colspan="4" style="font-size:1.15em; font-weight:bold;">Notes for additional hours worked</td>
-                        <td colspan="4" style="font-size:1.15em;">@reporttime.Note.ToString().Trim()</td>
+                        <td colspan="4" style="font-weight:bold;">Notes for additional hours worked</td>
+                        <td colspan="4" style="background-color:white;">@reporttime.Note.ToString().Trim()</td>
                     </tr>
                     }
                 }
