@@ -18,7 +18,8 @@
     List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
     List<string> dates = (List<string>)Session["Dates"];
     IEnumerable<SelectListItem> datelist = (IEnumerable<SelectListItem>)Session["datelist"];
-
+    string mess = (string)Session["Message"];
+    
     // Calculating the total Weekly Hours worked
     string totalHours = "";
     string totalWorked = "";
@@ -237,8 +238,7 @@
             return false;
         };
     }
-    ****************************************************************************************/
-
+    ****************************************************************************************/  
 </script>
 
 <!DOCTYPE html>
@@ -258,6 +258,12 @@
     @{
         string today = DateTime.Now.ToLongDateString();
         string time = DateTime.Now.ToLongTimeString();
+        if (mess != "")
+        {
+            <script type="text/javascript">
+                alert(@mess);                
+            </script>
+        }
     }
 
     <p id="Time" style="text-align: center;">@today <div id="time" style="text-align: center;"></div></p>
