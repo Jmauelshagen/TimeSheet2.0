@@ -68,24 +68,25 @@ namespace Timesheet.Controllers
             return dateList;
         }
         
-        // email function controller
-        public async Task<ActionResult> email(FormCollection form)
+        // Email function controller
+        public async Task<ActionResult> email(FormCollection form) //receives form
         {
             var name = form["empname"];
             var subject = form["empsub"];
             var email = form["empemail"];
             var messages = form["smessage"];
-            var x = await SendEmail(name, subject, email, messages);
+            var x = await SendEmail(name, subject, email, messages); 
             if (x == "sent")
                 ViewData["esent"] = "Your Message Has Been Sent";
             return RedirectToAction("Index", "HR");
         }
-
+  
+        //SendEmail method
         private async Task<string> SendEmail(string name, string subject, string email, string messages)
         {
-            MailMessage message = new MailMessage();
-            var emp = (Employee)Session["Employee"];
-            message.To.Add(new MailAddress("raulochoa413@yahoo.com"));
+            MailMessage message = new MailMessage(); //initializes new instance of mailmessage class 
+            var emp = (Employee)Session["Employee"]; 
+            message.To.Add(new MailAddress("raulochoa413@yahoo.com")); //initializes new instance of mailaddress class
             //message.From = new MailAddress(emp.Email);  
             message.From = new MailAddress("rlandav1@students.ChattahoocheeTech.edu");
             message.Subject = "Message From" + email;
@@ -93,7 +94,7 @@ namespace Timesheet.Controllers
             message.IsBodyHtml = true;
             using (SmtpClient smtp = new SmtpClient())
             {
-                var credential = new System.Net.NetworkCredential
+                var credential = new System.Net.NetworkCredential //credentials check
                 {
                     UserName = "rlandav1@students.ChattahoocheeTech.edu",  // replace with sender's email id 
                     Password = "CTC-013197"  // replace with password 
