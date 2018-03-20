@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Timesheet.Models;
@@ -65,5 +67,46 @@ namespace Timesheet.Controllers
             }
             return dateList;
         }
+        
+        // email function controller
+        public async Task<ActionResult> email(FormCollection form)
+        {
+            var name = form["empname"];
+            var subject = form["empsub"];
+            var email = form["empemail"];
+            var messages = form["smessage"];
+            var x = await SendEmail(name, subject, email, messages);
+            if (x == "sent")
+                ViewData["esent"] = "Your Message Has Been Sent";
+            return RedirectToAction("Index", "HR");
+        }
+
+        private async Task<string> SendEmail(string name, string subject, string email, string messages)
+        {
+            MailMessage message = new MailMessage();
+            var emp = (Employee)Session["Employee"];
+            message.To.Add(new MailAddress("raulochoa413@yahoo.com"));
+            //message.From = new MailAddress(emp.Email);  
+            message.From = new MailAddress("rlandav1@students.ChattahoocheeTech.edu");
+            message.Subject = "Message From" + email;
+            message.Body = "Name: " + name + "Subject:" + subject +  "\nTo: " + email + "\n" + messages;
+            message.IsBodyHtml = true;
+            using (SmtpClient smtp = new SmtpClient())
+            {
+                var credential = new System.Net.NetworkCredential
+                {
+                    UserName = "rlandav1@students.ChattahoocheeTech.edu",  // replace with sender's email id 
+                    Password = "CTC-013197"  // replace with password 
+                };
+                smtp.Credentials = credential;
+                smtp.Host = "smtp-mail.outlook.com";
+                smtp.Port = 587;
+                smtp.EnableSsl = true;
+                await smtp.SendMailAsync(message);
+                return "sent";
+            }
+        }
+        //end of email controller 
+
     }
 }
