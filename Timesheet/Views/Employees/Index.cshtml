@@ -73,7 +73,11 @@
                 <a href="@Url.Action("GetDailyTimeSheet","Timesheet")">Daily Timesheet</a>
             </li>
             <li>
-                <a href="@Url.Action("QuickTimeStamp","Timesheet")">Quick Time Stamp</a><label id="QuickTimeStampMessage">@Html.DisplayFor(model => Session["QuickTimeStamp"])</label>
+                <a href="@Url.Action("OldTimesheet","Timesheet")">Look Up Previous Timesheet</a>
+            </li>
+            <li>
+                <a href="@Url.Action("QuickTimeStamp","Timesheet")">Quick Time Stamp</a>
+                <label id="QuickTimeStampMessage">@Html.DisplayFor(model => Session["QuickTimeStamp"])</label>
             </li>
         </ul>
         <!--Log out link-->
