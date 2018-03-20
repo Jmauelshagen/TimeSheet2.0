@@ -126,6 +126,72 @@ namespace Timesheet.Controllers
         {
             try
             {
+                /**This next seciton returns the stored date selected from the drop down. It then calls a method
+                * to retrieves a specific timesheet based on the day and user. Then sets the current model
+                * to the timesheet to ensure integrity and allow the note to be updated below**/
+
+                Debug.WriteLine("In SaveTimeNote");
+                //Remove the TimeSheet variable from the session if it exists
+                if (Session["TimeSheetData"] != null)
+                {
+                    Session.Remove("TimeSheetData");
+                }
+                //Pull the employee object from the session.
+                Employee emp = (Employee)Session["Employee"];
+
+                //Instantiate a TimeSheet object
+                TimeSheet tsheet = new TimeSheet();
+
+                //Get list of dates for the current week and add list to session
+                List<string> dates = tsheet.GetDates();
+                Session["Dates"] = dates;
+
+                //Get list of TimeSheet objects based on date and employee id and add list to session
+                List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
+                Session["TimeSheetData"] = tsheets;
+
+                //string CurrentDate = Request.Form["Date"].ToString();
+                string CurrentDate = model.Date;
+                string message;
+
+                for (int i = 0; i < 7; i++)
+                {
+                    if (tsheets[i].Date.ToString().Trim().Equals(CurrentDate))
+                    {
+                        if (tsheets[i].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
+                        {
+                            if (!String.IsNullOrEmpty(model.Note))
+                            {
+                                if (model.Note.ToString().Equals("None") || model.Note.ToString().Equals("none")) { tsheets[i].Note = ""; }
+                                else { tsheets[i].Note = model.Note; }
+                            }
+                           /* if (model.AdditionalHours.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(model.Note))
+                            {
+                                Debug.WriteLine("In Erro 1");
+                                string mess = "You created a note but have no additional hours. This may be a mistake.";
+                                Session["Message"] = mess;
+                            }
+                            if (!model.AdditionalHours.ToString().Trim().Equals("0:00") && String.IsNullOrEmpty(model.Note))
+                            {
+                                Debug.WriteLine("In Erro 2");
+                                string mess = "You have addtional hours. You might want to make a note.";
+                                Session["Message"] = mess;
+                            }*/
+                            message = "Timesheet Saved Succesfully";
+                            Session["WeeklyMessage"] = message;
+                            tsheets[i].UpdateTimeSheet(tsheets[i]);
+                        }
+                        else
+                        {
+                            message = "Timesheet has already been approved. no changes can be made";
+                            Session["WeeklyMessage"] = message;
+                        }
+
+                    }
+                }
+
+                return RedirectToAction("Timesheet", "Timesheet");
+                /*
                 //Pull the employee object from the session.
                 Employee emp = (Employee)Session["Employee"];
                 List<string> dates = (List<string>)Session["Dates"];
@@ -133,7 +199,7 @@ namespace Timesheet.Controllers
 
                 /**This next seciton returns the stored date selected from the drop down. It then calls a method
                  * to retrieves a specific timesheet based on the day and user. Then sets the current model
-                 * to the timesheet to ensure integrity and allow the note to be updated below**/
+                 * to the timesheet to ensure integrity and allow the note to be updated below
                 string date = Request.Form["Date"].ToString();
                 Debug.WriteLine("The Date String is:" + date + "]");
                 if (!String.IsNullOrEmpty(date))
@@ -227,7 +293,7 @@ namespace Timesheet.Controllers
                 Request.Form["Date"] = "";
                 //Return the TimeSheet view
                 Request.Params.Clear();
-                return RedirectToAction("Timesheet", "Timesheet");
+                return RedirectToAction("Timesheet", "Timesheet");*/
 
             }
             catch (Exception ex)
@@ -237,11 +303,74 @@ namespace Timesheet.Controllers
                 return RedirectToAction("Timesheet", "Timesheet");
             }
         }
+
         [HttpPost]
         public ActionResult SaveTimeSheet(TimeSheet model)
         {
             try
             {
+                Debug.WriteLine("In SaveTimeSheet");
+                //Remove the TimeSheet variable from the session if it exists
+                if (Session["TimeSheetData"] != null)
+                {
+                    Session.Remove("TimeSheetData");
+                }
+                //Pull the employee object from the session.
+                Employee emp = (Employee)Session["Employee"];
+
+                //Instantiate a TimeSheet object
+                TimeSheet tsheet = new TimeSheet();
+
+                //Get list of dates for the current week and add list to session
+                List<string> dates = tsheet.GetDates();
+                Session["Dates"] = dates;
+
+                //Get list of TimeSheet objects based on date and employee id and add list to session
+                List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
+                Session["TimeSheetData"] = tsheets;
+
+                string CurrentDate = model.Date;
+                string message;
+                for (int i = 0; i < 7; i++)
+                {
+                    if (tsheets[i].Date.ToString().Trim().Equals(CurrentDate))
+                    {
+                        if (tsheets[i].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
+                        {
+                            if (!String.IsNullOrEmpty(model.TimeIn)) { tsheets[i].TimeIn = model.TimeIn; }
+                            if (!String.IsNullOrEmpty(model.OutForLunch)) { tsheets[i].OutForLunch = model.OutForLunch; }
+                            if (!String.IsNullOrEmpty(model.InFromLunch)) { tsheets[i].InFromLunch = model.InFromLunch; }
+                            if (!String.IsNullOrEmpty(model.TimeOut)) { tsheets[i].TimeOut = model.TimeOut; }
+                            if (!String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = model.LeaveId; }
+                            if (!String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = model.LeaveHours; }
+                            if (!String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = model.AdditionalHours; }
+
+                            if (model.AdditionalHours.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(model.Note))
+                            {
+                                Debug.WriteLine("In Erro 1");
+                                string mess = "You created a note but have no additional hours. This may be a mistake.";
+                                Session["Message"] = mess;
+                            }
+                            if (!model.AdditionalHours.ToString().Trim().Equals("0:00") && String.IsNullOrEmpty(model.Note))
+                            {
+                                Debug.WriteLine("In Erro 2");
+                                string mess = "You have addtional hours. You might want to make a note.";
+                                Session["Message"] = mess;
+                            }
+                            message = "Timesheet Saved Succesfully";
+                            Session["WeeklyMessage"] = message;
+                            tsheets[i].UpdateTimeSheet(tsheets[i]);
+                        }
+                        else
+                        {
+                            message = "Timesheet has already been approved. no changes can be made";
+                            Session["WeeklyMessage"] = message;
+                        }
+                    }
+                }
+
+                return RedirectToAction("Timesheet", "Timesheet");
+                /*
                 //Pull the employee object from the session.
                 Employee emp = (Employee)Session["Employee"];
                 List<string> dates = (List<string>)Session["Dates"];
@@ -317,12 +446,11 @@ namespace Timesheet.Controllers
                 Request.Form["Date"] = "";
                 //Return the TimeSheet view
                 Request.Params.Clear();
-                return RedirectToAction("Timesheet", "Timesheet");
+                return RedirectToAction("Timesheet", "Timesheet");*/
 
             }
             catch (Exception ex)
             {
-
                 Debug.WriteLine(ex);
                 return RedirectToAction("Timesheet", "Timesheet");
             }
