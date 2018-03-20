@@ -19,6 +19,19 @@
     List<string> dates = (List<string>)Session["Dates"];
     IEnumerable<SelectListItem> datelist = (IEnumerable<SelectListItem>)Session["datelist"];
     string mess = (string)Session["Message"];
+
+   // Calculating the total Weekly Hours worked
+   string totalHours = "";
+   string totalWorked = "";
+   string totalweekly = "";
+   string totalabsent = "";
+   int missedpunch = 0;
+   int Error = 0;
+   int hour = 0;
+   int hours = 0;
+   int minute = 0;
+   int minutes = 0;
+    string mess = (string)Session["Message"];
     
     // Calculating the total Weekly Hours worked
     string totalHours = "";
