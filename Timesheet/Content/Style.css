@@ -1,6 +1,7 @@
 ﻿body {
+    text-align:center;
     background-color: lightgray;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial, Times New Roman, sans-serif;
     font-size: 0.98em;
     display:block;
 }
@@ -82,9 +83,18 @@ button:active {
     left: 40%;
     top: 40%;
     padding: 10px 10px;
+    text-align:center;
 }
 
-table, th, td {
+table {
+    width: auto;
+    border-collapse: collapse;
+}
+
+th, td {
+    min-width:110px;
+    max-width:500px;
+    padding:5px;
     border: 1px solid black;
     border-collapse: collapse;
 }
@@ -94,4 +104,19 @@ ul {
 li {
     padding: 30px;
     margin: 30px;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.floating-box {
+    text-align:center;
+    float: left;
+    margin:50px;
+}
+
+div{
+    display:block;
 }

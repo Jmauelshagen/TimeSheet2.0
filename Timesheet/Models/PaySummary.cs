@@ -44,9 +44,12 @@ namespace Timesheet.Models
         {
             //Code to calculate total hours worked in a week and time sheet status
             string status = "Unknown";
+            string totalWorked = "";
             string totalHours = "";
-            int hour = 0;
-            int minute = 0;
+            int missedpunch = 0;
+            int Error = 0;
+            int hours = 0;
+            int minutes = 0;
             var tsheets = (from sheets in db.TimeSheets
                            where sheets.EmpId == empId && sheets.WeekEnding == wED
                            select sheets);
@@ -54,23 +57,41 @@ namespace Timesheet.Models
             foreach(TimeSheet sheet in tsheets)
             {
 
+
                 string hoursWorked = sheet.CalculateTotalHoursWorked(sheet);
                 if (hoursWorked.Equals("NoTime"))
                 {
 
                 }
+                else if (hoursWorked.Equals("Missing Punch"))
+                {
+                    missedpunch = missedpunch + 1;
+                }
                 else if (!String.IsNullOrEmpty(hoursWorked) && !hoursWorked.Equals("Error"))
                 {
-                    hour += Convert.ToInt16(hoursWorked.Split(':')[0]);
-                    minute += Convert.ToInt16(hoursWorked.Split(':')[1]);
-                    if (minute >= 60)
+                    hours += Convert.ToInt16(hoursWorked.Split(':')[0]);
+                    minutes += Convert.ToInt16(hoursWorked.Split(':')[1]);
+                    while (minutes >= 60)
                     {
-                        minute = minute - 60;
-                        hour = hour + 1;
+                        minutes = minutes - 60;
+                        hours = hours + 1;
                     }
-                    totalHours = hour + ":" + minute;
-                    Debug.WriteLine("Running total: " + totalHours);
-                    Debug.WriteLine("Running total by the hours: " + hour);
+                    if (minutes == 0)
+                    {
+                        totalHours = hours + ":00";
+                    }
+                    else
+                    {
+                        totalHours = hours + ":" + minutes;
+                    }
+                    totalWorked = totalHours;
+
+                    Debug.WriteLine("Running Worked total: " + totalWorked);
+                    Debug.WriteLine("Running Worked total by the hours: " + hours);
+                }
+                else
+                {
+                    Error = Error + 1;
                 }
 
                 if (sheet.Submitted.Equals("True") && sheet.AuthorizedBySupervisor.Equals("True"))
@@ -91,9 +112,9 @@ namespace Timesheet.Models
 
             //Calculate overtime hours
             string overTime = "";
-            if(hour >= 40)
+            if(hours >= 40)
             {
-                overTime = (hour - 40).ToString() +":"+ minute;
+                overTime = (hours - 40).ToString() +":"+ minutes;
             }
             this.OverTimeHours = overTime;
 

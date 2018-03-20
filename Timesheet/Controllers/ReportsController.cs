@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Diagnostics;
 using Timesheet.Models;
 
 namespace Timesheet.Controllers
@@ -61,16 +62,28 @@ namespace Timesheet.Controllers
         [HttpPost]
         public ActionResult ReportData(TimeSheet model)
         {
-            if(Session["Message"] != null)
+            Debug.WriteLine("Name : " + model.Name + " and Weekending : " + model.WeekEnding + " ]]");
+            if (Session["Message"] != null)
             {
                 Session.Remove("Message");
             }
             TimeSheet timeSheet = new TimeSheet();
+            if (model.Name == null || model.WeekEnding == null)
+            {
+                string message = "***Please select the employee name and Weekend date***";
+                Session["Message"] = message;
+                return RedirectToAction("Index", "Reports");
+            }
             var name = model.Name.Trim();
             var wED = model.WeekEnding.Trim();
             List<TimeSheet> reportList = timeSheet.GetTimeSheetByNameAndDate(name, wED);
-            Session["TimeSheetList"] = reportList;
-
+            Session["TimeSheetData"] = reportList; 
+            if(reportList.ElementAtOrDefault(0) != null)
+            {
+                Employee ep = new Employee().GetEmployee((Convert.ToInt16(reportList[0].EmpId)));
+                Debug.WriteLine("Emp Name is again: " + ep.FirstName);
+                Session["Employee"] = ep;
+            }     
             return RedirectToAction("Index", "Reports");
         }
 
@@ -79,7 +92,7 @@ namespace Timesheet.Controllers
         [HttpPost]
         public ActionResult Approve()
         {
-            List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetList"];
+            List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetData"];
             foreach(TimeSheet sheet in list)
             {
                 sheet.AuthorizedBySupervisor = "True";
@@ -95,7 +108,7 @@ namespace Timesheet.Controllers
         [HttpPost]
         public ActionResult Deny()
         {
-            List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetList"];
+            List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetData"];
             foreach (TimeSheet sheet in list)
             {
                 sheet.Submitted = "False";

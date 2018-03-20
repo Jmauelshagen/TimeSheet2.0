@@ -1,7 +1,12 @@
 ﻿@model Timesheet.Models.TimeSheet
 @using Timesheet.Models
+@using System.Diagnostics
 @{
     Layout = null;
+    SelectList employees = ViewBag.Employees;
+    string totalHours = "";
+    int hour = 0;
+    int minute = 0;
 }
 <!--This html file isn't used in the solution yet-->
 @{
@@ -14,8 +19,7 @@
 
     Employee emp = (Employee)Session["Employee"];
     List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
-    List<string> dates = (List<string>)Session["Dates"];
-  
+    List<string> dates = (List<string>)Session["Dates"];  
 }
 
 <!DOCTYPE html>
@@ -52,13 +56,111 @@
     @{ string today = DateTime.Now.ToLongDateString();
         string time = DateTime.Now.ToLongTimeString();}
     <p id="time">It is @today at @time</p>
-    @Html.DropDownList("Employees", "Select Employees")
+    @using (Html.BeginForm("ApprovedData", "ApprovedTimesheets", FormMethod.Post, new { role = "form" }))
+    {
+        @Html.DropDownList("Employee", employees, "Select Employees", new { onchange = "this.form.submit();" })
+    }
 
-    </br>
-    </br>
+    <table style="width:100%" cellpadding="4">
+        <tr>
+            <th></th>
+            <th>Week end</th>
+            <th>Date</th>
+            <th>Start/ Time In</th>
+            <th>Meal/ Time Out</th>
+            <th>Meal/ Time In</th>
+            <th>Finish/ Time Out</th>
+            <th></th>
+            <th>Absent hours</th>
+            <th>Additional Hours</th>
+            <th>Hours Worked</th>
+            <th>Over Time</th>
+            <th>Submitted</th>
+            <th>Authorized</th>
+        </tr>
+        @{
+            if (@tsheets != null)
+            {
+                foreach (TimeSheet approvedtime in @tsheets)
+                {
+                    <tr>
+                        <td></td>
+                        <td>@Html.Hidden(approvedtime.WeekEnding)</td>
+                        <td>@approvedtime.Date</td>
+                        <td>@Html.Hidden(approvedtime.TimeIn)</td>
+                        <td>@Html.Hidden(approvedtime.OutForLunch)</td>
+                        <td>@Html.Hidden(approvedtime.InFromLunch)</td>
+                        <td>@Html.Hidden(approvedtime.TimeOut)</td>
+                        <td></td>
+                        <td>@Html.Hidden(approvedtime.LeaveHours)</td>
+                        <td>@Html.Hidden(approvedtime.AdditionalHours)</td>
+                        @{ /** Calculates the hours worked for the day **/
+                            string TotalHoursWorked = approvedtime.TotalHoursWorked.ToString().Trim();
+                            Debug.WriteLine(TotalHoursWorked + "in total Hours");
+                            if (TotalHoursWorked.Equals("NoTime"))
+                            {
+                                TotalHoursWorked = "0";
+                                <td>@TotalHoursWorked</td>
+                            }
+                            else if (!TotalHoursWorked.Equals("Error"))//&& !tsheets[i].TotalHoursWorked.ToString().Trim().Equals("0"))
+                            {
+                                Debug.WriteLine("Passed the if");
+                                <td>@TotalHoursWorked</td>
+                            }
+                            else
+                            {
+                                Debug.WriteLine("Failed the if");
+                                TotalHoursWorked = "Error";
+                                <td bgcolor="red">@TotalHoursWorked</td>
+                            }
+                        }
+                        <td>
+                            @{ /** Calculates the hours worked for the day **/
+                                Debug.WriteLine(TotalHoursWorked + "DailyTimesheet TotalHours Test 2 for overtime");
+                                string overtime;
+                                if (TotalHoursWorked.Equals("0"))
+                                {
+                                    overtime = "0";
+                                }
+                                else if (!TotalHoursWorked.Equals("Error"))
+                                {
+                                    Debug.WriteLine("Calculating Hours Worked in the DailyTimesheet");
+                                    hour = Convert.ToInt16(TotalHoursWorked.Split(':')[0]);
+                                    minute = Convert.ToInt16(TotalHoursWorked.Split(':')[1]);
+                                    if (minute >= 60)
+                                    {
+                                        minute = minute - 60;
+                                        hour = hour + 1;
+                                    }
+                                    totalHours = hour + ":" + minute;
 
-    <form action="history.back();">
-        <input type="">
+                                    /** Calculates and overtime for the day **/
+                                    int hoursWorked2 = Convert.ToInt16(totalHours.Split(':')[0]);
+                                    int minutesWorked = Convert.ToInt16(totalHours.Split(':')[1]);
+                                    if (hoursWorked2 < 8)
+                                    {
+                                        overtime = "0";
+                                    }
+                                    else
+                                    {
+                                        overtime = (hoursWorked2 - 8) + ":" + minutesWorked;
+                                    }
+                                }
+                                else
+                                {
+                                    overtime = "0";
+                                }
+
+                            }
+                            @overtime
+                        </td>
+                        <td>@approvedtime.Submitted</td>
+                        <td>@approvedtime.AuthorizedBySupervisor</td>
+                    </tr>
+                }
+            }
+        }
+    </table>
 
     </form>
     <!-- <a href="#" onclick="history.back();">Back</a> -->

@@ -68,19 +68,20 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="WeekEnding" Type="nchar" MaxLength="16" />
-          <Property Name="Date" Type="nchar" MaxLength="16" />
-          <Property Name="TimeIn" Type="nchar" MaxLength="16" />
-          <Property Name="OutForLunch" Type="nchar" MaxLength="16" />
-          <Property Name="InFromLunch" Type="nchar" MaxLength="16" />
-          <Property Name="TimeOut" Type="nchar" MaxLength="16" />
+          <Property Name="WeekEnding" Type="nchar" MaxLength="10" />
+          <Property Name="Date" Type="nchar" MaxLength="10" />
+          <Property Name="TimeIn" Type="nchar" MaxLength="10" />
+          <Property Name="OutForLunch" Type="nchar" MaxLength="10" />
+          <Property Name="InFromLunch" Type="nchar" MaxLength="10" />
+          <Property Name="TimeOut" Type="nchar" MaxLength="10" />
           <Property Name="LeaveId" Type="int" />
-          <Property Name="LeaveHours" Type="nchar" MaxLength="16" />
-          <Property Name="AdditionalHours" Type="nchar" MaxLength="16" />
+          <Property Name="LeaveHours" Type="nchar" MaxLength="10" />
+          <Property Name="AdditionalHours" Type="nchar" MaxLength="10" />
           <Property Name="TotalHoursWorked" Type="nchar" MaxLength="16" />
-          <Property Name="Submitted" Type="nchar" MaxLength="16" />
-          <Property Name="AuthorizedBySupervisor" Type="nchar" MaxLength="16" />
+          <Property Name="Submitted" Type="nchar" MaxLength="10" />
+          <Property Name="AuthorizedBySupervisor" Type="nchar" MaxLength="10" />
           <Property Name="EmpId" Type="int" />
+          <Property Name="Note" Type="nvarchar(max)" />
         </EntityType>
         <EntityContainer Name="LoginDatabaseModelStoreContainer">
           <EntitySet Name="Emp" EntityType="Self.Emp" Schema="dbo" store:Type="Tables" />
@@ -166,12 +167,13 @@
           <Property Name="InFromLunch" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="TimeOut" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="LeaveId" Type="Int32" />
-          <Property Name="LeaveHours" Type="String" />
-          <Property Name="AdditionalHours" Type="String" />
-          <Property Name="TotalHoursWorked" Type="String" />
+          <Property Name="LeaveHours" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
+          <Property Name="AdditionalHours" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
+          <Property Name="TotalHoursWorked" Type="String" MaxLength="16" Unicode="true" FixedLength="true" />
           <Property Name="Submitted" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="AuthorizedBySupervisor" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="EmpId" Type="Int32" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityContainer Name="LoginDatabaseEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Emps" EntityType="Self.Emp" />
@@ -257,6 +259,7 @@
           <EntitySetMapping Name="TimeSheets">
             <EntityTypeMapping TypeName="LoginDatabaseModel.TimeSheet">
               <MappingFragment StoreEntitySet="TimeSheets">
+                <ScalarProperty Name="Note" ColumnName="Note" />
                 <ScalarProperty Name="EmpId" ColumnName="EmpId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="WeekEnding" ColumnName="WeekEnding" />

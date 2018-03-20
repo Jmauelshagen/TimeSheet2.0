@@ -145,7 +145,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ApprovedTimesheetsController.cs" />
-    <Compile Include="Controllers\DailyTimesheetController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HRController.cs" />
@@ -273,6 +272,7 @@
     <Content Include="Views\ApprovedTimesheets\ApprovedTimesheets.cshtml" />
     <Content Include="Views\Timesheet\DailyTimesheet.cshtml" />
     <Content Include="Views\Reports\Index.cshtml" />
+    <Content Include="Views\Timesheet\OldTimesheet.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
