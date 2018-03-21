@@ -5,6 +5,13 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="LoginDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Email">
+          <Key>
+            <PropertyRef Name="Email" />
+          </Key>
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="Emp">
           <Key>
             <PropertyRef Name="EmpId" />
@@ -85,6 +92,7 @@
           <Property Name="Note" Type="nvarchar(max)" />
         </EntityType>
         <EntityContainer Name="LoginDatabaseModelStoreContainer">
+          <EntitySet Name="Email" EntityType="Self.Email" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Emp" EntityType="Self.Emp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HR" EntityType="Self.HR" Schema="dbo" store:Type="Tables" />
@@ -186,7 +194,15 @@
           <EntitySet Name="Roles" EntityType="Self.Role" />
           <EntitySet Name="Sups" EntityType="Self.Sup" />
           <EntitySet Name="TimeSheets" EntityType="Self.TimeSheet" />
+          <EntitySet Name="Emails" EntityType="LoginDatabaseModel.Email" />
         </EntityContainer>
+        <EntityType Name="Email">
+          <Key>
+            <PropertyRef Name="Email1" />
+          </Key>
+          <Property Name="Email1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -277,6 +293,14 @@
                 <ScalarProperty Name="TotalHoursWorked" ColumnName="TotalHoursWorked" />
                 <ScalarProperty Name="Submitted" ColumnName="Submitted" />
                 <ScalarProperty Name="AuthorizedBySupervisor" ColumnName="AuthorizedBySupervisor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Emails">
+            <EntityTypeMapping TypeName="LoginDatabaseModel.Email">
+              <MappingFragment StoreEntitySet="Email">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email1" ColumnName="Email" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

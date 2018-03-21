@@ -121,9 +121,9 @@ namespace Timesheet.Controllers
         public async Task<ActionResult> email(FormCollection form) //receives form
         {
             Employee emp = (Employee)Session["NewEmp"];
-            var name = form[emp.FirstName + " " + emp.LastName];
+            var name = emp.FirstName + " " + emp.LastName;
             var subject = form["empsub"];
-            var email = (string)emp.Email;
+            var email = (string)emp.Email.Trim();
             var messages = form["smessage"];
             var x = await SendEmail(name, subject, email, messages);
             if (x == "sent")
@@ -137,21 +137,23 @@ namespace Timesheet.Controllers
         {     
             MailMessage message = new MailMessage(); //initializes new instance of mailmessage class 
             var emp = (Employee)Session["Employee"];
-            message.To.Add(new MailAddress("rs029@comcast.net")); //initializes new instance of mailaddress class
-            //message.From = new MailAddress(emp.Email);  
-            message.From = new MailAddress("rspeight@students.chattahoocheetech.edu");
+            Debug.WriteLine("HR email: " + emp.Email);
+            message.To.Add(new MailAddress(email)); //initializes new instance of mailaddress class
+            message.From = new MailAddress(emp.Email);  
+            //message.From = new MailAddress(emp.Email);
             message.Subject = subject;
-            message.Body = "Name: " + name + "Subject:" + subject + "\nTo: " + email + "\n" + messages;
+            message.Body = "Hellow : +" + name + " " + messages;
             message.IsBodyHtml = true;
             using (SmtpClient smtp = new SmtpClient())
             {
                 var credential = new System.Net.NetworkCredential //credentials check
                 {
-                    UserName = "rspeight@students.chattahoocheetech.edu",  // replace with sender's email id 
-                    Password = "CTC-10291"  // replace with password 
+                    UserName = "hr.testingctc@gmail.com",  // replace with sender's email id 
+                    Password = "P@s$w0rd"  // replace with password 
                 };
                 smtp.Credentials = credential;
-                smtp.Host = "smtp-mail.outlook.com";
+                //smtp.Host = "smtp-mail.outlook.com";
+                smtp.Host = "smtp.gmail.com";
                 smtp.Port = 587;
                 smtp.EnableSsl = true;
                 await smtp.SendMailAsync(message);
