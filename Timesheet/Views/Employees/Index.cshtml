@@ -64,22 +64,20 @@
         <h3 style="text-align: center;">Welcome @emp.FirstName @emp.LastName!</h3>
         <p id="Time" style="text-align: center;">@today <div id="time" style="text-align: center;"></div></p>
 
-        <ul>
-            <li>
-                <!--Link to get to the timesheet input screen-->
-                <a href="@Url.Action("GetTimeSheet","Timesheet")">Weekly Timesheet</a>
-            </li>
-            <li>
-                <a href="@Url.Action("GetDailyTimeSheet","Timesheet")">Daily Timesheet</a>
-            </li>
-            <li>
-                <a href="@Url.Action("OldTimesheet","Timesheet")">Look Up Previous Timesheet</a>
-            </li>
-            <li>
-                <a href="@Url.Action("QuickTimeStamp","Timesheet")">Quick Time Stamp</a>
-                <label id="QuickTimeStampMessage">@Html.DisplayFor(model => Session["QuickTimeStamp"])</label>
-            </li>
-        </ul>
+        <p>
+            <!--Link to get to the timesheet input screen-->
+            <a href="@Url.Action("GetTimeSheet","Timesheet")">Weekly Timesheet</a>
+
+            <a href="@Url.Action("GetDailyTimeSheet","Timesheet")">Daily Timesheet</a>
+
+            <a href="@Url.Action("OldTimesheet","Timesheet")">Look Up Previous Timesheet</a>
+
+            <a href="@Url.Action("QuickTimeStamp","Timesheet")">Quick Time Stamp</a>
+
+        </p>
+        <p>
+            <label id="QuickTimeStampMessage">@Html.DisplayFor(model => Session["QuickTimeStamp"])</label>
+        </p>
         <!--Log out link-->
         <a href="@Url.Action("LogOut", "Login")">LogOut</a>
     </div>

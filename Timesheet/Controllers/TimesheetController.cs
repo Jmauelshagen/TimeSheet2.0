@@ -676,7 +676,7 @@ namespace Timesheet.Controllers
         }
 
         //Obtains the time sheet data corresponding to the selected employee name and week ending date
-        //Redirects users back to the supervisor screen after putting time sheet info into the session object
+        //Redirects users back to the previous timesheet screen after putting time sheet info into the session object
         [HttpPost]
         public ActionResult ReportData(TimeSheet model)
         {

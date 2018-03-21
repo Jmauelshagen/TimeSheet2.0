@@ -208,7 +208,7 @@
         seconds = checkTime(seconds);
         var ampm = hours >= 12 ? 'PM' : 'AM';
         hours = hours % 12;
-        hours = hours ? hours : 12; // the hour '0' should be '12'
+        hours = hours ? hours : 12;
         minutes = minutes < 10 ? '0' + minutes : minutes;
         var strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
         document.getElementById('time').innerHTML = strTime;
@@ -243,6 +243,7 @@
             alert("Please make sure to enter Absent Hours.");
             return false;
         };
+
     }
 
 </script>
@@ -275,7 +276,6 @@
 
     <p id="Time" style="text-align: center;">@today <div id="time" style="text-align: center;"></div></p>
     <label id="WeeklyMessage">@Html.DisplayFor(model => Session["WeeklyMessage"])</label>
-    <p style="text-align: center;"><a href="@Url.Action("GetDailyTimeSheet", "Timesheet")" class="button">View Daily Timesheet</a></p>
 
     <!--Table to display time sheet input form.-->
     <div>
@@ -620,12 +620,18 @@
             }
         }
     </div>
+    <br />
     <div>
         @{ //rests the QuickTimeStamp message to blank so when you load the home screen it doesn't show up.
-            string message = "";
-            Session["QuickTimeStamp"] = message;
+        string message = "";
+        Session["QuickTimeStamp"] = message;
         }
         <a href="@Url.Action("Index", "Employees")" class="button">Home</a>
+
+        <a href="@Url.Action("GetDailyTimeSheet", "Timesheet")" class="button">View Daily Timesheet</a>
+
+        <a href="@Url.Action("OldTimesheet","Timesheet")">Look Up Previous Timesheet</a>
+
         <!--Submit Week button with popup validation-->
         @Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new { @class = "button", @style = "text-decoration: none; color: black;", @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })
         <!--Log out link-->

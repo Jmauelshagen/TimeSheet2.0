@@ -287,7 +287,6 @@
         }
 
         <p id="Time" style="text-align: center;">@today <div id="time" style="text-align: center;"></div></p>
-        <br />
 
         @using (Html.BeginForm("ReportData", "TimeSheet", FormMethod.Post, new { role = "form" }))
     {
@@ -295,18 +294,17 @@
         <P>
             @Html.LabelFor(model => model.WeekEnding, "Select Timesheet")
 
-            @Html.DropDownListFor(model => model.WeekEnding, weekList, "-Select A Date-", new { onchange = "this.form.submit();" })
-        </P>
-}
-        <br />
+                @Html.DropDownListFor(model => model.WeekEnding, weekList,"-Select A Date-", new { onchange = "this.form.submit();" })
+            </P>
+        }
         <label id="Message">@Html.DisplayFor(model => Session["Message"])</label>
 
         <!--Form for employee to select a timesheet week ending date.-->
         @{
-        if ((tsheets != null) && tsheets.Any())
-        {
-            <p>timesheet for the week of @tsheets[0].WeekEnding</p><br />
-    }
+            if ((tsheets != null) && tsheets.Any())
+            {
+                <p>timesheet for the week of @tsheets[0].WeekEnding</p>
+            }
         }
 
         @{
@@ -593,74 +591,69 @@
                         <!-- code for the color warning system for total hours worked-->
                         @{
 
-                        Debug.WriteLine("The Final weekly hours: " + totalWorked);
-                        Debug.WriteLine("Time Punch Errors preventing from calculating full week correctly :" + Error);
-                        if (missedpunch >= 1 && Error == 0)
-                        {
-                            <td bgcolor="lightyellow">Missing Punch</td>
-                    }
-                    else if (Error >= 1)
-                    {
-                        <td bgcolor="salmon">Error</td>
-                }
-                else
-                {
-                    <td> @totalWorked </td>
-            }
-                        }
-                        <!--Displaying All Hours absent and worked-->
-                        @{
-                        Debug.WriteLine("The Final weekly hours: " + totalweekly);
-                        Debug.WriteLine("Time Punch Errors preventing from calculating full week correctly :" + Error);
-                        if (missedpunch >= 1 && Error == 0)
-                        {
-                            <td bgcolor="lightyellow">Missing Punch</td>
-                    }
-                    else if (Error >= 1)
-                    {
-                        <td bgcolor="salmon">Error</td>
-                }
-                else
-                {
-                    <td>@totalweekly</td>
-            }
-                        }
-                        <!--Displays the total overtime-->
-                        @{
-                        Debug.WriteLine("Overtime hours after multiplying by the FLSA 1.5 Weekly Timesheet: " + overTime);
-                        if (!overTime.Equals(""))
-                        {
-                            <td>@overTime</td>
-                    }
+                                Debug.WriteLine("The Final weekly hours: " + totalWorked);
+                                Debug.WriteLine("Time Punch Errors preventing from calculating full week correctly :" + Error);
+                                if (missedpunch >= 1 && Error == 0)
+                                {
+                                    <td bgcolor="lightyellow">Missing Punch</td>
+                                }
+                                else if (Error >= 1)
+                                {
+                                    <td bgcolor="salmon">Error</td>
+                                }
+                                else
+                                {
+                                    <td> @totalWorked </td>
+                                }
+                            }
+                            <!--Displaying All Hours absent and worked-->
+                            @{
+                                Debug.WriteLine("The Final weekly hours: " + totalweekly);
+                                Debug.WriteLine("Time Punch Errors preventing from calculating full week correctly :" + Error);
+                                if (missedpunch >= 1 && Error == 0)
+                                {
+                                    <td bgcolor="lightyellow">Missing Punch</td>
+                                }
+                                else if (Error >= 1)
+                                {
+                                    <td bgcolor="salmon">Error</td>
+                                }
+                                else
+                                {
+                                    <td>@totalweekly</td>
+                                }
+                            }
+                            <!--Displays the total overtime-->
+                            @{
+                                Debug.WriteLine("Overtime hours after multiplying by the FLSA 1.5 Weekly Timesheet: " + overTime);
+                                if (!overTime.Equals(""))
+                                {
+                                    <td>@overTime</td>
+                                }
 
-                    else
-                    {
-                        <td></td>
-                }
-                        }
-                    </tr>
-                </table>
-            </div>
-            <div>
-                @{/**This Text Area is used to give infomation about any additional hours given. It creates
-                   * another form that saves input to a the model and updates it to the day selected**/}
-                @{
-                if (tsheets[0].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
-                {
-                    using (Html.BeginForm("SaveOldTimeNote", "Timesheet", FormMethod.Post))
-                    {
-                        <h3 align="center">@Html.Label("Comment for any additional hours worked", new { @style = "font-size: 1.1em" })</h3>
-                        <p align="center">
-                            @Html.TextAreaFor(model => model.Note, 10, 50, new
+                                else
+                                {
+                                    <td></td>
+                                }
+                            }
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    @{/**This Text Area is used to give infomation about any additional hours given. It creates
+                         * another form that saves input to a the model and updates it to the day selected**/}
+                    @{ 
+                        if (tsheets[0].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
                         {
-                            @placeholder = "Comments about additional hours go here." +
-                    "\n\nTo clear a note from a day enter 'none' or 'None' in the field and save it, this will remove the note."
-                        })
-                    </p>
-                    <p align="center">@Html.DropDownList("Date", dateList, "Select Day to submit", new { onchange = "this.form.submit();" })</p>
-            }
-        }
-                }
+                            using (Html.BeginForm("SaveOldTimeNote", "Timesheet", FormMethod.Post))
+                            {
+                                <h3 align="center">@Html.Label("Comment for any additional hours worked", new { @style = "font-size: 1.1em" })</h3>
+                                <p align="center">@Html.TextAreaFor(model => model.Note, 10, 50, new { @placeholder = "Comments about additional hours go here." +
+                                         "\n\nTo clear a note from a day enter 'none' or 'None' in the field and save it, this will remove the note." })</p>
+                                <p align="center">@Html.DropDownList("Date", dateList, "Select Day to submit", new { onchange = "this.form.submit();" })</p>
+                            }
+                        }
+                    }
 
             </div>
     }
@@ -668,6 +661,10 @@
         <br />
         <!-- link to go to the home page-->
         <a href="@Url.Action("Index", "Employees")" class="button">Home</a>
+
+        <a href="@Url.Action("GetTimeSheet","Timesheet")">Weekly Timesheet</a>
+
+        <a href="@Url.Action("GetDailyTimeSheet","Timesheet")">Daily Timesheet</a>
         <!--Submit Week button with popup validation-->
         @Html.ActionLink("Submit Week", "SubmitOldTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new { @class = "button", @style = "text-decoration: none; color: black;", @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })
         <!--Log out link-->
