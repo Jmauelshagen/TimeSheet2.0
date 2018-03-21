@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Web;
 using System.Web.Mvc;
-using System.Diagnostics;
 using Timesheet.Models;
+
 
 namespace Timesheet.Controllers
 {
@@ -113,5 +116,48 @@ namespace Timesheet.Controllers
             }
             return dateList;
         }
+
+        // Email function controller
+        public async Task<ActionResult> email(FormCollection form) //receives form
+        {
+            Employee emp = (Employee)Session["NewEmp"];
+            var name = form[emp.FirstName + " " + emp.LastName];
+            var subject = form["empsub"];
+            var email = (string)emp.Email;
+            var messages = form["smessage"];
+            var x = await SendEmail(name, subject, email, messages);
+            if (x == "sent")
+                ViewData["esent"] = "Your Message Has Been Sent";
+            Debug.WriteLine("Message Was sent");
+            return RedirectToAction("Index", "HR");
+        }
+
+        //SendEmail method
+        private async Task<string> SendEmail(string name, string subject, string email, string messages)
+        {     
+            MailMessage message = new MailMessage(); //initializes new instance of mailmessage class 
+            var emp = (Employee)Session["Employee"];
+            message.To.Add(new MailAddress("rs029@comcast.net")); //initializes new instance of mailaddress class
+            //message.From = new MailAddress(emp.Email);  
+            message.From = new MailAddress("rspeight@students.chattahoocheetech.edu");
+            message.Subject = subject;
+            message.Body = "Name: " + name + "Subject:" + subject + "\nTo: " + email + "\n" + messages;
+            message.IsBodyHtml = true;
+            using (SmtpClient smtp = new SmtpClient())
+            {
+                var credential = new System.Net.NetworkCredential //credentials check
+                {
+                    UserName = "rspeight@students.chattahoocheetech.edu",  // replace with sender's email id 
+                    Password = "CTC-10291"  // replace with password 
+                };
+                smtp.Credentials = credential;
+                smtp.Host = "smtp-mail.outlook.com";
+                smtp.Port = 587;
+                smtp.EnableSsl = true;
+                await smtp.SendMailAsync(message);
+                return "sent";
+            }
+        }
+        //end of email controller
     }
 }

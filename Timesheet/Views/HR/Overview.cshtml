@@ -600,35 +600,34 @@
             </tr>
         </table>
     </div>
-    @*<div>
-        @{/**This Text Area is used to give infomation about any additional hours given. It creates
-                  * another form that saves input to a the model and updates it to the day selected**/
-            if (tsheets[0].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
-            {
-                using (Html.BeginForm("SaveTimeNote", "Timesheet", FormMethod.Post))
-                {
-                    <h3 align="center">@Html.Label("Comment for any additional hours worked", new { @style = "font-size: 1.1em" })</h3>
-                    <p align="center">
-                        @Html.TextAreaFor(model => model.Note, 10, 50, new
-                        {
-                            @placeholder = "Comments about additional hours go here." +
-                           "\n\nTo clear a note from a day enter 'none' or 'None' in the field and save it, this will remove the note."
-                        })
-                </p>
-                <p align="center">@Html.DropDownList("Date", datelist, "Select Day to submit", new { onchange = "this.form.submit();" })</p>
-            }
-        }
-        }
-    </div>
     <div>
-        @{ //rests the QuickTimeStamp message to blank so when you load the home screen it doesn't show up.
-            string message = "";
-            Session["QuickTimeStamp"] = message;
+        <!--Email form (html)-->
+        <p> Email an employee: </p>
+        @using (Html.BeginForm("email", "HR", FormMethod.Post))
+        {
+        <div>
+            <form name="sentMessage" id="contactForm" novalidate>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @*<input type="email" name="empemail" class="form-control" placeholder="Employee Email *" id="email" required data-validation-required-message="Please enter your email address.">*@
+                            <p></p>
+                            <input type="text" name="empsub" class="form-control" placeholder="Subject: *" id="name" required data-validation-required-message="Please enter your name.">
+                            <p></p>
+                            <textarea class="form-control" name="smessage" placeholder="Your Message *" id="message" required data-validation-required-message="Please enter a message."></textarea>
+                            <p></p>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-lg-12 text-center">
+                        <div id="success"></div>
+                        <button type="submit" class="submit button" onclick="this.form.submit();">Send Message</button>
+                    </div>
+                </div>
+            </form>
+        </div>
         }
-        <a href="@Url.Action("Index", "Employees")" class="button">Home</a>
-        <!--Submit Week button with popup validation-->
-        @Html.ActionLink("Submit Week", "SubmitTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new { @class = "button", @style = "text-decoration: none; color: black;", @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })
-        <!--Log out link-->*@
+        <br />
         <br /><a href="@Url.Action("Index", "HR")" class="button">Home</a>
         <a href="@Url.Action("LogOut", "Login")" class="button">LogOut</a>
     </div>
