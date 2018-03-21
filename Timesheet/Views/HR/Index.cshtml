@@ -33,14 +33,14 @@
         <p>Select a week to review employee pay sheet summaries.</p>
         <!--Form for selecting a week and viewing pay summaries-->
         @using (Html.BeginForm("GetPayData", "HR", FormMethod.Post, new { role = "form" }))
-        {
-            @Html.LabelFor(m => m.WeekEnding)
-            @Html.DropDownListFor(m => m.WeekEnding,
-                     Model.WeekEndingDates,
-                     " - Please select a date - ",
-                     new { @class = "form-control" })
-            <button type="submit">Search</button>
-        }
+    {
+        @Html.LabelFor(m => m.WeekEnding)
+        @Html.DropDownListFor(m => m.WeekEnding,
+                    Model.WeekEndingDates,
+                    " - Please select a date - ",
+                    new { @class = "form-control" })
+        <button type="submit">Search</button>
+}
         <br />
 
         <!--Table to display pay summaries from the session-->
@@ -54,33 +54,64 @@
                 <th>Supervisor</th>
             </tr>
             @{
-                if (@paySumList != null)
+            if (@paySumList != null)
+            {
+                foreach (PaySummary paySum in @paySumList)
                 {
-                    foreach (PaySummary paySum in @paySumList)
-                    {
-                        <tr>
-                            <td>
-                                @paySum.EmpName
-                            </td>
-                            <td>
-                                @paySum.TotalHours
-                            </td>
-                            <td>
-                                @paySum.OverTimeHours
-                            </td>
-                            <td>
-                                @paySum.TimeSheetStatus
-                            </td>
-                            <td>
-                                @paySum.SuperName
-                            </td>
-                        </tr>
-                    }
+                    <tr>
+                        <td>
+                            @paySum.EmpName
+                        </td>
+                        <td>
+                            @paySum.TotalHours
+                        </td>
+                        <td>
+                            @paySum.OverTimeHours
+                        </td>
+                        <td>
+                            @paySum.TimeSheetStatus
+                        </td>
+                        <td>
+                            @paySum.SuperName
+                        </td>
+                    </tr>
+            }
 
-                }
+        }
 
             }
         </table>
+
+        <br />
+
+        <!--Email form (html)-->
+        <p> Email an employee: </p>
+        @using (Html.BeginForm("email", "HR", FormMethod.Post))
+        {
+            <div>
+                <form name="sentMessage" id="contactForm" novalidate>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="email" name="empemail" class="form-control" placeholder="Employee Email *" id="email" required data-validation-required-message="Please enter your email address.">
+                                <p></p>
+                                <input type="text" name="empsub" class="form-control" placeholder="Subject: *" id="name" required data-validation-required-message="Please enter your name.">
+                                <p></p>
+                                <textarea class="form-control" name="smessage" placeholder="Your Message *" id="message" required data-validation-required-message="Please enter a message."></textarea>
+                                <p></p>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-lg-12 text-center">
+                            <div id="success"></div>
+                         <button type="submit" class="submit button" onclick="this.form.submit();">Send Message</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        }
+        <br />
+
     </div>
     <!--Log out link-->
     <a href="@Url.Action("LogOut", "Login")">LogOut</a>
