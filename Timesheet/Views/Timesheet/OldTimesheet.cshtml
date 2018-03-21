@@ -217,31 +217,37 @@
         document.getElementById('time').innerHTML = strTime;
         var t = setTimeout(formatAMPM, 500);
     }
-    /**********************************************************************************************
 
-    function leaveFieldEmpty() {
+    function leaveFieldEmpty(i) {
         var leaveid;
-        var LeaveHours;
-        leaveHours = new String(document.getElementById("LeaveHours").Value);
-        leaveid = new String(document.getElementById("LeaveId").Value);
-        console.log(additionalhours);
-        console.log(leaveFieldEmpty);
-        if (leaveid == "0" && leaveHours == "0:00") {
+        var leaveHours;
+        leaveHours = document.forms["frm" + i]["LeaveHours"].value;
+        leaveid = document.forms["frm" + i]["LeaveId"].value;
+
+        if (leaveid == '0' && leaveHours == '0:00') {
+            var message = "Timesheet Saved Succesfully";
+            '<%Session["message"] = "' + message + '"; %>';
             return true;
-        };
-        if (!leaveid == "0" && !leaveHours == "0:00") {
+        }
+        else if (leaveid != '0' && leaveHours != '0:00') {
+            var message = "Timesheet Saved Succesfully";
+            '<%Session["message"] = "' + message + '"; %>';
             return true;
-        };
-        if (!leaveid == "0" && leaveHours == "0:00") {
-            alert("Please make sure to enter Absent Hours");
-            return false;
-        };
-        if (leaveid == "0" && !leaveHours == "0:00") {
+        }
+        else if (leaveid == '0' && leaveHours != '0:00') {
+            var message = "Please make sure to enter a Absent Type.";
+            '<%Session["message"] = "' + message + '"; %>';
             alert("Please make sure to enter a Absent Type.");
             return false;
+        }
+        else if (leaveid != '0' && leaveHours == '0:00') {
+            var message = "Please make sure to enter Absent Hours.";
+            '<%Session["message"] = "' + message + '"; %>';
+            alert("Please make sure to enter Absent Hours.");
+            return false;
         };
+
     }
-    ****************************************************************************************/
 
 </script>
 
@@ -273,7 +279,6 @@
         }
 
         <p id="Time" style="text-align: center;">@today <div id="time" style="text-align: center;"></div></p>
-        <br />
 
         @using (Html.BeginForm("ReportData", "TimeSheet", FormMethod.Post, new { role = "form" }))
         {
@@ -284,14 +289,13 @@
                 @Html.DropDownListFor(model => model.WeekEnding, weekList,"-Select A Date-", new { onchange = "this.form.submit();" })
             </P>
         }
-        <br />
         <label id="Message">@Html.DisplayFor(model => Session["Message"])</label>
 
         <!--Form for employee to select a timesheet week ending date.-->
         @{
             if ((tsheets != null) && tsheets.Any())
             {
-                <p>timesheet for the week of @tsheets[0].WeekEnding</p><br />
+                <p>timesheet for the week of @tsheets[0].WeekEnding</p>
             }
         }
 
@@ -320,7 +324,7 @@
                         </tr>
                         @{ for (int i = 0; i < 7; i++)
                             {
-                                using (Html.BeginForm("SaveOldTimeSheet", "Timesheet", FormMethod.Post))
+                                using (Html.BeginForm("SaveOldTimeSheet", "Timesheet", FormMethod.Post, new { name = "frm" + i, id = "frm", enctype = "multipart/form-data", onsubmit = "return leaveFieldEmpty(" + i + ")" }))
                                 {
                                     if (tsheets[i].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
                                     {
@@ -646,6 +650,10 @@
         <br />
         <!-- link to go to the home page-->
         <a href="@Url.Action("Index", "Employees")" class="button">Home</a>
+
+        <a href="@Url.Action("GetTimeSheet","Timesheet")">Weekly Timesheet</a>
+
+        <a href="@Url.Action("GetDailyTimeSheet","Timesheet")">Daily Timesheet</a>
         <!--Submit Week button with popup validation-->
         @Html.ActionLink("Submit Week", "SubmitOldTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new { @class = "button", @style = "text-decoration: none; color: black;", @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })
         <!--Log out link-->
