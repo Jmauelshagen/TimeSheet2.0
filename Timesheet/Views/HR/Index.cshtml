@@ -1,5 +1,6 @@
 ﻿@using Timesheet.Models
 @model Timesheet.Models.TimeSheet
+
 @{
     Layout = null;
 }
@@ -48,16 +49,19 @@
 
             <tr>
                 <th>Employee Name</th>
-                <th>Total Hours</th>
-                <th>Over Time</th>
+                <th>Worked hours</th>
+                <th>Over Time</th>                
+                <th>Absent hours</th>
                 <th>Time Sheet Status</th>
                 <th>Supervisor</th>
+                <th>Overview</th>
             </tr>
             @{
             if (@paySumList != null)
             {
                 foreach (PaySummary paySum in @paySumList)
                 {
+<<<<<<< HEAD
                     <tr>
                         <td>
                             @paySum.EmpName
@@ -113,6 +117,43 @@
         <br />
 
     </div>
+=======
+                    foreach (PaySummary paySum in @paySumList)
+                    {
+                        using (Html.BeginForm("GetOverview", "HR", FormMethod.Post))
+                        {
+                        <tr>
+                            @{Model.EmpId = paySum.EmpID;}
+                            <td>
+                                @paySum.EmpName
+                            </td>                            
+                                @Html.HiddenFor(model => model.EmpId)
+                            <td>
+                                @paySum.TotalHours
+                            </td>
+                            <td>
+                                @paySum.OverTimeHours
+                            </td>
+                            <td>
+                                @paySum.TotalAbsent
+                            </td>
+                            <td>
+                                @paySum.TimeSheetStatus
+                            </td>
+                            <td>
+                                @paySum.SuperName
+                            </td>                            
+                            <td>
+                                <button id="submit" type="submit" value="Overview">Overview</button>
+                            </td>                            
+                        </tr>
+                        }
+                    } 
+                }
+            }
+        </table>
+    </div><br />
+>>>>>>> Rob
     <!--Log out link-->
     <a href="@Url.Action("LogOut", "Login")">LogOut</a>
 </body>

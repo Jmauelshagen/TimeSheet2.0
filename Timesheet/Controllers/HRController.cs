@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
+<<<<<<< HEAD
+=======
+using System.Diagnostics;
+>>>>>>> Rob
 using System.Web;
 using System.Web.Mvc;
 using Timesheet.Models;
+
 
 namespace Timesheet.Controllers
 {
@@ -18,8 +23,14 @@ namespace Timesheet.Controllers
         public ActionResult Index()
         {
             var model = new TimeSheet();
+            var pmod = new PaySummary();
             model.WeekEndingDates = GetWeekEndingDateList();
             return View(model);
+        }
+
+        public ActionResult Overview(TimeSheet model)
+        {
+            return View();
         }
 
         //This controller obtains a list of pay summary objects for the week selected in the UI
@@ -33,10 +44,40 @@ namespace Timesheet.Controllers
             {
                 paySumList.Add(new PaySummary(empId, wED));
             }
-
+            Session["Weekend"] = wED;
             Session["PaySummaryList"] = paySumList;
             
             return RedirectToAction("Index", "HR");
+        }
+
+        [HttpPost]
+        public ActionResult GetOverview(TimeSheet model)
+        {
+            Debug.WriteLine("In GetOverview");
+            Debug.WriteLine(model.EmpId);
+            //Remove the TimeSheet variable from the session if it exists
+            if (Session["TimeSheetData"] != null)
+            {
+                Session.Remove("TimeSheetData");
+            }
+            //Pull the employee object from the session.
+            Employee emp = new Employee();
+            emp = emp.GetEmployee((int)model.EmpId);
+            Session["NewEmp"] = emp;
+            //Instantiate a TimeSheet object
+            TimeSheet tsheet = new TimeSheet();
+
+            //Get list of TimeSheet objects based on date and employee id and add list to session  
+            string wed = (string)Session["Weekend"];
+            List<TimeSheet> tsheets = model.GetTimeSheetByIdAndDate(emp.EmpId, wed);
+            Session["TimeSheetData"] = tsheets;
+
+            //Get list of dates for the selected weekend to create overview         
+            List<string> dates = GetDaysInTimeSheet(emp.EmpId, wed);
+            Session["Dates"] = dates;                                  
+            
+            //Return the TimeSheet view
+            return RedirectToAction("Overview", "HR");
         }
 
         //Not used currently
@@ -49,6 +90,17 @@ namespace Timesheet.Controllers
         public ActionResult TimesheetReports()
         {
             return View();
+        }
+
+        private List<string> GetDaysInTimeSheet(int id, string wed)
+        {
+            List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
+            List<string> dates = new List<string>();
+            foreach (string date in tsheets[0].GetDates(id, wed))
+            {
+                dates.Add(date);
+            }
+            return dates;
         }
 
         //Takes the list of week ending dates from the db and turns it into a select list
@@ -67,6 +119,7 @@ namespace Timesheet.Controllers
             }
             return dateList;
         }
+<<<<<<< HEAD
         
         // Email function controller
         public async Task<ActionResult> email(FormCollection form) //receives form
@@ -91,24 +144,64 @@ namespace Timesheet.Controllers
             message.From = new MailAddress("hr.testingctc@gmail.com");
             message.Subject =  subject + ":Message From" + email;
             message.Body = "Name: " + name + "Subject:" + subject +  "\nTo: " + email + "\n" + messages;
+=======
+
+        // Email function controller
+        public async Task<ActionResult> email(FormCollection form) //receives form
+        {
+            Employee emp = (Employee)Session["NewEmp"];
+            var name = form[emp.FirstName + " " + emp.LastName];
+            var subject = form["empsub"];
+            var email = (string)emp.Email;
+            var messages = form["smessage"];
+            var x = await SendEmail(name, subject, email, messages);
+            if (x == "sent")
+                ViewData["esent"] = "Your Message Has Been Sent";
+            Debug.WriteLine("Message Was sent");
+            return RedirectToAction("Index", "HR");
+        }
+
+        //SendEmail method
+        private async Task<string> SendEmail(string name, string subject, string email, string messages)
+        {     
+            MailMessage message = new MailMessage(); //initializes new instance of mailmessage class 
+            var emp = (Employee)Session["Employee"];
+            message.To.Add(new MailAddress("rs029@comcast.net")); //initializes new instance of mailaddress class
+            //message.From = new MailAddress(emp.Email);  
+            message.From = new MailAddress("rspeight@students.chattahoocheetech.edu");
+            message.Subject = subject;
+            message.Body = "Name: " + name + "Subject:" + subject + "\nTo: " + email + "\n" + messages;
+>>>>>>> Rob
             message.IsBodyHtml = true;
             using (SmtpClient smtp = new SmtpClient())
             {
                 var credential = new System.Net.NetworkCredential //credentials check
                 {
+<<<<<<< HEAD
                     UserName = "hr.testingctc@gmail.com",  // replace with sender's email id 
                     Password = "P@s$w0rd"  // replace with password 
                 };
                 smtp.Credentials = credential;
                 smtp.Host = "smtp.gmail.com";
                 //smtp.Host = "smtp-mail.outlook.com";
+=======
+                    UserName = "rspeight@students.chattahoocheetech.edu",  // replace with sender's email id 
+                    Password = "CTC-10291"  // replace with password 
+                };
+                smtp.Credentials = credential;
+                smtp.Host = "smtp-mail.outlook.com";
+>>>>>>> Rob
                 smtp.Port = 587;
                 smtp.EnableSsl = true;
                 await smtp.SendMailAsync(message);
                 return "sent";
             }
         }
+<<<<<<< HEAD
         //end of email controller 
 
+=======
+        //end of email controller
+>>>>>>> Rob
     }
 }
