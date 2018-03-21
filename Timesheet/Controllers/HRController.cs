@@ -86,7 +86,6 @@ namespace Timesheet.Controllers
         {
             MailMessage message = new MailMessage(); //initializes new instance of mailmessage class 
             var emp = (Employee)Session["Employee"]; 
-            message.To.Add(new MailAddress("raulochoa413@yahoo.com")); //initializes new instance of mailaddress class
             message.To.Add(new MailAddress(email)); //initializes new instance of mailaddress class
             //message.From = new MailAddress(emp.Email);  
             message.From = new MailAddress("hr.testingctc@gmail.com");
