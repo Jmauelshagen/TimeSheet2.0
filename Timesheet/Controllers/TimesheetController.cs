@@ -83,10 +83,10 @@ namespace Timesheet.Controllers
             List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
             Session["TimeSheetData"] = tsheets;
 
-            //resets the QuickTimeStamp and DailyMessage to blank when you go to another page
+            //resets the QuickTimeStamp and Message to blank when you go to another page
             string message = "";
             Session["QuickTimeStamp"] = message;
-            Session["DailyMessage"] = message;
+            Session["Message"] = message;
 
             //Return the TimeSheet view
             return RedirectToAction("DailyTimesheet", "Timesheet");
@@ -114,10 +114,10 @@ namespace Timesheet.Controllers
             List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
             Session["TimeSheetData"] = tsheets;
 
-            //resets the QuickTimeStamp and DailyMessage to blank when you go to another page
+            //resets the QuickTimeStamp and Message to blank when you go to another page
             string message = "";
             Session["QuickTimeStamp"] = message;
-            Session["DailyMessage"] = message;
+            Session["Message"] = message;
 
             //Return the TimeSheet view
             return RedirectToAction("Timesheet", "Timesheet");
@@ -180,13 +180,13 @@ namespace Timesheet.Controllers
                             else { tsheets[i].Note = model.Note + " - " + model.Date; }
                         }
                         message = "Timesheet Saved Succesfully";
-                        Session["WeeklyMessage"] = message;
+                        Session["Message"] = message;
                         tsheets[i].UpdateTimeSheet(tsheets[i]);
                     }
                     else
                     {
                         message = "Timesheet has already been approved. no changes can be made";
-                        Session["WeeklyMessage"] = message;
+                        Session["Message"] = message;
                     }
                 }
             }
@@ -233,13 +233,13 @@ namespace Timesheet.Controllers
                         if (!String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = model.LeaveHours; }
                         if (!String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = model.AdditionalHours; }
                         message = "Timesheet Saved Succesfully";
-                        Session["WeeklyMessage"] = message;
+                        Session["Message"] = message;
                         tsheets[i].UpdateTimeSheet(tsheets[i]);
                     }
                     else
                     {
                         message = "Timesheet has already been approved. no changes can be made";
-                        Session["WeeklyMessage"] = message;
+                        Session["Message"] = message;
                     }
                 }
             }
@@ -291,13 +291,13 @@ namespace Timesheet.Controllers
                             else { tsheets[i].Note = model.Note + " - " + model.Date; }
                         }
                         message = "Timesheet Saved Succesfully";
-                        Session["DailyMessage"] = message;
+                        Session["Message"] = message;
                         tsheets[i].UpdateTimeSheet(tsheets[i]);
                     }
                     else
                     {
                         message = "Timesheet has already been approved. no changes can be made";
-                        Session["DailyMessage"] = message;
+                        Session["Message"] = message;
                     }
                 }
             }
@@ -344,7 +344,7 @@ namespace Timesheet.Controllers
                             tsheets[i].TimeIn = today;
                             tsheets[i].UpdateTimeSheet(tsheets[i]);
                             message = "1st punch has been added at: " + DateTime.Now.ToString("h:mm tt");
-                            Session["DailyMessage"] = message;
+                            Session["Message"] = message;
                         }
                         else
                         {
@@ -353,7 +353,7 @@ namespace Timesheet.Controllers
                                 tsheets[i].OutForLunch = today;
                                 tsheets[i].UpdateTimeSheet(tsheets[i]);
                                 message = "2nd punch has been added at: " + DateTime.Now.ToString("h:mm tt");
-                                Session["DailyMessage"] = message;
+                                Session["Message"] = message;
                             }
                             else
                             {
@@ -362,7 +362,7 @@ namespace Timesheet.Controllers
                                     tsheets[i].InFromLunch = today;
                                     tsheets[i].UpdateTimeSheet(tsheets[i]);
                                     message = "3rd punch has been added at: " + DateTime.Now.ToString("h:mm tt");
-                                    Session["DailyMessage"] = message;
+                                    Session["Message"] = message;
                                 }
                                 else
                                 {
@@ -371,12 +371,12 @@ namespace Timesheet.Controllers
                                         tsheets[i].TimeOut = today;
                                         tsheets[i].UpdateTimeSheet(tsheets[i]);
                                         message = "4th punch has been added at: " + DateTime.Now.ToString("h:mm tt");
-                                        Session["DailyMessage"] = message;
+                                        Session["Message"] = message;
                                     }
                                     else
                                     {
                                         message = "All 4 punches have been used, please use additional hours for more time worked.";
-                                        Session["DailyMessage"] = message;
+                                        Session["Message"] = message;
                                     }
                                 }
                             }
@@ -385,7 +385,7 @@ namespace Timesheet.Controllers
                     else
                     {
                         message = "Timesheet has already been approved. no changes can be made";
-                        Session["DailyMessage"] = message;
+                        Session["Message"] = message;
                     }
 
                 }

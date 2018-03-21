@@ -186,10 +186,11 @@
 <script>
     window.setTimeout(function () {
         // This will execute 5 seconds later
-        var label = document.getElementById('WeeklyMessage');
+        var label = document.getElementById('Message');
         if (label != null) {
             label.style.display = 'none';
         }
+
     }, 4000);
 
     function checkTime(i)//Check for single digit numbers in the seconds and minutes of the live clock
@@ -268,7 +269,7 @@
     }
 
     <p id="Time" style="text-align: center;">@today <div id="time" style="text-align: center;"></div></p>
-    <label id="WeeklyMessage">@Html.DisplayFor(model => Session["WeeklyMessage"])</label>
+    <p><label id="Message">@Html.DisplayFor(model => Session["Message"])</label></p>
 
     <!--Table to display time sheet input form.-->
     <div>

@@ -189,7 +189,7 @@
 <script type="text/javascript">
     window.setTimeout(function () {
         // This will execute 5 seconds later
-        var label = document.getElementById('DailyMessage');
+        var label = document.getElementById('Message');
         if (label != null) {
             label.style.display = 'none';
         }
@@ -271,7 +271,7 @@
             string CurrentDate = DateTime.Now.ToShortDateString();
 
             <p id="Time">@today <div id="time" style="text-align: center;"></div></p>
-            <p><a href="@Url.Action("SaveDailyTimeSheet","Timesheet")">Record Current Time</a><br /><br /><label id="DailyMessage">@Html.DisplayFor(model => Session["DailyMessage"])</label></p>
+            <p><a href="@Url.Action("SaveDailyTimeSheet","Timesheet")">Record Current Time</a><br /><br /><label id="Message">@Html.DisplayFor(model => Session["Message"])</label></p>
 
             <!--Table to display time sheet input form.-->
             <div>
