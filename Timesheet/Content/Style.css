@@ -105,6 +105,11 @@ li {
     padding: 30px;
     margin: 30px;
 }
+.nav {
+    display: inline;
+    padding: 5px;
+    margin: 0px;
+}
 
 .center {
     margin-left: auto;
