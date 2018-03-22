@@ -9,8 +9,8 @@
           <Key>
             <PropertyRef Name="Email" />
           </Key>
-          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Emp">
           <Key>
@@ -31,7 +31,7 @@
           <Property Name="RoleId" Type="int" Nullable="false" />
           <Property Name="Department" Type="nchar" MaxLength="10" />
           <Property Name="Supervisor" Type="int" Nullable="false" />
-          <Property Name="Phone" Type="nchar" MaxLength="20" />
+          <Property Name="Phone" Type="nchar" MaxLength="15" />
         </EntityType>
         <EntityType Name="HR">
           <Key>
@@ -125,7 +125,7 @@
           <Property Name="RoleId" Type="Int32" Nullable="false" />
           <Property Name="Department" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="Supervisor" Type="Int32" Nullable="false" />
-          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="HR">
           <Key>
@@ -200,8 +200,8 @@
           <Key>
             <PropertyRef Name="Email1" />
           </Key>
-          <Property Name="Email1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>

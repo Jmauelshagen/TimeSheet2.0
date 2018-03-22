@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
-<<<<<<< HEAD
-=======
 using System.Diagnostics;
->>>>>>> Rob
 using System.Web;
 using System.Web.Mvc;
 using Timesheet.Models;
@@ -40,13 +37,13 @@ namespace Timesheet.Controllers
             PaySummary paySum = new PaySummary();
             var wED = model.WeekEnding;
             List<int> empIds = paySum.GetEmpIdsByWeekEndDate(wED);
-            foreach(int empId in empIds)
+            foreach (int empId in empIds)
             {
                 paySumList.Add(new PaySummary(empId, wED));
             }
             Session["Weekend"] = wED;
             Session["PaySummaryList"] = paySumList;
-            
+
             return RedirectToAction("Index", "HR");
         }
 
@@ -74,8 +71,8 @@ namespace Timesheet.Controllers
 
             //Get list of dates for the selected weekend to create overview         
             List<string> dates = GetDaysInTimeSheet(emp.EmpId, wed);
-            Session["Dates"] = dates;                                  
-            
+            Session["Dates"] = dates;
+
             //Return the TimeSheet view
             return RedirectToAction("Overview", "HR");
         }
@@ -119,32 +116,6 @@ namespace Timesheet.Controllers
             }
             return dateList;
         }
-<<<<<<< HEAD
-        
-        // Email function controller
-        public async Task<ActionResult> email(FormCollection form) //receives form
-        {
-            var name = form["empname"];
-            var subject = form["empsub"];
-            var email = form["empemail"].Trim();
-            var messages = form["smessage"];
-            var x = await SendEmail(name, subject, email, messages); 
-            if (x == "sent")
-                ViewData["esent"] = "Your Message Has Been Sent";
-            return RedirectToAction("Index", "HR");
-        }
-  
-        //SendEmail method
-        private async Task<string> SendEmail(string name, string subject, string email, string messages)
-        {
-            MailMessage message = new MailMessage(); //initializes new instance of mailmessage class 
-            var emp = (Employee)Session["Employee"]; 
-            message.To.Add(new MailAddress(email)); //initializes new instance of mailaddress class
-            //message.From = new MailAddress(emp.Email);  
-            message.From = new MailAddress("hr.testingctc@gmail.com");
-            message.Subject =  subject + ":Message From" + email;
-            message.Body = "Name: " + name + "Subject:" + subject +  "\nTo: " + email + "\n" + messages;
-=======
 
         // Email function controller
         public async Task<ActionResult> email(FormCollection form) //receives form
@@ -163,59 +134,32 @@ namespace Timesheet.Controllers
 
         //SendEmail method
         private async Task<string> SendEmail(string name, string subject, string email, string messages)
-        {     
+        {
             MailMessage message = new MailMessage(); //initializes new instance of mailmessage class 
             var emp = (Employee)Session["Employee"];
             Debug.WriteLine("HR email: " + emp.Email);
             message.To.Add(new MailAddress(email)); //initializes new instance of mailaddress class
-            message.From = new MailAddress(emp.Email);  
+            message.From = new MailAddress(emp.Email);
             //message.From = new MailAddress(emp.Email);
             message.Subject = subject;
-<<<<<<< HEAD
-            message.Body = "Name: " + name + "Subject:" + subject + "\nTo: " + email + "\n" + messages;
->>>>>>> Rob
-=======
             message.Body = "Hellow : +" + name + " " + messages;
->>>>>>> Rob
             message.IsBodyHtml = true;
             using (SmtpClient smtp = new SmtpClient())
             {
                 var credential = new System.Net.NetworkCredential //credentials check
                 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    UserName = "hr.testingctc@gmail.com",  // replace with sender's email id 
-                    Password = "P@s$w0rd"  // replace with password 
-                };
-                smtp.Credentials = credential;
-                smtp.Host = "smtp.gmail.com";
-                //smtp.Host = "smtp-mail.outlook.com";
-=======
-                    UserName = "rspeight@students.chattahoocheetech.edu",  // replace with sender's email id 
-                    Password = "CTC-10291"  // replace with password 
-                };
-                smtp.Credentials = credential;
-                smtp.Host = "smtp-mail.outlook.com";
->>>>>>> Rob
-=======
                     UserName = "hr.testingctc@gmail.com",  // replace with sender's email id 
                     Password = "P@s$w0rd"  // replace with password 
                 };
                 smtp.Credentials = credential;
                 //smtp.Host = "smtp-mail.outlook.com";
                 smtp.Host = "smtp.gmail.com";
->>>>>>> Rob
                 smtp.Port = 587;
                 smtp.EnableSsl = true;
                 await smtp.SendMailAsync(message);
                 return "sent";
             }
         }
-<<<<<<< HEAD
-        //end of email controller 
-
-=======
-        //end of email controller
->>>>>>> Rob
+        //end of email controller     
     }
 }
