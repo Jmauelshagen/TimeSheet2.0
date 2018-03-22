@@ -215,7 +215,36 @@
         document.getElementById('time').innerHTML = strTime;
         var t = setTimeout(formatAMPM, 500);
     }
-    
+
+    function leaveFieldEmpty(i) {
+        var leaveid;
+        var leaveHours;
+        leaveHours = document.forms["frm" + i]["LeaveHours"].value;
+        leaveid = document.forms["frm" + i]["LeaveId"].value;
+
+        if (leaveid == '0' && leaveHours == '0:00') {
+            var message = "Timesheet Saved Succesfully";
+            '<%Session["message"] = "' + message + '"; %>';
+            return true;
+        }
+        else if (leaveid != '0' && leaveHours != '0:00') {
+            var message = "Timesheet Saved Succesfully";
+            '<%Session["message"] = "' + message + '"; %>';
+            return true;
+        }
+        else if (leaveid == '0' && leaveHours != '0:00') {
+            var message = "Please make sure to enter a Absent Type.";
+            '<%Session["message"] = "' + message + '"; %>';
+            alert("Please make sure to enter a Absent Type.");
+            return false;
+        }
+        else if (leaveid != '0' && leaveHours == '0:00') {
+            var message = "Please make sure to enter Absent Hours.";
+            '<%Session["message"] = "' + message + '"; %>';
+            alert("Please make sure to enter Absent Hours.");
+            return false;
+        };
+    }
 </script>
 
 <!DOCTYPE html>
@@ -227,7 +256,7 @@
     <title>Timesheet</title>
 </head>
 <body onload="formatAMPM()">
-    @{using (Html.BeginForm("SaveDailyTimeSheet", "Timesheet", FormMethod.Post))
+    @{using (Html.BeginForm("SaveDailyTimeSheet", "Timesheet", FormMethod.Post, new { name = "frm" + i, id = "frm", enctype = "multipart/form-data", onsubmit = "return leaveFieldEmpty(" + i + ")" }))
         {
             <h2 style="text-align: center;">Daily Time Sheet</h2>
             <h3 style="text-align: center;">@emp.FirstName @emp.LastName</h3>

@@ -217,31 +217,37 @@
         document.getElementById('time').innerHTML = strTime;
         var t = setTimeout(formatAMPM, 500);
     }
-    /**********************************************************************************************
 
-    function leaveFieldEmpty() {
+    function leaveFieldEmpty(i) {
         var leaveid;
-        var LeaveHours;
-        leaveHours = new String(document.getElementById("LeaveHours").Value);
-        leaveid = new String(document.getElementById("LeaveId").Value);
-        console.log(additionalhours);
-        console.log(leaveFieldEmpty);
-        if (leaveid == "0" && leaveHours == "0:00") {
+        var leaveHours;
+        leaveHours = document.forms["frm" + i]["LeaveHours"].value;
+        leaveid = document.forms["frm" + i]["LeaveId"].value;
+
+        if (leaveid == '0' && leaveHours == '0:00') {
+            var message = "Timesheet Saved Succesfully";
+            '<%Session["message"] = "' + message + '"; %>';
             return true;
-        };
-        if (!leaveid == "0" && !leaveHours == "0:00") {
+        }
+        else if (leaveid != '0' && leaveHours != '0:00') {
+            var message = "Timesheet Saved Succesfully";
+            '<%Session["message"] = "' + message + '"; %>';
             return true;
-        };
-        if (!leaveid == "0" && leaveHours == "0:00") {
-            alert("Please make sure to enter Absent Hours");
-            return false;
-        };
-        if (leaveid == "0" && !leaveHours == "0:00") {
+        }
+        else if (leaveid == '0' && leaveHours != '0:00') {
+            var message = "Please make sure to enter a Absent Type.";
+            '<%Session["message"] = "' + message + '"; %>';
             alert("Please make sure to enter a Absent Type.");
             return false;
+        }
+        else if (leaveid != '0' && leaveHours == '0:00') {
+            var message = "Please make sure to enter Absent Hours.";
+            '<%Session["message"] = "' + message + '"; %>';
+            alert("Please make sure to enter Absent Hours.");
+            return false;
         };
+
     }
-    ****************************************************************************************/
 
 </script>
 
@@ -320,7 +326,7 @@
                         </tr>
                         @{ for (int i = 0; i < 7; i++)
                             {
-                                using (Html.BeginForm("SaveOldTimeSheet", "Timesheet", FormMethod.Post))
+                                using (Html.BeginForm("SaveOldTimesheet", "Timesheet", FormMethod.Post, new { name = "frm" + i, id = "frm", enctype = "multipart/form-data", onsubmit = "return leaveFieldEmpty(" + i + ")" }))
                                 {
                                     if (tsheets[i].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
                                     {
