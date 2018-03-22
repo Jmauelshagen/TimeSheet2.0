@@ -26,7 +26,7 @@ namespace Timesheet.Controllers
         }
 
         public ActionResult Overview(TimeSheet model)
-        {
+        {            
             return View();
         }
 
@@ -61,6 +61,7 @@ namespace Timesheet.Controllers
             Employee emp = new Employee();
             emp = emp.GetEmployee((int)model.EmpId);
             Session["NewEmp"] = emp;
+            Session["Message2"] = "";
             //Instantiate a TimeSheet object
             TimeSheet tsheet = new TimeSheet();
 
