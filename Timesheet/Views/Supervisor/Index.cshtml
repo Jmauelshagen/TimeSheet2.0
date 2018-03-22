@@ -11,15 +11,35 @@
 
 <html>
 <head>
+    <link rel="stylesheet" href="~/Content/main.css" type="text/css" />
     <meta name="viewport" content="width=device-width" />
     <title>Supervisor</title>
+<<<<<<< HEAD
+    <style>
+
+
+        #login-div {
+            position: absolute;
+            left: 40%;
+            top: 40%;
+            padding: 10px 10px;
+        }
+
+        .field-validation-error {
+            color: red;
+        }
+    </style>
+=======
+>>>>>>> master
 </head>
 
 <body>
     <!--Get employee object from the session.-->
     @{var emp = (Employee)Session["Employee"]; }
     <div>
-        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        <center>
+            <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        </center>
     </div>
     <div>
         <h1>Supervisor</h1>
@@ -27,6 +47,35 @@
         <p>Welcome @emp.FirstName @emp.LastName!</p>
 
         <!--Links to reports and approved time sheets-->
+<<<<<<< HEAD
+       
+            
+                <form action="@Url.Action("Index", "Reports")">
+                    <input type="submit" value="Reports">
+
+                </form>
+                </br>
+                <!-- <a href="Url.Action("Index", "Reports")"> Reports</a> -->
+            
+            
+                <form action="@Url.Action("ApprovedTimesheets", "ApprovedTimesheets")">
+                    <input type="submit" value="Approved Timesheet">
+
+                </form>
+                </br>
+                <!--    <a href="Url.Action("ApprovedTimesheets", "ApprovedTimesheets")">Approved Timesheet</a> -->
+            
+
+        
+
+        <!--Log out link-->
+        <form action="@Url.Action("LogOut", "Login")">
+            <input type="submit" value="LogOut">
+
+        </form>
+
+        <!-- <a href="Url.Action("LogOut", "Login")">LogOut</a> -->
+=======
         <ul class="unstyled">
             <li>
                 <a href="@Url.Action("Index", "Reports")"> Reports</a>
@@ -39,6 +88,7 @@
                 <a href="@Url.Action("LogOut", "Login")">LogOut</a>
             </li>
         </ul>
+>>>>>>> master
     </div>
 </body>
 </html>

@@ -12,7 +12,9 @@
 @{
     ViewBag.Title = "Approved Timesheets";
     <div>
-        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        <center>
+            <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        </center>
     </div>
 
     Employee emp = (Employee)Session["Employee"];
@@ -25,8 +27,27 @@
 
 <html>
 <head>
+    <link rel="stylesheet" href="~/Content/main.css" type="text/css" />
     <meta name="viewport" content="width=device-width" />
     <title>Timesheet</title>
+<<<<<<< HEAD
+    <style>
+
+
+        #login-div {
+            position: absolute;
+            left: 40%;
+            top: 40%;
+            padding: 10px 10px;
+        }
+
+        .field-validation-error {
+            color: red;
+        }
+    </style>
+
+=======
+>>>>>>> master
 </head>
 <body>
 
@@ -141,7 +162,8 @@
         }
     </table>
 
-    <a href="#" onclick="history.back();">Back</a>
+    </form>
+    <!-- <a href="#" onclick="history.back();">Back</a> -->
 </body>
 </html>
 
