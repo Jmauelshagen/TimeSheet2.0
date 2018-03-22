@@ -216,7 +216,10 @@
         var t = setTimeout(formatAMPM, 500);
     }
 
+<<<<<<< HEAD
     
+=======
+>>>>>>> Rob
     function leaveFieldEmpty(i) {
         var leaveid;
         var leaveHours;
@@ -302,7 +305,11 @@
             </tr>
             @{ for (int i = 0; i < 7; i++)
                 {
+<<<<<<< HEAD
                     using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post, new { name = "frm"+i, id = "frm", enctype = "multipart/form-data", onsubmit = "return leaveFieldEmpty("+i+")" }))
+=======
+                    using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post, new { name = "frm" + i, id = "frm", enctype = "multipart/form-data", onsubmit = "return leaveFieldEmpty(" + i + ")" }))
+>>>>>>> Rob
                     {
                         if (tsheets[0].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
                         {
@@ -411,6 +418,7 @@
                                 <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                                 <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                 <td><button id="submit" type="submit" value="Save">Save</button></td> <!--   onclick="return leaveFieldEmpty()"             -->
+<<<<<<< HEAD
                                 </tr>
                                         /**These add section for notes to be displayed if they exist**/
                                         if (!String.IsNullOrEmpty(tsheets[i].Note))
@@ -433,6 +441,22 @@
                                 else
                                 {
                                 <tr>
+=======
+                            </tr>
+                                /**These add section for notes to be displayed if they exist**/
+                                if (!String.IsNullOrEmpty(tsheets[i].Note))
+                                {
+                                    <tr>
+                                        <th colspan="4" style="font-weight:bold">Notes for additional hours worked above ^</th>
+                                        <td colspan="10" style="background-color:white">@tsheets[i].Note.ToString().Trim()</td>
+                                        <td style="display:none;">@Html.TextBoxFor(model => model.Note, new { @Value = @tsheets[i].Note.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                    </tr>
+                                }
+                        }
+                        else
+                        {
+                            <tr>
+>>>>>>> Rob
                                 <!--Converted some of the textboxes to time input to reduce user error-->
                                 <td style="display:none;">@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                 <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
@@ -442,7 +466,7 @@
                                 <td>@Html.TextBoxFor(model => model.InFromLunch, new { type = "time", Value = @tsheets[i].InFromLunch.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                 <td>@Html.TextBoxFor(model => model.TimeOut, new { type = "time", Value = @tsheets[i].TimeOut.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                 <td>@Html.DropDownListFor(model => model.LeaveId, new SelectList(
-                 new List<object> {
+                                    new List<object> {
                                         new { value = 0 , text = "None" },
                                         new { value = 1 , text = "Annual" },
                                         new { value = 2 , text = "Sick"},
