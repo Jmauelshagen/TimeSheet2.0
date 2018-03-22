@@ -25,8 +25,9 @@ namespace Timesheet.Models
         public string Email { get; set; }
         public int RoleId { get; set; }
         public string Department { get; set; }
-        public int Supervisor { get; set; }
-
+        public int Supervisor { get; set; }    
+        public string Phone { get; set; }
+                            
         //Constructors
         //0-arg constructor
         public Employee()
@@ -38,10 +39,11 @@ namespace Timesheet.Models
             RoleId = 0;
             Department = "";
             Supervisor = 0;
+            Phone = "";
         }
 
         //all-arg constructor
-        public Employee(int id, string fName, string lName, string email, int role, string dept, int super)
+        public Employee(int id, string fName, string lName, string email, int role, string dept, int super, string phon)
         {
             EmpId = id;
             FirstName = fName;
@@ -50,6 +52,7 @@ namespace Timesheet.Models
             RoleId = role;
             Department = dept;
             Supervisor = super;
+            Phone = phon;
         }
 
         //Method to obtain employee data from the database

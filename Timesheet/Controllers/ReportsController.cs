@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Web;
 using System.Web.Mvc;
 using Timesheet.Models;
@@ -61,16 +64,28 @@ namespace Timesheet.Controllers
         [HttpPost]
         public ActionResult ReportData(TimeSheet model)
         {
-            if(Session["Message"] != null)
+            Debug.WriteLine("Name : " + model.Name + " and Weekending : " + model.WeekEnding + " ]]");
+            if (Session["Message"] != null)
             {
                 Session.Remove("Message");
             }
             TimeSheet timeSheet = new TimeSheet();
+            if (model.Name == null || model.WeekEnding == null)
+            {
+                string message = "***Please select the employee name and Weekend date***";
+                Session["Message"] = message;
+                return RedirectToAction("Index", "Reports");
+            }
             var name = model.Name.Trim();
             var wED = model.WeekEnding.Trim();
             List<TimeSheet> reportList = timeSheet.GetTimeSheetByNameAndDate(name, wED);
-            Session["TimeSheetList"] = reportList;
-
+            Session["TimeSheetData"] = reportList; 
+            if(reportList.ElementAtOrDefault(0) != null)
+            {
+                Employee ep = new Employee().GetEmployee((Convert.ToInt16(reportList[0].EmpId)));
+                Debug.WriteLine("Emp Name is again: " + ep.FirstName);
+                Session["Employee"] = ep;
+            }     
             return RedirectToAction("Index", "Reports");
         }
 
@@ -79,7 +94,7 @@ namespace Timesheet.Controllers
         [HttpPost]
         public ActionResult Approve()
         {
-            List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetList"];
+            List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetData"];
             foreach(TimeSheet sheet in list)
             {
                 sheet.AuthorizedBySupervisor = "True";
@@ -95,17 +110,65 @@ namespace Timesheet.Controllers
         [HttpPost]
         public ActionResult Deny()
         {
-            List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetList"];
+            List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetData"];
             foreach (TimeSheet sheet in list)
             {
                 sheet.Submitted = "False";
                 sheet.UpdateTimeSheet(sheet);
             }
+            //email(list);           
             string message = "Time sheet is denied. Contact employee to have corrections made.";
             Session["Message"] = message;
             return RedirectToAction("Index", "Reports");
         }
-        
 
+        //public async Task<ActionResult> email(List<TimeSheet> sheets) //receives form
+        //{
+        //    Employee emp = (Employee)Session["Employee"];
+        //    var name = emp.FirstName + " " + emp.LastName;
+        //    var subject = "Your timesheet was denied.";
+        //    var email = (string)emp.Email;
+        //    var messages = "Your timesheet ending in: " + sheets[0].WeekEnding + "has been denied by your supervisor"; ;
+        //    Debug.WriteLine("Check 1");
+        //    var x = await SendEmail(name, subject, email, messages);
+        //    if (x == "sent")
+        //    {
+        //        Debug.WriteLine("Check 4");
+        //        ViewData["esent"] = "Your Message Has Been Sent";
+        //        Debug.WriteLine("Message Was sent");
+        //    }
+        //    return RedirectToAction("Index", "Reports");          
+        //}
+
+        ////SendEmail method
+        //private async Task<string> SendEmail(string name, string subject, string email, string messages)
+        //{
+        //    MailMessage message = new MailMessage(); //initializes new instance of mailmessage class 
+        //    var emp = (Employee)Session["Employee"];
+        //    message.To.Add(new MailAddress("rs029@comcast.net")); //initializes new instance of mailaddress class                                                                  //message.From = new MailAddress(emp.Email);
+        //    Debug.WriteLine("Check 2");
+
+        //    message.From = new MailAddress("rspeight@students.chattahoocheetech.edu");
+        //    message.Subject = subject;
+        //    message.Body = "Name: " + name + "Subject:" + subject + "\nTo: " + email + "\n" + messages;
+        //    message.IsBodyHtml = true;
+        //    using (SmtpClient smtp = new SmtpClient())
+        //    {
+        //        Debug.WriteLine("Check 3");
+
+        //        var credential = new System.Net.NetworkCredential //credentials check
+        //        {
+        //            UserName = "rspeight@students.chattahoocheetech.edu",  // replace with sender's email id 
+        //            Password = "CTC-10291"  // replace with password 
+        //        };
+        //        smtp.Credentials = credential;
+        //        smtp.Host = "smtp-mail.outlook.com";
+        //        smtp.Port = 587;
+        //        smtp.EnableSsl = true;
+        //        await smtp.SendMailAsync(message);
+        //        return "sent";
+        //    }
+        //}
+        ////end of email controller
     }
 }

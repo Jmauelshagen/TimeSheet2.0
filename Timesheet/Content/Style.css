@@ -1,0 +1,127 @@
+﻿body {
+    text-align:center;
+    background-color: lightgray;
+    font-family: Arial, Times New Roman, sans-serif;
+    font-size: 0.98em;
+    display:block;
+}
+
+a {
+    list-style: none;
+    padding: 5px;
+    font: bold 14px "times new roman";
+    -webkit-transition-duration: 0.5s; /* Safari */
+    transition-duration: 0.5s;
+    background-color: lightgray;
+    border: solid .5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+a:link {
+    color: Black;
+    background-color: lightgray;
+    text-decoration: none
+}
+
+a:hover {
+    color: black;
+    background-color: darkgray;
+    text-decoration: none
+}
+
+a:visited {
+    color: black;
+    background-color: transparent;
+    text-decoration: none
+}
+
+a:active {
+    color: green;
+    background-color: transparent;
+    text-decoration: none
+}
+
+button {
+    list-style: none;
+    padding: 5px;
+    font: bold 14px "times new roman";
+    -webkit-transition-duration: 0.5s; /* Safari */
+    transition-duration: 0.5s;
+    background-color: lightgray;
+    border: solid .5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:link {
+        color: Black;
+        background-color: lightgray;
+        text-decoration: none
+}
+
+button:hover {
+        color: black;
+        background-color: darkgray;
+        text-decoration: none
+}
+
+button:visited {
+        color: black;
+        background-color: transparent;
+        text-decoration: none
+}
+
+button:active {
+        color: black;
+        background-color: transparent;
+        text-decoration: none
+}
+
+#login-div {
+    position: absolute;
+    left: 40%;
+    top: 40%;
+    padding: 10px 10px;
+    text-align:center;
+}
+
+table {
+    width: auto;
+    border-collapse: collapse;
+}
+
+th, td {
+    min-width:110px;
+    max-width:500px;
+    padding:5px;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+ul {
+    list-style-type: none;
+}
+li {
+    padding: 30px;
+    margin: 30px;
+}
+.nav {
+    display: inline;
+    padding: 5px;
+    margin: 0px;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.floating-box {
+    text-align:center;
+    float: left;
+    margin:50px;
+}
+
+div{
+    display:block;
+}
