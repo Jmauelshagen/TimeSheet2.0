@@ -319,6 +319,8 @@ namespace Timesheet.Controllers
             //Get list of dates for the current week and add list to session
             List<string> dates = tsheet.GetDates();
             Session["Dates"] = dates;
+            Session["Message2"] = "";
+
 
             //Get list of TimeSheet objects based on date and employee id and add list to session
             List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
@@ -341,9 +343,26 @@ namespace Timesheet.Controllers
                         if (!String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = model.AdditionalHours; }
                         if (!String.IsNullOrEmpty(model.Note))
                         {
-                            if (model.Note.ToString().Equals("None") || model.Note.ToString().Equals("none")) { tsheets[i].Note = ""; }
+                            if (model.Note.ToString().Trim().Equals("None") || model.Note.ToString().Trim().Equals("none")) {
+                                tsheets[i].Note = ""; }
                             else { tsheets[i].Note = model.Note + " - " + model.Date; }
                         }
+
+                        model.Note = tsheets[i].Note;
+                        if (model.AdditionalHours.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(model.Note))
+                        {
+                            Debug.WriteLine("In Erro 1");
+                            string mess = "You created a note but have no additional hours. This may be a mistake.";
+                            Session["Message2"] = mess;
+                        }
+                        if (!model.AdditionalHours.ToString().Trim().Equals("0:00") && String.IsNullOrEmpty(model.Note))
+                        {
+                            Debug.WriteLine("In Erro 2");
+                            string mess = "You have addtional hours. You might want to make a note.";
+                            Session["Message2"] = mess;
+                        }
+                        Debug.WriteLine("AddH : " + model.AdditionalHours + "/ Note: " + model.Note);
+                        Debug.WriteLine("The message says :" + Session["Message2"] + "||");
                         message = "Timesheet Saved Succesfully";
                         Session["DailyMessage"] = message;
                         tsheets[i].UpdateTimeSheet(tsheets[i]);
@@ -378,7 +397,7 @@ namespace Timesheet.Controllers
             //Get list of dates for the current week and add list to session
             List<string> dates = tsheet.GetDates();
             Session["Dates"] = dates;
-
+            Session["Message2"] = "";
             //Get list of TimeSheet objects based on date and employee id and add list to session
             List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
             Session["TimeSheetData"] = tsheets;
@@ -549,6 +568,7 @@ namespace Timesheet.Controllers
 
             //Get list of TimeSheet objects based on date and employee id and add list to session
             List<TimeSheet>  tsheets = (List<TimeSheet>)Session["TimeSheetData"];
+            Session["Message2"] = "";
 
             //string CurrentDate = Request.Form["Date"].ToString().Trim();
             string CurrentDate = model.Date.Trim();
@@ -569,6 +589,19 @@ namespace Timesheet.Controllers
                         {
                             if (model.Note.ToString().Equals("None") || model.Note.ToString().Equals("none")) { tsheets[i].Note = ""; }
                             else { tsheets[i].Note = model.Note + " - " + model.Date; }
+                        }
+                        model.AdditionalHours = tsheets[i].AdditionalHours;
+                        if (model.AdditionalHours.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(model.Note))
+                        {
+                            Debug.WriteLine("In Erro 1");
+                            string mess = "You created a note but have no additional hours. This may be a mistake.";
+                            Session["Message2"] = mess;
+                        }
+                        if (!model.AdditionalHours.ToString().Trim().Equals("0:00") && String.IsNullOrEmpty(model.Note))
+                        {
+                            Debug.WriteLine("In Erro 2");
+                            string mess = "You have addtional hours. You might want to make a note.";
+                            Session["Message2"] = mess;
                         }
                         message = "Timesheet Saved Succesfully";
                         tsheets[i].UpdateTimeSheet(tsheets[i]);
@@ -592,6 +625,7 @@ namespace Timesheet.Controllers
         {
             //Get list of TimeSheet objects based on date and employee id and add list to session
             List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
+            Session["Message2"] = "";
 
             //string CurrentDate = Request.Form["Date"].ToString().Trim();
             string CurrentDate = model.Date.Trim();
@@ -611,7 +645,19 @@ namespace Timesheet.Controllers
                         if (!String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = model.LeaveId; }
                         if (!String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = model.LeaveHours; }
                         if (!String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = model.AdditionalHours; }
-
+                        
+                        if (model.AdditionalHours.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(model.Note))
+                        {
+                            Debug.WriteLine("In Erro 1");
+                            string mess = "You created a note but have no additional hours. This may be a mistake.";
+                            Session["Message2"] = mess;
+                        }
+                        if (!model.AdditionalHours.ToString().Trim().Equals("0:00") && String.IsNullOrEmpty(model.Note))
+                        {
+                            Debug.WriteLine("In Erro 2");
+                            string mess = "You have addtional hours. You might want to make a note.";
+                            Session["Message2"] = mess;
+                        }
                         message = "Timesheet Saved Succesfully";
                         tsheets[i].UpdateTimeSheet(tsheets[i]);
                         Session["TimeSheetData"] = tsheets;

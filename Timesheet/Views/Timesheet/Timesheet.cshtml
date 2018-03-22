@@ -243,7 +243,6 @@
             alert("Please make sure to enter Absent Hours.");
             return false;
         };
-
     }
 
 </script>
@@ -411,18 +410,18 @@
                                 <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                 <td><button id="submit" type="submit" value="Save">Save</button></td> <!--   onclick="return leaveFieldEmpty()"             -->
                             </tr>
-                                        /**These add section for notes to be displayed if they exist**/
-                                        if (!String.IsNullOrEmpty(tsheets[i].Note))
-                                        {
-                            <tr>
-                                <th colspan="4" style="font-weight:bold">Notes for additional hours worked above ^</th>
-                                <td colspan="10" style="background-color:white">@tsheets[i].Note.ToString().Trim()</td>
-                                <td style="display:none;">@Html.TextBoxFor(model => model.Note, new { @Value = @tsheets[i].Note.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                            </tr>
-                                            }
-                                        }
-                                        else
-                                        {
+                                /**These add section for notes to be displayed if they exist**/
+                                if (!String.IsNullOrEmpty(tsheets[i].Note))
+                                {
+                                    <tr>
+                                        <th colspan="4" style="font-weight:bold">Notes for additional hours worked above ^</th>
+                                        <td colspan="10" style="background-color:white">@tsheets[i].Note.ToString().Trim()</td>
+                                        <td style="display:none;">@Html.TextBoxFor(model => model.Note, new { @Value = @tsheets[i].Note.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                    </tr>
+                                }
+                        }
+                        else
+                        {
                             <tr>
                                 <!--Converted some of the textboxes to time input to reduce user error-->
                                 <td style="display:none;">@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
@@ -433,7 +432,7 @@
                                 <td>@Html.TextBoxFor(model => model.InFromLunch, new { type = "time", Value = @tsheets[i].InFromLunch.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                 <td>@Html.TextBoxFor(model => model.TimeOut, new { type = "time", Value = @tsheets[i].TimeOut.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                 <td>@Html.DropDownListFor(model => model.LeaveId, new SelectList(
-                 new List<object> {
+                                    new List<object> {
                                         new { value = 0 , text = "None" },
                                         new { value = 1 , text = "Annual" },
                                         new { value = 2 , text = "Sick"},
