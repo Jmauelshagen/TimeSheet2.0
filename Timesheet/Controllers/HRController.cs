@@ -143,7 +143,7 @@ namespace Timesheet.Controllers
             message.From = new MailAddress(emp.Email);
             //message.From = new MailAddress(emp.Email);
             message.Subject = subject;
-            message.Body = "Hellow : +" + name + " " + messages;
+            message.Body = messages;
             message.IsBodyHtml = true;
             using (SmtpClient smtp = new SmtpClient())
             {
