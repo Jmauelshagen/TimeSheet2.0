@@ -5,6 +5,13 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="LoginDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Email">
+          <Key>
+            <PropertyRef Name="Email" />
+          </Key>
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="Emp">
           <Key>
             <PropertyRef Name="EmpId" />
@@ -24,6 +31,7 @@
           <Property Name="RoleId" Type="int" Nullable="false" />
           <Property Name="Department" Type="nchar" MaxLength="10" />
           <Property Name="Supervisor" Type="int" Nullable="false" />
+          <Property Name="Phone" Type="nchar" MaxLength="15" />
         </EntityType>
         <EntityType Name="HR">
           <Key>
@@ -84,6 +92,7 @@
           <Property Name="Note" Type="nvarchar(max)" />
         </EntityType>
         <EntityContainer Name="LoginDatabaseModelStoreContainer">
+          <EntitySet Name="Email" EntityType="Self.Email" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Emp" EntityType="Self.Emp" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HR" EntityType="Self.HR" Schema="dbo" store:Type="Tables" />
@@ -116,6 +125,7 @@
           <Property Name="RoleId" Type="Int32" Nullable="false" />
           <Property Name="Department" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="Supervisor" Type="Int32" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="HR">
           <Key>
@@ -184,7 +194,15 @@
           <EntitySet Name="Roles" EntityType="Self.Role" />
           <EntitySet Name="Sups" EntityType="Self.Sup" />
           <EntitySet Name="TimeSheets" EntityType="Self.TimeSheet" />
+          <EntitySet Name="Emails" EntityType="LoginDatabaseModel.Email" />
         </EntityContainer>
+        <EntityType Name="Email">
+          <Key>
+            <PropertyRef Name="Email1" />
+          </Key>
+          <Property Name="Email1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -203,6 +221,7 @@
           <EntitySetMapping Name="Employees">
             <EntityTypeMapping TypeName="LoginDatabaseModel.Employee">
               <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="EmpId" ColumnName="EmpId" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
@@ -274,6 +293,14 @@
                 <ScalarProperty Name="TotalHoursWorked" ColumnName="TotalHoursWorked" />
                 <ScalarProperty Name="Submitted" ColumnName="Submitted" />
                 <ScalarProperty Name="AuthorizedBySupervisor" ColumnName="AuthorizedBySupervisor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Emails">
+            <EntityTypeMapping TypeName="LoginDatabaseModel.Email">
+              <MappingFragment StoreEntitySet="Email">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email1" ColumnName="Email" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

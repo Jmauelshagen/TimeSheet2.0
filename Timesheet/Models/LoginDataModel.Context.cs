@@ -33,5 +33,6 @@ namespace Timesheet.Models
         public DbSet<Role> Roles { get; set; }
         public DbSet<Sup> Sups { get; set; }
         public DbSet<TimeSheet> TimeSheets { get; set; }
+        public DbSet<Email> Emails { get; set; }
     }
 }

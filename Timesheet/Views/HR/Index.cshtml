@@ -1,5 +1,6 @@
 ﻿@using Timesheet.Models
 @model Timesheet.Models.TimeSheet
+
 @{
     Layout = null;
 }
@@ -33,14 +34,14 @@
         <p>Select a week to review employee pay sheet summaries.</p>
         <!--Form for selecting a week and viewing pay summaries-->
         @using (Html.BeginForm("GetPayData", "HR", FormMethod.Post, new { role = "form" }))
-        {
-            @Html.LabelFor(m => m.WeekEnding)
-            @Html.DropDownListFor(m => m.WeekEnding,
-                     Model.WeekEndingDates,
-                     " - Please select a date - ",
-                     new { @class = "form-control" })
-            <button type="submit">Search</button>
-        }
+    {
+        @Html.LabelFor(m => m.WeekEnding)
+        @Html.DropDownListFor(m => m.WeekEnding,
+                    Model.WeekEndingDates,
+                    " - Please select a date - ",
+                    new { @class = "form-control" })
+        <button type="submit">Search</button>
+}
         <br />
 
         <!--Table to display pay summaries from the session-->
@@ -48,40 +49,51 @@
 
             <tr>
                 <th>Employee Name</th>
-                <th>Total Hours</th>
-                <th>Over Time</th>
+                <th>Worked hours</th>
+                <th>Over Time</th>                
+                <th>Absent hours</th>
                 <th>Time Sheet Status</th>
                 <th>Supervisor</th>
+                <th>Overview</th>
             </tr>
             @{
-                if (@paySumList != null)
+            if (@paySumList != null)
+            {               
+                foreach (PaySummary paySum in @paySumList)
                 {
-                    foreach (PaySummary paySum in @paySumList)
+                    using (Html.BeginForm("GetOverview", "HR", FormMethod.Post))
                     {
-                        <tr>
-                            <td>
-                                @paySum.EmpName
-                            </td>
-                            <td>
-                                @paySum.TotalHours
-                            </td>
-                            <td>
-                                @paySum.OverTimeHours
-                            </td>
-                            <td>
-                                @paySum.TimeSheetStatus
-                            </td>
-                            <td>
-                                @paySum.SuperName
-                            </td>
-                        </tr>
+                    <tr>
+                        @{Model.EmpId = paySum.EmpID;}
+                        <td>
+                            @paySum.EmpName
+                        </td>                            
+                            @Html.HiddenFor(model => model.EmpId)
+                        <td>
+                            @paySum.TotalHours
+                        </td>
+                        <td>
+                            @paySum.OverTimeHours
+                        </td>
+                        <td>
+                            @paySum.TotalAbsent
+                        </td>
+                        <td>
+                            @paySum.TimeSheetStatus
+                        </td>
+                        <td>
+                            @paySum.SuperName
+                        </td>                            
+                        <td>
+                            <button id="submit" type="submit" value="Overview">Overview</button>
+                        </td>                            
+                    </tr>
                     }
-
-                }
-
+                } 
+            }
             }
         </table>
-    </div>
+    </div><br />
     <!--Log out link-->
     <a href="@Url.Action("LogOut", "Login")">LogOut</a>
 </body>

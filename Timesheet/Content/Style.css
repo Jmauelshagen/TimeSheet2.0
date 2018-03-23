@@ -1,4 +1,5 @@
 ﻿body {
+    text-align:center;
     background-color: lightgray;
     font-family: Arial, Times New Roman, sans-serif;
     font-size: 0.98em;
@@ -85,7 +86,15 @@ button:active {
     text-align:center;
 }
 
-table, th, td {
+table {
+    width: auto;
+    border-collapse: collapse;
+}
+
+th, td {
+    min-width:110px;
+    max-width:500px;
+    padding:5px;
     border: 1px solid black;
     border-collapse: collapse;
 }
@@ -96,7 +105,30 @@ li {
     padding: 30px;
     margin: 30px;
 }
+<<<<<<< HEAD
 #chatpic {
    
 
 }
+=======
+.nav {
+    display: inline;
+    padding: 5px;
+    margin: 0px;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.floating-box {
+    text-align:center;
+    float: left;
+    margin:50px;
+}
+
+div{
+    display:block;
+}
+>>>>>>> master
