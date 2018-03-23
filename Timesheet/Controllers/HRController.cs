@@ -26,7 +26,7 @@ namespace Timesheet.Controllers
         }
 
         public ActionResult Overview(TimeSheet model)
-        {
+        {            
             return View();
         }
 
@@ -37,13 +37,13 @@ namespace Timesheet.Controllers
             PaySummary paySum = new PaySummary();
             var wED = model.WeekEnding;
             List<int> empIds = paySum.GetEmpIdsByWeekEndDate(wED);
-            foreach(int empId in empIds)
+            foreach (int empId in empIds)
             {
                 paySumList.Add(new PaySummary(empId, wED));
             }
             Session["Weekend"] = wED;
             Session["PaySummaryList"] = paySumList;
-            
+
             return RedirectToAction("Index", "HR");
         }
 
@@ -61,6 +61,7 @@ namespace Timesheet.Controllers
             Employee emp = new Employee();
             emp = emp.GetEmployee((int)model.EmpId);
             Session["NewEmp"] = emp;
+            Session["Message2"] = "";
             //Instantiate a TimeSheet object
             TimeSheet tsheet = new TimeSheet();
 
@@ -71,8 +72,8 @@ namespace Timesheet.Controllers
 
             //Get list of dates for the selected weekend to create overview         
             List<string> dates = GetDaysInTimeSheet(emp.EmpId, wed);
-            Session["Dates"] = dates;                                  
-            
+            Session["Dates"] = dates;
+
             //Return the TimeSheet view
             return RedirectToAction("Overview", "HR");
         }
@@ -134,12 +135,12 @@ namespace Timesheet.Controllers
 
         //SendEmail method
         private async Task<string> SendEmail(string name, string subject, string email, string messages)
-        {     
+        {
             MailMessage message = new MailMessage(); //initializes new instance of mailmessage class 
             var emp = (Employee)Session["Employee"];
             Debug.WriteLine("HR email: " + emp.Email);
             message.To.Add(new MailAddress(email)); //initializes new instance of mailaddress class
-            message.From = new MailAddress(emp.Email);  
+            message.From = new MailAddress(emp.Email);
             //message.From = new MailAddress(emp.Email);
             message.Subject = subject;
             message.Body = "Hellow : +" + name + " " + messages;
@@ -160,6 +161,6 @@ namespace Timesheet.Controllers
                 return "sent";
             }
         }
-        //end of email controller
+        //end of email controller     
     }
 }

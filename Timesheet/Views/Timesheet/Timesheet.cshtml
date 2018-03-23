@@ -187,10 +187,11 @@
 <script>
     window.setTimeout(function () {
         // This will execute 5 seconds later
-        var label = document.getElementById('WeeklyMessage');
+        var label = document.getElementById('Message');
         if (label != null) {
             label.style.display = 'none';
         }
+
     }, 4000);
 
     function checkTime(i)//Check for single digit numbers in the seconds and minutes of the live clock
@@ -275,7 +276,7 @@
     }
 
     <p id="Time" style="text-align: center;">@today <div id="time" style="text-align: center;"></div></p>
-    <label id="WeeklyMessage">@Html.DisplayFor(model => Session["WeeklyMessage"])</label>
+    <p><label id="Message">@Html.DisplayFor(model => Session["Message"])</label></p>
 
     <!--Table to display time sheet input form.-->
     <div>
@@ -300,7 +301,7 @@
             </tr>
             @{ for (int i = 0; i < 7; i++)
                 {
-                    using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post, new { name = "frm" + i, id = "frm", enctype = "multipart/form-data", onsubmit = "return leaveFieldEmpty(" + i + ")" }))
+                    using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post, new { name = "frm"+i, id = "frm", enctype = "multipart/form-data", onsubmit = "return leaveFieldEmpty("+i+")" }))
                     {
                         if (tsheets[0].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
                         {
@@ -408,7 +409,7 @@
                                 <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                                 <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                                 <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                                <td><button id="submit" type="submit" value="Save">Save</button></td> <!--   onclick="return leaveFieldEmpty()"             -->
+                                <td><button id="submit" type="submit" value="Save">Save</button></td> <!--   onclick="return leaveFieldEmpty()"             -->                            
                             </tr>
                                 /**These add section for notes to be displayed if they exist**/
                                 if (!String.IsNullOrEmpty(tsheets[i].Note))
@@ -529,14 +530,14 @@
                                 <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                 <td style="display:none;">@Html.TextBoxFor(model => model.Note, new { @Value = @tsheets[i].Note.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                             </tr>
-                                        /**These add section for notes to be displayed if they exist**/
-                                        if (!String.IsNullOrEmpty(tsheets[i].Note))
-                                        {
-                                <tr>
-                                    <th colspan="4" style="font-weight:bold">Notes for additional hours worked above ^</th>
-                                    <td colspan="9" style="background-color:white">@tsheets[i].Note.ToString().Trim()</td>
-                                </tr>
-                            }
+                                /**These add section for notes to be displayed if they exist**/
+                                if (!String.IsNullOrEmpty(tsheets[i].Note))
+                                {
+                                    <tr>
+                                        <th colspan="4" style="font-weight:bold">Notes for additional hours worked above ^</th>
+                                        <td colspan="9" style="background-color:white">@tsheets[i].Note.ToString().Trim()</td>
+                                    </tr>
+                                }
                         }
                     }
                 }
