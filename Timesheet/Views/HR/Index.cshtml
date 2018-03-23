@@ -58,14 +58,17 @@
             </tr>
             @{
             if (@paySumList != null)
-            {
+            {               
                 foreach (PaySummary paySum in @paySumList)
                 {
-<<<<<<< HEAD
+                    using (Html.BeginForm("GetOverview", "HR", FormMethod.Post))
+                    {
                     <tr>
+                        @{Model.EmpId = paySum.EmpID;}
                         <td>
                             @paySum.EmpName
-                        </td>
+                        </td>                            
+                            @Html.HiddenFor(model => model.EmpId)
                         <td>
                             @paySum.TotalHours
                         </td>
@@ -73,87 +76,24 @@
                             @paySum.OverTimeHours
                         </td>
                         <td>
+                            @paySum.TotalAbsent
+                        </td>
+                        <td>
                             @paySum.TimeSheetStatus
                         </td>
                         <td>
                             @paySum.SuperName
-                        </td>
+                        </td>                            
+                        <td>
+                            <button id="submit" type="submit" value="Overview">Overview</button>
+                        </td>                            
                     </tr>
+                    }
+                } 
             }
-
-        }
-
-            }
-        </table>
-
-        <br />
-
-        <!--Email form (html)-->
-        <p> Email an employee: </p>
-        @using (Html.BeginForm("email", "HR", FormMethod.Post))
-        {
-            <div>
-                <form name="sentMessage" id="contactForm" novalidate>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <input type="email" name="empemail" class="form-control" placeholder="Employee Email *" id="email" required data-validation-required-message="Please enter your email address.">
-                                <p></p>
-                                <input type="text" name="empsub" class="form-control" placeholder="Subject: *" id="name" required data-validation-required-message="Please enter your name.">
-                                <p></p>
-                                <textarea class="form-control" name="smessage" placeholder="Your Message *" id="message" required data-validation-required-message="Please enter a message."></textarea>
-                                <p></p>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                        <div class="col-lg-12 text-center">
-                            <div id="success"></div>
-                         <button type="submit" class="submit button" onclick="this.form.submit();">Send Message</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        }
-        <br />
-
-    </div>
-=======
-                    foreach (PaySummary paySum in @paySumList)
-                    {
-                        using (Html.BeginForm("GetOverview", "HR", FormMethod.Post))
-                        {
-                        <tr>
-                            @{Model.EmpId = paySum.EmpID;}
-                            <td>
-                                @paySum.EmpName
-                            </td>                            
-                                @Html.HiddenFor(model => model.EmpId)
-                            <td>
-                                @paySum.TotalHours
-                            </td>
-                            <td>
-                                @paySum.OverTimeHours
-                            </td>
-                            <td>
-                                @paySum.TotalAbsent
-                            </td>
-                            <td>
-                                @paySum.TimeSheetStatus
-                            </td>
-                            <td>
-                                @paySum.SuperName
-                            </td>                            
-                            <td>
-                                <button id="submit" type="submit" value="Overview">Overview</button>
-                            </td>                            
-                        </tr>
-                        }
-                    } 
-                }
             }
         </table>
     </div><br />
->>>>>>> Rob
     <!--Log out link-->
     <a href="@Url.Action("LogOut", "Login")">LogOut</a>
 </body>

@@ -289,38 +289,21 @@
         <p id="Time" style="text-align: center;">@today <div id="time" style="text-align: center;"></div></p>
 
         @using (Html.BeginForm("ReportData", "TimeSheet", FormMethod.Post, new { role = "form" }))
-    {
-
-        <P>
-            @Html.LabelFor(model => model.WeekEnding, "Select Timesheet")
-
-<<<<<<< HEAD
+        {
+            <P>
+                @Html.LabelFor(model => model.WeekEnding, "Select Timesheet")
                 @Html.DropDownListFor(model => model.WeekEnding, weekList,"-Select A Date-", new { onchange = "this.form.submit();" })
             </P>
         }
-=======
-            @Html.DropDownListFor(model => model.WeekEnding, weekList, "-Select A Date-", new { onchange = "this.form.submit();" })
-        </P>
-}
-        <br />
->>>>>>> Rob
         <label id="Message">@Html.DisplayFor(model => Session["Message"])</label>
 
         <!--Form for employee to select a timesheet week ending date.-->
         @{
-<<<<<<< HEAD
             if ((tsheets != null) && tsheets.Any())
             {
                 <p>timesheet for the week of @tsheets[0].WeekEnding</p>
             }
-=======
-        if ((tsheets != null) && tsheets.Any())
-        {
-            <p>timesheet for the week of @tsheets[0].WeekEnding</p><br />
-    }
->>>>>>> Rob
         }
-
         @{
         if (@tsheets != null)
         {<!--Table to display time sheet input form.-->
@@ -350,11 +333,6 @@
                         {
                             if (tsheets[i].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
                             {
-<<<<<<< HEAD
-                                using (Html.BeginForm("SaveOldTimeSheet", "Timesheet", FormMethod.Post, new { name = "frm" + i, id = "frm", enctype = "multipart/form-data", onsubmit = "return leaveFieldEmpty(" + i + ")" }))
-                                {
-                                    if (tsheets[i].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
-=======
                                 <tr>
                                     <!--Converted some of the textboxes to time input to reduce user error-->
                                     <td style="display:none;">@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
@@ -385,7 +363,6 @@
                                     string TotalHoursWorked = tsheets[i].CalculateWorkedHours(tsheets[i]);
                                     Debug.WriteLine(TotalHoursWorked + "in total Hours");
                                     if (TotalHoursWorked.Equals("NoTime"))
->>>>>>> Rob
                                     {
                                         TotalHoursWorked = "0";
                                         <td>@TotalHoursWorked</td>
@@ -616,15 +593,15 @@
                         if (missedpunch >= 1 && Error == 0)
                         {
                             <td bgcolor="lightyellow">Missing Punch</td>
-                    }
-                    else if (Error >= 1)
-                    {
-                        <td bgcolor="salmon">Error</td>
-                }
-                else
-                {
-                    <td> @totalWorked </td>
-            }
+                        }
+                        else if (Error >= 1)
+                        {
+                            <td bgcolor="salmon">Error</td>
+                        }
+                        else
+                        {
+                            <td> @totalWorked </td>
+                        }
                         }
                         <!--Displaying All Hours absent and worked-->
                         @{
@@ -633,15 +610,15 @@
                         if (missedpunch >= 1 && Error == 0)
                         {
                             <td bgcolor="lightyellow">Missing Punch</td>
-                    }
-                    else if (Error >= 1)
-                    {
-                        <td bgcolor="salmon">Error</td>
-                }
-                else
-                {
-                    <td>@totalweekly</td>
-            }
+                        }
+                        else if (Error >= 1)
+                        {
+                            <td bgcolor="salmon">Error</td>
+                        }
+                        else
+                        {
+                            <td>@totalweekly</td>
+                        }
                         }
                         <!--Displays the total overtime-->
                         @{
@@ -649,12 +626,12 @@
                         if (!overTime.Equals(""))
                         {
                             <td>@overTime</td>
-                    }
+                        }
 
-                    else
-                    {
-                        <td></td>
-                }
+                        else
+                        {
+                            <td></td>
+                        }
                         }
                     </tr>
                 </table>
@@ -676,12 +653,11 @@
                         })
                     </p>
                     <p align="center">@Html.DropDownList("Date", dateList, "Select Day to submit", new { onchange = "this.form.submit();" })</p>
-            }
-        }
+                    }
                 }
-
+                }
             </div>
-    }
+        }
         }
         <br />
         <!-- link to go to the home page-->
