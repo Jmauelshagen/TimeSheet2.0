@@ -103,21 +103,21 @@ namespace Timesheet.Controllers
 
         //Updates the Submitted column to False for each day of the week that is declined (the entire week
         //is declined all at once). Redirects back to the Supervisor screen with a denial message.
-        [HttpPost]
-        public ActionResult Deny()
-        {
-            List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetData"];
-            foreach (TimeSheet sheet in list)
-            {
-                sheet.Submitted = "False";
-                sheet.AuthorizedBySupervisor = "False";
-                sheet.UpdateTimeSheet(sheet);
-            }
-            //await email(list);           
-            string message = "Time sheet is denied. Contact employee to have corrections made.";
-            Session["Message"] = message;
-            return RedirectToAction("Index", "Reports");
-        }
+        //[HttpPost]
+        //public ActionResult Deny()
+        //{
+        //    List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetData"];
+        //    foreach (TimeSheet sheet in list)
+        //    {
+        //        sheet.Submitted = "False";
+        //        sheet.AuthorizedBySupervisor = "False";
+        //        sheet.UpdateTimeSheet(sheet);
+        //    }
+        //    //await email(list);           
+        //    string message = "Time sheet is denied. Contact employee to have corrections made.";
+        //    Session["Message"] = message;
+        //    return RedirectToAction("Index", "Reports");
+        //}
 
         public async Task<ActionResult> email() //receives form
         {
