@@ -225,23 +225,23 @@
 
         if (leaveid == '0' && leaveHours == '0:00') {
             var message = "Timesheet Saved Succesfully";
-            '<%Session["message"] = "' + message + '"; %>';
+            '<%Session["Message"] = "' + message + '"; %>';
             return true;
         }
         else if (leaveid != '0' && leaveHours != '0:00') {
             var message = "Timesheet Saved Succesfully";
-            '<%Session["message"] = "' + message + '"; %>';
+            '<%Session["Message"] = "' + message + '"; %>';
             return true;
         }
         else if (leaveid == '0' && leaveHours != '0:00') {
             var message = "Please make sure to enter a Absent Type.";
-            '<%Session["message"] = "' + message + '"; %>';
+            '<%Session["Message"] = "' + message + '"; %>';
             alert("Please make sure to enter a Absent Type.");
             return false;
         }
         else if (leaveid != '0' && leaveHours == '0:00') {
             var message = "Please make sure to enter Absent Hours.";
-            '<%Session["message"] = "' + message + '"; %>';
+            '<%Session["Message"] = "' + message + '"; %>';
             alert("Please make sure to enter Absent Hours.");
             return false;
         };
