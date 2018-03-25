@@ -14,17 +14,17 @@
         </EntityType>
         <EntityType Name="Emp">
           <Key>
-            <PropertyRef Name="Banner_ID" />
+            <PropertyRef Name="EmpId" />
           </Key>
-          <Property Name="Banner_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmpId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserName" Type="varchar" MaxLength="50" />
           <Property Name="Password" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Employees">
           <Key>
-            <PropertyRef Name="Banner_ID" />
+            <PropertyRef Name="EmpId" />
           </Key>
-          <Property Name="Banner_ID" Type="int" Nullable="false" />
+          <Property Name="EmpId" Type="int" Nullable="false" />
           <Property Name="FirstName" Type="nchar" MaxLength="20" />
           <Property Name="LastName" Type="nchar" MaxLength="30" />
           <Property Name="Email" Type="nchar" MaxLength="30" />
@@ -50,9 +50,9 @@
         </EntityType>
         <EntityType Name="Logins">
           <Key>
-            <PropertyRef Name="Banner_ID" />
+            <PropertyRef Name="EmpId" />
           </Key>
-          <Property Name="Banner_ID" Type="int" Nullable="false" />
+          <Property Name="EmpId" Type="int" Nullable="false" />
           <Property Name="Username" Type="nchar" MaxLength="20" Nullable="false" />
           <Property Name="Password" Type="nchar" MaxLength="30" Nullable="false" />
         </EntityType>
@@ -88,7 +88,7 @@
           <Property Name="TotalHoursWorked" Type="nchar" MaxLength="16" />
           <Property Name="Submitted" Type="nchar" MaxLength="10" />
           <Property Name="AuthorizedBySupervisor" Type="nchar" MaxLength="10" />
-          <Property Name="Banner_ID" Type="int" />
+          <Property Name="EmpId" Type="int" />
           <Property Name="Note" Type="nvarchar(max)" />
         </EntityType>
         <EntityContainer Name="LoginDatabaseModelStoreContainer">
@@ -108,17 +108,17 @@
       <Schema Namespace="LoginDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Emp">
           <Key>
-            <PropertyRef Name="Banner_ID" />
+            <PropertyRef Name="EmpId" />
           </Key>
-          <Property Name="Banner_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmpId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Employee">
           <Key>
-            <PropertyRef Name="Banner_ID" />
+            <PropertyRef Name="EmpId" />
           </Key>
-          <Property Name="Banner_ID" Type="Int32" Nullable="false" />
+          <Property Name="EmpId" Type="Int32" Nullable="false" />
           <Property Name="FirstName" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
@@ -144,9 +144,9 @@
         </EntityType>
         <EntityType Name="Login">
           <Key>
-            <PropertyRef Name="Banner_ID" />
+            <PropertyRef Name="EmpId" />
           </Key>
-          <Property Name="Banner_ID" Type="Int32" Nullable="false" />
+          <Property Name="EmpId" Type="Int32" Nullable="false" />
           <Property Name="Username" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
         </EntityType>
@@ -182,7 +182,7 @@
           <Property Name="TotalHoursWorked" Type="String" MaxLength="16" Unicode="true" FixedLength="true" />
           <Property Name="Submitted" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="AuthorizedBySupervisor" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="Banner_ID" Type="Int32" />
+          <Property Name="EmpId" Type="Int32" />
           <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityContainer Name="LoginDatabaseEntities1" annotation:LazyLoadingEnabled="true">
@@ -212,7 +212,7 @@
           <EntitySetMapping Name="Emps">
             <EntityTypeMapping TypeName="LoginDatabaseModel.Emp">
               <MappingFragment StoreEntitySet="Emp">
-                <ScalarProperty Name="Banner_ID" ColumnName="Banner_ID" />
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
               </MappingFragment>
@@ -222,7 +222,7 @@
             <EntityTypeMapping TypeName="LoginDatabaseModel.Employee">
               <MappingFragment StoreEntitySet="Employees">
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Banner_ID" ColumnName="Banner_ID" />
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
@@ -252,7 +252,7 @@
           <EntitySetMapping Name="Logins">
             <EntityTypeMapping TypeName="LoginDatabaseModel.Login">
               <MappingFragment StoreEntitySet="Logins">
-                <ScalarProperty Name="Banner_ID" ColumnName="Banner_ID" />
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
               </MappingFragment>
@@ -279,7 +279,7 @@
             <EntityTypeMapping TypeName="LoginDatabaseModel.TimeSheet">
               <MappingFragment StoreEntitySet="TimeSheets">
                 <ScalarProperty Name="Note" ColumnName="Note" />
-                <ScalarProperty Name="Banner_ID" ColumnName="Banner_ID" />
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="WeekEnding" ColumnName="WeekEnding" />
                 <ScalarProperty Name="Date" ColumnName="Date" />

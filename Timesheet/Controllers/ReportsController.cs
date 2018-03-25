@@ -19,11 +19,9 @@ namespace Timesheet.Controllers
         //to be used in the menu/form
         public ActionResult Index()
         {
-            var model = new TimeSheet
-            {
-                EmpNames = GetEmployeeNames(),
-                WeekEndingDates = GetWeekEndingDateList()
-            };
+            var model = new TimeSheet();
+            model.EmpNames = GetEmployeeNames();
+            model.WeekEndingDates = GetWeekEndingDateList();
             return View(model);
         }
 
@@ -80,7 +78,7 @@ namespace Timesheet.Controllers
             Session["TimeSheetData"] = reportList; 
             if(reportList.ElementAtOrDefault(0) != null)
             {
-                Employee ep = new Employee().GetEmployee((Convert.ToInt16(reportList[0].Banner_ID)));
+                Employee ep = new Employee().GetEmployee((Convert.ToInt16(reportList[0].EmpId)));
                 Debug.WriteLine("Emp Name is again: " + ep.FirstName);
                 Session["Employee"] = ep;
             }     
@@ -121,7 +119,7 @@ namespace Timesheet.Controllers
         //    return RedirectToAction("Index", "Reports");
         //}
 
-        public async Task<ActionResult> Deny() //receives form
+        public async Task<ActionResult> email() //receives form
         {
             List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetData"];
             foreach (TimeSheet sheet in list)
