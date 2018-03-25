@@ -19,9 +19,11 @@ namespace Timesheet.Controllers
         //to be used in the menu/form
         public ActionResult Index()
         {
-            var model = new TimeSheet();
-            model.EmpNames = GetEmployeeNames();
-            model.WeekEndingDates = GetWeekEndingDateList();
+            var model = new TimeSheet
+            {
+                EmpNames = GetEmployeeNames(),
+                WeekEndingDates = GetWeekEndingDateList()
+            };
             return View(model);
         }
 
@@ -101,25 +103,7 @@ namespace Timesheet.Controllers
             return RedirectToAction("Index", "Reports");
         }
 
-        //Updates the Submitted column to False for each day of the week that is declined (the entire week
-        //is declined all at once). Redirects back to the Supervisor screen with a denial message.
-        //[HttpPost]
-        //public ActionResult Deny()
-        //{
-        //    List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetData"];
-        //    foreach (TimeSheet sheet in list)
-        //    {
-        //        sheet.Submitted = "False";
-        //        sheet.AuthorizedBySupervisor = "False";
-        //        sheet.UpdateTimeSheet(sheet);
-        //    }
-        //    //await email(list);           
-        //    string message = "Time sheet is denied. Contact employee to have corrections made.";
-        //    Session["Message"] = message;
-        //    return RedirectToAction("Index", "Reports");
-        //}
-
-        public async Task<ActionResult> email() //receives form
+        public async Task<ActionResult> Deny() //receives form
         {
             List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetData"];
             foreach (TimeSheet sheet in list)
@@ -134,7 +118,7 @@ namespace Timesheet.Controllers
             var name = emp.FirstName + " " + emp.LastName;
             var subject = "Your timesheet was denied.";
             var email = (string)emp.Email;
-            var messages = "Dear "+ emp.FirstName+", Your timesheet ending in: " + list[0].WeekEnding + " has been denied by your supervisor. please review and resubmit the Timesheet." ;
+            var messages = "Dear " + emp.FirstName + ", Your timesheet ending in: " + list[0].WeekEnding + " has been denied by your supervisor. please review and resubmit the Timesheet.";
             Debug.WriteLine("Check 1");
             var x = await SendEmail(name, subject, email, messages);
             if (x == "sent")
