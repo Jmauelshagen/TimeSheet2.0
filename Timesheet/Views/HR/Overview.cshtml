@@ -262,8 +262,8 @@
     <h3 style="text-align: center;">Contact Info</h3>
     <ul>
         <li class="nav">Name: @emp.FirstName @emp.LastName</li>
-        <li class="nav">Email: @emp.Phone</li>
-        <li class="nav">Phone: @emp.Email</li>
+        <li class="nav">Email: @emp.Email</li>
+        <li class="nav">Phone: @emp.Phone</li>
     </ul>
 
     <!--Get and display current date and time.-->
@@ -281,7 +281,6 @@
 
     <p id="Time" style="text-align: center;">@today <div id="time" style="text-align: center;"></div></p>
     <label id="WeeklyMessage">@Html.DisplayFor(model => Session["WeeklyMessage"])</label>
-    <p style="text-align: center;"><a href="@Url.Action("GetDailyTimeSheet", "Timesheet")" class="button">View Daily Timesheet</a></p>
 
     <!--Table to display time sheet input form.-->
     <div>
@@ -306,7 +305,7 @@
             </tr>
             @{ for (int i = 0; i < 7; i++)
                 {
-                    using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post, new { name = "frm" + i, id = "frm", enctype = "multipart/form-data", onsubmit = "return leaveFieldEmpty(" + i + ")" }))
+                    using (Html.BeginForm("SaveTimeSheet", "HR", FormMethod.Post, new { name = "frm" + i, id = "frm", enctype = "multipart/form-data", onsubmit = "return leaveFieldEmpty(" + i + ")" }))
                     {
                         if (tsheets[0].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
                         {
@@ -414,7 +413,7 @@
                                 </td>
                                 <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                                 <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                                <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                <td style="display:none;">@Html.TextBoxFor(model => model.Banner_ID, new { @Value = @tsheets[i].Banner_ID.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                 <td><button id="submit" type="submit" value="Save">Save</button></td> <!--   onclick="return leaveFieldEmpty()"             -->
                             </tr>
                             /**These add section for notes to be displayed if they exist**/
@@ -534,7 +533,7 @@
                                 </td>
                                 <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                                 <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                                <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                <td style="display:none;">@Html.TextBoxFor(model => model.Banner_ID, new { @Value = @tsheets[i].Banner_ID.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                 <td style="display:none;">@Html.TextBoxFor(model => model.Note, new { @Value = @tsheets[i].Note.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                             </tr>
                             /**These add section for notes to be displayed if they exist**/
@@ -617,7 +616,7 @@
     <div>
         <!--Email form (html)-->
         <p> Email an employee: </p>
-        @using (Html.BeginForm("email", "HR", FormMethod.Post))
+        @using (Html.BeginForm("Email", "HR", FormMethod.Post))
         {
             <div>
                 <form name="sentMessage" id="contactForm" novalidate>

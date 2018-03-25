@@ -64,11 +64,11 @@
                     using (Html.BeginForm("GetOverview", "HR", FormMethod.Post))
                     {
                     <tr>
-                        @{Model.EmpId = paySum.EmpID;}
+                        @{Model.Banner_ID = paySum.Banner_ID;}
                         <td>
                             @paySum.EmpName
                         </td>                            
-                            @Html.HiddenFor(model => model.EmpId)
+                            @Html.HiddenFor(model => model.Banner_ID)
                         <td>
                             @paySum.TotalHours
                         </td>

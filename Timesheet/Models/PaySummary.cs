@@ -13,7 +13,7 @@ namespace Timesheet.Models
 
         //class parameters
         public string EmpName { get; set; }
-        public int EmpID { get; set; }
+        public int Banner_ID { get; set; }
         public string SuperName { get; set; }
         public string TotalHours { get; set; }
         public string TotalAbsent { get; set; }
@@ -25,7 +25,7 @@ namespace Timesheet.Models
         public PaySummary()
         {
             this.EmpName = "";
-            this.EmpID = 0;
+            this.Banner_ID = 0;
             this.SuperName = "";
             this.TotalHours = "";
             this.TotalAbsent = "";
@@ -34,10 +34,10 @@ namespace Timesheet.Models
         }
 
         //all-arg constructor
-        public PaySummary(string empName, int empid, string superName, string totalHrs, string totalabs, string overHrs, string status)
+        public PaySummary(string empName, int Banner_ID, string superName, string totalHrs, string totalabs, string overHrs, string status)
         {
             this.EmpName = empName;
-            this.EmpID = empid;
+            this.Banner_ID = Banner_ID;
             this.SuperName = superName;
             this.TotalHours = totalHrs;
             this.TotalAbsent = totalabs;
@@ -46,7 +46,7 @@ namespace Timesheet.Models
         }
 
         //constructor by Employee Id and WeekEnding date
-        public PaySummary(int empId, string wED)
+        public PaySummary(int Banner_ID, string wED)
         {
             //Code to calculate total hours worked in a week and time sheet status
             string status = "Unknown";
@@ -60,7 +60,7 @@ namespace Timesheet.Models
             int minute = 0;
             int minutes = 0;
             var tsheets = (from sheets in db.TimeSheets
-                           where sheets.EmpId == empId && sheets.WeekEnding == wED
+                           where sheets.Banner_ID == Banner_ID && sheets.WeekEnding == wED
                            select sheets);
 
             foreach(TimeSheet sheet in tsheets)
@@ -163,43 +163,43 @@ namespace Timesheet.Models
 
             //Code to get the employee name and Supervisor name by employee id
             var fname = (from emps in db.Employees
-                         where emps.EmpId == empId
+                         where emps.Banner_ID == Banner_ID
                          select emps.FirstName).FirstOrDefault();
             var lname = (from emps in db.Employees
-                         where emps.EmpId == empId
+                         where emps.Banner_ID == Banner_ID
                          select emps.LastName).FirstOrDefault();
             this.EmpName = fname + " " + lname;
-            this.EmpID = empId;
+            this.Banner_ID = Banner_ID;
 
             var sId = (from emps in db.Employees
-                       where emps.EmpId == empId
+                       where emps.Banner_ID == Banner_ID
                        select emps.Supervisor).FirstOrDefault();
             var sfname = (from emps in db.Employees
-                          where emps.EmpId == sId
+                          where emps.Banner_ID == sId
                           select emps.FirstName).FirstOrDefault();
             var slname = (from emps in db.Employees
-                          where emps.EmpId == sId
+                          where emps.Banner_ID == sId
                           select emps.LastName).FirstOrDefault();
             this.SuperName = sfname + " " + slname;
 
         }
 
         //Method to return pay summary data for employees
-        public List<int> GetEmpIdsByWeekEndDate(string date)
+        public List<int> GetBanner_IDsByWeekEndDate(string date)
         {
             //get set of employee ids by week ending date
             var eIds = (from sheets in db.TimeSheets
                         where sheets.WeekEnding == date
-                        select sheets.EmpId).Distinct().OrderBy(EmpId => EmpId);
+                        select sheets.Banner_ID).Distinct().OrderBy(Banner_ID => Banner_ID);
 
-            List<int> empIds = new List<int>();
+            List<int> Banner_IDs = new List<int>();
             //add employee ids to list
             foreach(int id in eIds)
             {
-                empIds.Add(id);
+                Banner_IDs.Add(id);
             }
 
-            return empIds;
+            return Banner_IDs;
         }
 
     }
