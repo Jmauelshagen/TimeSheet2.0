@@ -187,7 +187,7 @@ namespace Timesheet.Controllers
                                     tsheets[i].Note = "";
                                     model.Note = "";
                                 }
-                                else { tsheets[i].Note = model.Note; }
+                                else { tsheets[i].Note = model.Note + " - " + model.Date; }
                             }
                             model.AdditionalHours = tsheets[i].AdditionalHours;
                             if (model.AdditionalHours.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(model.Note))
@@ -687,13 +687,9 @@ namespace Timesheet.Controllers
             Employee emp = (Employee)Session["Employee"];
 
             Debug.WriteLine("Name : " + emp.FirstName + " " + emp.LastName + " and Weekending : " + model.WeekEnding + " ]");
-            if (Session["Message"] != null)
-            {
-                Session.Remove("Message");
-            }
             if (model.WeekEnding == null)
             {
-                string message = "***Please select the employee name and Weekend date***";
+                string message = "***Please select the Weekend date***";
                 Session["Message"] = message;
                 return RedirectToAction("OldTimesheet", "Timesheet");
             }
