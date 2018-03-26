@@ -265,9 +265,9 @@
         if (@reportTimeList != null && reportTimeList.Any())
         {
             Employee empReport = new Employee();
-            Employee employee = empReport.GetEmployee(Convert.ToInt16(reportTimeList[0].EmpId));
+            Employee employee = empReport.GetEmployee(Convert.ToInt16(reportTimeList[0].Banner_ID));
             <!--Form for supervisor to select an employee by name and a week ending date.-->
-            <p>This is @emp.FirstName 's timesheet for the week of @reportTimeList[0].WeekEnding</p><br />
+            <p>This is @emp.First_Name 's timesheet for the week of @reportTimeList[0].WeekEnding</p><br />
 
             <!--Table to display time sheet input form.-->
             <div>
@@ -381,7 +381,7 @@
                             </td>
                             <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @reporttime.Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                             <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @reporttime.AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                            <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @reporttime.EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                            <td style="display:none;">@Html.TextBoxFor(model => model.Banner_ID, new { @Value = @reporttime.Banner_ID.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                         </tr>
                     /**These add section for notes to be displayed if they exist**/
                     if (!String.IsNullOrEmpty(reporttime.Note))

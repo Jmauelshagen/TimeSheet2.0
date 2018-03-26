@@ -29,7 +29,7 @@
     <div>
         <h1>Pay Sheet Summaries</h1>
         <!--Display HR person's first and last name-->
-        <p>Welcome @emp.FirstName @emp.LastName!</p>
+        <p>Welcome @emp.First_Name @emp.Last_Name!</p>
 
         <br />
         <p>Select a week to review employee pay sheet summaries.</p>
@@ -70,7 +70,7 @@
                         <td>
                             <a href="mailto: @emps.Email.Trim()"> @paySum.EmpName </a>
                         </td>                            
-                            @Html.HiddenFor(model => model.EmpId)
+                            @Html.HiddenFor(model => model.Banner_ID)
                         <td>
                             @paySum.TotalHours
                         </td>

@@ -36,10 +36,10 @@ namespace Timesheet.Controllers
             List<PaySummary> paySumList = new List<PaySummary>();
             PaySummary paySum = new PaySummary();
             var wED = model.WeekEnding;
-            List<int> empIds = paySum.GetEmpIdsByWeekEndDate(wED);
-            foreach (int empId in empIds)
+            List<int> Banner_IDs = paySum.GetBanner_IDsByWeekEndDate(wED);
+            foreach (int Banner_ID in Banner_IDs)
             {
-                paySumList.Add(new PaySummary(empId, wED));
+                paySumList.Add(new PaySummary(Banner_ID, wED));
             }
             Session["Weekend"] = wED;
             Session["PaySummaryList"] = paySumList;
@@ -51,7 +51,7 @@ namespace Timesheet.Controllers
         public ActionResult GetOverview(TimeSheet model)
         {
             Debug.WriteLine("In GetOverview");
-            Debug.WriteLine(model.EmpId);
+            Debug.WriteLine(model.Banner_ID);
             //Remove the TimeSheet variable from the session if it exists
             if (Session["TimeSheetData"] != null)
             {
@@ -59,7 +59,7 @@ namespace Timesheet.Controllers
             }
             //Pull the employee object from the session.
             Employee emp = new Employee();
-            emp = emp.GetEmployee((int)model.EmpId);
+            emp = emp.GetEmployee((int)model.Banner_ID);
             Session["NewEmp"] = emp;
             Session["Message2"] = "";
             //Instantiate a TimeSheet object
@@ -67,11 +67,11 @@ namespace Timesheet.Controllers
 
             //Get list of TimeSheet objects based on date and employee id and add list to session  
             string wed = (string)Session["Weekend"];
-            List<TimeSheet> tsheets = model.GetTimeSheetByIdAndDate(emp.EmpId, wed);
+            List<TimeSheet> tsheets = model.GetTimeSheetByIdAndDate(emp.Banner_ID, wed);
             Session["TimeSheetData"] = tsheets;
 
             //Get list of dates for the selected weekend to create overview         
-            List<string> dates = GetDaysInTimeSheet(emp.EmpId, wed);
+            List<string> dates = GetDaysInTimeSheet(emp.Banner_ID, wed);
             Session["Dates"] = dates;
 
             //Return the TimeSheet view
@@ -122,9 +122,9 @@ namespace Timesheet.Controllers
         public async Task<ActionResult> Email(FormCollection form) //receives form
         {
             Employee emp = (Employee)Session["NewEmp"];
-            var name = emp.FirstName + " " + emp.LastName;
+            var name = emp.First_Name + " " + emp.Last_Name;
             var subject = form["empsub"];
-            var email = (string)emp.Email.Trim();
+            var email = (string)emp.Email_Address.Trim();
             var messages = form["smessage"];
             var x = await SendEmail(name, subject, email, messages);
             if (x == "sent")
@@ -138,9 +138,9 @@ namespace Timesheet.Controllers
         {
             MailMessage message = new MailMessage(); //initializes new instance of mailmessage class 
             var emp = (Employee)Session["Employee"];
-            Debug.WriteLine("HR email: " + emp.Email);
+            Debug.WriteLine("HR email: " + emp.Email_Address);
             message.To.Add(new MailAddress(email)); //initializes new instance of mailaddress class
-            message.From = new MailAddress(emp.Email);
+            message.From = new MailAddress(emp.Email_Address);
             //message.From = new MailAddress(emp.Email);
             message.Subject = subject;
             message.Body = messages;
@@ -180,10 +180,10 @@ namespace Timesheet.Controllers
                 {
                     Employee emp = (Employee)Session["NewEmp"];
                     Employee HR = (Employee)Session["Employee"];
-                    string name = emp.FirstName + " " + emp.LastName;
+                    string name = emp.First_Name + " " + emp.Last_Name;
                     string subject = "Changes Made";
-                    string email = (string)emp.Email.Trim();
-                    string messages = "Dear " + emp.FirstName.Trim() + "," + Environment.NewLine + "Changes have been made to " + CurrentDate + " Timesheet, Please reivew changes and call HR if you have any questions." + Environment.NewLine +
+                    string email = (string)emp.Email_Address.Trim();
+                    string messages = "Dear " + emp.First_Name.Trim() + "," + Environment.NewLine + "Changes have been made to " + CurrentDate + " Timesheet, Please reivew changes and call HR if you have any questions." + Environment.NewLine +
                         "Old Timesheet data - Time In: " + tsheets[i].TimeIn.Trim() + " Time Out: " + tsheets[i].OutForLunch.Trim() + " Time In: " + tsheets[i].InFromLunch.Trim() + " Time Out: " + tsheets[i].TimeOut.Trim() + " Leave ID: " + tsheets[i].LeaveId + " Leave Hours: " + tsheets[i].LeaveHours.Trim() + " Additional Hours: " + tsheets[i].AdditionalHours.Trim();
 
                     if (!String.IsNullOrEmpty(model.TimeIn)) { tsheets[i].TimeIn = model.TimeIn; }
@@ -211,7 +211,7 @@ namespace Timesheet.Controllers
                     Session["TimeSheetData"] = tsheets;
                     Session["Message"] = message;
                     messages = messages + (string)(Environment.NewLine + "New Timesheet data - Time In: " + tsheets[i].TimeIn.Trim() + " Time Out: " + tsheets[i].OutForLunch.Trim() + " Time In: " + tsheets[i].InFromLunch.Trim() + " Time Out: " + tsheets[i].TimeOut.Trim() + " Leave ID: " + tsheets[i].LeaveId + " Leave Hours: " + tsheets[i].LeaveHours.Trim() + " Additional Hours: " + tsheets[i].AdditionalHours.Trim() +
-                        Environment.NewLine + Environment.NewLine + "Thanks,"+ Environment.NewLine + HR.FirstName.Trim() + " " + HR.LastName.Trim());
+                        Environment.NewLine + Environment.NewLine + "Thanks,"+ Environment.NewLine + HR.First_Name.Trim() + " " + HR.Last_Name.Trim());
                     var x = await SendEmail(name, subject, email, messages);
                     if (x == "sent")
                         ViewData["esent"] = "Your Message Has Been Sent";
