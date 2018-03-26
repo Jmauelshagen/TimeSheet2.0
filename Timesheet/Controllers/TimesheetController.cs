@@ -31,7 +31,7 @@ namespace Timesheet.Controllers
         {
             Employee emp = (Employee)Session["Employee"];
             List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
-            
+
 
             foreach (TimeSheet sheet in tsheets)
             {
@@ -147,7 +147,7 @@ namespace Timesheet.Controllers
         * to the timesheet to ensure integrity and allow the note to be updated below**/
         [HttpPost]
         public ActionResult SaveTimeNote(TimeSheet model)
-        {      
+        {
             try
             {
                 Debug.WriteLine("In SaveTimeNote");
@@ -182,7 +182,8 @@ namespace Timesheet.Controllers
                         {
                             if (!String.IsNullOrEmpty(model.Note))
                             {
-                                if (model.Note.ToString().Equals("None") || model.Note.ToString().Equals("none")) {
+                                if (model.Note.ToString().Equals("None") || model.Note.ToString().Equals("none"))
+                                {
                                     tsheets[i].Note = "";
                                     model.Note = "";
                                 }
@@ -215,20 +216,20 @@ namespace Timesheet.Controllers
 
                     }
                 }
-                return RedirectToAction("Timesheet", "Timesheet");                    
+                return RedirectToAction("Timesheet", "Timesheet");
             }
             catch (Exception ex)
             {
-                
-                Debug.WriteLine(ex);                
+
+                Debug.WriteLine(ex);
                 return RedirectToAction("Timesheet", "Timesheet");
             }
-            
+
         }
 
         [HttpPost]
         public ActionResult SaveTimeSheet(TimeSheet model)
-        {            
+        {
             try
             {
                 Debug.WriteLine("In SaveTimeSheet");
@@ -266,7 +267,7 @@ namespace Timesheet.Controllers
                             if (!String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = model.LeaveId; }
                             if (!String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = model.LeaveHours; }
                             if (!String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = model.AdditionalHours; }
-                            
+
                             if (model.AdditionalHours.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(model.Note))
                             {
                                 Debug.WriteLine("In Erro 1");
@@ -292,13 +293,13 @@ namespace Timesheet.Controllers
                         }
                     }
                 }
-                return RedirectToAction("Timesheet", "Timesheet");   
+                return RedirectToAction("Timesheet", "Timesheet");
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
                 return RedirectToAction("Timesheet", "Timesheet");
-            }            
+            }
         }
 
         [HttpPost]
@@ -343,8 +344,10 @@ namespace Timesheet.Controllers
                         if (!String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = model.AdditionalHours; }
                         if (!String.IsNullOrEmpty(model.Note))
                         {
-                            if (model.Note.ToString().Trim().Equals("None") || model.Note.ToString().Trim().Equals("none")) {
-                                tsheets[i].Note = ""; }
+                            if (model.Note.ToString().Trim().Equals("None") || model.Note.ToString().Trim().Equals("none"))
+                            {
+                                tsheets[i].Note = "";
+                            }
                             else { tsheets[i].Note = model.Note + " - " + model.Date; }
                         }
 
@@ -567,7 +570,7 @@ namespace Timesheet.Controllers
             * to the timesheet to ensure integrity and allow the note to be updated below**/
 
             //Get list of TimeSheet objects based on date and employee id and add list to session
-            List<TimeSheet>  tsheets = (List<TimeSheet>)Session["TimeSheetData"];
+            List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
             Session["Message2"] = "";
 
             //string CurrentDate = Request.Form["Date"].ToString().Trim();
@@ -645,7 +648,7 @@ namespace Timesheet.Controllers
                         if (!String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = model.LeaveId; }
                         if (!String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = model.LeaveHours; }
                         if (!String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = model.AdditionalHours; }
-                        
+
                         if (model.AdditionalHours.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(model.Note))
                         {
                             Debug.WriteLine("In Erro 1");
@@ -676,14 +679,14 @@ namespace Timesheet.Controllers
         }
 
         //Obtains the time sheet data corresponding to the selected employee name and week ending date
-        //Redirects users back to the supervisor screen after putting time sheet info into the session object
+        //Redirects users back to the previous timesheet screen after putting time sheet info into the session object
         [HttpPost]
         public ActionResult ReportData(TimeSheet model)
         {
             //Pull the employee object from the session.
             Employee emp = (Employee)Session["Employee"];
 
-            Debug.WriteLine("Name : " + emp.FirstName +" "+emp.LastName + " and Weekending : " + model.WeekEnding + " ]");
+            Debug.WriteLine("Name : " + emp.FirstName + " " + emp.LastName + " and Weekending : " + model.WeekEnding + " ]");
             if (Session["Message"] != null)
             {
                 Session.Remove("Message");
@@ -710,7 +713,7 @@ namespace Timesheet.Controllers
         {
             List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
             List<SelectListItem> dates = new List<SelectListItem>();
-            foreach (string date in tsheets[0].GetDates(id,wed))
+            foreach (string date in tsheets[0].GetDates(id, wed))
             {
                 dates.Add(new SelectListItem
                 {

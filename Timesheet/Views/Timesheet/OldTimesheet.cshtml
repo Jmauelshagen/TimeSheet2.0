@@ -287,28 +287,23 @@
         }
 
         <p id="Time" style="text-align: center;">@today <div id="time" style="text-align: center;"></div></p>
-        <br />
 
         @using (Html.BeginForm("ReportData", "TimeSheet", FormMethod.Post, new { role = "form" }))
-    {
-
-        <P>
-            @Html.LabelFor(model => model.WeekEnding, "Select Timesheet")
-
-            @Html.DropDownListFor(model => model.WeekEnding, weekList, "-Select A Date-", new { onchange = "this.form.submit();" })
-        </P>
-}
-        <br />
+        {
+            <P>
+                @Html.LabelFor(model => model.WeekEnding, "Select Timesheet")
+                @Html.DropDownListFor(model => model.WeekEnding, weekList,"-Select A Date-", new { onchange = "this.form.submit();" })
+            </P>
+        }
         <label id="Message">@Html.DisplayFor(model => Session["Message"])</label>
 
         <!--Form for employee to select a timesheet week ending date.-->
         @{
-        if ((tsheets != null) && tsheets.Any())
-        {
-            <p>timesheet for the week of @tsheets[0].WeekEnding</p><br />
-    }
+            if ((tsheets != null) && tsheets.Any())
+            {
+                <p>timesheet for the week of @tsheets[0].WeekEnding</p>
+            }
         }
-
         @{
         if (@tsheets != null)
         {<!--Table to display time sheet input form.-->
@@ -598,15 +593,15 @@
                         if (missedpunch >= 1 && Error == 0)
                         {
                             <td bgcolor="lightyellow">Missing Punch</td>
-                    }
-                    else if (Error >= 1)
-                    {
-                        <td bgcolor="salmon">Error</td>
-                }
-                else
-                {
-                    <td> @totalWorked </td>
-            }
+                        }
+                        else if (Error >= 1)
+                        {
+                            <td bgcolor="salmon">Error</td>
+                        }
+                        else
+                        {
+                            <td> @totalWorked </td>
+                        }
                         }
                         <!--Displaying All Hours absent and worked-->
                         @{
@@ -615,15 +610,15 @@
                         if (missedpunch >= 1 && Error == 0)
                         {
                             <td bgcolor="lightyellow">Missing Punch</td>
-                    }
-                    else if (Error >= 1)
-                    {
-                        <td bgcolor="salmon">Error</td>
-                }
-                else
-                {
-                    <td>@totalweekly</td>
-            }
+                        }
+                        else if (Error >= 1)
+                        {
+                            <td bgcolor="salmon">Error</td>
+                        }
+                        else
+                        {
+                            <td>@totalweekly</td>
+                        }
                         }
                         <!--Displays the total overtime-->
                         @{
@@ -631,12 +626,12 @@
                         if (!overTime.Equals(""))
                         {
                             <td>@overTime</td>
-                    }
+                        }
 
-                    else
-                    {
-                        <td></td>
-                }
+                        else
+                        {
+                            <td></td>
+                        }
                         }
                     </tr>
                 </table>
@@ -658,16 +653,19 @@
                         })
                     </p>
                     <p align="center">@Html.DropDownList("Date", dateList, "Select Day to submit", new { onchange = "this.form.submit();" })</p>
-            }
-        }
+                    }
                 }
-
+                }
             </div>
-    }
+        }
         }
         <br />
         <!-- link to go to the home page-->
         <a href="@Url.Action("Index", "Employees")" class="button">Home</a>
+
+        <a href="@Url.Action("GetTimeSheet","Timesheet")">Weekly Timesheet</a>
+
+        <a href="@Url.Action("GetDailyTimeSheet","Timesheet")">Daily Timesheet</a>
         <!--Submit Week button with popup validation-->
         @Html.ActionLink("Submit Week", "SubmitOldTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new { @class = "button", @style = "text-decoration: none; color: black;", @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })
         <!--Log out link-->
