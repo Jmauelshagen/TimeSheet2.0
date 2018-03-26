@@ -22,11 +22,17 @@ namespace ApprovedTimesheets.Controllers
         [HttpPost]
         public ActionResult ApprovedData(TimeSheet model)
         {
-            string emp = Request.Form["Employee"].ToString();
+            int emp = Int32.Parse(Request.Form["Employee"].ToString());
             Debug.WriteLine("Emp value is : " + emp + " ]");
             TimeSheet timesheet = new TimeSheet();           
-            List<TimeSheet> approveList = timesheet.GetApprovedTimesheets(emp);
-            Session["TimeSheetData"] = approveList;
+            List<List<TimeSheet>> approveList = new List<List<TimeSheet>>();           
+            foreach (string date in timesheet.GetApprovedWeekendsList(emp))
+            {
+                approveList.Add(timesheet.GetTimeSheetByIdAndDate(emp, date));
+                Debug.WriteLine("The size of approveList is: " + approveList.Count);
+            }
+            Debug.WriteLine("The size of approveList is: " + approveList.Count);
+            Session["AppTimeSheetData"] = approveList;
             return RedirectToAction("ApprovedTimesheets", "ApprovedTimesheets");
         }
     }
