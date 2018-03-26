@@ -23,7 +23,7 @@ namespace Timesheet.Controllers
         public ActionResult OldTimesheet()
         {
             Employee emp = (Employee)Session["Employee"];
-            Session["WeekList"] = GetWeekEndingDateList(emp.EmpId);
+            Session["WeekList"] = GetWeekEndingDateList(emp.Banner_ID);
             return View();
         }
 
@@ -80,7 +80,7 @@ namespace Timesheet.Controllers
             Session["Dates"] = dates;
 
             //Get list of TimeSheet objects based on date and employee id and add list to session
-            List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
+            List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.Banner_ID, dates);
             Session["TimeSheetData"] = tsheets;
 
             //resets the QuickTimeStamp and DailyMessage to blank when you go to another page
@@ -114,7 +114,7 @@ namespace Timesheet.Controllers
             Session["Dates"] = dates;
 
             //Get list of TimeSheet objects based on date and employee id and add list to session
-            List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
+            List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.Banner_ID, dates);
             Session["TimeSheetData"] = tsheets;
 
             //resets the QuickTimeStamp and DailyMessage to blank when you go to another page
@@ -167,7 +167,7 @@ namespace Timesheet.Controllers
                 Session["Dates"] = dates;
 
                 //Get list of TimeSheet objects based on date and employee id and add list to session
-                List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
+                List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.Banner_ID, dates);
                 Session["TimeSheetData"] = tsheets;
                 Session["Message2"] = "";
                 //string CurrentDate = Request.Form["Date"].ToString();
@@ -249,7 +249,7 @@ namespace Timesheet.Controllers
                 Session["Dates"] = dates;
 
                 //Get list of TimeSheet objects based on date and employee id and add list to session
-                List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
+                List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.Banner_ID, dates);
                 Session["TimeSheetData"] = tsheets;
                 Session["Message2"] = "";
                 string CurrentDate = model.Date;
@@ -324,7 +324,7 @@ namespace Timesheet.Controllers
 
 
             //Get list of TimeSheet objects based on date and employee id and add list to session
-            List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
+            List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.Banner_ID, dates);
             Session["TimeSheetData"] = tsheets;
 
             string CurrentDate = DateTime.Now.ToShortDateString();
@@ -402,7 +402,7 @@ namespace Timesheet.Controllers
             Session["Dates"] = dates;
             Session["Message2"] = "";
             //Get list of TimeSheet objects based on date and employee id and add list to session
-            List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
+            List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.Banner_ID, dates);
             Session["TimeSheetData"] = tsheets;
 
             string CurrentDate = DateTime.Now.ToShortDateString();
@@ -492,7 +492,7 @@ namespace Timesheet.Controllers
             Session["Dates"] = dates;
 
             //Get list of TimeSheet objects based on date and employee id and add list to session
-            List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
+            List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.Banner_ID, dates);
             Session["TimeSheetData"] = tsheets;
 
             string CurrentDate = DateTime.Now.ToShortDateString();
@@ -686,7 +686,7 @@ namespace Timesheet.Controllers
             //Pull the employee object from the session.
             Employee emp = (Employee)Session["Employee"];
 
-            Debug.WriteLine("Name : " + emp.FirstName + " " + emp.LastName + " and Weekending : " + model.WeekEnding + " ]");
+            Debug.WriteLine("Name : " + emp.First_Name + " " + emp.Last_Name + " and Weekending : " + model.WeekEnding + " ]");
             if (model.WeekEnding == null)
             {
                 string message = "***Please select the Weekend date***";
@@ -695,11 +695,11 @@ namespace Timesheet.Controllers
             }
 
             string wED = model.WeekEnding.Trim();
-            List<TimeSheet> tsheets = model.GetTimeSheetByIdAndDate(emp.EmpId, wED);
+            List<TimeSheet> tsheets = model.GetTimeSheetByIdAndDate(emp.Banner_ID, wED);
             Session["TimeSheetData"] = tsheets;
-            IEnumerable<SelectListItem> dateList = GetListOfDays(emp.EmpId, wED);
+            IEnumerable<SelectListItem> dateList = GetListOfDays(emp.Banner_ID, wED);
             Session["dateList"] = dateList;
-            List<string> dates = GetDaysInTimeSheet(emp.EmpId, wED);
+            List<string> dates = GetDaysInTimeSheet(emp.Banner_ID, wED);
             Session["dates"] = dates;
 
             return RedirectToAction("OldTimesheet", "Timesheet");

@@ -24,7 +24,7 @@ namespace Timesheet.Models
         LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
 
         //Class properties
-        public int EmpId { get; set; }
+        public int Banner_ID { get; set; }
         [DisplayName("User Name")]
         [Required(ErrorMessage = "This Field is required")]
         [StringLength(20, MinimumLength = 4, ErrorMessage = "UserName must be between 4 and 20 characters")]
@@ -39,7 +39,7 @@ namespace Timesheet.Models
         //no-arg constructor
         public Login()
         {
-            EmpId = 0;
+            Banner_ID = 0;
             Username = "";
             Password = "";
             LoginErrorMessage = "";
@@ -48,7 +48,7 @@ namespace Timesheet.Models
         //all-args constructor
         public Login(int id, string uName, string pWord, string error)
         {
-            EmpId = id;
+            Banner_ID = id;
             Username = uName;
             Password = pWord;
             LoginErrorMessage = error;

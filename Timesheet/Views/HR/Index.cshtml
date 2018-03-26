@@ -28,7 +28,7 @@
     <div>
         <h1>Pay Sheet Summaries</h1>
         <!--Display HR person's first and last name-->
-        <p>Welcome @emp.FirstName @emp.LastName!</p>
+        <p>Welcome @emp.First_Name @emp.Last_Name!</p>
 
         <br />
         <p>Select a week to review employee pay sheet summaries.</p>
@@ -64,11 +64,11 @@
                     using (Html.BeginForm("GetOverview", "HR", FormMethod.Post))
                     {
                     <tr>
-                        @{Model.EmpId = paySum.EmpID;}
+                        @{Model.Banner_ID = paySum.Banner_ID;}
                         <td>
                             @paySum.EmpName
                         </td>                            
-                            @Html.HiddenFor(model => model.EmpId)
+                            @Html.HiddenFor(model => model.Banner_ID)
                         <td>
                             @paySum.TotalHours
                         </td>

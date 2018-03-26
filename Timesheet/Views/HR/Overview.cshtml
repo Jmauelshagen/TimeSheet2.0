@@ -258,10 +258,10 @@
 <body onload="formatAMPM()">
 
     <h2 style="text-align: center;">Weekly Time Sheet</h2>
-    <h3 style="text-align: center;">@emp.FirstName @emp.LastName</h3>
+    <h3 style="text-align: center;">@emp.First_Name @emp.Last_Name</h3>
     <h3 style="text-align: center;">Contact Info</h3>
     <ul>
-        <li class="nav">Name: @emp.FirstName @emp.LastName</li>
+        <li class="nav">Name: @emp.First_Name @emp.Last_Name</li>
         <li class="nav">Email: @emp.Email</li>
         <li class="nav">Phone: @emp.Phone</li>
     </ul>
@@ -411,7 +411,7 @@
                                 </td>
                                 <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                                 <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                                <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                <td style="display:none;">@Html.TextBoxFor(model => model.Banner_ID, new { @Value = @tsheets[i].Banner_ID.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                 <td><button id="submit" type="submit" value="Save">Save</button></td> <!--   onclick="return leaveFieldEmpty()"             -->
                             </tr>
                             /**These add section for notes to be displayed if they exist**/

@@ -80,8 +80,8 @@ namespace Timesheet.Controllers
             Session["TimeSheetData"] = reportList; 
             if(reportList.ElementAtOrDefault(0) != null)
             {
-                Employee ep = new Employee().GetEmployee((Convert.ToInt16(reportList[0].EmpId)));
-                Debug.WriteLine("Emp Name is again: " + ep.FirstName);
+                Employee ep = new Employee().GetEmployee((Convert.ToInt16(reportList[0].Banner_ID)));
+                Debug.WriteLine("Emp Name is again: " + ep.First_Name);
                 Session["Employee"] = ep;
             }     
             return RedirectToAction("Index", "Reports");
@@ -112,13 +112,13 @@ namespace Timesheet.Controllers
                 sheet.AuthorizedBySupervisor = "False";
                 sheet.UpdateTimeSheet(sheet);
             }
-            string message = "Time sheet is denied. Contact employee to have corrections made.";
+            string message = "Time sheet is denied. Email has been sent to the employee to have corrections made.";
             Session["Message"] = message;
             Employee emp = (Employee)Session["Employee"];
-            var name = emp.FirstName + " " + emp.LastName;
+            var name = emp.First_Name + " " + emp.Last_Name;
             var subject = "Your timesheet was denied.";
-            var email = (string)emp.Email;
-            var messages = "Dear " + emp.FirstName + ", Your timesheet ending in: " + list[0].WeekEnding + " has been denied by your supervisor. please review and resubmit the Timesheet.";
+            var email = (string)emp.Email_Address;
+            var messages = "Dear " + emp.First_Name + ", Your timesheet ending in: " + list[0].WeekEnding + " has been denied by your supervisor. please review and resubmit the Timesheet.";
             Debug.WriteLine("Check 1");
             var x = await SendEmail(name, subject, email, messages);
             if (x == "sent")
@@ -135,9 +135,9 @@ namespace Timesheet.Controllers
         {
             MailMessage message = new MailMessage(); //initializes new instance of mailmessage class 
             var emp = (Employee)Session["Employee"];
-            Debug.WriteLine("HR email: " + emp.Email);
+            Debug.WriteLine("HR email: " + emp.Email_Address);
             message.To.Add(new MailAddress(email)); //initializes new instance of mailaddress class
-            message.From = new MailAddress(emp.Email);
+            message.From = new MailAddress(emp.Email_Address);
             message.Subject = subject;
             message.Body = messages;
             message.IsBodyHtml = true;

@@ -206,7 +206,6 @@
         var hours = today.getHours();
         var minutes = today.getMinutes();
         var seconds = today.getSeconds();
-        //minutes = checkTime(minutes);
         seconds = checkTime(seconds);
         var ampm = hours >= 12 ? 'PM' : 'AM';
         hours = hours % 12;
@@ -263,7 +262,7 @@
         using (Html.BeginForm("SaveDailyTimeSheet", "Timesheet", FormMethod.Post, new { name = "frm", id = "frm", enctype = "multipart/form-data", onsubmit = "return leaveFieldEmpty()" }))
         {
             <h2 style="text-align: center;">Daily Time Sheet</h2>
-            <h3 style="text-align: center;">@emp.FirstName @emp.LastName</h3>
+            <h3 style="text-align: center;">@emp.First_Name @emp.Last_Name</h3>
             <!--Get and display current date and time.-->
 
             string today = DateTime.Now.ToLongDateString();
@@ -410,7 +409,7 @@
                                         </td>
                                         <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                                         <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                                        <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                        <td style="display:none;">@Html.TextBoxFor(model => model.Banner_ID, new { @Value = @tsheets[i].Banner_ID.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                         <td><button id="submit" type="submit" value="Save">Save</button></td>
                                     </tr>
                                     /**These add section for notes to be displayed if they exist**/
@@ -527,7 +526,7 @@
                                         </td>
                                         <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                                         <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                                        <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                        <td style="display:none;">@Html.TextBoxFor(model => model.Banner_ID, new { @Value = @tsheets[i].Banner_ID.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                     </tr>
                                     /**These add section for notes to be displayed if they exist**/
                                     if (!String.IsNullOrEmpty(tsheets[i].Note))
