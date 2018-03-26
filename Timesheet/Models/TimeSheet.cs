@@ -714,7 +714,7 @@ namespace Timesheet.Models
 
         //Obtains the fist and list names for a distinct list of employee ids that exist on the
         //TimeSheet db table
-        public List<string> GetEmployeeNames()
+        public List<string> GetEmployeeNames(int sid)
         {
             List<string> names = new List<string>();
             var Id = (from sheets in db.TimeSheets
@@ -722,13 +722,16 @@ namespace Timesheet.Models
             foreach (int id in Id)
             {
                 var fname = (from emps in db.Employees
-                             where emps.Banner_ID == id
+                             where emps.Banner_ID == id && emps.Supervisor == sid.ToString().Trim()
                              select emps.First_Name).FirstOrDefault();
                 var lname = (from emps in db.Employees
                              where emps.Banner_ID == id
                              select emps.Last_Name).FirstOrDefault();
-                string fullname = fname.Trim() + " " + lname.Trim();
-                names.Add(fullname);
+                if (fname != null && lname != null)
+                {
+                    string fullname = fname.Trim() + " " + lname.Trim() + ", " + id;
+                    names.Add(fullname);
+                }
 
             }
             return names;

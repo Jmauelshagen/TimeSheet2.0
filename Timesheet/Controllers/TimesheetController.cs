@@ -13,11 +13,14 @@ namespace Timesheet.Controllers
         // GET: Timesheet
         public ActionResult Timesheet()
         {
+            Employee emp = (Employee)Session["Employee"];
             Session["datelist"] = GetListOfDays();
             return View();
         }
         public ActionResult DailyTimesheet()
         {
+            Employee emp = (Employee)Session["Employee"];
+            Session["datelist"] = GetListOfDays();
             return View();
         }
         public ActionResult OldTimesheet()

@@ -649,7 +649,7 @@
                             @Html.TextAreaFor(model => model.Note, 10, 50, new
                         {
                             @placeholder = "Comments about additional hours go here." +
-                    "\n\nTo clear a note from a day enter 'none' or 'None' in the field and save it, this will remove the note."
+                            "\n\nTo clear a note from a day enter 'none' or 'None' in the field and save it, this will remove the note."
                         })
                     </p>
                     <p align="center">@Html.DropDownList("Date", dateList, "Select Day to submit", new { onchange = "this.form.submit();" })</p>
