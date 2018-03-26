@@ -20,6 +20,7 @@
 <body>
     <!--Get employee and pay summary objects from the session.-->
     @{var emp = (Employee)Session["Employee"];
+        var emps = new Employee();
         var paySumList = (List<PaySummary>)Session["PaySummaryList"];
     }
     <div>
@@ -64,9 +65,10 @@
                     using (Html.BeginForm("GetOverview", "HR", FormMethod.Post))
                     {
                     <tr>
-                        @{Model.EmpId = paySum.EmpID;}
+                        @{Model.EmpId = paySum.EmpID;
+                            emps = emps.GetEmployee(Convert.ToInt16(@paySum.EmpID));}
                         <td>
-                            @paySum.EmpName
+                            <a href="mailto: @emps.Email.Trim()"> @paySum.EmpName </a>
                         </td>                            
                             @Html.HiddenFor(model => model.EmpId)
                         <td>
