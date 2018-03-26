@@ -119,7 +119,7 @@ namespace Timesheet.Controllers
         }
 
         // Email function controller
-        public async Task<ActionResult> email(FormCollection form) //receives form
+        public async Task<ActionResult> Email(FormCollection form) //receives form
         {
             Employee emp = (Employee)Session["NewEmp"];
             var name = emp.FirstName + " " + emp.LastName;
@@ -144,7 +144,7 @@ namespace Timesheet.Controllers
             //message.From = new MailAddress(emp.Email);
             message.Subject = subject;
             message.Body = messages;
-            message.IsBodyHtml = true;
+            message.IsBodyHtml = false;
             using (SmtpClient smtp = new SmtpClient())
             {
                 var credential = new System.Net.NetworkCredential //credentials check
@@ -161,6 +161,65 @@ namespace Timesheet.Controllers
                 return "sent";
             }
         }
-        //end of email controller     
+        //end of email controller   
+
+        [HttpPost]
+        public async Task<ActionResult> SaveTimeSheet(TimeSheet model)
+        {
+            //Get list of TimeSheet objects based on date and employee id and add list to session
+            List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
+            Session["Message2"] = "";
+
+            string CurrentDate = model.Date.Trim();
+            string message;
+            Debug.WriteLine(CurrentDate);
+
+            for (int i = 0; i < 7; i++)
+            {
+                if (tsheets[i].Date.ToString().Trim().Equals(CurrentDate))
+                {
+                    Employee emp = (Employee)Session["NewEmp"];
+                    Employee HR = (Employee)Session["Employee"];
+                    string name = emp.FirstName + " " + emp.LastName;
+                    string subject = "Changes Made";
+                    string email = (string)emp.Email.Trim();
+                    string messages = "Dear " + emp.FirstName.Trim() + "," + Environment.NewLine + "Changes have been made to " + CurrentDate + " Timesheet, Please reivew changes and call HR if you have any questions." + Environment.NewLine +
+                        "Old Timesheet data - Time In: " + tsheets[i].TimeIn.Trim() + " Time Out: " + tsheets[i].OutForLunch.Trim() + " Time In: " + tsheets[i].InFromLunch.Trim() + " Time Out: " + tsheets[i].TimeOut.Trim() + " Leave ID: " + tsheets[i].LeaveId + " Leave Hours: " + tsheets[i].LeaveHours.Trim() + " Additional Hours: " + tsheets[i].AdditionalHours.Trim();
+
+                    if (!String.IsNullOrEmpty(model.TimeIn)) { tsheets[i].TimeIn = model.TimeIn; }
+                    if (!String.IsNullOrEmpty(model.OutForLunch)) { tsheets[i].OutForLunch = model.OutForLunch; }
+                    if (!String.IsNullOrEmpty(model.InFromLunch)) { tsheets[i].InFromLunch = model.InFromLunch; }
+                    if (!String.IsNullOrEmpty(model.TimeOut)) { tsheets[i].TimeOut = model.TimeOut; }
+                    if (!String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = model.LeaveId; }
+                    if (!String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = model.LeaveHours; }
+                    if (!String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = model.AdditionalHours; }
+
+                    if (model.AdditionalHours.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(model.Note))
+                    {
+                        Debug.WriteLine("In Erro 1");
+                        string mess = "You created a note but have no additional hours. This may be a mistake.";
+                        Session["Message2"] = mess;
+                    }
+                    if (!model.AdditionalHours.ToString().Trim().Equals("0:00") && String.IsNullOrEmpty(model.Note))
+                    {
+                        Debug.WriteLine("In Erro 2");
+                        string mess = "You have addtional hours. You might want to make a note.";
+                        Session["Message2"] = mess;
+                    }
+                    message = "Timesheet Saved Succesfully";
+                    tsheets[i].UpdateTimeSheet(tsheets[i]);
+                    Session["TimeSheetData"] = tsheets;
+                    Session["Message"] = message;
+                    messages = messages + (string)(Environment.NewLine + "New Timesheet data - Time In: " + tsheets[i].TimeIn.Trim() + " Time Out: " + tsheets[i].OutForLunch.Trim() + " Time In: " + tsheets[i].InFromLunch.Trim() + " Time Out: " + tsheets[i].TimeOut.Trim() + " Leave ID: " + tsheets[i].LeaveId + " Leave Hours: " + tsheets[i].LeaveHours.Trim() + " Additional Hours: " + tsheets[i].AdditionalHours.Trim() +
+                        Environment.NewLine + Environment.NewLine + "Thanks,"+ Environment.NewLine + HR.FirstName.Trim() + " " + HR.LastName.Trim());
+                    var x = await SendEmail(name, subject, email, messages);
+                    if (x == "sent")
+                        ViewData["esent"] = "Your Message Has Been Sent";
+                    Debug.WriteLine("Message Was sent");
+                }
+            }
+
+            return RedirectToAction("Overview", "HR");
+        }
     }
 }

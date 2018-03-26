@@ -19,9 +19,11 @@ namespace Timesheet.Controllers
         //to be used in the menu/form
         public ActionResult Index()
         {
-            var model = new TimeSheet();
-            model.EmpNames = GetEmployeeNames();
-            model.WeekEndingDates = GetWeekEndingDateList();
+            var model = new TimeSheet
+            {
+                EmpNames = GetEmployeeNames(),
+                WeekEndingDates = GetWeekEndingDateList()
+            };
             return View(model);
         }
 
@@ -65,10 +67,6 @@ namespace Timesheet.Controllers
         public ActionResult ReportData(TimeSheet model)
         {
             Debug.WriteLine("Name : " + model.Name + " and Weekending : " + model.WeekEnding + " ]]");
-            if (Session["Message"] != null)
-            {
-                Session.Remove("Message");
-            }
             TimeSheet timeSheet = new TimeSheet();
             if (model.Name == null || model.WeekEnding == null)
             {
@@ -105,70 +103,60 @@ namespace Timesheet.Controllers
             return RedirectToAction("Index", "Reports");
         }
 
-        //Updates the Submitted column to False for each day of the week that is declined (the entire week
-        //is declined all at once). Redirects back to the Supervisor screen with a denial message.
-        [HttpPost]
-        public ActionResult Deny()
+        public async Task<ActionResult> Deny() //receives form
         {
             List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetData"];
             foreach (TimeSheet sheet in list)
             {
                 sheet.Submitted = "False";
+                sheet.AuthorizedBySupervisor = "False";
                 sheet.UpdateTimeSheet(sheet);
             }
-            //email(list);           
             string message = "Time sheet is denied. Contact employee to have corrections made.";
             Session["Message"] = message;
+            Employee emp = (Employee)Session["Employee"];
+            var name = emp.FirstName + " " + emp.LastName;
+            var subject = "Your timesheet was denied.";
+            var email = (string)emp.Email;
+            var messages = "Dear " + emp.FirstName + ", Your timesheet ending in: " + list[0].WeekEnding + " has been denied by your supervisor. please review and resubmit the Timesheet.";
+            Debug.WriteLine("Check 1");
+            var x = await SendEmail(name, subject, email, messages);
+            if (x == "sent")
+            {
+                Debug.WriteLine("Check 4");
+                ViewData["esent"] = "Your Message Has Been Sent";
+                Debug.WriteLine("Message Was sent");
+            }
             return RedirectToAction("Index", "Reports");
         }
 
-        //public async Task<ActionResult> email(List<TimeSheet> sheets) //receives form
-        //{
-        //    Employee emp = (Employee)Session["Employee"];
-        //    var name = emp.FirstName + " " + emp.LastName;
-        //    var subject = "Your timesheet was denied.";
-        //    var email = (string)emp.Email;
-        //    var messages = "Your timesheet ending in: " + sheets[0].WeekEnding + "has been denied by your supervisor"; ;
-        //    Debug.WriteLine("Check 1");
-        //    var x = await SendEmail(name, subject, email, messages);
-        //    if (x == "sent")
-        //    {
-        //        Debug.WriteLine("Check 4");
-        //        ViewData["esent"] = "Your Message Has Been Sent";
-        //        Debug.WriteLine("Message Was sent");
-        //    }
-        //    return RedirectToAction("Index", "Reports");          
-        //}
-
-        ////SendEmail method
-        //private async Task<string> SendEmail(string name, string subject, string email, string messages)
-        //{
-        //    MailMessage message = new MailMessage(); //initializes new instance of mailmessage class 
-        //    var emp = (Employee)Session["Employee"];
-        //    message.To.Add(new MailAddress("rs029@comcast.net")); //initializes new instance of mailaddress class                                                                  //message.From = new MailAddress(emp.Email);
-        //    Debug.WriteLine("Check 2");
-
-        //    message.From = new MailAddress("rspeight@students.chattahoocheetech.edu");
-        //    message.Subject = subject;
-        //    message.Body = "Name: " + name + "Subject:" + subject + "\nTo: " + email + "\n" + messages;
-        //    message.IsBodyHtml = true;
-        //    using (SmtpClient smtp = new SmtpClient())
-        //    {
-        //        Debug.WriteLine("Check 3");
-
-        //        var credential = new System.Net.NetworkCredential //credentials check
-        //        {
-        //            UserName = "rspeight@students.chattahoocheetech.edu",  // replace with sender's email id 
-        //            Password = "CTC-10291"  // replace with password 
-        //        };
-        //        smtp.Credentials = credential;
-        //        smtp.Host = "smtp-mail.outlook.com";
-        //        smtp.Port = 587;
-        //        smtp.EnableSsl = true;
-        //        await smtp.SendMailAsync(message);
-        //        return "sent";
-        //    }
-        //}
-        ////end of email controller
+        //SendEmail method
+        private async Task<string> SendEmail(string name, string subject, string email, string messages)
+        {
+            MailMessage message = new MailMessage(); //initializes new instance of mailmessage class 
+            var emp = (Employee)Session["Employee"];
+            Debug.WriteLine("HR email: " + emp.Email);
+            message.To.Add(new MailAddress(email)); //initializes new instance of mailaddress class
+            message.From = new MailAddress(emp.Email);
+            message.Subject = subject;
+            message.Body = messages;
+            message.IsBodyHtml = true;
+            using (SmtpClient smtp = new SmtpClient())
+            {
+                var credential = new System.Net.NetworkCredential //credentials check
+                {
+                    UserName = "hr.testingctc@gmail.com",  // replace with sender's email id 
+                    Password = "P@s$w0rd"  // replace with password 
+                };
+                smtp.Credentials = credential;
+                //smtp.Host = "smtp-mail.outlook.com";
+                smtp.Host = "smtp.gmail.com";
+                smtp.Port = 587;
+                smtp.EnableSsl = true;
+                await smtp.SendMailAsync(message);
+                return "sent";
+            }
+        }
+        //end of email controller  
     }
 }
