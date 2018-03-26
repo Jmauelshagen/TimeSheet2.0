@@ -36,7 +36,7 @@ namespace Timesheet.Controllers
                 Login login = log.GetLogin(model.Username, model.Password);
                 Employee emp = new Employee();
                 Employee employee = emp.GetEmployee(login.Banner_ID);
-                Session["Employee"] = employee;
+                //Session["Employee"] = employee;
 
                 //Get the role id from the Employee object
                 string role = employee.Job_Desc_Number.Trim();
@@ -47,14 +47,17 @@ namespace Timesheet.Controllers
                 {
                     case "1":
                         {
+                            Session["Employee"] = employee;
                             return RedirectToAction("Index", "Employees");
                         }
                     case "2":
                         {
+                            Session["Supervisor"] = employee;
                             return RedirectToAction("Index", "Supervisor");
                         }
                     case "3":
                         {
+                            Session["HR"] = employee;
                             return RedirectToAction("Index", "HR");
                         }
                     default:

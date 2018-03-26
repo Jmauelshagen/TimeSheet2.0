@@ -174,11 +174,12 @@ namespace Timesheet.Models
             var sId = (from emps in db.Employees
                        where emps.Banner_ID == Banner_ID
                        select emps.Supervisor).FirstOrDefault();
+            int sIdn = Convert.ToInt16(sId.Trim().ToString());
             var sfname = (from emps in db.Employees
-                          where emps.Banner_ID == Convert.ToInt16(sId)
+                          where emps.Banner_ID == sIdn
                           select emps.First_Name).FirstOrDefault();
             var slname = (from emps in db.Employees
-                          where emps.Banner_ID == Convert.ToInt16(sId)
+                          where emps.Banner_ID == sIdn
                           select emps.Last_Name).FirstOrDefault();
             this.SuperName = sfname + " " + slname;
 

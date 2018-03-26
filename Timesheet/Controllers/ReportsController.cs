@@ -19,9 +19,10 @@ namespace Timesheet.Controllers
         //to be used in the menu/form
         public ActionResult Index()
         {
+            var sup = (Employee)Session["Supervisor"];
             var model = new TimeSheet
             {
-                EmpNames = GetEmployeeNames(),
+                EmpNames = GetEmployeeNames(sup.Banner_ID),
                 WeekEndingDates = GetWeekEndingDateList()
             };
             return View(model);
@@ -46,15 +47,15 @@ namespace Timesheet.Controllers
 
         //Obtains a list of employee names from the db and adds them to a select list
         //to be used in the UI as a menu
-        private IEnumerable<SelectListItem> GetEmployeeNames()
+        private IEnumerable<SelectListItem> GetEmployeeNames(int sid)
         {
             TimeSheet timeSheet = new TimeSheet();
             var namesList = new List<SelectListItem>();
-            foreach (string names in timeSheet.GetEmployeeNames())
+            foreach (string names in timeSheet.GetEmployeeNames(sid))
             {
                 namesList.Add(new SelectListItem
                 {
-                    Value = names,
+                    Value = names.Split(',')[1].Trim(),
                     Text = names
                 });
             }
@@ -76,7 +77,7 @@ namespace Timesheet.Controllers
             }
             var name = model.Name.Trim();
             var wED = model.WeekEnding.Trim();
-            List<TimeSheet> reportList = timeSheet.GetTimeSheetByNameAndDate(name, wED);
+            List<TimeSheet> reportList = timeSheet.GetTimeSheetByIdAndDate(Convert.ToInt16(name), wED);
             Session["TimeSheetData"] = reportList; 
             if(reportList.ElementAtOrDefault(0) != null)
             {
@@ -134,10 +135,10 @@ namespace Timesheet.Controllers
         private async Task<string> SendEmail(string name, string subject, string email, string messages)
         {
             MailMessage message = new MailMessage(); //initializes new instance of mailmessage class 
-            var emp = (Employee)Session["Employee"];
-            Debug.WriteLine("HR email: " + emp.Email_Address);
+            var sup = (Employee)Session["Supervisor"];
+            Debug.WriteLine("HR email: " + sup.Email_Address);
             message.To.Add(new MailAddress(email)); //initializes new instance of mailaddress class
-            message.From = new MailAddress(emp.Email_Address);
+            message.From = new MailAddress(sup.Email_Address);
             message.Subject = subject;
             message.Body = messages;
             message.IsBodyHtml = true;

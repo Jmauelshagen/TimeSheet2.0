@@ -60,7 +60,7 @@ namespace Timesheet.Controllers
             //Pull the employee object from the session.
             Employee emp = new Employee();
             emp = emp.GetEmployee((int)model.Banner_ID);
-            Session["NewEmp"] = emp;
+            Session["Employee"] = emp;
             Session["Message2"] = "";
             //Instantiate a TimeSheet object
             TimeSheet tsheet = new TimeSheet();
@@ -121,7 +121,7 @@ namespace Timesheet.Controllers
         // Email function controller
         public async Task<ActionResult> Email(FormCollection form) //receives form
         {
-            Employee emp = (Employee)Session["NewEmp"];
+            Employee emp = (Employee)Session["Employee"];
             var name = emp.First_Name + " " + emp.Last_Name;
             var subject = form["empsub"];
             var email = (string)emp.Email_Address.Trim();
@@ -137,10 +137,10 @@ namespace Timesheet.Controllers
         private async Task<string> SendEmail(string name, string subject, string email, string messages)
         {
             MailMessage message = new MailMessage(); //initializes new instance of mailmessage class 
-            var emp = (Employee)Session["Employee"];
-            Debug.WriteLine("HR email: " + emp.Email_Address);
+            var hr = (Employee)Session["HR"];
+            Debug.WriteLine("HR email: " + hr.Email_Address);
             message.To.Add(new MailAddress(email)); //initializes new instance of mailaddress class
-            message.From = new MailAddress(emp.Email_Address);
+            message.From = new MailAddress(hr.Email_Address);
             //message.From = new MailAddress(emp.Email);
             message.Subject = subject;
             message.Body = messages;
@@ -178,11 +178,11 @@ namespace Timesheet.Controllers
             {
                 if (tsheets[i].Date.ToString().Trim().Equals(CurrentDate))
                 {
-                    Employee emp = (Employee)Session["NewEmp"];
-                    Employee HR = (Employee)Session["Employee"];
+                    Employee emp = (Employee)Session["Employee"];
+                    Employee hr = (Employee)Session["HR"];
                     string name = emp.First_Name + " " + emp.Last_Name;
                     string subject = "Changes Made";
-                    string email = (string)emp.Email_Address.Trim();
+                    string email = emp.Email_Address.Trim();
                     string messages = "Dear " + emp.First_Name.Trim() + "," + Environment.NewLine + "Changes have been made to " + CurrentDate + " Timesheet, Please reivew changes and call HR if you have any questions." + Environment.NewLine +
                         "Old Timesheet data - Time In: " + tsheets[i].TimeIn.Trim() + " Time Out: " + tsheets[i].OutForLunch.Trim() + " Time In: " + tsheets[i].InFromLunch.Trim() + " Time Out: " + tsheets[i].TimeOut.Trim() + " Leave ID: " + tsheets[i].LeaveId + " Leave Hours: " + tsheets[i].LeaveHours.Trim() + " Additional Hours: " + tsheets[i].AdditionalHours.Trim();
 
@@ -210,8 +210,8 @@ namespace Timesheet.Controllers
                     tsheets[i].UpdateTimeSheet(tsheets[i]);
                     Session["TimeSheetData"] = tsheets;
                     Session["Message"] = message;
-                    messages = messages + (string)(Environment.NewLine + "New Timesheet data - Time In: " + tsheets[i].TimeIn.Trim() + " Time Out: " + tsheets[i].OutForLunch.Trim() + " Time In: " + tsheets[i].InFromLunch.Trim() + " Time Out: " + tsheets[i].TimeOut.Trim() + " Leave ID: " + tsheets[i].LeaveId + " Leave Hours: " + tsheets[i].LeaveHours.Trim() + " Additional Hours: " + tsheets[i].AdditionalHours.Trim() +
-                        Environment.NewLine + Environment.NewLine + "Thanks,"+ Environment.NewLine + HR.First_Name.Trim() + " " + HR.Last_Name.Trim());
+                    messages = messages + Environment.NewLine + "New Timesheet data - Time In: " + tsheets[i].TimeIn.Trim() + " Time Out: " + tsheets[i].OutForLunch.Trim() + " Time In: " + tsheets[i].InFromLunch.Trim() + " Time Out: " + tsheets[i].TimeOut.Trim() + " Leave ID: " + tsheets[i].LeaveId + " Leave Hours: " + tsheets[i].LeaveHours.Trim() + " Additional Hours: " + tsheets[i].AdditionalHours.Trim() +
+                        Environment.NewLine + Environment.NewLine + "Thanks," + Environment.NewLine + hr.First_Name.Trim() + " " + hr.Last_Name.Trim();
                     var x = await SendEmail(name, subject, email, messages);
                     if (x == "sent")
                         ViewData["esent"] = "Your Message Has Been Sent";

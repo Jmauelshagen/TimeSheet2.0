@@ -19,7 +19,7 @@
 
 <body>
     <!--Get employee and pay summary objects from the session.-->
-    @{var emp = (Employee)Session["Employee"];
+    @{var hr = (Employee)Session["HR"];
         var paySumList = (List<PaySummary>)Session["PaySummaryList"];
     }
     <div>
@@ -28,7 +28,7 @@
     <div>
         <h1>Pay Sheet Summaries</h1>
         <!--Display HR person's first and last name-->
-        <p>Welcome @emp.First_Name @emp.Last_Name!</p>
+        <p>Welcome @hr.First_Name @hr.Last_Name!</p>
 
         <br />
         <p>Select a week to review employee pay sheet summaries.</p>

@@ -16,6 +16,7 @@
 
     Employee emp = (Employee)Session["Employee"];
     List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
+    IEnumerable<SelectListItem> datelist = (IEnumerable<SelectListItem>)Session["datelist"];
     List<string> dates = (List<string>)Session["Dates"];
     string mess = (string)Session["Message2"];
 
