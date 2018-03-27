@@ -763,6 +763,24 @@ namespace Timesheet.Models
             return weekEndDates;
         }
 
+        public List<string> GetApprovedWeekendsList(int id)
+        {
+            var wED = (from sheets in db.TimeSheets
+                       where sheets.EmpId == id && sheets.AuthorizedBySupervisor.Equals("True")
+                       select sheets.WeekEnding).Distinct().OrderBy(WeekEnding => WeekEnding);
+            if(wED == null)
+            {
+                return null;
+
+            }
+            List<string> weekEndDates = new List<string>();
+            foreach (string date in wED)
+            {
+                weekEndDates.Add(date);                
+            }
+            return weekEndDates;
+        }
+
         //Obtains the fist and list names for a distinct list of employee ids that exist on the
         //TimeSheet db table
         public List<string> GetEmployeeNames(int sid)
