@@ -694,7 +694,7 @@ namespace Timesheet.Models
         public List<string> GetApprovedWeekendsList(int id)
         {
             var wED = (from sheets in db.TimeSheets
-                       where sheets.EmpId == id && sheets.AuthorizedBySupervisor.Equals("True")
+                       where sheets.Banner_ID == id && sheets.AuthorizedBySupervisor.Equals("True")
                        select sheets.WeekEnding).Distinct().OrderBy(WeekEnding => WeekEnding);
             if(wED == null)
             {

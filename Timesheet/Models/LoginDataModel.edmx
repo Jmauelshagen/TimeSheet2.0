@@ -127,16 +127,10 @@
         </EntityType>
         <EntityType Name="Employee">
           <Key>
-            <PropertyRef Name="EmpId" />
             <PropertyRef Name="Banner_ID" />
           </Key>
-          <Property Name="EmpId" Type="Int32" Nullable="false" />
-          <Property Name="FirstName" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
-          <Property Name="LastName" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
-          <Property Name="RoleId" Type="Int32" Nullable="false" />
           <Property Name="Department" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
-          <Property Name="Supervisor" Type="Int32" />
+          <Property Name="Supervisor" Type="String" MaxLength="100" Unicode="true" FixedLength="true" />
           <Property Name="First_Name" Type="String" Nullable="false" MaxLength="30" FixedLength="true" Unicode="true" />
           <Property Name="Last_Name" Type="String" Nullable="false" MaxLength="30" FixedLength="true" Unicode="true" />
           <Property Name="Mid_Name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
@@ -172,10 +166,8 @@
         </EntityType>
         <EntityType Name="Login">
           <Key>
-            <PropertyRef Name="EmpId" />
             <PropertyRef Name="Banner_ID" />
           </Key>
-          <Property Name="EmpId" Type="Int32" Nullable="false" />
           <Property Name="Username" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="Banner_ID" Type="Int32" Nullable="false" />
@@ -212,7 +204,6 @@
           <Property Name="TotalHoursWorked" Type="String" MaxLength="16" Unicode="true" FixedLength="true" />
           <Property Name="Submitted" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="AuthorizedBySupervisor" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="EmpId" Type="Int32" />
           <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Banner_ID" Type="Int32" />
         </EntityType>
@@ -361,7 +352,7 @@
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="true" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
         <DesignerProperty Name="UseLegacyProvider" Value="False" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
