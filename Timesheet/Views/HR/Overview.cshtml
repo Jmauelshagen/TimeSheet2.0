@@ -262,7 +262,7 @@
     <h3 style="text-align: center;">Contact Info</h3>
     <ul>
         <li class="nav">Name: @emp.First_Name @emp.Last_Name</li>
-        <li class="nav">Email: @emp.Email_Address</li>
+        <li class="nav">Email:<a href="mailto:@emp.Email_Address.Trim()" style="border:none;">@emp.Email_Address.Trim()</a></li>
         <li class="nav">Phone: @emp.Primary_Phone</li>
     </ul>
 
