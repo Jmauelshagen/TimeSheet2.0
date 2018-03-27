@@ -24,6 +24,8 @@ namespace ApprovedTimesheets.Controllers
         {
             int emp = Int32.Parse(Request.Form["Employee"].ToString());
             Debug.WriteLine("Emp value is : " + emp + " ]");
+            Employee emp1 = new Employee();
+            Session["Employee"] = emp1.GetEmployee(emp);
             TimeSheet timesheet = new TimeSheet();           
             List<List<TimeSheet>> approveList = new List<List<TimeSheet>>();           
             foreach (string date in timesheet.GetApprovedWeekendsList(emp))
