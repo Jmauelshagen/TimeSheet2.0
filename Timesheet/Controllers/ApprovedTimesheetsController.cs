@@ -15,7 +15,7 @@ namespace ApprovedTimesheets.Controllers
         {
             LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
 
-            ViewBag.Employees = new SelectList(db.Employees, "EmpId", "FirstName");            
+            ViewBag.Employees = new SelectList(db.Employees, "Banner_ID", "First_Name");            
             return View();
         }
 

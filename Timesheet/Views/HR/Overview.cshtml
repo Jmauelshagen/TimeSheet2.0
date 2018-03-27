@@ -14,7 +14,7 @@
         </center>
     </div>
 
-    Employee emp = (Employee)Session["NewEmp"];
+    Employee emp = (Employee)Session["Employee"];
     List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
     List<string> dates = (List<string>)Session["Dates"];
     IEnumerable<SelectListItem> datelist = (IEnumerable<SelectListItem>)Session["datelist"];
@@ -258,12 +258,12 @@
 <body onload="formatAMPM()">
 
     <h2 style="text-align: center;">Weekly Time Sheet</h2>
-    <h3 style="text-align: center;">@emp.FirstName @emp.LastName</h3>
+    <h3 style="text-align: center;">@emp.First_Name @emp.Last_Name</h3>
     <h3 style="text-align: center;">Contact Info</h3>
     <ul>
-        <li class="nav">Name: @emp.FirstName @emp.LastName</li>
-        <li class="nav">Email: @emp.Email</li>
-        <li class="nav">Phone: @emp.Phone</li>
+        <li class="nav">Name: @emp.First_Name @emp.Last_Name</li>
+        <li class="nav">Email:<a href="mailto:@emp.Email_Address.Trim()" style="border:none;">@emp.Email_Address.Trim()</a></li>
+        <li class="nav">Phone: @emp.Primary_Phone</li>
     </ul>
 
     <!--Get and display current date and time.-->
@@ -411,7 +411,7 @@
                                 </td>
                                 <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                                 <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                                <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                <td style="display:none;">@Html.TextBoxFor(model => model.Banner_ID, new { @Value = @tsheets[i].Banner_ID.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                 <td><button id="submit" type="submit" value="Save">Save</button></td> <!--   onclick="return leaveFieldEmpty()"             -->
                             </tr>
                             /**These add section for notes to be displayed if they exist**/
@@ -493,7 +493,7 @@
     </div>
     <div>
         <!--Email form (html)-->
-        <p> Email an employee: </p>
+        <p> Email @emp.First_Name </p>
         @using (Html.BeginForm("Email", "HR", FormMethod.Post))
         {
             <div>

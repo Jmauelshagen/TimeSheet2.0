@@ -271,7 +271,7 @@
     <div>
 
         <h2 style="text-align: center;">Timesheet History</h2>
-        <h3 style="text-align: center;">@emp.FirstName @emp.LastName</h3>
+        <h3 style="text-align: center;">@emp.First_Name @emp.Last_Name</h3>
 
         <!--Get and display current date and time.-->
         @{
@@ -437,7 +437,7 @@
                                     </td>
                                     <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                                     <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                                    <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                    <td style="display:none;">@Html.TextBoxFor(model => model.Banner_ID, new { @Value = @tsheets[i].Banner_ID.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                     <td><button id="submit" type="submit" value="Save">Save</button></td> <!--   onclick="return leaveFieldEmpty()"             -->
                                 </tr>
                                 /**These add section for notes to be displayed if they exist**/
@@ -557,7 +557,7 @@
                                     </td>
                                     <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                                     <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                                    <td style="display:none;">@Html.TextBoxFor(model => model.EmpId, new { @Value = @tsheets[i].EmpId.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                    <td style="display:none;">@Html.TextBoxFor(model => model.Banner_ID, new { @Value = @tsheets[i].Banner_ID.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                 </tr>
                                 /**These add section for notes to be displayed if they exist**/
                                 if (!String.IsNullOrEmpty(tsheets[i].Note))
@@ -649,7 +649,7 @@
                             @Html.TextAreaFor(model => model.Note, 10, 50, new
                         {
                             @placeholder = "Comments about additional hours go here." +
-                    "\n\nTo clear a note from a day enter 'none' or 'None' in the field and save it, this will remove the note."
+                            "\n\nTo clear a note from a day enter 'none' or 'None' in the field and save it, this will remove the note."
                         })
                     </p>
                     <p align="center">@Html.DropDownList("Date", dateList, "Select Day to submit", new { onchange = "this.form.submit();" })</p>

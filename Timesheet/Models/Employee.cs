@@ -19,40 +19,68 @@ namespace Timesheet.Models
         LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
 
         //Class properties
-        public int EmpId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public int RoleId { get; set; }
+
         public string Department { get; set; }
-        public int Supervisor { get; set; }    
-        public string Phone { get; set; }
-                            
+        public string Supervisor { get; set; }
+        public string First_Name { get; set; }
+        public string Last_Name { get; set; }
+        public string Mid_Name { get; set; }
+        public int Banner_ID { get; set; }
+        public string Name_Prefix { get; set; }
+        public string Name_Suffix { get; set; }
+        public string Job_Title { get; set; }
+        public string FT_PT { get; set; }
+        public string Faculty { get; set; }
+        public string Email_Address { get; set; }
+        public string Primary_Phone { get; set; }
+        public string Secondary_Phone { get; set; }
+        public string Campus { get; set; }
+        public string Office { get; set; }
+        public string Mailstop { get; set; }
+        public string Display_Public { get; set; }
+        public string Job_Desc_Number { get; set; }
+
         //Constructors
         //0-arg constructor
         public Employee()
         {
-            EmpId = 0;
-            FirstName = "";
-            LastName = "";
-            Email = "";
-            RoleId = 0;
-            Department = "";
-            Supervisor = 0;
-            Phone = "";
+            First_Name = "";
+            Last_Name = "";
+            Mid_Name = "";
+            Banner_ID = 0;
+            Name_Prefix = "";
+            Name_Suffix = "";
+            Job_Title = "";
+            FT_PT = "";
+            Faculty = "";
+            Email_Address = "";
+            Primary_Phone = "";
+            Secondary_Phone = "";
+            Campus = "";
+            Mailstop = "";
+            Display_Public = "";
+            Job_Desc_Number = "";
         }
 
         //all-arg constructor
-        public Employee(int id, string fName, string lName, string email, int role, string dept, int super, string phon)
+        public Employee(string fn, string ln, string mn, int bid, string np, string ns, string jt, string fp, string f, string em, string pp, string sp, string c, string m, string d, string jn)
         {
-            EmpId = id;
-            FirstName = fName;
-            LastName = lName;
-            Email = email;
-            RoleId = role;
-            Department = dept;
-            Supervisor = super;
-            Phone = phon;
+            First_Name = "";
+            Last_Name = "";
+            Mid_Name = "";
+            Banner_ID = 0;
+            Name_Prefix = "";
+            Name_Suffix = "";
+            Job_Title = "";
+            FT_PT = "";
+            Faculty = "";
+            Email_Address = "";
+            Primary_Phone = "";
+            Secondary_Phone = "";
+            Campus = "";
+            Mailstop = "";
+            Display_Public = "";
+            Job_Desc_Number = "";
         }
 
         //Method to obtain employee data from the database
@@ -60,7 +88,7 @@ namespace Timesheet.Models
         public Employee GetEmployee(int id)
         {
             var e = from employees in db.Employees
-                    where employees.EmpId == id
+                    where employees.Banner_ID == id
                     select employees;
             Employee emp = (Employee)e.FirstOrDefault();
             return emp;
@@ -68,7 +96,7 @@ namespace Timesheet.Models
 
         //Method is to obtain employee data for multiple employees
         //Method accepts a supervisor id as a parameter and returns a list of Employee objects
-        public List<Employee> GetEmployees(int id)
+        public List<Employee> GetEmployees(string id)
         {
             List<Employee> empList = new List<Employee>();
 
