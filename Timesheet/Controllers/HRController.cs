@@ -36,17 +36,18 @@ namespace Timesheet.Controllers
             List<PaySummary> paySumList = new List<PaySummary>();
             PaySummary paySum = new PaySummary();          
             var wED = model.WeekEnding;
-            List<int> empIds = paySum.GetBanner_IDsByWeekEndDate(wED);
-            if(model.IsEnabled)
-            {
-                String result = "True";
-                foreach (int empID in empIds)
-                {
-                    paySumList.Add(new PaySummary(empID, wED, result));
-                }
-            }
+            List<int> empIds = paySum.GetEmpIdsByWeekEndDate(wED);
+            //if (model.isEnabled)
+            //{
+            //    String result = "True";
+            //    foreach(int empID in empIds)
+            //    {
+            //        paySumList.Add(new PaySummary(empID, wED, result));
+            //    }
+            //}
             //else
             {
+                
                 foreach (int empId in empIds)
                 {
                     paySumList.Add(new PaySummary(empId, wED));
