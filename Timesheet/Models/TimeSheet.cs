@@ -130,28 +130,7 @@ namespace Timesheet.Models
             }
             return timesheets;
         }
-
-        public List<TimeSheet> GetApprovedTimesheets(string emp)
-        {
-            List<TimeSheet> timesheets = new List<TimeSheet>();
-            int iemp = Convert.ToInt32(emp);
-            Debug.WriteLine("Iemp value is : " + iemp + " ]");
-            var sheets = from tsheets in db.TimeSheets
-                         where tsheets.AuthorizedBySupervisor.Equals("True") && tsheets.Banner_ID == iemp
-                         group tsheets by tsheets.WeekEnding into weekgroup
-                         orderby weekgroup.Key ascending
-                         select weekgroup;
-            foreach (var weekgroup in sheets)
-            {
-                Debug.WriteLine("Key is: [0]" + weekgroup.Key + "}}");
-                foreach (TimeSheet sheet in weekgroup)
-                {
-                    
-                }               
-            }
-            return timesheets;
-        }
-
+       
         //Method to retrieve list of TimeSheet objects by employee name and week ending date
         public List<TimeSheet> GetTimeSheetByNameAndDate(string name, string wED)
         {
@@ -708,6 +687,24 @@ namespace Timesheet.Models
             foreach (string date in wED)
             {
                 weekEndDates.Add(date);
+            }
+            return weekEndDates;
+        }
+
+        public List<string> GetApprovedWeekendsList(int id)
+        {
+            var wED = (from sheets in db.TimeSheets
+                       where sheets.EmpId == id && sheets.AuthorizedBySupervisor.Equals("True")
+                       select sheets.WeekEnding).Distinct().OrderBy(WeekEnding => WeekEnding);
+            if(wED == null)
+            {
+                return null;
+
+            }
+            List<string> weekEndDates = new List<string>();
+            foreach (string date in wED)
+            {
+                weekEndDates.Add(date);                
             }
             return weekEndDates;
         }
