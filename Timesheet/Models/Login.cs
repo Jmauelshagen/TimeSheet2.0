@@ -58,9 +58,10 @@ namespace Timesheet.Models
         //Queries Login table by username and password, returns bool if record is found
         public bool ValidateLogin(string uname, string pword)
         {
-            var log = from logins in db.Logins
-                      where logins.Username == uname && logins.Password == pword
-                      select logins;
+            var log = from logins in db.Logins 
+                      where logins.Username.Equals(uname) && logins.Password.Equals(pword)// == uname && logins.Password == pword 
+                      select logins ;
+
             Login login = (Login)log.FirstOrDefault();
 
 

@@ -36,7 +36,6 @@ namespace Timesheet.Controllers
                 Login login = log.GetLogin(model.Username, model.Password);
                 Employee emp = new Employee();
                 Employee employee = emp.GetEmployee(login.Banner_ID);
-                //Session["Employee"] = employee;
 
                 //Get the role id from the Employee object
                 string role = employee.Job_Desc_Number.Trim();
