@@ -128,11 +128,11 @@ namespace Timesheet.Models
             foreach (TimeSheet sheet in tsheets)
             {
                 string absHours = "";
-                if (String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
+                if (sheet.LeaveHours.Equals("0:00"))
                 {
 
                 }
-                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
+                else if (!String.IsNullOrEmpty(sheet.LeaveHours))
                 {
                     absHours = sheet.LeaveHours;
                     Debug.WriteLine("Leave hour : " + sheet.LeaveHours);
@@ -237,7 +237,7 @@ namespace Timesheet.Models
             int minute = 0;
             int minutes = 0;
             var tsheets = (from sheets in db.TimeSheets
-                           where sheets.EmpId == empId && sheets.WeekEnding == wED && sheets.AuthorizedBySupervisor.Equals(t)
+                           where sheets.Banner_ID == empId && sheets.WeekEnding == wED && sheets.AuthorizedBySupervisor.Equals(t)
                            select sheets);
 
             foreach (TimeSheet sheet in tsheets)
@@ -340,26 +340,27 @@ namespace Timesheet.Models
 
             //Code to get the employee name and Supervisor name by employee id
             var fname = (from emps in db.Employees
-                         where emps.EmpId == empId
-                         select emps.FirstName).FirstOrDefault();
+                         where emps.Banner_ID == empId
+                         select emps.First_Name).FirstOrDefault();
             var lname = (from emps in db.Employees
-                         where emps.EmpId == empId
-                         select emps.LastName).FirstOrDefault();
+                         where emps.Banner_ID == empId
+                         select emps.Last_Name).FirstOrDefault();
             this.EmpName = fname + " " + lname;
-            this.EmpID = empId;
+            this.Banner_ID = empId;
 
             var sId = (from emps in db.Employees
-                       where emps.EmpId == empId
+                       where emps.Banner_ID == empId
                        select emps.Supervisor).FirstOrDefault();
+            int sIdn = Convert.ToInt16(sId.Trim().ToString());
             var sfname = (from emps in db.Employees
-                          where emps.EmpId == sId
-                          select emps.FirstName).FirstOrDefault();
+                          where emps.Banner_ID == sIdn
+                          select emps.First_Name).FirstOrDefault();
             var slname = (from emps in db.Employees
-                          where emps.EmpId == sId
-                          select emps.LastName).FirstOrDefault();
+                          where emps.Banner_ID == sIdn
+                          select emps.Last_Name).FirstOrDefault();
             this.SuperName = sfname + " " + slname;
 
-        }
+        }        
 
         //Method to return pay summary data for employees
         public List<int> GetBanner_IDsByWeekEndDate(string date)

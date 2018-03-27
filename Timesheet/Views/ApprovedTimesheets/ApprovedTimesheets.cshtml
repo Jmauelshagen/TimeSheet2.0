@@ -11,6 +11,7 @@
     <div>
         <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
     </div>
+    Employee sup = (Employee)Session["Supervisor"];
 
     Employee emp = (Employee)Session["Employee"];
     List<List<TimeSheet>> tsheets = (List<List<TimeSheet>>)Session["AppTimeSheetData"];
@@ -29,8 +30,10 @@
 
 
     <h2>Approved Timesheets</h2>
-    @{ string today = DateTime.Now.ToLongDateString();
-        string time = DateTime.Now.ToLongTimeString();}
+    @{
+        string today = DateTime.Now.ToLongDateString();
+        string time = DateTime.Now.ToLongTimeString();
+    }
     <p id="time">It is @today at @time</p>
     @using (Html.BeginForm("ApprovedData", "ApprovedTimesheets", FormMethod.Post, new { role = "form" }))
     {
@@ -57,7 +60,7 @@
                     <tr>
                         @{
                         <td>@tsheet[0].WeekEnding</td>
-                        <td>@emp.FirstName @emp.LastName</td>
+                        <td>@emp.First_Name @emp.Last_Name</td>
 
                             string totalWorked = "";
                             string totalabsent = "";
@@ -221,10 +224,18 @@
                         </td>                            
                     </tr>
                     }
-                } 
-            }*@            
-        </table><br />
-    <a href="@Url.Action("Index", "Supervisor")" class="button">Home</a>
+                }
+            }*@
+    </table>
+
+    <!--Like to go back-->
+    <a href="@Url.Action("Index","Supervisor")">Home</a>
+
+    <!--To Go to approved Timesheet Page-->
+    <a href="@Url.Action("Index", "Reports")"> Reports</a>
+
+    <!--Log out link.-->
+    <a href="@Url.Action("LogOut","Login")">LogOut</a>
 </body>
 </html>
 
