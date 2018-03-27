@@ -708,6 +708,7 @@ namespace Timesheet.Models
             }
             return weekEndDates;
         }
+
         //Obtains the fist and list names for a distinct list of employee ids that exist on the
         //TimeSheet db table
         public List<string> GetEmployeeNames(int sid)
