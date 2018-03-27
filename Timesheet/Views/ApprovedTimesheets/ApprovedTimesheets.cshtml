@@ -42,7 +42,8 @@
                 <th>Week End</th>
                 <th>Employee Name</th>
                 <th>Worked hours</th>
-                <th>Over Time</th>                
+                <th>Over Time</th> 
+                <th>FLSA Over Time</th>
                 <th>Absent hours</th>
                 <th>Supervisor</th>                
             </tr>
@@ -115,6 +116,40 @@
                                 overTime = (hours - 40).ToString() + ":" + minutes;
                             }
                             <td>@overTime</td>
+                            //Calculate overtime hours
+                            string overTimeflsa= "";
+
+                            overTimeflsa = (hours - 40).ToString() + ":" + minutes;
+                            int overtimeHours = 0;
+                            int overtimeMinutes = ((hours - 40) * 60 + minutes) + (((hours - 40) * 60 + minutes) / 2);
+                            while (overtimeMinutes >= 60)
+                            {
+                                overtimeHours = overtimeHours + 1;
+                                overtimeMinutes = overtimeMinutes - 60;
+                            }
+                            if (overtimeMinutes >= 53)
+                            {
+                                overTimeflsa = (overtimeHours + 1) + ":00";
+                            }
+                            if (overtimeMinutes >= 38 && overtimeMinutes <= 52)
+                            {
+                                overTimeflsa = overtimeHours + ":45";
+                            }
+                            if (overtimeMinutes >= 23 && overtimeMinutes <= 37)
+                            {
+                                overTimeflsa = overtimeHours + ":30";
+                            }
+                            if (overtimeMinutes <= 22 && overtimeMinutes >= 8)
+                            {
+                                overTimeflsa = overtimeHours + ":15";
+                            }
+                            if (overtimeMinutes <= 7)
+                            {
+                                overTimeflsa = overtimeHours + ":00";
+                            }
+
+                            <td>@overTimeflsa</td>
+
 
                             //Calculate Total Absent Hours
                             foreach (TimeSheet sheet in @tsheet)

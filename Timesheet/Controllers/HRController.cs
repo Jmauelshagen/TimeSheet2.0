@@ -34,13 +34,26 @@ namespace Timesheet.Controllers
         public ActionResult GetPayData(TimeSheet model)
         {
             List<PaySummary> paySumList = new List<PaySummary>();
-            PaySummary paySum = new PaySummary();
+            PaySummary paySum = new PaySummary();          
             var wED = model.WeekEnding;
             List<int> empIds = paySum.GetEmpIdsByWeekEndDate(wED);
-            foreach (int empId in empIds)
+            //if (model.isEnabled)
+            //{
+            //    String result = "True";
+            //    foreach(int empID in empIds)
+            //    {
+            //        paySumList.Add(new PaySummary(empID, wED, result));
+            //    }
+            //}
+            //else
             {
-                paySumList.Add(new PaySummary(empId, wED));
+                
+                foreach (int empId in empIds)
+                {
+                    paySumList.Add(new PaySummary(empId, wED));
+                }
             }
+           
             Session["Weekend"] = wED;
             Session["PaySummaryList"] = paySumList;
 
