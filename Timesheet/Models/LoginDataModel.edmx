@@ -9,8 +9,8 @@
           <Key>
             <PropertyRef Name="Email" />
           </Key>
-          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Emp">
           <Key>
@@ -22,15 +22,27 @@
         </EntityType>
         <EntityType Name="Employees">
           <Key>
-            <PropertyRef Name="EmpId" />
+            <PropertyRef Name="Banner_ID" />
           </Key>
-          <Property Name="EmpId" Type="int" Nullable="false" />
-          <Property Name="FirstName" Type="nchar" MaxLength="20" />
-          <Property Name="LastName" Type="nchar" MaxLength="30" />
-          <Property Name="Email" Type="nchar" MaxLength="30" />
-          <Property Name="RoleId" Type="int" Nullable="false" />
-          <Property Name="Department" Type="nchar" MaxLength="10" />
-          <Property Name="Supervisor" Type="int" Nullable="false" />
+          <Property Name="First_Name" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="Last_Name" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="Mid_Name" Type="nchar" MaxLength="10" />
+          <Property Name="Banner_ID" Type="int" Nullable="false" />
+          <Property Name="Name_Prefix" Type="nchar" MaxLength="10" />
+          <Property Name="Name_Suffix" Type="nchar" MaxLength="10" />
+          <Property Name="Job_Title" Type="nchar" MaxLength="100" />
+          <Property Name="FT_PT" Type="nchar" MaxLength="5" />
+          <Property Name="Faculty" Type="nchar" MaxLength="100" />
+          <Property Name="Email_Address" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="Primary_Phone" Type="nchar" MaxLength="15" Nullable="false" />
+          <Property Name="Secondary_Phone" Type="nchar" MaxLength="15" />
+          <Property Name="Department" Type="nchar" MaxLength="100" />
+          <Property Name="Campus" Type="nchar" MaxLength="100" />
+          <Property Name="Office" Type="nchar" MaxLength="30" />
+          <Property Name="Mailstop" Type="nchar" MaxLength="50" />
+          <Property Name="Display_Public" Type="nchar" MaxLength="10" />
+          <Property Name="Supervisor" Type="nchar" MaxLength="100" />
+          <Property Name="Job_Desc_Number" Type="nchar" MaxLength="30" />
         </EntityType>
         <EntityType Name="HR">
           <Key>
@@ -49,11 +61,11 @@
         </EntityType>
         <EntityType Name="Logins">
           <Key>
-            <PropertyRef Name="EmpId" />
+            <PropertyRef Name="Banner_ID" />
           </Key>
-          <Property Name="EmpId" Type="int" Nullable="false" />
+          <Property Name="Banner_ID" Type="int" Nullable="false" />
           <Property Name="Username" Type="nchar" MaxLength="20" Nullable="false" />
-          <Property Name="Password" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="Password" Type="nchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="Roles">
           <Key>
@@ -87,7 +99,7 @@
           <Property Name="TotalHoursWorked" Type="nchar" MaxLength="16" />
           <Property Name="Submitted" Type="nchar" MaxLength="10" />
           <Property Name="AuthorizedBySupervisor" Type="nchar" MaxLength="10" />
-          <Property Name="EmpId" Type="int" />
+          <Property Name="Banner_ID" Type="int" />
           <Property Name="Note" Type="nvarchar(max)" />
         </EntityType>
         <EntityContainer Name="LoginDatabaseModelStoreContainer">
@@ -116,14 +128,32 @@
         <EntityType Name="Employee">
           <Key>
             <PropertyRef Name="EmpId" />
+            <PropertyRef Name="Banner_ID" />
           </Key>
           <Property Name="EmpId" Type="Int32" Nullable="false" />
           <Property Name="FirstName" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
           <Property Name="RoleId" Type="Int32" Nullable="false" />
-          <Property Name="Department" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="Supervisor" Type="Int32" Nullable="false" />
+          <Property Name="Department" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="Supervisor" Type="Int32" />
+          <Property Name="First_Name" Type="String" Nullable="false" MaxLength="30" FixedLength="true" Unicode="true" />
+          <Property Name="Last_Name" Type="String" Nullable="false" MaxLength="30" FixedLength="true" Unicode="true" />
+          <Property Name="Mid_Name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Banner_ID" Type="Int32" Nullable="false" />
+          <Property Name="Name_Prefix" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Name_Suffix" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Job_Title" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="FT_PT" Type="String" MaxLength="5" FixedLength="true" Unicode="true" />
+          <Property Name="Faculty" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="Email_Address" Type="String" Nullable="false" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="Primary_Phone" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="true" />
+          <Property Name="Secondary_Phone" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
+          <Property Name="Campus" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <Property Name="Office" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+          <Property Name="Mailstop" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Display_Public" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Job_Desc_Number" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="HR">
           <Key>
@@ -143,10 +173,12 @@
         <EntityType Name="Login">
           <Key>
             <PropertyRef Name="EmpId" />
+            <PropertyRef Name="Banner_ID" />
           </Key>
           <Property Name="EmpId" Type="Int32" Nullable="false" />
           <Property Name="Username" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Banner_ID" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -182,6 +214,7 @@
           <Property Name="AuthorizedBySupervisor" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="EmpId" Type="Int32" />
           <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Banner_ID" Type="Int32" />
         </EntityType>
         <EntityContainer Name="LoginDatabaseEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Emps" EntityType="Self.Emp" />
@@ -198,8 +231,8 @@
           <Key>
             <PropertyRef Name="Email1" />
           </Key>
-          <Property Name="Email1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -219,11 +252,23 @@
           <EntitySetMapping Name="Employees">
             <EntityTypeMapping TypeName="LoginDatabaseModel.Employee">
               <MappingFragment StoreEntitySet="Employees">
-                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="Job_Desc_Number" ColumnName="Job_Desc_Number" />
+                <ScalarProperty Name="Display_Public" ColumnName="Display_Public" />
+                <ScalarProperty Name="Mailstop" ColumnName="Mailstop" />
+                <ScalarProperty Name="Office" ColumnName="Office" />
+                <ScalarProperty Name="Campus" ColumnName="Campus" />
+                <ScalarProperty Name="Secondary_Phone" ColumnName="Secondary_Phone" />
+                <ScalarProperty Name="Primary_Phone" ColumnName="Primary_Phone" />
+                <ScalarProperty Name="Email_Address" ColumnName="Email_Address" />
+                <ScalarProperty Name="Faculty" ColumnName="Faculty" />
+                <ScalarProperty Name="FT_PT" ColumnName="FT_PT" />
+                <ScalarProperty Name="Job_Title" ColumnName="Job_Title" />
+                <ScalarProperty Name="Name_Suffix" ColumnName="Name_Suffix" />
+                <ScalarProperty Name="Name_Prefix" ColumnName="Name_Prefix" />
+                <ScalarProperty Name="Banner_ID" ColumnName="Banner_ID" />
+                <ScalarProperty Name="Mid_Name" ColumnName="Mid_Name" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last_Name" />
+                <ScalarProperty Name="First_Name" ColumnName="First_Name" />
                 <ScalarProperty Name="Department" ColumnName="Department" />
                 <ScalarProperty Name="Supervisor" ColumnName="Supervisor" />
               </MappingFragment>
@@ -249,7 +294,7 @@
           <EntitySetMapping Name="Logins">
             <EntityTypeMapping TypeName="LoginDatabaseModel.Login">
               <MappingFragment StoreEntitySet="Logins">
-                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+                <ScalarProperty Name="Banner_ID" ColumnName="Banner_ID" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
               </MappingFragment>
@@ -275,8 +320,8 @@
           <EntitySetMapping Name="TimeSheets">
             <EntityTypeMapping TypeName="LoginDatabaseModel.TimeSheet">
               <MappingFragment StoreEntitySet="TimeSheets">
+                <ScalarProperty Name="Banner_ID" ColumnName="Banner_ID" />
                 <ScalarProperty Name="Note" ColumnName="Note" />
-                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="WeekEnding" ColumnName="WeekEnding" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
