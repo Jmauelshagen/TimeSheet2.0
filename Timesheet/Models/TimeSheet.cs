@@ -788,7 +788,6 @@ namespace Timesheet.Models
             if(wED == null)
             {
                 return null;
-
             }
             List<string> weekEndDates = new List<string>();
             foreach (string date in wED)
@@ -807,6 +806,7 @@ namespace Timesheet.Models
                       select sheets.Banner_ID).Distinct();
             foreach (int id in Id)
             {
+                Debug.WriteLine("This id is: " + id);
                 var fname = (from emps in db.Employees
                              where emps.Banner_ID == id && emps.Supervisor == sid.ToString().Trim()
                              select emps.First_Name).FirstOrDefault();
