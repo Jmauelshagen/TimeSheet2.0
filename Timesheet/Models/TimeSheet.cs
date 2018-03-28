@@ -39,6 +39,7 @@ namespace Timesheet.Models
         public IEnumerable<SelectListItem> EmpNames { get; set; }
         public string Note { get; set; }
         public string Name { get; set; }
+        public bool IsEnabled { get; set; }
 
 
         //Constructors
@@ -60,11 +61,13 @@ namespace Timesheet.Models
             AuthorizedBySupervisor = "False";
             Banner_ID = 0;
             Note = "";
+            IsEnabled = false;
         }
 
         //all-args constructor
         public TimeSheet(int id, string wEnd, string date, string inT, string outL, string inL, string outT,
-            int leaveId, string leaveHrs, string addlHrs, string tlHrs, string sub, string auth, int banner_ID, string n)
+            int leaveId, string leaveHrs, string addlHrs, string tlHrs, string sub, string auth, int banner_ID,
+            string n, bool enable)
         {
             Id = id;
             WeekEnding = wEnd;
@@ -81,6 +84,7 @@ namespace Timesheet.Models
             AuthorizedBySupervisor = auth;
             Banner_ID = banner_ID;
             Note = n;
+            this.IsEnabled = enable;
         }
 
         //Method to get list of Timesheet objects by employee id and week ending date

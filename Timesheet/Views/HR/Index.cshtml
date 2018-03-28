@@ -68,11 +68,11 @@
         <p>Welcome @hr.First_Name @hr.Last_Name!</p>
 
         <!-- Rounded switch -->
-        @*<label class="switch">
-            @Html.CheckBoxFor(model => model.IsEnabled)
+        <label class="switch">
+            @Html.CheckBoxFor(model => model.IsEnabled, new {@checked = "checked"})
             <div class="slider round">
             </div>
-        </label>*@
+        </label>
 
         <br />
         <p>Select a week to review employee pay sheet summaries.</p>
