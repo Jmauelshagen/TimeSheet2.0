@@ -17,7 +17,6 @@
         for(j = 0 ; j < tab.rows.length ; j++) 
         {     
             tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
-            //tab_text=tab_text+"</tr>";
         }
 
         tab_text=tab_text+"</table>";
@@ -34,7 +33,7 @@
             txtArea1.document.write(tab_text);
             txtArea1.document.close();
             txtArea1.focus(); 
-            sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
+            sa=txtArea1.document.execCommand("SaveAs",true,"Reports.xls");
         }  
         else                 //other browser not tested on IE 11
             sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));  
