@@ -37,30 +37,34 @@
     <p id="time">It is @today at @time</p>
     @using (Html.BeginForm("ApprovedData", "ApprovedTimesheets", FormMethod.Post, new { role = "form" }))
     {
-        @Html.DropDownList("Employee", employees, "Select Employees", new { onchange = "this.form.submit();" })
+        //@Html.DropDownList("Employee", employees, "Select Employees", new { onchange = "this.form.submit();" })
+        @Html.DropDownListFor(x => x.Name,
+                                         Model.EmpNames,
+                                         "-Select Employee-",
+                                         new { onchange = "this.form.submit();" })
     }
 
     <table style="width:100%" cellpadding="4">
-            <tr>
-                <th>Week End</th>
-                <th>Employee Name</th>
-                <th>Worked hours</th>
-                <th>Over Time</th> 
-                <th>FLSA Over Time</th>
-                <th>Absent hours</th>
-                <th>Supervisor</th>                
-            </tr>
-            @{                
-                if (tsheets != null)
+        <tr>
+            <th>Week End</th>
+            <th>Employee Name</th>
+            <th>Worked hours</th>
+            <th>Over Time</th>
+            <th>FLSA Over Time</th>
+            <th>Absent hours</th>
+            <th>Supervisor</th>
+        </tr>
+        @{
+            if (tsheets != null)
+            {
+                foreach (List<TimeSheet> tsheet in @tsheets)
                 {
-                    foreach (List<TimeSheet> tsheet in @tsheets)
-                    {
-                        Debug.WriteLine("List of List run!");
-                        Debug.WriteLine("The weekending should be: " + tsheet[0].WeekEnding);
+                    Debug.WriteLine("List of List run!");
+                    Debug.WriteLine("The weekending should be: " + tsheet[0].WeekEnding);
                     <tr>
                         @{
-                        <td>@tsheet[0].WeekEnding</td>
-                        <td>@emp.First_Name @emp.Last_Name</td>
+                            <td>@tsheet[0].WeekEnding</td>
+                            <td>@emp.First_Name @emp.Last_Name</td>
 
                             string totalWorked = "";
                             string totalabsent = "";
@@ -112,7 +116,7 @@
                             }
                             <td>@totalWorked</td>
 
-                             //Calculate overtime hours
+                            //Calculate overtime hours
                             string overTime = "";
                             if (hours >= 40)
                             {
@@ -121,7 +125,7 @@
                             <td>@overTime</td>
 
                             //Calculate overtime hours
-                            string overTimeflsa= "";
+                            string overTimeflsa = "";
 
                             overTimeflsa = (hours - 40).ToString() + ":" + minutes;
                             int overtimeHours = 0;
@@ -187,12 +191,12 @@
                                 }
                             }
                             <td>@totalabsent</td>
-                            <td>@emp.Supervisor</td>                           
-                         }
+                            <td>@emp.Supervisor</td>
+                        }
                     </tr>
-                    }
                 }
-            }            
+            }
+        }
     </table><br />
 
     <!--Like to go back-->
