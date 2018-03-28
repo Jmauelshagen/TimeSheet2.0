@@ -7,9 +7,9 @@
     <Schema Namespace="LoginDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Email">
           <Key>
-            <PropertyRef Name="Email" />
+            <PropertyRef Name="Email_Address" />
           </Key>
-          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email_Address" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Emp">
@@ -65,7 +65,7 @@
           </Key>
           <Property Name="Banner_ID" Type="int" Nullable="false" />
           <Property Name="Username" Type="nchar" MaxLength="20" Nullable="false" />
-          <Property Name="Password" Type="nchar" MaxLength="30" Nullable="false" />
+          <Property Name="Password" Type="nchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="Roles">
           <Key>
@@ -170,7 +170,7 @@
           </Key>
           <Property Name="Banner_ID" Type="Int32" Nullable="false" />
           <Property Name="Username" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -220,10 +220,10 @@
         </EntityContainer>
         <EntityType Name="Email">
           <Key>
-            <PropertyRef Name="Email1" />
+            <PropertyRef Name="Email_Address" />
           </Key>
-          <Property Name="Email1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email_Address" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -332,8 +332,8 @@
           <EntitySetMapping Name="Emails">
             <EntityTypeMapping TypeName="LoginDatabaseModel.Email">
               <MappingFragment StoreEntitySet="Email">
+                <ScalarProperty Name="Email_Address" ColumnName="Email_Address" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Email1" ColumnName="Email" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

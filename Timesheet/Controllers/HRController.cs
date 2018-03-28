@@ -147,10 +147,13 @@ namespace Timesheet.Controllers
             message.IsBodyHtml = false;
             using (SmtpClient smtp = new SmtpClient())
             {
+                Email em = new Email();
+                em = em.GetEmail(hr.Email_Address);
+                Debug.WriteLine(em.Email_Address + " , " + em.Password);
                 var credential = new System.Net.NetworkCredential //credentials check
                 {
-                    UserName = "hr.testingctc@gmail.com",  // replace with sender's email id 
-                    Password = "P@s$w0rd"  // replace with password 
+                    UserName = em.Email_Address.Trim(),  // replace with sender's email id 
+                    Password = em.Password.Trim()  // replace with password 
                 };
                 smtp.Credentials = credential;
                 //smtp.Host = "smtp-mail.outlook.com";
