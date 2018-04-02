@@ -196,6 +196,14 @@ namespace Timesheet.Controllers
                     if (!String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = model.LeaveHours; }
                     if (!String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = model.AdditionalHours; }
 
+                    if (String.IsNullOrEmpty(model.TimeIn)) { tsheets[i].TimeIn = "0:00"; }
+                    if (String.IsNullOrEmpty(model.OutForLunch)) { tsheets[i].OutForLunch = "0:00"; }
+                    if (String.IsNullOrEmpty(model.InFromLunch)) { tsheets[i].InFromLunch = "0:00"; }
+                    if (String.IsNullOrEmpty(model.TimeOut)) { tsheets[i].TimeOut = "0:00"; }
+                    if (String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = 0; }
+                    if (String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = "0:00"; }
+                    if (String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = "0:00"; }
+
                     if (model.AdditionalHours.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(model.Note))
                     {
                         Debug.WriteLine("In Erro 1");
