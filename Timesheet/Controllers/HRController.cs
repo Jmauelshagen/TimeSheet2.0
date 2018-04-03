@@ -141,7 +141,6 @@ namespace Timesheet.Controllers
             Debug.WriteLine("HR email: " + hr.Email_Address);
             message.To.Add(new MailAddress(email)); //initializes new instance of mailaddress class
             message.From = new MailAddress(hr.Email_Address);
-            //message.From = new MailAddress(emp.Email);
             message.Subject = subject;
             message.Body = messages;
             message.IsBodyHtml = false;
@@ -187,7 +186,7 @@ namespace Timesheet.Controllers
                     string subject = "Changes Made";
                     string email = emp.Email_Address.Trim();
                     string messages = "Dear " + emp.First_Name.Trim() + "," + Environment.NewLine + "Changes have been made to " + CurrentDate + " Timesheet, Please reivew changes and call HR if you have any questions." + Environment.NewLine +
-                        "Old Timesheet data - Time In: " + tsheets[i].TimeIn.Trim() + " Time Out: " + tsheets[i].OutForLunch.Trim() + " Time In: " + tsheets[i].InFromLunch.Trim() + " Time Out: " + tsheets[i].TimeOut.Trim() + " Leave ID: " + tsheets[i].LeaveId + " Leave Hours: " + tsheets[i].LeaveHours.Trim() + " Additional Hours: " + tsheets[i].AdditionalHours.Trim();
+                        "Old Timesheet data - Time In: " + DateTime.Parse(tsheets[i].TimeIn.Trim()).ToString(@"hh\:mm tt") + " Time Out: " + DateTime.Parse(tsheets[i].OutForLunch.Trim()).ToString(@"hh\:mm tt") + " Time In: " + DateTime.Parse(tsheets[i].InFromLunch.Trim()).ToString(@"hh\:mm tt") + " Time Out: " + DateTime.Parse(tsheets[i].TimeOut.Trim()).ToString(@"hh\:mm tt") + " Leave ID: " + tsheets[i].LeaveId + " Leave Hours: " + tsheets[i].LeaveHours.Trim() + " Additional Hours: " + tsheets[i].AdditionalHours.Trim();
 
                     if (!String.IsNullOrEmpty(model.TimeIn)) { tsheets[i].TimeIn = model.TimeIn; }
                     if (!String.IsNullOrEmpty(model.OutForLunch)) { tsheets[i].OutForLunch = model.OutForLunch; }
@@ -196,6 +195,14 @@ namespace Timesheet.Controllers
                     if (!String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = model.LeaveId; }
                     if (!String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = model.LeaveHours; }
                     if (!String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = model.AdditionalHours; }
+
+                    if (String.IsNullOrEmpty(model.TimeIn)) { tsheets[i].TimeIn = "0:00"; }
+                    if (String.IsNullOrEmpty(model.OutForLunch)) { tsheets[i].OutForLunch = "0:00"; }
+                    if (String.IsNullOrEmpty(model.InFromLunch)) { tsheets[i].InFromLunch = "0:00"; }
+                    if (String.IsNullOrEmpty(model.TimeOut)) { tsheets[i].TimeOut = "0:00"; }
+                    if (String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = 0; }
+                    if (String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = "0:00"; }
+                    if (String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = "0:00"; }
 
                     if (model.AdditionalHours.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(model.Note))
                     {
@@ -213,7 +220,7 @@ namespace Timesheet.Controllers
                     tsheets[i].UpdateTimeSheet(tsheets[i]);
                     Session["TimeSheetData"] = tsheets;
                     Session["Message"] = message;
-                    messages = messages + Environment.NewLine + "New Timesheet data - Time In: " + tsheets[i].TimeIn.Trim() + " Time Out: " + tsheets[i].OutForLunch.Trim() + " Time In: " + tsheets[i].InFromLunch.Trim() + " Time Out: " + tsheets[i].TimeOut.Trim() + " Leave ID: " + tsheets[i].LeaveId + " Leave Hours: " + tsheets[i].LeaveHours.Trim() + " Additional Hours: " + tsheets[i].AdditionalHours.Trim() +
+                    messages = messages + Environment.NewLine + "New Timesheet data - Time In: " + DateTime.Parse(tsheets[i].TimeIn.Trim()).ToString(@"hh\:mm tt") + " Time Out: " + DateTime.Parse(tsheets[i].OutForLunch.Trim()).ToString(@"hh\:mm tt") + " Time In: " + DateTime.Parse(tsheets[i].InFromLunch.Trim()).ToString(@"hh\:mm tt") + " Time Out: " + DateTime.Parse(tsheets[i].TimeOut.Trim()).ToString(@"hh\:mm tt") + " Leave ID: " + tsheets[i].LeaveId + " Leave Hours: " + tsheets[i].LeaveHours.Trim() + " Additional Hours: " + tsheets[i].AdditionalHours.Trim() +
                         Environment.NewLine + Environment.NewLine + "Thanks," + Environment.NewLine + hr.First_Name.Trim() + " " + hr.Last_Name.Trim();
                     var x = await SendEmail(name, subject, email, messages);
                     if (x == "sent")

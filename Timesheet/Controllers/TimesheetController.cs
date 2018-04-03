@@ -271,6 +271,14 @@ namespace Timesheet.Controllers
                             if (!String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = model.LeaveHours; }
                             if (!String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = model.AdditionalHours; }
 
+                            if (String.IsNullOrEmpty(model.TimeIn)) { tsheets[i].TimeIn = "0:00"; }
+                            if (String.IsNullOrEmpty(model.OutForLunch)) { tsheets[i].OutForLunch = "0:00"; }
+                            if (String.IsNullOrEmpty(model.InFromLunch)) { tsheets[i].InFromLunch = "0:00"; }
+                            if (String.IsNullOrEmpty(model.TimeOut)) { tsheets[i].TimeOut = "0:00"; }
+                            if (String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = 0; }
+                            if (String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = "0:00"; }
+                            if (String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = "0:00"; }
+
                             if (model.AdditionalHours.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(model.Note))
                             {
                                 Debug.WriteLine("In Erro 1");
@@ -345,6 +353,15 @@ namespace Timesheet.Controllers
                         if (!String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = model.LeaveId; }
                         if (!String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = model.LeaveHours; }
                         if (!String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = model.AdditionalHours; }
+
+                        if (String.IsNullOrEmpty(model.TimeIn)) { tsheets[i].TimeIn = "0:00"; }
+                        if (String.IsNullOrEmpty(model.OutForLunch)) { tsheets[i].OutForLunch = "0:00"; }
+                        if (String.IsNullOrEmpty(model.InFromLunch)) { tsheets[i].InFromLunch = "0:00"; }
+                        if (String.IsNullOrEmpty(model.TimeOut)) { tsheets[i].TimeOut = "0:00"; }
+                        if (String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = 0; }
+                        if (String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = "0:00"; }
+                        if (String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = "0:00"; }
+
                         if (!String.IsNullOrEmpty(model.Note))
                         {
                             if (model.Note.ToString().Trim().Equals("None") || model.Note.ToString().Trim().Equals("none"))
@@ -416,11 +433,11 @@ namespace Timesheet.Controllers
                 {
                     if (tsheets[i].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
                     {
-                        string today = DateTime.Now.ToString("HH:mm");
+                        string time = DateTime.Now.ToString("HH:mm");
 
                         if (tsheets[i].TimeIn.ToString().Trim().Equals("0:00"))
                         {
-                            tsheets[i].TimeIn = today;
+                            tsheets[i].TimeIn = time;
                             tsheets[i].UpdateTimeSheet(tsheets[i]);
                             message = "1st punch has been added at: " + DateTime.Now.ToString("h:mm tt");
                             Session["DailyMessage"] = message;
@@ -429,7 +446,7 @@ namespace Timesheet.Controllers
                         {
                             if (tsheets[i].OutForLunch.ToString().Trim().Equals("0:00"))
                             {
-                                tsheets[i].OutForLunch = today;
+                                tsheets[i].OutForLunch = time;
                                 tsheets[i].UpdateTimeSheet(tsheets[i]);
                                 message = "2nd punch has been added at: " + DateTime.Now.ToString("h:mm tt");
                                 Session["DailyMessage"] = message;
@@ -438,7 +455,7 @@ namespace Timesheet.Controllers
                             {
                                 if (tsheets[i].InFromLunch.ToString().Trim().Equals("0:00"))
                                 {
-                                    tsheets[i].InFromLunch = today;
+                                    tsheets[i].InFromLunch = time;
                                     tsheets[i].UpdateTimeSheet(tsheets[i]);
                                     message = "3rd punch has been added at: " + DateTime.Now.ToString("h:mm tt");
                                     Session["DailyMessage"] = message;
@@ -447,7 +464,7 @@ namespace Timesheet.Controllers
                                 {
                                     if (tsheets[i].TimeOut.ToString().Trim().Equals("0:00"))
                                     {
-                                        tsheets[i].TimeOut = today;
+                                        tsheets[i].TimeOut = time;
                                         tsheets[i].UpdateTimeSheet(tsheets[i]);
                                         message = "4th punch has been added at: " + DateTime.Now.ToString("h:mm tt");
                                         Session["DailyMessage"] = message;
@@ -506,11 +523,11 @@ namespace Timesheet.Controllers
                 {
                     if (tsheets[i].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
                     {
-                        string today = DateTime.Now.ToString("HH:mm");
+                        string time = DateTime.Now.ToString("HH:mm"); //gets the current time in military time
 
                         if (tsheets[i].TimeIn.ToString().Trim().Equals("0:00"))
                         {
-                            tsheets[i].TimeIn = today;
+                            tsheets[i].TimeIn = time;
                             tsheets[i].UpdateTimeSheet(tsheets[i]);
                             message = "1st punch has been added at: " + DateTime.Now.ToString("h:mm tt");
                             Session["QuickTimeStamp"] = message;
@@ -519,7 +536,7 @@ namespace Timesheet.Controllers
                         {
                             if (tsheets[i].OutForLunch.ToString().Trim().Equals("0:00"))
                             {
-                                tsheets[i].OutForLunch = today;
+                                tsheets[i].OutForLunch = time;
                                 tsheets[i].UpdateTimeSheet(tsheets[i]);
                                 message = "2nd punch has been added at: " + DateTime.Now.ToString("h:mm tt");
                                 Session["QuickTimeStamp"] = message;
@@ -528,7 +545,7 @@ namespace Timesheet.Controllers
                             {
                                 if (tsheets[i].InFromLunch.ToString().Trim().Equals("0:00"))
                                 {
-                                    tsheets[i].InFromLunch = today;
+                                    tsheets[i].InFromLunch = time;
                                     tsheets[i].UpdateTimeSheet(tsheets[i]);
                                     message = "3rd punch has been added at: " + DateTime.Now.ToString("h:mm tt");
                                     Session["QuickTimeStamp"] = message;
@@ -537,7 +554,7 @@ namespace Timesheet.Controllers
                                 {
                                     if (tsheets[i].TimeOut.ToString().Trim().Equals("0:00"))
                                     {
-                                        tsheets[i].TimeOut = today;
+                                        tsheets[i].TimeOut = time;
                                         tsheets[i].UpdateTimeSheet(tsheets[i]);
                                         message = "4th punch has been added at: " + DateTime.Now.ToString("h:mm tt");
                                         Session["QuickTimeStamp"] = message;
@@ -651,6 +668,14 @@ namespace Timesheet.Controllers
                         if (!String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = model.LeaveId; }
                         if (!String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = model.LeaveHours; }
                         if (!String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = model.AdditionalHours; }
+
+                        if (String.IsNullOrEmpty(model.TimeIn)) { tsheets[i].TimeIn = "0:00"; }
+                        if (String.IsNullOrEmpty(model.OutForLunch)) { tsheets[i].OutForLunch = "0:00"; }
+                        if (String.IsNullOrEmpty(model.InFromLunch)) { tsheets[i].InFromLunch = "0:00"; }
+                        if (String.IsNullOrEmpty(model.TimeOut)) { tsheets[i].TimeOut = "0:00"; }
+                        if (String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = 0; }
+                        if (String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = "0:00"; }
+                        if (String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = "0:00"; }
 
                         if (model.AdditionalHours.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(model.Note))
                         {

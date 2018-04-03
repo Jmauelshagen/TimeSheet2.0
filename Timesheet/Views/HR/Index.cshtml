@@ -84,14 +84,14 @@
         <table style="width:100%" cellpadding="4" id="PaySummary">
             <thead>
                 <tr>
-                    <th>Employee Name</th>
+                    <th>Name, ID</th>
                     <th>Worked hours</th>
                     <th>Over Time</th>
                     <th>FLSA Overtime</th>
                     <th>Absent hours</th>
                     <th>Time Sheet Status</th>
                     <th>Supervisor</th>
-                    <th>Overview</th>
+                    @*<th>Overview</th>*@
                 </tr>
             </thead>
             <tbody>
@@ -106,10 +106,11 @@
                                 <tr>
                                     @{Model.Banner_ID = paySum.Banner_ID;
                                         emps = emps.GetEmployee(Convert.ToInt16(@paySum.Banner_ID));}
-                                    <td>
-                                        <a href="mailto:@emps.Email_Address.Trim()">@paySum.EmpName</a>
-                                    </td>
                                     @Html.HiddenFor(model => model.Banner_ID)
+                                    <td>
+                                        <button id="submit" type="submit" value="@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID">@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID</button>
+                                        @*<a href="mailto:@emps.Email_Address.Trim()">@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID</a>*@
+                                    </td>
                                     <td>
                                         @paySum.TotalHours
                                     </td>
@@ -128,9 +129,9 @@
                                     <td>
                                         @paySum.SuperName
                                     </td>
-                                    <td>
+                                    @*<td>
                                         <button id="submit" type="submit" value="Overview">Overview</button>
-                                    </td>
+                                    </td>*@
                                 </tr>
                             }
                         }

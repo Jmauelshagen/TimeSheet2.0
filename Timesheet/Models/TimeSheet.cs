@@ -56,7 +56,7 @@ namespace Timesheet.Models
             LeaveHours = "";
             AdditionalHours = "";
             TotalHoursWorked = "";
-            Submitted = "No";
+            Submitted = "False";
             AuthorizedBySupervisor = "False";
             Banner_ID = 0;
             Note = "";
@@ -112,7 +112,7 @@ namespace Timesheet.Models
                         LeaveHours = "0:00",
                         AdditionalHours = "0:00",
                         TotalHoursWorked = "0:00",
-                        Submitted = "No",
+                        Submitted = "False",
                         AuthorizedBySupervisor = "False",
                         Banner_ID = Banner_ID,
                         Note = ""
