@@ -35,26 +35,28 @@ namespace Timesheet.Controllers
             {
                 Login login = log.GetLogin(model.Username, model.Password);
                 Employee emp = new Employee();
-                Employee employee = emp.GetEmployee(login.EmpId);
-                Session["Employee"] = employee;
+                Employee employee = emp.GetEmployee(login.Banner_ID);
 
                 //Get the role id from the Employee object
-                int role = employee.RoleId;
+                string role = employee.Job_Desc_Number.Trim();
 
                 //Redirect the user to the correct dashboard screen based upon the role id
                 // 1 = Employee; 2 = Supervisor; 3 = HR
                 switch (role)
                 {
-                    case 1:
+                    case "1":
                         {
+                            Session["Employee"] = employee;
                             return RedirectToAction("Index", "Employees");
                         }
-                    case 2:
+                    case "2":
                         {
+                            Session["Supervisor"] = employee;
                             return RedirectToAction("Index", "Supervisor");
                         }
-                    case 3:
+                    case "3":
                         {
+                            Session["HR"] = employee;
                             return RedirectToAction("Index", "HR");
                         }
                     default:

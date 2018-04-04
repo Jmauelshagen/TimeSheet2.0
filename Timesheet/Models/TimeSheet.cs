@@ -34,7 +34,7 @@ namespace Timesheet.Models
         public string TotalHoursWorked { get; set; }
         public string Submitted { get; set; }
         public string AuthorizedBySupervisor { get; set; }        
-        public Nullable<int> EmpId { get; set; }
+        public Nullable<int> Banner_ID { get; set; }
         public IEnumerable<SelectListItem> WeekEndingDates { get; set; }
         public IEnumerable<SelectListItem> EmpNames { get; set; }
         public string Note { get; set; }
@@ -56,15 +56,15 @@ namespace Timesheet.Models
             LeaveHours = "";
             AdditionalHours = "";
             TotalHoursWorked = "";
-            Submitted = "No";
+            Submitted = "False";
             AuthorizedBySupervisor = "False";
-            EmpId = 0;
+            Banner_ID = 0;
             Note = "";
         }
 
         //all-args constructor
         public TimeSheet(int id, string wEnd, string date, string inT, string outL, string inL, string outT,
-            int leaveId, string leaveHrs, string addlHrs, string tlHrs, string sub, string auth, int empId, string n)
+            int leaveId, string leaveHrs, string addlHrs, string tlHrs, string sub, string auth, int banner_ID, string n)
         {
             Id = id;
             WeekEnding = wEnd;
@@ -79,18 +79,18 @@ namespace Timesheet.Models
             TotalHoursWorked = tlHrs;
             Submitted = sub;
             AuthorizedBySupervisor = auth;
-            EmpId = empId;
+            Banner_ID = banner_ID;
             Note = n;
         }
 
         //Method to get list of Timesheet objects by employee id and week ending date
         //Queries the TimeSheet table by employee id and WeekEnding date and returns List collection of Timesheet objects
-        public List<TimeSheet> GetTimeSheetByWeek(int empId, List<string> dates)
+        public List<TimeSheet> GetTimeSheetByWeek(int Banner_ID, List<string> dates)
         {
             List<TimeSheet> timesheets = new List<TimeSheet>();
             string wEnd = dates[0].Trim();
             var sheets = from tsheets in db.TimeSheets
-                         where tsheets.EmpId == empId && tsheets.WeekEnding == wEnd
+                         where tsheets.Banner_ID == Banner_ID && tsheets.WeekEnding == wEnd
                          orderby tsheets.Id ascending
                          select tsheets;
             var count = sheets.Count();
@@ -112,9 +112,9 @@ namespace Timesheet.Models
                         LeaveHours = "0:00",
                         AdditionalHours = "0:00",
                         TotalHoursWorked = "0:00",
-                        Submitted = "No",
+                        Submitted = "False",
                         AuthorizedBySupervisor = "False",
-                        EmpId = empId,
+                        Banner_ID = Banner_ID,
                         Note = ""
                     };
                     this.InsertTimeSheet(sheet);
@@ -137,7 +137,7 @@ namespace Timesheet.Models
             int iemp = Convert.ToInt32(emp);
             Debug.WriteLine("Iemp value is : " + iemp + " ]");
             var sheets = from tsheets in db.TimeSheets
-                         where tsheets.AuthorizedBySupervisor.Equals("True") && tsheets.EmpId == iemp
+                         where tsheets.AuthorizedBySupervisor.Equals("True") && tsheets.Banner_ID == iemp
                          group tsheets by tsheets.WeekEnding into weekgroup
                          orderby weekgroup.Key ascending
                          select weekgroup;
@@ -161,12 +161,12 @@ namespace Timesheet.Models
             string fName = splitNames[0].Trim();
             string lName = splitNames[1].Trim();
             //Find the employee id based on the name passed in to the method
-            var empId = (from emps in db.Employees
-                         where emps.FirstName == fName && emps.LastName == lName
-                         select emps.EmpId).FirstOrDefault();
+            var Banner_ID = (from emps in db.Employees
+                         where emps.First_Name == fName && emps.Last_Name == lName
+                         select emps.Banner_ID).FirstOrDefault();
             //Select the TimeSheet objects based on the employee id and week ending date
             var sheets = from tsheets in db.TimeSheets
-                         where tsheets.EmpId == empId && tsheets.WeekEnding == wED
+                         where tsheets.Banner_ID == Banner_ID && tsheets.WeekEnding == wED
                          orderby tsheets.Id ascending
                          select tsheets;
 
@@ -185,7 +185,7 @@ namespace Timesheet.Models
             List<TimeSheet> timesheets = new List<TimeSheet>();
             //Select the TimeSheet objects based on the employee id and week ending date
             var sheets = from tsheets in db.TimeSheets
-                         where tsheets.EmpId == id && tsheets.WeekEnding == wED
+                         where tsheets.Banner_ID == id && tsheets.WeekEnding == wED
                          orderby tsheets.Id ascending
                          select tsheets;
 
@@ -264,7 +264,7 @@ namespace Timesheet.Models
             tsheet.TotalHoursWorked = tsheet.CalculateTotalHoursWorked(sheet);
             tsheet.Submitted = sheet.Submitted;
             tsheet.AuthorizedBySupervisor = sheet.AuthorizedBySupervisor;
-            tsheet.EmpId = sheet.EmpId;
+            tsheet.Banner_ID = sheet.Banner_ID;
             tsheet.Note = sheet.Note;
             Debug.WriteLine("The tsheet is :" + tsheet.Note + "]");
 
@@ -672,7 +672,7 @@ namespace Timesheet.Models
             List<string> dates = new List<string>();
             //Select the TimeSheet objects based on the employee id and week ending date
             var sheets = from tsheets in db.TimeSheets
-                         where tsheets.EmpId == id && tsheets.WeekEnding == wED
+                         where tsheets.Banner_ID == id && tsheets.WeekEnding == wED
                          orderby tsheets.Id ascending
                          select tsheets;
 
@@ -701,7 +701,7 @@ namespace Timesheet.Models
         public List<string> GetWeekEndingDateList(int id)
         {
             var wED = (from sheets in db.TimeSheets
-                       where sheets.EmpId == id
+                       where sheets.Banner_ID == id
                        select sheets.WeekEnding).Distinct().OrderBy(WeekEnding => WeekEnding);
 
             List<string> weekEndDates = new List<string>();
@@ -714,21 +714,24 @@ namespace Timesheet.Models
 
         //Obtains the fist and list names for a distinct list of employee ids that exist on the
         //TimeSheet db table
-        public List<string> GetEmployeeNames()
+        public List<string> GetEmployeeNames(int sid)
         {
             List<string> names = new List<string>();
             var Id = (from sheets in db.TimeSheets
-                      select sheets.EmpId).Distinct();
+                      select sheets.Banner_ID).Distinct();
             foreach (int id in Id)
             {
                 var fname = (from emps in db.Employees
-                             where emps.EmpId == id
-                             select emps.FirstName).FirstOrDefault();
+                             where emps.Banner_ID == id && emps.Supervisor == sid.ToString().Trim()
+                             select emps.First_Name).FirstOrDefault();
                 var lname = (from emps in db.Employees
-                             where emps.EmpId == id
-                             select emps.LastName).FirstOrDefault();
-                string fullname = fname.Trim() + " " + lname.Trim();
-                names.Add(fullname);
+                             where emps.Banner_ID == id
+                             select emps.Last_Name).FirstOrDefault();
+                if (fname != null && lname != null)
+                {
+                    string fullname = fname.Trim() + " " + lname.Trim() + ", " + id;
+                    names.Add(fullname);
+                }
 
             }
             return names;

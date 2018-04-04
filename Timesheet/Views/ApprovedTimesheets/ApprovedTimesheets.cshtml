@@ -14,10 +14,11 @@
     <div>
         <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
     </div>
+    Employee sup = (Employee)Session["Supervisor"];
 
     Employee emp = (Employee)Session["Employee"];
     List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
-    List<string> dates = (List<string>)Session["Dates"];  
+    List<string> dates = (List<string>)Session["Dates"];
 }
 
 <!DOCTYPE html>
@@ -32,8 +33,10 @@
 
 
     <h2>Approved Timesheets</h2>
-    @{ string today = DateTime.Now.ToLongDateString();
-        string time = DateTime.Now.ToLongTimeString();}
+    @{
+        string today = DateTime.Now.ToLongDateString();
+        string time = DateTime.Now.ToLongTimeString();
+    }
     <p id="time">It is @today at @time</p>
     @using (Html.BeginForm("ApprovedData", "ApprovedTimesheets", FormMethod.Post, new { role = "form" }))
     {
@@ -141,7 +144,14 @@
         }
     </table>
 
-    <a href="#" onclick="history.back();">Back</a>
+    <!--Like to go back-->
+    <a href="@Url.Action("Index","Supervisor")">Home</a>
+
+    <!--To Go to approved Timesheet Page-->
+    <a href="@Url.Action("Index", "Reports")"> Reports</a>
+
+    <!--Log out link.-->
+    <a href="@Url.Action("LogOut","Login")">LogOut</a>
 </body>
 </html>
 

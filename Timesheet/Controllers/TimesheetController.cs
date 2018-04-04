@@ -13,17 +13,20 @@ namespace Timesheet.Controllers
         // GET: Timesheet
         public ActionResult Timesheet()
         {
+            Employee emp = (Employee)Session["Employee"];
             Session["datelist"] = GetListOfDays();
             return View();
         }
         public ActionResult DailyTimesheet()
         {
+            Employee emp = (Employee)Session["Employee"];
+            Session["datelist"] = GetListOfDays();
             return View();
         }
         public ActionResult OldTimesheet()
         {
             Employee emp = (Employee)Session["Employee"];
-            Session["WeekList"] = GetWeekEndingDateList(emp.EmpId);
+            Session["WeekList"] = GetWeekEndingDateList(emp.Banner_ID);
             return View();
         }
 
@@ -80,7 +83,7 @@ namespace Timesheet.Controllers
             Session["Dates"] = dates;
 
             //Get list of TimeSheet objects based on date and employee id and add list to session
-            List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
+            List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.Banner_ID, dates);
             Session["TimeSheetData"] = tsheets;
 
             //resets the QuickTimeStamp and DailyMessage to blank when you go to another page
@@ -114,7 +117,7 @@ namespace Timesheet.Controllers
             Session["Dates"] = dates;
 
             //Get list of TimeSheet objects based on date and employee id and add list to session
-            List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
+            List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.Banner_ID, dates);
             Session["TimeSheetData"] = tsheets;
 
             //resets the QuickTimeStamp and DailyMessage to blank when you go to another page
@@ -167,7 +170,7 @@ namespace Timesheet.Controllers
                 Session["Dates"] = dates;
 
                 //Get list of TimeSheet objects based on date and employee id and add list to session
-                List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
+                List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.Banner_ID, dates);
                 Session["TimeSheetData"] = tsheets;
                 Session["Message2"] = "";
                 //string CurrentDate = Request.Form["Date"].ToString();
@@ -187,7 +190,7 @@ namespace Timesheet.Controllers
                                     tsheets[i].Note = "";
                                     model.Note = "";
                                 }
-                                else { tsheets[i].Note = model.Note; }
+                                else { tsheets[i].Note = model.Note + " - " + model.Date; }
                             }
                             model.AdditionalHours = tsheets[i].AdditionalHours;
                             if (model.AdditionalHours.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(model.Note))
@@ -249,7 +252,7 @@ namespace Timesheet.Controllers
                 Session["Dates"] = dates;
 
                 //Get list of TimeSheet objects based on date and employee id and add list to session
-                List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
+                List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.Banner_ID, dates);
                 Session["TimeSheetData"] = tsheets;
                 Session["Message2"] = "";
                 string CurrentDate = model.Date;
@@ -267,6 +270,14 @@ namespace Timesheet.Controllers
                             if (!String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = model.LeaveId; }
                             if (!String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = model.LeaveHours; }
                             if (!String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = model.AdditionalHours; }
+
+                            if (String.IsNullOrEmpty(model.TimeIn)) { tsheets[i].TimeIn = "0:00"; }
+                            if (String.IsNullOrEmpty(model.OutForLunch)) { tsheets[i].OutForLunch = "0:00"; }
+                            if (String.IsNullOrEmpty(model.InFromLunch)) { tsheets[i].InFromLunch = "0:00"; }
+                            if (String.IsNullOrEmpty(model.TimeOut)) { tsheets[i].TimeOut = "0:00"; }
+                            if (String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = 0; }
+                            if (String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = "0:00"; }
+                            if (String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = "0:00"; }
 
                             if (model.AdditionalHours.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(model.Note))
                             {
@@ -324,7 +335,7 @@ namespace Timesheet.Controllers
 
 
             //Get list of TimeSheet objects based on date and employee id and add list to session
-            List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
+            List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.Banner_ID, dates);
             Session["TimeSheetData"] = tsheets;
 
             string CurrentDate = DateTime.Now.ToShortDateString();
@@ -342,6 +353,15 @@ namespace Timesheet.Controllers
                         if (!String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = model.LeaveId; }
                         if (!String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = model.LeaveHours; }
                         if (!String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = model.AdditionalHours; }
+
+                        if (String.IsNullOrEmpty(model.TimeIn)) { tsheets[i].TimeIn = "0:00"; }
+                        if (String.IsNullOrEmpty(model.OutForLunch)) { tsheets[i].OutForLunch = "0:00"; }
+                        if (String.IsNullOrEmpty(model.InFromLunch)) { tsheets[i].InFromLunch = "0:00"; }
+                        if (String.IsNullOrEmpty(model.TimeOut)) { tsheets[i].TimeOut = "0:00"; }
+                        if (String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = 0; }
+                        if (String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = "0:00"; }
+                        if (String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = "0:00"; }
+
                         if (!String.IsNullOrEmpty(model.Note))
                         {
                             if (model.Note.ToString().Trim().Equals("None") || model.Note.ToString().Trim().Equals("none"))
@@ -402,7 +422,7 @@ namespace Timesheet.Controllers
             Session["Dates"] = dates;
             Session["Message2"] = "";
             //Get list of TimeSheet objects based on date and employee id and add list to session
-            List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
+            List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.Banner_ID, dates);
             Session["TimeSheetData"] = tsheets;
 
             string CurrentDate = DateTime.Now.ToShortDateString();
@@ -413,11 +433,11 @@ namespace Timesheet.Controllers
                 {
                     if (tsheets[i].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
                     {
-                        string today = DateTime.Now.ToString("HH:mm");
+                        string time = DateTime.Now.ToString("HH:mm");
 
                         if (tsheets[i].TimeIn.ToString().Trim().Equals("0:00"))
                         {
-                            tsheets[i].TimeIn = today;
+                            tsheets[i].TimeIn = time;
                             tsheets[i].UpdateTimeSheet(tsheets[i]);
                             message = "1st punch has been added at: " + DateTime.Now.ToString("h:mm tt");
                             Session["DailyMessage"] = message;
@@ -426,7 +446,7 @@ namespace Timesheet.Controllers
                         {
                             if (tsheets[i].OutForLunch.ToString().Trim().Equals("0:00"))
                             {
-                                tsheets[i].OutForLunch = today;
+                                tsheets[i].OutForLunch = time;
                                 tsheets[i].UpdateTimeSheet(tsheets[i]);
                                 message = "2nd punch has been added at: " + DateTime.Now.ToString("h:mm tt");
                                 Session["DailyMessage"] = message;
@@ -435,7 +455,7 @@ namespace Timesheet.Controllers
                             {
                                 if (tsheets[i].InFromLunch.ToString().Trim().Equals("0:00"))
                                 {
-                                    tsheets[i].InFromLunch = today;
+                                    tsheets[i].InFromLunch = time;
                                     tsheets[i].UpdateTimeSheet(tsheets[i]);
                                     message = "3rd punch has been added at: " + DateTime.Now.ToString("h:mm tt");
                                     Session["DailyMessage"] = message;
@@ -444,7 +464,7 @@ namespace Timesheet.Controllers
                                 {
                                     if (tsheets[i].TimeOut.ToString().Trim().Equals("0:00"))
                                     {
-                                        tsheets[i].TimeOut = today;
+                                        tsheets[i].TimeOut = time;
                                         tsheets[i].UpdateTimeSheet(tsheets[i]);
                                         message = "4th punch has been added at: " + DateTime.Now.ToString("h:mm tt");
                                         Session["DailyMessage"] = message;
@@ -492,7 +512,7 @@ namespace Timesheet.Controllers
             Session["Dates"] = dates;
 
             //Get list of TimeSheet objects based on date and employee id and add list to session
-            List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.EmpId, dates);
+            List<TimeSheet> tsheets = tsheet.GetTimeSheetByWeek(emp.Banner_ID, dates);
             Session["TimeSheetData"] = tsheets;
 
             string CurrentDate = DateTime.Now.ToShortDateString();
@@ -503,11 +523,11 @@ namespace Timesheet.Controllers
                 {
                     if (tsheets[i].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
                     {
-                        string today = DateTime.Now.ToString("HH:mm");
+                        string time = DateTime.Now.ToString("HH:mm"); //gets the current time in military time
 
                         if (tsheets[i].TimeIn.ToString().Trim().Equals("0:00"))
                         {
-                            tsheets[i].TimeIn = today;
+                            tsheets[i].TimeIn = time;
                             tsheets[i].UpdateTimeSheet(tsheets[i]);
                             message = "1st punch has been added at: " + DateTime.Now.ToString("h:mm tt");
                             Session["QuickTimeStamp"] = message;
@@ -516,7 +536,7 @@ namespace Timesheet.Controllers
                         {
                             if (tsheets[i].OutForLunch.ToString().Trim().Equals("0:00"))
                             {
-                                tsheets[i].OutForLunch = today;
+                                tsheets[i].OutForLunch = time;
                                 tsheets[i].UpdateTimeSheet(tsheets[i]);
                                 message = "2nd punch has been added at: " + DateTime.Now.ToString("h:mm tt");
                                 Session["QuickTimeStamp"] = message;
@@ -525,7 +545,7 @@ namespace Timesheet.Controllers
                             {
                                 if (tsheets[i].InFromLunch.ToString().Trim().Equals("0:00"))
                                 {
-                                    tsheets[i].InFromLunch = today;
+                                    tsheets[i].InFromLunch = time;
                                     tsheets[i].UpdateTimeSheet(tsheets[i]);
                                     message = "3rd punch has been added at: " + DateTime.Now.ToString("h:mm tt");
                                     Session["QuickTimeStamp"] = message;
@@ -534,7 +554,7 @@ namespace Timesheet.Controllers
                                 {
                                     if (tsheets[i].TimeOut.ToString().Trim().Equals("0:00"))
                                     {
-                                        tsheets[i].TimeOut = today;
+                                        tsheets[i].TimeOut = time;
                                         tsheets[i].UpdateTimeSheet(tsheets[i]);
                                         message = "4th punch has been added at: " + DateTime.Now.ToString("h:mm tt");
                                         Session["QuickTimeStamp"] = message;
@@ -649,6 +669,14 @@ namespace Timesheet.Controllers
                         if (!String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = model.LeaveHours; }
                         if (!String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = model.AdditionalHours; }
 
+                        if (String.IsNullOrEmpty(model.TimeIn)) { tsheets[i].TimeIn = "0:00"; }
+                        if (String.IsNullOrEmpty(model.OutForLunch)) { tsheets[i].OutForLunch = "0:00"; }
+                        if (String.IsNullOrEmpty(model.InFromLunch)) { tsheets[i].InFromLunch = "0:00"; }
+                        if (String.IsNullOrEmpty(model.TimeOut)) { tsheets[i].TimeOut = "0:00"; }
+                        if (String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = 0; }
+                        if (String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = "0:00"; }
+                        if (String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = "0:00"; }
+
                         if (model.AdditionalHours.ToString().Trim().Equals("0:00") && !String.IsNullOrEmpty(model.Note))
                         {
                             Debug.WriteLine("In Erro 1");
@@ -679,31 +707,27 @@ namespace Timesheet.Controllers
         }
 
         //Obtains the time sheet data corresponding to the selected employee name and week ending date
-        //Redirects users back to the supervisor screen after putting time sheet info into the session object
+        //Redirects users back to the previous timesheet screen after putting time sheet info into the session object
         [HttpPost]
         public ActionResult ReportData(TimeSheet model)
         {
             //Pull the employee object from the session.
             Employee emp = (Employee)Session["Employee"];
 
-            Debug.WriteLine("Name : " + emp.FirstName + " " + emp.LastName + " and Weekending : " + model.WeekEnding + " ]");
-            if (Session["Message"] != null)
-            {
-                Session.Remove("Message");
-            }
+            Debug.WriteLine("Name : " + emp.First_Name + " " + emp.Last_Name + " and Weekending : " + model.WeekEnding + " ]");
             if (model.WeekEnding == null)
             {
-                string message = "***Please select the employee name and Weekend date***";
+                string message = "***Please select the Weekend date***";
                 Session["Message"] = message;
                 return RedirectToAction("OldTimesheet", "Timesheet");
             }
 
             string wED = model.WeekEnding.Trim();
-            List<TimeSheet> tsheets = model.GetTimeSheetByIdAndDate(emp.EmpId, wED);
+            List<TimeSheet> tsheets = model.GetTimeSheetByIdAndDate(emp.Banner_ID, wED);
             Session["TimeSheetData"] = tsheets;
-            IEnumerable<SelectListItem> dateList = GetListOfDays(emp.EmpId, wED);
+            IEnumerable<SelectListItem> dateList = GetListOfDays(emp.Banner_ID, wED);
             Session["dateList"] = dateList;
-            List<string> dates = GetDaysInTimeSheet(emp.EmpId, wED);
+            List<string> dates = GetDaysInTimeSheet(emp.Banner_ID, wED);
             Session["dates"] = dates;
 
             return RedirectToAction("OldTimesheet", "Timesheet");
