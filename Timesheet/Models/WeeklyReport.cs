@@ -11,9 +11,15 @@ namespace Timesheet.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Web.Mvc;
+
     public partial class WeeklyReport
     {
+        //Instance Variables
+        LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
+
         public int Id { get; set; }
         public string WeekEnding { get; set; }
         public Nullable<int> Banner_ID { get; set; }
@@ -23,5 +29,45 @@ namespace Timesheet.Models
         public string TotalHoursWorked { get; set; }
         public string Overtime { get; set; }
         public string FLSA_Overtime { get; set; }
+
+
+        public WeeklyReport()
+        {
+            Id = 0;
+            WeekEnding = "";
+            Banner_ID = 0;
+            LeaveHours = "";
+            AdditionalHours = "";
+            HoursWorked = "";
+            TotalHoursWorked = "";
+            Overtime = "";
+            FLSA_Overtime = "";
+        }
+
+        public WeeklyReport(int id, string we, int bid, string lh, string ah, string hw, string thw, string ot, string fot)
+        {
+            Id = id;
+            WeekEnding = we;
+            Banner_ID = bid;
+            LeaveHours = lh;
+            AdditionalHours = ah;
+            HoursWorked = hw;
+            TotalHoursWorked = thw;
+            Overtime = ot;
+            FLSA_Overtime = fot;
+        }
+
+        public WeeklyReport GetWeeklyReport(int Banner_ID, string wEnd)
+        {
+            WeeklyReport weeklyReport = new WeeklyReport();
+            var reports = from report in db.WeeklyReports
+                         where report.Banner_ID == Banner_ID && report.WeekEnding == wEnd
+                         orderby report.Id ascending
+                         select report;
+
+            weeklyReport = reports.FirstOrDefault();
+
+            return weeklyReport;
+        }
     }
 }
