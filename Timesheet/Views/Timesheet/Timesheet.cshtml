@@ -113,11 +113,11 @@
     foreach (TimeSheet sheet in tsheets)
     {
         string absHours = "";
-        if (sheet.LeaveHours.Equals("0:00"))
+        if (String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
         {
 
         }
-        else if (!String.IsNullOrEmpty(sheet.LeaveHours))
+        else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
         {
             absHours = sheet.LeaveHours;
             Debug.WriteLine("Leave hour : " + sheet.LeaveHours);
@@ -187,9 +187,10 @@
 <script>
         window.setTimeout(function () {
             // This will execute 5 seconds later
-            var label = document.forms["frm" + i]('Message');
+            var label = document.getElementById('Message');
             if (label != null) {
                 label.style.display = 'none';
+                PageMethods.clearMessage();
             }
 
         }, 4000);
@@ -222,25 +223,17 @@
             leaveHours = document.forms["frm" + i]["LeaveHours"].value;
             leaveid = document.forms["frm" + i]["LeaveId"].value;
 
-            if (leaveid == '0' && leaveHours == '0:00') {
-                var message = "Timesheet Saved Succesfully";
-                '<%Session["Message"] = "' + message + '"; %>';
+            if (leaveid == '0' && leaveHours == '') {
                 return true;
             }
-            else if (leaveid != '0' && leaveHours != '0:00') {
-                var message = "Timesheet Saved Succesfully";
-                '<%Session["Message"] = "' + message + '"; %>';
+            else if (leaveid != '0' && leaveHours != '') {
                 return true;
             }
-            else if (leaveid == '0' && leaveHours != '0:00') {
-                var message = "Please make sure to enter a Absent Type.";
-                '<%Session["Message"] = "' + message + '"; %>';
+            else if (leaveid == '0' && leaveHours != '') {
                 alert("Please make sure to enter a Absent Type.");
                 return false;
             }
-            else if (leaveid != '0' && leaveHours == '0:00') {
-                var message = "Please make sure to enter Absent Hours.";
-                '<%Session["Message"] = "' + message + '"; %>';
+            else if (leaveid != '0' && leaveHours == '') {
                 alert("Please make sure to enter Absent Hours.");
                 return false;
             };
@@ -290,7 +283,7 @@
         string today = DateTime.Now.ToLongDateString();
         string time = DateTime.Now.ToLongTimeString();
 
-        if (mess != "")
+        if (!String.IsNullOrEmpty(mess))
         {
             <script type="text/javascript">
                 window.alert("@mess");

@@ -113,11 +113,11 @@
     foreach (TimeSheet sheet in tsheets)
     {
         string absHours = "";
-        if (sheet.LeaveHours.Equals("0:00"))
+        if (String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
         {
 
         }
-        else if (!String.IsNullOrEmpty(sheet.LeaveHours))
+        else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
         {
             absHours = sheet.LeaveHours;
             Debug.WriteLine("Leave hour : " + sheet.LeaveHours);
@@ -195,6 +195,7 @@
             if (label != null) {
                 label.style.display = 'none';
             }
+
         }, 4000);
 
         function checkTime(i) {
@@ -223,25 +224,17 @@
             leaveHours = document.forms["frm"]["LeaveHours"].value;
             leaveid = document.forms["frm"]["LeaveId"].value;
 
-            if (leaveid == '0' && leaveHours == '0:00') {
-                var message = "Timesheet Saved Succesfully";
-                '<%Session["Message"] = "' + message + '"; %>';
+            if (leaveid == '0' && leaveHours == '') {
                 return true;
             }
-            else if (leaveid != '0' && leaveHours != '0:00') {
-                var message = "Timesheet Saved Succesfully";
-                '<%Session["Message"] = "' + message + '"; %>';
+            else if (leaveid != '0' && leaveHours != '') {
                 return true;
             }
-            else if (leaveid == '0' && leaveHours != '0:00') {
-                var message = "Please make sure to enter a Absent Type.";
-                '<%Session["Message"] = "' + message + '"; %>';
+            else if (leaveid == '0' && leaveHours != '') {
                 alert("Please make sure to enter a Absent Type.");
                 return false;
             }
-            else if (leaveid != '0' && leaveHours == '0:00') {
-                var message = "Please make sure to enter Absent Hours.";
-                '<%Session["Message"] = "' + message + '"; %>';
+            else if (leaveid != '0' && leaveHours == '') {
                 alert("Please make sure to enter Absent Hours.");
                 return false;
             };
@@ -289,7 +282,8 @@
             string today = DateTime.Now.ToLongDateString();
             string time = DateTime.Now.ToLongTimeString();
             string CurrentDate = DateTime.Now.ToShortDateString();
-            if (mess != "")
+
+            if (!String.IsNullOrEmpty(mess))
             {
                 <script type="text/javascript">
                 window.alert("@mess");
@@ -297,7 +291,8 @@
             }
 
             <p id="Time">@today <div id="time" style="text-align: center;"></div></p>
-            <p  class="noPrint"><a href="@Url.Action("SaveDailyTimeSheet","Timesheet")">Record Current Time</a><br /><br /><label id="Message">@Html.DisplayFor(model => Session["Message"])</label></p>
+            <p  class="noPrint"><a href="@Url.Action("SaveDailyTimeSheet","Timesheet")">Record Current Time</a><br /><br />
+            <label id="Message">@Html.DisplayFor(model => Session["Message"])</label></p>
 
             <!--Table to display time sheet input form.-->
             <div class="yesPrint">
