@@ -99,7 +99,7 @@
           <Property Name="TotalHoursWorked" Type="nchar" MaxLength="16" />
           <Property Name="Submitted" Type="nchar" MaxLength="10" />
           <Property Name="AuthorizedBySupervisor" Type="nchar" MaxLength="10" />
-          <Property Name="Banner_ID" Type="int" />
+          <Property Name="Banner_ID" Type="int" Nullable="false" />
           <Property Name="Note" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="WeeklyReports">
@@ -222,7 +222,7 @@
           <Property Name="TotalHoursWorked" Type="String" MaxLength="16" Unicode="true" FixedLength="true" />
           <Property Name="Submitted" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="AuthorizedBySupervisor" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="Banner_ID" Type="Int32" />
+          <Property Name="Banner_ID" Type="Int32" Nullable="false" />
           <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityContainer Name="LoginDatabaseEntities1" annotation:LazyLoadingEnabled="true">

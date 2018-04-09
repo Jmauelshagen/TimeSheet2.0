@@ -34,7 +34,7 @@ namespace Timesheet.Models
         public string TotalHoursWorked { get; set; }
         public string Submitted { get; set; }
         public string AuthorizedBySupervisor { get; set; }        
-        public Nullable<int> Banner_ID { get; set; }
+        public int Banner_ID { get; set; }
         public IEnumerable<SelectListItem> WeekEndingDates { get; set; }
         public IEnumerable<SelectListItem> EmpNames { get; set; }
         public string Note { get; set; }
@@ -210,6 +210,9 @@ namespace Timesheet.Models
         //Method to insert TimeSheet data into the TimeSheet data table
         public void InsertTimeSheet(TimeSheet sheet)
         {
+            WeeklyReport weeklyReport = new WeeklyReport();
+            weeklyReport.getWeeklyReport(sheet.Banner_ID, sheet.WeekEnding.Trim());
+
             db.TimeSheets.Add(sheet);
             db.SaveChanges();
         }
@@ -270,7 +273,7 @@ namespace Timesheet.Models
             tsheet.Note = sheet.Note;
             Debug.WriteLine("The tsheet is :" + tsheet.Note + "]");
 
-            weeklyReport.getWeeklyReport(sheet.Banner_ID, sheet.WeekEnding);
+            weeklyReport.getWeeklyReport(sheet.Banner_ID, sheet.WeekEnding.Trim());
 
             db.SaveChanges();
         }

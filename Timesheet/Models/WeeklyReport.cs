@@ -65,36 +65,55 @@ namespace Timesheet.Models
             EmployeeName = en;
         }
 
-        public WeeklyReport getWeeklyReport(int Id, string wEnd)
+        public WeeklyReport getWeeklyReport(int Banner_ID, string wEnd)
         {
-            WeeklyReport report = new WeeklyReport();
-
             var wReport = (from wr in db.WeeklyReports
-                           where wr.Banner_ID == Banner_ID && wr.WeekEnding == wEnd
+                           where wr.Banner_ID == Banner_ID && wr.WeekEnding == wEnd.Trim()
                            select wr);
 
             var count = wReport.Count();
             if (count == 0)
             {
+                WeeklyReport report = new WeeklyReport
+                {
+                    Id = this.GetMaxWeeklyReportId() + 1,
+                    WeekEnding = wEnd.Trim(),
+                    Banner_ID = Banner_ID,
+                    LeaveHours = "",
+                    AdditionalHours = "",
+                    HoursWorked = "",
+                    TotalHoursWorked = "",
+                    Overtime = "",
+                    FLSA_Overtime = "",
+                    SupervisorName = "",
+                    TimesheetStatus = "",
+                    EmployeeName = "",
+                };
+            
                 this.InsertWeeklyReport(report);
-                report.CalculateWeeklyReport(Id, wEnd);
+                report.CalculateWeeklyReport(Banner_ID, wEnd.Trim());
+                report.UpdateWeeklyReport(report);
+                return report;
             }
             else
             {
+                WeeklyReport report = new WeeklyReport();
                 report = wReport.First();
+                Debug.WriteLine("Report_ID: " + report.Id + " WeekEnding: " + report.WeekEnding + " Banner_ID: " + report.Banner_ID + " leaveHours: " + report.LeaveHours + " AdditionalHours: " + report.AdditionalHours + " HoursWorked: " + report.HoursWorked + " TotalHours: " + report.TotalHoursWorked + " Overtime: " + report.Overtime + " FLSA: " + report.FLSA_Overtime + " Supervisor: " + report.SupervisorName + " Status: " + report.TimesheetStatus + " Employee: " + report.EmployeeName + " poiuy");
+                report.CalculateWeeklyReport(Banner_ID, wEnd.Trim());
+                report.UpdateWeeklyReport(report);
+                return report;
             }
 
-            return report;
         }
 
-        public void CalculateWeeklyReport(int Id, string wEnd)
+        public void CalculateWeeklyReport(int Banner_ID, string wEnd)
         {
-            WeeklyReport report = new WeeklyReport();
-
             //Code to calculate total hours worked in a week and time sheet status
             string status = "Unknown";
             string totalWorked = "";
-            string totalabsent = "";
+            string totalabsent = "0";
+            string totalAdditional = "0";
             string totalHours = "";
             string overTime = "0";
             int missedpunch = 0;
@@ -167,12 +186,12 @@ namespace Timesheet.Models
             //Calculate Total Absent Hours
             foreach (TimeSheet sheet in tsheets)
             {
-                string absHours = "";
-                if (String.IsNullOrEmpty(sheet.LeaveHours))
+                string absHours = "0";
+                if (String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
                 {
 
                 }
-                else if (!String.IsNullOrEmpty(sheet.LeaveHours))
+                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
                 {
                     absHours = sheet.LeaveHours;
                     Debug.WriteLine("Leave hour : " + sheet.LeaveHours);
@@ -196,6 +215,41 @@ namespace Timesheet.Models
                 }
             }
             this.LeaveHours = totalabsent;
+
+            ////Calculate Total Additional Hours
+            //foreach (TimeSheet sheet in tsheets)
+            //{
+            //    string addHours = "0";
+            //    if (String.IsNullOrEmpty(sheet.AdditionalHours.Trim()))
+            //    {
+
+            //    }
+            //    else if (!String.IsNullOrEmpty(sheet.AdditionalHours.Trim()))
+            //    {
+            //        addHours = sheet.AdditionalHours;
+            //        Debug.WriteLine("Leave hour : " + sheet.AdditionalHours);
+            //        hour += Convert.ToInt16(addHours.Split(':')[0]);
+            //        minute += Convert.ToInt16(addHours.Split(':')[1]);
+            //        while (minute >= 60)
+            //        {
+            //            minute = minute - 60;
+            //            hour = hour + 1;
+            //        }
+
+            //        totalHours = hour + ":" + minute;
+            //        totalAdditional = totalHours;
+
+            //        Debug.WriteLine("Running absents: " + totalHours);
+            //        Debug.WriteLine("Running absents by the hours: " + hours);
+            //    }
+            //    else
+            //    {
+            //        Error = Error + 1;
+            //    }
+            //}
+            //this.AdditionalHours = totalAdditional;
+            this.AdditionalHours = "0";
+            this.HoursWorked = "0";
 
             /**Calculates total overtime that was made**/
             if (hours >= 40)
@@ -246,7 +300,7 @@ namespace Timesheet.Models
             var lname = (from emps in db.Employees
                          where emps.Banner_ID == Banner_ID
                          select emps.Last_Name).FirstOrDefault();
-            this.EmployeeName = fname + " " + lname;
+            this.EmployeeName = fname.Trim() + " " + lname.Trim();
             this.Banner_ID = Banner_ID;
 
             var sId = (from emps in db.Employees
@@ -259,9 +313,7 @@ namespace Timesheet.Models
             var slname = (from emps in db.Employees
                           where emps.Banner_ID == sIdn
                           select emps.Last_Name).FirstOrDefault();
-            this.SupervisorName = sfname + " " + slname;
-
-            this.UpdateWeeklyReport(report);
+            this.SupervisorName = sfname.Trim() + " " + slname.Trim();
         }
 
         public void InsertWeeklyReport(WeeklyReport report)
@@ -273,11 +325,11 @@ namespace Timesheet.Models
         public void UpdateWeeklyReport(WeeklyReport report)
         {
             WeeklyReport wReport = (from wr in db.WeeklyReports
-                                where wr.Id == wr.Id
+                                where wr.Id == report.Id
                                 select wr).Single();
-
+            Debug.WriteLine("Report_ID: " + report.Id + " WeekEnding: " + report.WeekEnding + " Banner_ID: " + report.Banner_ID + " leaveHours: " + report.LeaveHours + " AdditionalHours: " + report.AdditionalHours + " HoursWorked: " + report.HoursWorked + " TotalHours: " + report.TotalHoursWorked + " Overtime: " + report.Overtime + " FLSA: " + report.FLSA_Overtime + " Supervisor: " + report.SupervisorName + " Status: " + report.TimesheetStatus + " Employee: " + report.EmployeeName + " QWERTY");
             wReport.Id = report.Id;
-            wReport.WeekEnding = report.WeekEnding;
+            wReport.WeekEnding = report.WeekEnding.Trim();
             wReport.Banner_ID = report.Banner_ID;
             wReport.LeaveHours = report.LeaveHours;
             wReport.AdditionalHours = report.AdditionalHours;
@@ -290,6 +342,16 @@ namespace Timesheet.Models
             wReport.EmployeeName = report.EmployeeName;
 
             db.SaveChanges();
+        }
+
+        //Method to get the max id from the TimeSheet data table
+        public int GetMaxWeeklyReportId()
+        {
+            var ids = from wReports in db.WeeklyReports
+                      orderby wReports.Id descending
+                      select wReports.Id;
+            int maxId = ids.FirstOrDefault();
+            return maxId;
         }
     }
 }
