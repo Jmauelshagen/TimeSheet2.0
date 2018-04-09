@@ -19,9 +19,10 @@ namespace Timesheet.Controllers
         //to be used in the menu/form
         public ActionResult Index()
         {
+            var sup = (Employee)Session["Supervisor"];
             var model = new TimeSheet
             {
-                EmpNames = GetEmployeeNames(),
+                EmpNames = GetEmployeeNames(sup.Banner_ID),
                 WeekEndingDates = GetWeekEndingDateList()
             };
             return View(model);
@@ -46,15 +47,15 @@ namespace Timesheet.Controllers
 
         //Obtains a list of employee names from the db and adds them to a select list
         //to be used in the UI as a menu
-        private IEnumerable<SelectListItem> GetEmployeeNames()
+        private IEnumerable<SelectListItem> GetEmployeeNames(int sid)
         {
             TimeSheet timeSheet = new TimeSheet();
             var namesList = new List<SelectListItem>();
-            foreach (string names in timeSheet.GetEmployeeNames())
+            foreach (string names in timeSheet.GetEmployeeNames(sid))
             {
                 namesList.Add(new SelectListItem
                 {
-                    Value = names,
+                    Value = names.Split(',')[1].Trim(),
                     Text = names
                 });
             }
@@ -76,12 +77,12 @@ namespace Timesheet.Controllers
             }
             var name = model.Name.Trim();
             var wED = model.WeekEnding.Trim();
-            List<TimeSheet> reportList = timeSheet.GetTimeSheetByNameAndDate(name, wED);
+            List<TimeSheet> reportList = timeSheet.GetTimeSheetByIdAndDate(Convert.ToInt16(name), wED);
             Session["TimeSheetData"] = reportList; 
             if(reportList.ElementAtOrDefault(0) != null)
             {
-                Employee ep = new Employee().GetEmployee((Convert.ToInt16(reportList[0].EmpId)));
-                Debug.WriteLine("Emp Name is again: " + ep.FirstName);
+                Employee ep = new Employee().GetEmployee((Convert.ToInt16(reportList[0].Banner_ID)));
+                Debug.WriteLine("Emp Name is again: " + ep.First_Name);
                 Session["Employee"] = ep;
             }     
             return RedirectToAction("Index", "Reports");
@@ -112,13 +113,13 @@ namespace Timesheet.Controllers
                 sheet.AuthorizedBySupervisor = "False";
                 sheet.UpdateTimeSheet(sheet);
             }
-            string message = "Time sheet is denied. Contact employee to have corrections made.";
+            string message = "Time sheet is denied. Email has been sent to the employee to have corrections made.";
             Session["Message"] = message;
             Employee emp = (Employee)Session["Employee"];
-            var name = emp.FirstName + " " + emp.LastName;
+            var name = emp.First_Name + " " + emp.Last_Name;
             var subject = "Your timesheet was denied.";
-            var email = (string)emp.Email;
-            var messages = "Dear " + emp.FirstName + ", Your timesheet ending in: " + list[0].WeekEnding + " has been denied by your supervisor. please review and resubmit the Timesheet.";
+            var email = (string)emp.Email_Address;
+            var messages = "Dear " + emp.First_Name + ", Your timesheet ending in: " + list[0].WeekEnding + " has been denied by your supervisor. please review and resubmit the Timesheet.";
             Debug.WriteLine("Check 1");
             var x = await SendEmail(name, subject, email, messages);
             if (x == "sent")
@@ -134,19 +135,21 @@ namespace Timesheet.Controllers
         private async Task<string> SendEmail(string name, string subject, string email, string messages)
         {
             MailMessage message = new MailMessage(); //initializes new instance of mailmessage class 
-            var emp = (Employee)Session["Employee"];
-            Debug.WriteLine("HR email: " + emp.Email);
+            var sup = (Employee)Session["Supervisor"];
+            Debug.WriteLine("HR email: " + sup.Email_Address);
             message.To.Add(new MailAddress(email)); //initializes new instance of mailaddress class
-            message.From = new MailAddress(emp.Email);
+            message.From = new MailAddress(sup.Email_Address);
             message.Subject = subject;
             message.Body = messages;
             message.IsBodyHtml = true;
             using (SmtpClient smtp = new SmtpClient())
             {
+                Email em = new Email();
+                em = em.GetEmail(sup.Email_Address);
                 var credential = new System.Net.NetworkCredential //credentials check
                 {
-                    UserName = "hr.testingctc@gmail.com",  // replace with sender's email id 
-                    Password = "P@s$w0rd"  // replace with password 
+                    UserName = em.Email_Address.Trim(),  // replace with sender's email id 
+                    Password = em.Password.Trim()  // replace with password 
                 };
                 smtp.Credentials = credential;
                 //smtp.Host = "smtp-mail.outlook.com";

@@ -6,10 +6,11 @@
 <script type="text/javascript">
     window.setTimeout(function () {
         // This will execute 5 seconds later
-        var label = document.getElementById('QuickTimeStampMessage');
+        var label = document.getElementById('Message');
         if (label != null) {
             label.style.display = 'none';
         }
+
     }, 4000);
 
     function checkTime(i) {
@@ -61,7 +62,7 @@
     </div>
     <div>
         <!--Display the employee's first and last name-->
-        <h3 style="text-align: center;">Welcome @emp.FirstName @emp.LastName!</h3>
+        <h3 style="text-align: center;">Welcome @emp.First_Name @emp.Last_Name!</h3>
         <p id="Time" style="text-align: center;">@today <div id="time" style="text-align: center;"></div></p>
 
         <p>
@@ -76,7 +77,7 @@
 
         </p>
         <p>
-            <label id="QuickTimeStampMessage">@Html.DisplayFor(model => Session["QuickTimeStamp"])</label>
+            <label id="Message">@Html.DisplayFor(model => Session["Message"])</label>
         </p>
         <!--Log out link-->
         <a href="@Url.Action("LogOut", "Login")">LogOut</a>

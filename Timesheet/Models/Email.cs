@@ -11,10 +11,35 @@ namespace Timesheet.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Linq;
+
     public partial class Email
     {
-        public string Email1 { get; set; }
+        //Instance variables
+        LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
+
         public string Password { get; set; }
+        public string Email_Address { get; set; }
+
+        public Email()
+        {
+            Email_Address = "";
+            Password = "";
+        }
+
+        public Email(string email, string pass)
+        {
+            Email_Address = email;
+            Password = pass;
+        }
+
+        public Email GetEmail(string em)
+        {
+            var e = from emails in db.Emails
+                    where emails.Email_Address == em
+                    select emails;
+            Email email = (Email)e.FirstOrDefault();
+            return email;
+        }
     }
 }

@@ -24,7 +24,7 @@ namespace Timesheet.Models
         LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
 
         //Class properties
-        public int EmpId { get; set; }
+        public int Banner_ID { get; set; }
         [DisplayName("User Name")]
         [Required(ErrorMessage = "This Field is required")]
         [StringLength(20, MinimumLength = 4, ErrorMessage = "UserName must be between 4 and 20 characters")]
@@ -39,7 +39,7 @@ namespace Timesheet.Models
         //no-arg constructor
         public Login()
         {
-            EmpId = 0;
+            Banner_ID = 0;
             Username = "";
             Password = "";
             LoginErrorMessage = "";
@@ -48,7 +48,7 @@ namespace Timesheet.Models
         //all-args constructor
         public Login(int id, string uName, string pWord, string error)
         {
-            EmpId = id;
+            Banner_ID = id;
             Username = uName;
             Password = pWord;
             LoginErrorMessage = error;
@@ -58,9 +58,10 @@ namespace Timesheet.Models
         //Queries Login table by username and password, returns bool if record is found
         public bool ValidateLogin(string uname, string pword)
         {
-            var log = from logins in db.Logins
-                      where logins.Username == uname && logins.Password == pword
-                      select logins;
+            var log = from logins in db.Logins 
+                      where logins.Username.Equals(uname) && logins.Password.Equals(pword)// == uname && logins.Password == pword 
+                      select logins ;
+
             Login login = (Login)log.FirstOrDefault();
 
 

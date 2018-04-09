@@ -17,14 +17,19 @@
 
 <body>
     <!--Get employee object from the session.-->
+<<<<<<< HEAD
     @{var emp = (Employee)Session["Employee"]; }
     <div align="center">
+=======
+    @{var sup = (Employee)Session["Supervisor"]; }
+    <div>
+>>>>>>> master
         <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
     </div>
     <div>
         <h1>Supervisor</h1>
         <!--Display employee first and last name.-->
-        <p>Welcome @emp.FirstName @emp.LastName!</p>
+        <p>Welcome @sup.First_Name @sup.Last_Name!</p>
 
         <!--Links to reports and approved time sheets-->
         <ul class="unstyled">
