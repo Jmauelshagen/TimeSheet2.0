@@ -217,6 +217,8 @@ namespace Timesheet.Models
         //Method to update TimeSheet data in the TimeSheet data table
         public void UpdateTimeSheet(TimeSheet sheet)
         {
+            WeeklyReport weeklyReport = new WeeklyReport();
+
             Debug.WriteLine("in database save 1");
             Debug.WriteLine("******************************************************************************************************** "+sheet.LeaveId);
             Debug.WriteLine("With sheet id: " + sheet.Id + "]");
@@ -267,6 +269,8 @@ namespace Timesheet.Models
             tsheet.Banner_ID = sheet.Banner_ID;
             tsheet.Note = sheet.Note;
             Debug.WriteLine("The tsheet is :" + tsheet.Note + "]");
+
+            weeklyReport.getWeeklyReport(sheet.Banner_ID, sheet.WeekEnding);
 
             db.SaveChanges();
         }
