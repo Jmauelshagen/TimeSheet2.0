@@ -111,7 +111,7 @@
         foreach (TimeSheet sheet in reportTimeList)
         {
             string absHours = "";
-            if (sheet.LeaveHours.Equals("0:00"))
+            if (String.IsNullOrEmpty(sheet.LeaveHours))
             {
 
             }
