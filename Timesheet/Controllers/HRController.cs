@@ -37,7 +37,7 @@ namespace Timesheet.Controllers
             PaySummary paySum = new PaySummary();          
             var wED = model.WeekEnding;
             List<int> empIds = paySum.GetBanner_IDsByWeekEndDate(wED);
-            if(model.IsEnabled)
+            /*if(model.IsEnabled)
             {
                 String result = "True";
                 foreach (int empID in empIds)
@@ -45,7 +45,7 @@ namespace Timesheet.Controllers
                     paySumList.Add(new PaySummary(empID, wED, result));
                 }
             }
-            //else
+            //else*/
             {
                 foreach (int empId in empIds)
                 {
