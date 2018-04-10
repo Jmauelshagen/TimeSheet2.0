@@ -128,11 +128,11 @@ namespace Timesheet.Models
             foreach (TimeSheet sheet in tsheets)
             {
                 string absHours = "";
-                if (sheet.LeaveHours.Equals("0:00"))
+                if (String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
                 {
 
                 }
-                else if (!String.IsNullOrEmpty(sheet.LeaveHours))
+                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
                 {
                     absHours = sheet.LeaveHours;
                     Debug.WriteLine("Leave hour : " + sheet.LeaveHours);

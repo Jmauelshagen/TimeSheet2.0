@@ -99,8 +99,25 @@
           <Property Name="TotalHoursWorked" Type="nchar" MaxLength="16" />
           <Property Name="Submitted" Type="nchar" MaxLength="10" />
           <Property Name="AuthorizedBySupervisor" Type="nchar" MaxLength="10" />
-          <Property Name="Banner_ID" Type="int" />
+          <Property Name="Banner_ID" Type="int" Nullable="false" />
           <Property Name="Note" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="WeeklyReports">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="WeekEnding" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="Banner_ID" Type="int" Nullable="false" />
+          <Property Name="LeaveHours" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="AdditionalHours" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="HoursWorked" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="TotalHoursWorked" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="Overtime" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="FLSA_Overtime" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="SupervisorName" Type="nchar" MaxLength="40" Nullable="false" />
+          <Property Name="TimesheetStatus" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="EmployeeName" Type="nchar" MaxLength="40" Nullable="false" />
         </EntityType>
         <EntityContainer Name="LoginDatabaseModelStoreContainer">
           <EntitySet Name="Email" EntityType="Self.Email" Schema="dbo" store:Type="Tables" />
@@ -112,6 +129,7 @@
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sup" EntityType="Self.Sup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TimeSheets" EntityType="Self.TimeSheets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WeeklyReports" EntityType="Self.WeeklyReports" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -204,7 +222,7 @@
           <Property Name="TotalHoursWorked" Type="String" MaxLength="16" Unicode="true" FixedLength="true" />
           <Property Name="Submitted" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="AuthorizedBySupervisor" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="Banner_ID" Type="Int32" />
+          <Property Name="Banner_ID" Type="Int32" Nullable="false" />
           <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityContainer Name="LoginDatabaseEntities1" annotation:LazyLoadingEnabled="true">
@@ -217,6 +235,7 @@
           <EntitySet Name="Sups" EntityType="Self.Sup" />
           <EntitySet Name="TimeSheets" EntityType="Self.TimeSheet" />
           <EntitySet Name="Emails" EntityType="LoginDatabaseModel.Email" />
+          <EntitySet Name="WeeklyReports" EntityType="LoginDatabaseModel.WeeklyReport" />
         </EntityContainer>
         <EntityType Name="Email">
           <Key>
@@ -224,6 +243,23 @@
           </Key>
           <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Email_Address" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="WeeklyReport">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="WeekEnding" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Banner_ID" Type="Int32" Nullable="false" />
+          <Property Name="LeaveHours" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="AdditionalHours" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="HoursWorked" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="TotalHoursWorked" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Overtime" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="FLSA_Overtime" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="SupervisorName" Type="String" Nullable="false" MaxLength="40" FixedLength="true" Unicode="true" />
+          <Property Name="TimesheetStatus" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="EmployeeName" Type="String" Nullable="false" MaxLength="40" FixedLength="true" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -334,6 +370,24 @@
               <MappingFragment StoreEntitySet="Email">
                 <ScalarProperty Name="Email_Address" ColumnName="Email_Address" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WeeklyReports">
+            <EntityTypeMapping TypeName="LoginDatabaseModel.WeeklyReport">
+              <MappingFragment StoreEntitySet="WeeklyReports">
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="TimesheetStatus" ColumnName="TimesheetStatus" />
+                <ScalarProperty Name="SupervisorName" ColumnName="SupervisorName" />
+                <ScalarProperty Name="FLSA_Overtime" ColumnName="FLSA_Overtime" />
+                <ScalarProperty Name="Overtime" ColumnName="Overtime" />
+                <ScalarProperty Name="TotalHoursWorked" ColumnName="TotalHoursWorked" />
+                <ScalarProperty Name="HoursWorked" ColumnName="HoursWorked" />
+                <ScalarProperty Name="AdditionalHours" ColumnName="AdditionalHours" />
+                <ScalarProperty Name="LeaveHours" ColumnName="LeaveHours" />
+                <ScalarProperty Name="Banner_ID" ColumnName="Banner_ID" />
+                <ScalarProperty Name="WeekEnding" ColumnName="WeekEnding" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
