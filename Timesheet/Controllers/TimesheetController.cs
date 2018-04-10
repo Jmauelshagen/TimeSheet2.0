@@ -771,6 +771,7 @@ namespace Timesheet.Controllers
             Session["Message"] = "";
             Session["DailyMessage"] = "";
             Session["CurrentMessage"] = "";
+            Session["OldMessage"] = "";
 
             return RedirectToAction("OldTimesheet", "Timesheet");
         }
