@@ -258,7 +258,7 @@
           <Property Name="Overtime" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="FLSA_Overtime" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="SupervisorName" Type="String" Nullable="false" MaxLength="40" FixedLength="true" Unicode="true" />
-          <Property Name="TimesheetStatus" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="TimesheetStatus" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
           <Property Name="EmployeeName" Type="String" Nullable="false" MaxLength="40" FixedLength="true" Unicode="true" />
         </EntityType>
       </Schema>
