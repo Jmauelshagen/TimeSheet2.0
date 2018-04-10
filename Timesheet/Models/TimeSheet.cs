@@ -34,7 +34,7 @@ namespace Timesheet.Models
         public string TotalHoursWorked { get; set; }
         public string Submitted { get; set; }
         public string AuthorizedBySupervisor { get; set; }        
-        public Nullable<int> Banner_ID { get; set; }
+        public int Banner_ID { get; set; }
         public IEnumerable<SelectListItem> WeekEndingDates { get; set; }
         public IEnumerable<SelectListItem> EmpNames { get; set; }
         public string Note { get; set; }
@@ -210,13 +210,19 @@ namespace Timesheet.Models
         //Method to insert TimeSheet data into the TimeSheet data table
         public void InsertTimeSheet(TimeSheet sheet)
         {
+            WeeklyReport weeklyReport = new WeeklyReport();
+
             db.TimeSheets.Add(sheet);
             db.SaveChanges();
+
+            weeklyReport.getWeeklyReport(sheet.Banner_ID, sheet.WeekEnding.Trim());
         }
 
         //Method to update TimeSheet data in the TimeSheet data table
         public void UpdateTimeSheet(TimeSheet sheet)
         {
+            WeeklyReport weeklyReport = new WeeklyReport();
+
             Debug.WriteLine("in database save 1");
             Debug.WriteLine("******************************************************************************************************** "+sheet.LeaveId);
             Debug.WriteLine("With sheet id: " + sheet.Id + "]");
@@ -269,6 +275,9 @@ namespace Timesheet.Models
             Debug.WriteLine("The tsheet is :" + tsheet.Note + "]");
 
             db.SaveChanges();
+
+            weeklyReport.getWeeklyReport(sheet.Banner_ID, sheet.WeekEnding.Trim());
+
         }
 
         /**Method to calculate total hours worked daily by taking the time in/out
@@ -379,7 +388,7 @@ namespace Timesheet.Models
                     return totalHours;
                 }
 
-                else if (String.IsNullOrEmpty(sheet.LeaveHours.Trim()) && !String.IsNullOrEmpty(sheet.AdditionalHours.Trim()))
+                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()) && String.IsNullOrEmpty(sheet.AdditionalHours.Trim()))
                 {
                     Debug.WriteLine("if only leave hours are worked..");
                     string totalHours;
@@ -418,7 +427,7 @@ namespace Timesheet.Models
 
                 else
                 {
-                    Debug.WriteLine("Sending 'Missing Punch' hours for the day because punches are missing. only gets called for 1 punch and 3 punches");
+                    Debug.WriteLine("Sending 'Missing Punch' hours for the day because punches are missing. only gets called for 1 punch and 3 punches 000000000000000000000000000");
                     string totalHours;
                     totalHours = "Missing Punch";
                     return totalHours;
@@ -527,9 +536,17 @@ namespace Timesheet.Models
                     return totalHours;
                 }
 
+                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
+                {
+                    Debug.WriteLine("if only additional hours are worked..");
+                    string totalHours;
+                    totalHours = "NoTime";
+                    return totalHours;
+                }
+
                 else
                 {
-                    Debug.WriteLine("Sending 'Missing Punch' hours for the day because punches are missing. only gets called for 1 punch and 3 punches");
+                    Debug.WriteLine("Sending 'Missing Punch' hours for the day because punches are missing. only gets called for 1 punch and 3 punches 999999999999");
                     string totalHours;
                     totalHours = "Missing Punch";
                     return totalHours;
