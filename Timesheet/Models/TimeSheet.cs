@@ -380,7 +380,7 @@ namespace Timesheet.Models
                     return totalHours;
                 }
 
-                else if (!String.IsNullOrEmpty(sheet.AdditionalHours.Trim()) && String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
+                else if (!String.IsNullOrEmpty(sheet.AdditionalHours.Trim()) && String.IsNullOrEmpty(sheet.LeaveHours.Trim()) && String.IsNullOrEmpty(sheet.TimeIn.Trim()) && String.IsNullOrEmpty(sheet.OutForLunch.Trim()) && String.IsNullOrEmpty(sheet.InFromLunch.Trim()) && String.IsNullOrEmpty(sheet.TimeOut.Trim()))
                 {
                     Debug.WriteLine("if only additional hours are worked..");
                     string totalHours;
@@ -388,14 +388,14 @@ namespace Timesheet.Models
                     return totalHours;
                 }
 
-                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()) && String.IsNullOrEmpty(sheet.AdditionalHours.Trim()))
+                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()) && String.IsNullOrEmpty(sheet.AdditionalHours.Trim()) && String.IsNullOrEmpty(sheet.TimeIn.Trim()) && String.IsNullOrEmpty(sheet.OutForLunch.Trim()) && String.IsNullOrEmpty(sheet.InFromLunch.Trim()) && String.IsNullOrEmpty(sheet.TimeOut.Trim()))
                 {
                     Debug.WriteLine("if only leave hours are worked..");
                     string totalHours;
                     totalHours = sheet.LeaveHours.ToString().Trim();
                     return totalHours;
                 }
-                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()) && !String.IsNullOrEmpty(sheet.AdditionalHours.Trim()))
+                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()) && !String.IsNullOrEmpty(sheet.AdditionalHours.Trim()) && String.IsNullOrEmpty(sheet.TimeIn.Trim()) && String.IsNullOrEmpty(sheet.OutForLunch.Trim()) && String.IsNullOrEmpty(sheet.InFromLunch.Trim()) && String.IsNullOrEmpty(sheet.TimeOut.Trim()))
                 {
                     Debug.WriteLine("if both additionalHours and LeaveHours are filled in.");
                     int leaveHour = 0;
@@ -463,7 +463,6 @@ namespace Timesheet.Models
                         int addHour = 0;
                         int addMinute = 0;
 
-                        /*Once the verification it the LeaveHours and AdditionalHours are added we can unblock the following code!*/
                         if (!String.IsNullOrEmpty(sheet.AdditionalHours.Trim()))
                         {
                             string AdditionalHours = sheet.AdditionalHours.ToString().Trim();
@@ -472,8 +471,8 @@ namespace Timesheet.Models
                         }
 
                         TimeSpan hoursWorked = lOut.Subtract(tIn);
-                        int hour = Convert.ToInt16(Math.Truncate(hoursWorked.TotalHours + addHour)); // + leaveHour + addHour;
-                        int minute = Convert.ToInt16(hoursWorked.Minutes + addMinute); // + leaveMinute + addMinute;
+                        int hour = Convert.ToInt16(Math.Truncate(hoursWorked.TotalHours + addHour));
+                        int minute = Convert.ToInt16(hoursWorked.Minutes + addMinute);
                         totalHours = hour.ToString() + ":" + minute.ToString();
                         Debug.WriteLine(hoursWorked + "************* " + hoursWorked.TotalHours + "************************* " + hour + " ************* " + minute + " add time " + AdditionalHours);
                     }
@@ -503,7 +502,6 @@ namespace Timesheet.Models
                         int addHour = 0;
                         int addMinute = 0;
 
-                        /*Once the verification it the LeaveHours and AdditionalHours are added we can unblock the following code!*/
                         if (!String.IsNullOrEmpty(sheet.AdditionalHours.Trim()))
                         {
                             string AdditionalHours = sheet.AdditionalHours.ToString().Trim();
@@ -512,23 +510,15 @@ namespace Timesheet.Models
                         }
 
                         TimeSpan hoursWorked = tOut.Subtract(tIn).Subtract(lIn.Subtract(lOut));
-                        int hour = Convert.ToInt16(Math.Truncate(hoursWorked.TotalHours + addHour)); // + leaveHour + addHour;
-                        int minute = Convert.ToInt16(hoursWorked.Minutes + addMinute); // + leaveMinute + addMinute;
+                        int hour = Convert.ToInt16(Math.Truncate(hoursWorked.TotalHours + addHour));
+                        int minute = Convert.ToInt16(hoursWorked.Minutes + addMinute);
                         Debug.WriteLine(hoursWorked + "************* " + hoursWorked.TotalHours + "************************* " + hour + " ************* " + minute + " add time " + AdditionalHours);
                         totalHours = hour.ToString() + ":" + minute.ToString();
                     }
                     return totalHours;
                 }
 
-                else if (String.IsNullOrEmpty(sheet.TimeIn.Trim()) && String.IsNullOrEmpty(sheet.OutForLunch.Trim()) && String.IsNullOrEmpty(sheet.InFromLunch.Trim()) && String.IsNullOrEmpty(sheet.TimeOut.Trim()) && String.IsNullOrEmpty(sheet.AdditionalHours.Trim()) && String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
-                {
-                    Debug.WriteLine("Skipping over empty day not filled out yet.");
-                    string totalHours;
-                    totalHours = "NoTime";
-                    return totalHours;
-                }
-
-                else if (!String.IsNullOrEmpty(sheet.AdditionalHours.Trim()))
+                else if (!String.IsNullOrEmpty(sheet.AdditionalHours.Trim()) && String.IsNullOrEmpty(sheet.TimeIn.Trim()) && String.IsNullOrEmpty(sheet.OutForLunch.Trim()) && String.IsNullOrEmpty(sheet.InFromLunch.Trim()) && String.IsNullOrEmpty(sheet.TimeOut.Trim()) && String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
                 {
                     Debug.WriteLine("if only additional hours are worked..");
                     string totalHours;
@@ -536,9 +526,17 @@ namespace Timesheet.Models
                     return totalHours;
                 }
 
-                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
+                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()) && String.IsNullOrEmpty(sheet.AdditionalHours.Trim()) && String.IsNullOrEmpty(sheet.TimeIn.Trim()) && String.IsNullOrEmpty(sheet.OutForLunch.Trim()) && String.IsNullOrEmpty(sheet.InFromLunch.Trim()) && String.IsNullOrEmpty(sheet.TimeOut.Trim()))
                 {
                     Debug.WriteLine("if only additional hours are worked..");
+                    string totalHours;
+                    totalHours = "NoTime";
+                    return totalHours;
+                }
+
+                else if (String.IsNullOrEmpty(sheet.TimeIn.Trim()) && String.IsNullOrEmpty(sheet.OutForLunch.Trim()) && String.IsNullOrEmpty(sheet.InFromLunch.Trim()) && String.IsNullOrEmpty(sheet.TimeOut.Trim()) && String.IsNullOrEmpty(sheet.AdditionalHours.Trim()) && String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
+                {
+                    Debug.WriteLine("Skipping over empty day not filled out yet.");
                     string totalHours;
                     totalHours = "NoTime";
                     return totalHours;
