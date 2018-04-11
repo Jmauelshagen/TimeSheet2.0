@@ -33,14 +33,26 @@ namespace Timesheet.Controllers
         //This controller obtains a list of pay summary objects for the week selected in the UI
         public ActionResult GetPayData(TimeSheet model)
         {
-            List<PaySummary> paySumList = new List<PaySummary>();
-            PaySummary paySum = new PaySummary();
+            List<WeeklyReport> paySumList = new List<WeeklyReport>();
+            WeeklyReport paySum = new WeeklyReport();       
             var wED = model.WeekEnding;
-            List<int> Banner_IDs = paySum.GetBanner_IDsByWeekEndDate(wED);
-            foreach (int Banner_ID in Banner_IDs)
+            List<int> empIds = paySum.GetBanner_IDsByWeekEndDate(wED);
+            /*if(model.IsEnabled)
             {
-                paySumList.Add(new PaySummary(Banner_ID, wED));
+                String result = "True";
+                foreach (int empID in empIds)
+                {
+                    paySumList.Add(new PaySummary(empID, wED, result));
+                }
             }
+            //else*/
+            {
+                foreach (int empId in empIds)
+                {
+                    paySumList.Add( paySum.getWeeklyReport(empId,wED));
+                }
+            }
+           
             Session["Weekend"] = wED;
             Session["PaySummaryList"] = paySumList;
 
