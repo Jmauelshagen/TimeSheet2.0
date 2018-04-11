@@ -91,7 +91,6 @@
                     <th>Absent hours</th>
                     <th>Time Sheet Status</th>
                     <th>Supervisor</th>
-                    @*<th>Overview</th>*@
                 </tr>
             </thead>
             <tbody>
@@ -109,7 +108,6 @@
                                     @Html.HiddenFor(model => model.Banner_ID)
                                     <td>
                                         <button id="submit" type="submit" value="@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID">@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID</button>
-                                        @*<a href="mailto:@emps.Email_Address.Trim()">@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID</a>*@
                                     </td>
                                     <td>
                                         @paySum.TotalHours
@@ -129,9 +127,6 @@
                                     <td>
                                         @paySum.SuperName
                                     </td>
-                                    @*<td>
-                                        <button id="submit" type="submit" value="Overview">Overview</button>
-                                    </td>*@
                                 </tr>
                             }
                         }

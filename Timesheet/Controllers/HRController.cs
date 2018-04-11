@@ -70,6 +70,9 @@ namespace Timesheet.Controllers
             List<TimeSheet> tsheets = model.GetTimeSheetByIdAndDate(emp.Banner_ID, wed);
             Session["TimeSheetData"] = tsheets;
 
+            IEnumerable<SelectListItem> dateList = GetListOfDays(emp.Banner_ID, wed);
+            Session["dateList"] = dateList;
+
             //Get list of dates for the selected weekend to create overview         
             List<string> dates = GetDaysInTimeSheet(emp.Banner_ID, wed);
             Session["Dates"] = dates;
@@ -186,42 +189,91 @@ namespace Timesheet.Controllers
                     string subject = "Changes Made";
                     string email = emp.Email_Address.Trim();
                     string messages = "Dear " + emp.First_Name.Trim() + "," + Environment.NewLine + "Changes have been made to " + CurrentDate + " Timesheet, Please reivew changes and call HR if you have any questions." + Environment.NewLine +
-                        "Old Timesheet data - Time In: " + DateTime.Parse(tsheets[i].TimeIn.Trim()).ToString(@"hh\:mm tt") + " Time Out: " + DateTime.Parse(tsheets[i].OutForLunch.Trim()).ToString(@"hh\:mm tt") + " Time In: " + DateTime.Parse(tsheets[i].InFromLunch.Trim()).ToString(@"hh\:mm tt") + " Time Out: " + DateTime.Parse(tsheets[i].TimeOut.Trim()).ToString(@"hh\:mm tt") + " Leave ID: " + tsheets[i].LeaveId + " Leave Hours: " + tsheets[i].LeaveHours.Trim() + " Additional Hours: " + tsheets[i].AdditionalHours.Trim();
+                        "Old Timesheet data -";
 
+                    if (!String.IsNullOrEmpty(tsheets[i].TimeIn.Trim())) { messages = messages + " Time In: "+DateTime.Parse(tsheets[i].TimeIn.Trim()).ToString(@"hh\:mm tt"); }
+                    else { messages = messages + " Time In: None"; }
+
+                    if (!String.IsNullOrEmpty(tsheets[i].OutForLunch.Trim())) { messages = messages + " Time Out: " + DateTime.Parse(tsheets[i].OutForLunch.Trim()).ToString(@"hh\:mm tt"); }
+                    else { messages = messages + " Time Out: None"; }
+
+                    if (!String.IsNullOrEmpty(tsheets[i].InFromLunch.Trim())) { messages = messages + " TIme In: " + DateTime.Parse(tsheets[i].InFromLunch.Trim()).ToString(@"hh\:mm tt"); }
+                    else { messages = messages + " TIme In: None"; }
+
+                    if (!String.IsNullOrEmpty(tsheets[i].TimeOut.Trim())) { messages = messages +" Time Out: " + DateTime.Parse(tsheets[i].TimeOut.Trim()).ToString(@"hh\:mm tt"); }
+                    else { messages = messages + " Time Out: None"; }
+
+                    if (!String.IsNullOrEmpty(tsheets[i].LeaveId.ToString().Trim())) { messages = messages + " Leave ID: " + tsheets[i].LeaveId.ToString().Trim(); }
+                    else { messages = messages + " Leave ID: None"; }
+
+                    if (!String.IsNullOrEmpty(tsheets[i].LeaveHours.Trim())) { messages = messages + " Leave Hours: " + tsheets[i].LeaveHours.Trim(); }
+                    else { messages = messages + " Leave Hours: None"; }
+
+                    if (!String.IsNullOrEmpty(tsheets[i].AdditionalHours.Trim())) { messages = messages + " Additional Hours: " + tsheets[i].AdditionalHours.Trim(); }
+                    else { messages = messages + " Additional Hours: None"; }
+
+                    //checks the model and makes changes
                     if (!String.IsNullOrEmpty(model.TimeIn)) { tsheets[i].TimeIn = model.TimeIn; }
+                    else { tsheets[i].TimeIn = ""; }
                     if (!String.IsNullOrEmpty(model.OutForLunch)) { tsheets[i].OutForLunch = model.OutForLunch; }
+                    else { tsheets[i].OutForLunch = ""; }
                     if (!String.IsNullOrEmpty(model.InFromLunch)) { tsheets[i].InFromLunch = model.InFromLunch; }
+                    else { tsheets[i].InFromLunch = ""; }
                     if (!String.IsNullOrEmpty(model.TimeOut)) { tsheets[i].TimeOut = model.TimeOut; }
+                    else { tsheets[i].TimeOut = ""; }
                     if (!String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = model.LeaveId; }
+                    else { tsheets[i].LeaveId = 0; }
                     if (!String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = model.LeaveHours; }
+                    else { tsheets[i].LeaveHours = ""; }
                     if (!String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = model.AdditionalHours; }
+                    else { tsheets[i].AdditionalHours = ""; }
 
-                    if (String.IsNullOrEmpty(model.TimeIn)) { tsheets[i].TimeIn = ""; }
-                    if (String.IsNullOrEmpty(model.OutForLunch)) { tsheets[i].OutForLunch = ""; }
-                    if (String.IsNullOrEmpty(model.InFromLunch)) { tsheets[i].InFromLunch = ""; }
-                    if (String.IsNullOrEmpty(model.TimeOut)) { tsheets[i].TimeOut = ""; }
-                    if (String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = 0; }
-                    if (String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = ""; }
-                    if (String.IsNullOrEmpty(model.AdditionalHours)) { tsheets[i].AdditionalHours = ""; }
-
-                    if (model.AdditionalHours.ToString().Trim().Equals("") && !String.IsNullOrEmpty(model.Note))
+                    model.AdditionalHours = tsheets[i].AdditionalHours;
+                    if (String.IsNullOrEmpty(model.AdditionalHours.Trim()) && !String.IsNullOrEmpty(model.Note.Trim()))
                     {
                         Debug.WriteLine("In Erro 1");
                         string mess = "You created a note but have no additional hours. This may be a mistake.";
                         Session["Message2"] = mess;
                     }
-                    if (!model.AdditionalHours.ToString().Trim().Equals("") && String.IsNullOrEmpty(model.Note))
+                    else if (!String.IsNullOrEmpty(model.AdditionalHours.Trim()) && String.IsNullOrEmpty(model.Note.Trim()))
                     {
                         Debug.WriteLine("In Erro 2");
                         string mess = "You have addtional hours. You might want to make a note.";
                         Session["Message2"] = mess;
                     }
-                    message = "Timesheet Saved Succesfully";
-                    tsheets[i].UpdateTimeSheet(tsheets[i]);
-                    Session["TimeSheetData"] = tsheets;
-                    Session["Message"] = message;
-                    messages = messages + Environment.NewLine + "New Timesheet data - Time In: " + DateTime.Parse(tsheets[i].TimeIn.Trim()).ToString(@"hh\:mm tt") + " Time Out: " + DateTime.Parse(tsheets[i].OutForLunch.Trim()).ToString(@"hh\:mm tt") + " Time In: " + DateTime.Parse(tsheets[i].InFromLunch.Trim()).ToString(@"hh\:mm tt") + " Time Out: " + DateTime.Parse(tsheets[i].TimeOut.Trim()).ToString(@"hh\:mm tt") + " Leave ID: " + tsheets[i].LeaveId + " Leave Hours: " + tsheets[i].LeaveHours.Trim() + " Additional Hours: " + tsheets[i].AdditionalHours.Trim() +
-                        Environment.NewLine + Environment.NewLine + "Thanks," + Environment.NewLine + hr.First_Name.Trim() + " " + hr.Last_Name.Trim();
+                    else
+                    {
+                        Debug.WriteLine("AddH : " + model.AdditionalHours + " Note: " + model.Note);
+                        Debug.WriteLine("The message says :" + Session["Message2"]);
+                        message = "Note Saved Succesfully";
+                        Session["Message2"] = "";
+                        Session["Message"] = message;
+                        tsheets[i].UpdateTimeSheet(tsheets[i]);
+                    }
+                    messages = messages + Environment.NewLine + "New Timesheet data -";
+
+                    if (!String.IsNullOrEmpty(tsheets[i].TimeIn.Trim())) { messages = messages + " Time In: " + DateTime.Parse(tsheets[i].TimeIn.Trim()).ToString(@"hh\:mm tt"); }
+                    else { messages = messages + " Time In: None"; }
+
+                    if (!String.IsNullOrEmpty(tsheets[i].OutForLunch.Trim())) { messages = messages + " Time Out: " + DateTime.Parse(tsheets[i].OutForLunch.Trim()).ToString(@"hh\:mm tt"); }
+                    else { messages = messages + " Time Out: None"; }
+
+                    if (!String.IsNullOrEmpty(tsheets[i].InFromLunch.Trim())) { messages = messages + " TIme In: " + DateTime.Parse(tsheets[i].InFromLunch.Trim()).ToString(@"hh\:mm tt"); }
+                    else { messages = messages + " TIme In: None"; }
+
+                    if (!String.IsNullOrEmpty(tsheets[i].TimeOut.Trim())) { messages = messages + " Time Out: " + DateTime.Parse(tsheets[i].TimeOut.Trim()).ToString(@"hh\:mm tt"); }
+                    else { messages = messages + " Time Out: None"; }
+
+                    if (!String.IsNullOrEmpty(tsheets[i].LeaveId.ToString().Trim())) { messages = messages + " Leave ID: " + tsheets[i].LeaveId.ToString().Trim(); }
+                    else { messages = messages + " Leave ID: None"; }
+
+                    if (!String.IsNullOrEmpty(tsheets[i].LeaveHours.Trim())) { messages = messages + " Leave Hours: " + tsheets[i].LeaveHours.Trim(); }
+                    else { messages = messages + " Leave Hours: None"; }
+
+                    if (!String.IsNullOrEmpty(tsheets[i].AdditionalHours.Trim())) { messages = messages + " Additional Hours: " + tsheets[i].AdditionalHours.Trim(); }
+                    else { messages = messages + " Additional Hours: None"; }
+
+                    messages = messages + Environment.NewLine + Environment.NewLine + "Thanks," + Environment.NewLine + hr.First_Name.Trim() + " " + hr.Last_Name.Trim();
                     var x = await SendEmail(name, subject, email, messages);
                     if (x == "sent")
                         ViewData["esent"] = "Your Message Has Been Sent";
@@ -230,6 +282,101 @@ namespace Timesheet.Controllers
             }
 
             return RedirectToAction("Overview", "HR");
+        }
+        public async Task<ActionResult> SaveTimeNote(TimeSheet model)
+        {
+            try
+            {
+                Debug.WriteLine("In SaveTimeNote");
+                List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
+
+                Session["Message2"] = "";
+                string CurrentDate = model.Date.Trim();
+                string message;
+
+                Employee emp = (Employee)Session["Employee"];
+                Employee hr = (Employee)Session["HR"];
+                string name = emp.First_Name + " " + emp.Last_Name;
+                string subject = "Note Added/Deleted";
+                string email = emp.Email_Address.Trim();
+                string messages = "Dear " + emp.First_Name.Trim() + "," + Environment.NewLine + "A note has been Added/Deleted from " + CurrentDate + " Timesheet, Please reivew changes and call HR if you have any questions." + Environment.NewLine +
+                    "Old Timesheet data -";
+
+                for (int i = 0; i < 7; i++)
+                {
+
+                    if (tsheets[i].Date.ToString().Trim().Equals(CurrentDate))
+                    {
+                        if (!String.IsNullOrEmpty(tsheets[i].Note.Trim())) { messages = messages + " Note: " + tsheets[i].Note.Trim(); }
+                        else { messages = messages + " Note: None"; }
+
+                        if (!String.IsNullOrEmpty(model.Note))
+                        {
+                            if (model.Note.ToString().Equals("None") || model.Note.ToString().Equals("none"))
+                            {
+                                tsheets[i].Note = "";
+                                model.Note = "";
+                            }
+                            else { tsheets[i].Note = model.Note + " - " + model.Date; }
+                        }
+                        model.AdditionalHours = tsheets[i].AdditionalHours;
+                        if (String.IsNullOrEmpty(model.AdditionalHours) && !String.IsNullOrEmpty(model.Note))
+                        {
+                            Debug.WriteLine("In Erro 1");
+                            string mess = "You created a note but have no additional hours. This may be a mistake.";
+                            Session["Message2"] = mess;
+                        }
+                        else if (!String.IsNullOrEmpty(model.AdditionalHours) && String.IsNullOrEmpty(model.Note))
+                        {
+                            Debug.WriteLine("In Erro 2");
+                            string mess = "You have addtional hours. You might want to make a note.";
+                            Session["Message2"] = mess;
+                        }
+                        else
+                        {
+                            Debug.WriteLine("AddH : " + model.AdditionalHours + " Note: " + model.Note);
+                            Debug.WriteLine("The message says :" + Session["Message2"]);
+                            message = "Note Saved Succesfully";
+                            Session["Message2"] = "";
+                            Session["Message"] = message;
+                            tsheets[i].UpdateTimeSheet(tsheets[i]);
+                        }
+                        messages = messages + Environment.NewLine + "New Timesheet data -";
+
+                        if (!String.IsNullOrEmpty(tsheets[i].Note.Trim())) { messages = messages + " Note In: " + tsheets[i].Note.Trim(); }
+                        else { messages = messages + " Note: None"; }
+
+                        messages = messages + Environment.NewLine + Environment.NewLine + "Thanks," + Environment.NewLine + hr.First_Name.Trim() + " " + hr.Last_Name.Trim();
+                        var x = await SendEmail(name, subject, email, messages);
+                        if (x == "sent")
+                            ViewData["esent"] = "Your Message Has Been Sent";
+                        Debug.WriteLine("Message Was sent");
+                    }
+                }
+                return RedirectToAction("Overview", "HR");
+            }
+            catch (Exception ex)
+            {
+                Session["Message"] = "";
+                Debug.WriteLine(ex);
+                return RedirectToAction("Overview", "HR");
+            }
+
+        }
+
+        private IEnumerable<SelectListItem> GetListOfDays(int id, string wed)
+        {
+            List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
+            List<SelectListItem> dates = new List<SelectListItem>();
+            foreach (string date in tsheets[0].GetDates(id, wed))
+            {
+                dates.Add(new SelectListItem
+                {
+                    Value = date,
+                    Text = date
+                });
+            }
+            return dates;
         }
     }
 }
