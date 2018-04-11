@@ -8,9 +8,9 @@
 
     Employee sup = (Employee)Session["Supervisor"];
     Employee emp = (Employee)Session["Employee"];
-    var reportTimeList = (List<TimeSheet>)Session["TimeSheetData"];
-    var message = (string)Session["Message"];
-    WeeklyReport weekly = new WeeklyReport();   
+    List<TimeSheet> reportTimeList = (List<TimeSheet>)Session["TimeSheetData"];
+    string message = (string)Session["Message"];
+    WeeklyReport weekly = new WeeklyReport();
 }
 
 @{
@@ -18,7 +18,7 @@
 
     if (@reportTimeList != null)
     {
-        weekly = weekly.getWeeklyReport(emp.Banner_ID, reportTimeList[1].WeekEnding.Trim());       
+        weekly = weekly.getWeeklyReport(emp.Banner_ID, reportTimeList[0].WeekEnding.Trim());       
     }
 }
 <script>
@@ -126,10 +126,10 @@
         </div>
 
         @{
-            if (@reportTimeList != null && reportTimeList.Any())
+            if (@reportTimeList != null && @reportTimeList.Any())
             {
                 Employee empReport = new Employee();
-                Employee employee = empReport.GetEmployee(Convert.ToInt16(reportTimeList[0].Banner_ID));
+                Employee employee = empReport.GetEmployee(Convert.ToInt16(@reportTimeList[0].Banner_ID));
                 <!--Form for supervisor to select an employee by name and a week ending date.-->
                 <p>This is @emp.First_Name.Trim()'s timesheet for the week of @reportTimeList[0].WeekEnding</p><br />
 
@@ -153,37 +153,37 @@
                             <th>Approved</th>
                             <th style="display:none;">Banner Id</th>
                         </tr>
-                        @{foreach (TimeSheet reporttime in @reportTimeList)
-                            {
-                                Debug.WriteLine("Leave Id is: " + reporttime.LeaveId);
+                        @{  for (int i = 0; i < 7; i++)
+                            { 
+                                Debug.WriteLine("Leave Id is: " + reportTimeList[i].LeaveId);
                                 <tr>
                                     <!--Converted some of the textboxes to time input to reduce user error-->
-                                    <td style="display:none;">@reporttime.Id.ToString().Trim() @Html.TextBoxFor(model => model.Id, new { @Value = @reporttime.Id.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                                    <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @reporttime.WeekEnding.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                                    <td>@Html.TextBoxFor(model => model.Date, new { @Value = @reporttime.Date.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                                    <td>@Html.TextBoxFor(model => model.TimeIn, new { type = "time", Value = @reporttime.TimeIn.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                                    <td>@Html.TextBoxFor(model => model.OutForLunch, new { type = "time", Value = @reporttime.OutForLunch.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                                    <td>@Html.TextBoxFor(model => model.InFromLunch, new { type = "time", Value = @reporttime.InFromLunch.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                                    <td>@Html.TextBoxFor(model => model.TimeOut, new { type = "time", Value = @reporttime.TimeOut.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                    <td style="display:none;">@Html.TextBoxFor(model => model.Id, new { @Value = @reportTimeList[i].Id.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                    <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @reportTimeList[i].WeekEnding.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                    <td>@Html.TextBoxFor(model => model.Date, new { @Value = @reportTimeList[i].Date.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                    <td>@Html.TextBoxFor(model => model.TimeIn, new { type = "time", Value = @reportTimeList[i].TimeIn.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                    <td>@Html.TextBoxFor(model => model.OutForLunch, new { type = "time", Value = @reportTimeList[i].OutForLunch.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                    <td>@Html.TextBoxFor(model => model.InFromLunch, new { type = "time", Value = @reportTimeList[i].InFromLunch.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                    <td>@Html.TextBoxFor(model => model.TimeOut, new { type = "time", Value = @reportTimeList[i].TimeOut.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                     <td>
                                          @Html.DropDownListFor(model => model.LeaveId, new SelectList(
-                                        new List<object> {
-                                            new { value = 0 , text = "None" },
-                                            new { value = 1 , text = "Annual" },
-                                            new { value = 2 , text = "Sick"},
-                                            new { value = 3 , text = "Personal"},
-                                            new { value = 4 , text = "FLSA Comp"},
-                                            new { value = 5 , text = "Holiday"},
-                                            new { value = 6 , text = "Military"},
-                                            new { value = 7 , text = "Court"},
-                                            new { value = 8 , text = "Unpaid Leave" }
-                                        }, "value", "text", reporttime.LeaveId))
+                                                          new List<object> {
+                                                                                    new { value = 0 , text = "None" },
+                                                                                    new { value = 1 , text = "Annual" },
+                                                                                    new { value = 2 , text = "Sick"},
+                                                                                    new { value = 3 , text = "Personal"},
+                                                                                    new { value = 4 , text = "FLSA Comp"},
+                                                                                    new { value = 5 , text = "Holiday"},
+                                                                                    new { value = 6 , text = "Military"},
+                                                                                    new { value = 7 , text = "Court"},
+                                                                                    new { value = 8 , text = "Unpaid Leave" }
+                                                          }, "value", "text", @reportTimeList[i].LeaveId))
                                     </td>
                                     @*<td>@Html.TextBoxFor(model => model.LeaveId, new { @Value = @reporttime.LeaveId.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>*@
-                                    <td>@Html.TextBoxFor(model => model.LeaveHours, new { @Value = @reporttime.LeaveHours.ToString().Trim(), pattern = "(1[0-2]|0?[0-9]):([14][5]|[03][0])$", title = "Please enter time as hours and minutes in format ##:## rounded to nearest 15", @readonly = "readonly", style = "width: 50px;" })</td>
-                                    <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @reporttime.AdditionalHours.ToString().Trim(), pattern = "(1[0-2]|0?[0-9]):([14][5]|[03][0])$$", title = "Please enter time as hours and minutes in format ##:## rounded to nearest 15", @readonly = "readonly", style = "width: 75px;" })</td>
+                                    <td>@Html.TextBoxFor(model => model.LeaveHours, new { @Value = @reportTimeList[i].LeaveHours.ToString().Trim(), pattern = "(1[0-2]|0?[0-9]):([14][5]|[03][0])$", title = "Please enter time as hours and minutes in format ##:## rounded to nearest 15", @readonly = "readonly", style = "width: 50px;" })</td>
+                                    <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @reportTimeList[i].AdditionalHours.ToString().Trim(), pattern = "(1[0-2]|0?[0-9]):([14][5]|[03][0])$$", title = "Please enter time as hours and minutes in format ##:## rounded to nearest 15", @readonly = "readonly", style = "width: 75px;" })</td>
                                     @{ /** Calculates the hours worked for the day and check the return from TimeSheet.CalculateTotalHoursWorked to see if it is the first time through with no data, if its got 1 or 3 punches, or if 2 or 4 punches. **/
-                                        string TotalHoursWorked = reporttime.CalculateWorkedHours(reporttime);
+                                        string TotalHoursWorked = reportTimeList[i].CalculateWorkedHours(reportTimeList[i]);
                                         Debug.WriteLine(TotalHoursWorked + "in total Hours");
                                         if (TotalHoursWorked.Equals("Missing Punch"))
                                         {
@@ -202,20 +202,20 @@
                                     <td>
                                         @{ /** Calculates the hours worked for the day and check the return from TimeSheet.CalculateTotalHoursWorked to see if it is the first time through with no data, if its got 1 or 3 punches, or if 2 or 4 punches. **/
                                             Debug.WriteLine(TotalHoursWorked + " Weekly Timesheet TotalHours Test 2 for overtime");
-                                            string overtime = reporttime.GetOvertime();
+                                            string overtime = reportTimeList[i].GetOvertime();
                                             @overtime
                                          }
                                     </td>                                   
-                                    <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @reporttime.Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                                    <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @reporttime.AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                                    <td style="display:none;">@Html.TextBoxFor(model => model.Banner_ID, new { @Value = @reporttime.Banner_ID.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                    <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @reportTimeList[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
+                                    <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @reportTimeList[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
+                                    <td style="display:none;">@Html.TextBoxFor(model => model.Banner_ID, new { @Value = @reportTimeList[i].Banner_ID.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                 </tr>
                                 /**These add section for notes to be displayed if they exist**/
-                                if (!String.IsNullOrEmpty(reporttime.Note))
+                                if (!String.IsNullOrEmpty(reportTimeList[i].Note))
                                 {
                                     <tr>
                                         <td colspan="4" style="font-weight:bold;">Notes for additional hours worked</td>
-                                        <td colspan="9" style="background-color:white;">@reporttime.Note.ToString().Trim()</td>
+                                        <td colspan="9" style="background-color:white;">@reportTimeList[i].Note.ToString().Trim()</td>
                                     </tr>
                                 }
                             }
@@ -225,74 +225,88 @@
                 <br />
                 <div class="yesPrint">
                     <table class="center" id="WeeklyTotals">
-                        <tr>
-                            <th>Absent Hours</th>
-                            <th>Worked Hours</th>
-                            <th>Total Hours</th>
-                            <th>FLSA Overtime</th>
-                        </tr>
-                        <tr>
-                            <!--Displaying Absent Hours used-->
-                            @{ 
-                                Debug.WriteLine("The weekly leave hours: " + weekly.LeaveHours);
-                                if (!weekly.LeaveHours.Equals(""))
-                                {
-                                    <td>@weekly.LeaveHours</td>
-                                }
-
-                                else
-                                {
-                                    <td> 0 </td>
-                                }
+                    <tr>
+                        <th>Absent Hours</th>
+                        <th>Worked Hours</th>
+                        <th>Total Hours</th>
+                        <th>Overtime worked</th>
+                        <th>FLSA Overtime</th>
+                    </tr>
+                    <tr>
+                        <!--Displaying Absent Hours used-->
+                        @{
+                            Debug.WriteLine("The weekly leave hours: " + weekly.LeaveHours);
+                            if (!weekly.LeaveHours.Equals(""))
+                            {
+                                <td>@weekly.LeaveHours</td>
                             }
-                            <!-- code for the color warning system for total hours worked-->
-                            @{
 
-                                Debug.WriteLine("The weekly hours: " + weekly.HoursWorked);
-                                if (weekly.HoursWorked.Equals("Missing Punch"))
-                                {
-                                    <td bgcolor="lightyellow">Missing Punch</td>
-                                }
-                                else if (weekly.HoursWorked.Equals("Error"))
-                                {
-                                    <td bgcolor="salmon">Error</td>
-                                }
-                                else
-                                {
-                                    <td>@weekly.HoursWorked</td>
-                                }
+                            else
+                            {
+                                <td> 0 </td>
                             }
-                            <!--Displaying All Hours absent and worked-->
-                            @{
-                                Debug.WriteLine("The Final weekly hours: " + weekly.TotalHoursWorked);
-                                if (weekly.TotalHoursWorked.Equals("Missing Punch"))
-                                {
-                                    <td bgcolor="lightyellow">Missing Punch</td>
-                                }
-                                else if (weekly.TotalHoursWorked.Equals("Error"))
-                                {
-                                    <td bgcolor="salmon">Error</td>
-                                }
-                                else
-                                {
-                                    <td>@weekly.TotalHoursWorked</td>
-                                }
-                            }                           
-                            <!--Displays the total overtime earned-->
-                            @{
-                                Debug.WriteLine("Overtime hours after multiplying by the FLSA 1.5 Weekly Timesheet: " + weekly.FLSA_Overtime);
-                                if (!weekly.FLSA_Overtime.Equals(""))
-                                {
-                                    <td>@weekly.FLSA_Overtime</td>
-                                }
+                        }
+                        <!-- code for the color warning system for total hours worked-->
+                        @{
 
-                                else
-                                {
-                                    <td> 0 </td>
-                                }
+                            Debug.WriteLine("The weekly hours: " + weekly.HoursWorked);
+                            if (weekly.HoursWorked.Equals("Missing Punch"))
+                            {
+                                <td bgcolor="lightyellow">Missing Punch</td>
                             }
-                        </tr>                        
-                    </table>
+                            else if (weekly.HoursWorked.Equals("Error"))
+                            {
+                                <td bgcolor="salmon">Error</td>
+                            }
+                            else
+                            {
+                                <td>@weekly.HoursWorked</td>
+                            }
+                        }
+                        <!--Displaying All Hours absent and worked-->
+                        @{
+                            Debug.WriteLine("The Final weekly hours: " + weekly.TotalHoursWorked);
+                            if (weekly.TotalHoursWorked.Equals("Missing Punch"))
+                            {
+                                <td bgcolor="lightyellow">Missing Punch</td>
+                            }
+                            else if (weekly.TotalHoursWorked.Equals("Error"))
+                            {
+                                <td bgcolor="salmon">Error</td>
+                            }
+                            else
+                            {
+                                <td>@weekly.TotalHoursWorked</td>
+                            }
+                        }
+                        <!--Displays the total overtime worked-->
+                        @{
+                            Debug.WriteLine("Overtime hours after multiplying by the FLSA 1.5 Weekly Timesheet: " + weekly.Overtime);
+                            if (!weekly.Overtime.Equals(""))
+                            {
+                                <td>@weekly.Overtime</td>
+                            }
+
+                            else
+                            {
+                                <td> 0 </td>
+                            }
+                        }
+                        <!--Displays the total overtime earned-->
+                        @{
+                            Debug.WriteLine("Overtime hours after multiplying by the FLSA 1.5 Weekly Timesheet: " + weekly.FLSA_Overtime);
+                            if (!weekly.FLSA_Overtime.Equals(""))
+                            {
+                                <td>@weekly.FLSA_Overtime</td>
+                            }
+
+                            else
+                            {
+                                <td> 0 </td>
+                            }
+                        }
+                    </tr>
+                </table>
                 </div>
                 <br />
                 <div class="noPrint">
