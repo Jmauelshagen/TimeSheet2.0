@@ -45,15 +45,15 @@
                                          new { onchange = "this.form.submit();" })
     }
 
-    <table style="width:100%" cellpadding="4">
+    <table class="center">
         <tr>
             <th>Week End</th>
             <th>Employee Name</th>
-            <th>Worked hours</th>
-            <th>Over Time</th>
-            <th>FLSA Over Time</th>
             <th>Absent hours</th>
-            <th>Supervisor</th>
+            <th>Worked hours</th>
+            <th>Total hours</th>
+            <th>Over Time</th>
+            <th>FLSA Over Time</th>               
         </tr>
         @{
             if (tsheets != null)
@@ -67,18 +67,17 @@
                         @{
                             <td>@tsheet[0].WeekEnding</td>
                             <td>@emp.First_Name @emp.Last_Name</td>
-
-                            string totalWorked = "";
-                            string totalabsent = "";
-                            string totalHours = "";
-                            int missedpunch = 0;
-                            int Error = 0;
-                            int hour = 0;
-                            int hours = 0;
-                            int minute = 0;
-                            int minutes = 0;
-
+                            Debug.WriteLine("The weekly leave hours: " + weekly.LeaveHours);
+                                if (!weekly.LeaveHours.Equals(""))
+                                {
+                                    <td>@weekly.LeaveHours</td>
+                                }
+                                else
+                                {
+                                    <td> 0 </td>
+                                }      
                             <td>@weekly.HoursWorked</td>
+                            <td>@weekly.TotalHoursWorked</td>
                             Debug.WriteLine("Overtime hours: " + weekly.Overtime);
                                 if (!weekly.Overtime.Equals(""))
                                 {
@@ -94,138 +93,10 @@
                                 {
                                     <td>@weekly.FLSA_Overtime</td>
                                 }
-
                                 else
                                 {
                                     <td> 0 </td>
-                                }   
-                             Debug.WriteLine("The weekly leave hours: " + weekly.LeaveHours);
-                                if (!weekly.LeaveHours.Equals(""))
-                                {
-                                    <td>@weekly.LeaveHours</td>
-                                }
-
-                                else
-                                {
-                                    <td> 0 </td>
-                                }                               
-                            @*/**Total worked hours for the week**/
-                            foreach (TimeSheet sheet in tsheet)
-                            {
-                                string hoursWorked = sheet.CalculateWorkedHours(sheet);
-                                if (hoursWorked.Equals("NoTime"))
-                                {
-
-                                }
-                                else if (hoursWorked.Equals("Missing Punch"))
-                                {
-                                    missedpunch = missedpunch + 1;
-                                }
-                                else if (!String.IsNullOrEmpty(hoursWorked) && !hoursWorked.Equals("Error"))
-                                {
-                                    hours += Convert.ToInt16(hoursWorked.Split(':')[0]);
-                                    minutes += Convert.ToInt16(hoursWorked.Split(':')[1]);
-                                    while (minutes >= 60)
-                                    {
-                                        minutes = minutes - 60;
-                                        hours = hours + 1;
-                                    }
-                                    if (minutes == 0)
-                                    {
-                                        totalHours = hours + ":00";
-                                    }
-                                    else
-                                    {
-                                        totalHours = hours + ":" + minutes;
-                                    }
-                                    totalWorked = totalHours;
-
-                                    Debug.WriteLine("Running Worked total: " + totalWorked);
-                                    Debug.WriteLine("Running Worked total by the hours: " + hours);
-                                }
-                                else
-                                {
-                                    Error = Error + 1;
-                                }
-                            }
-                            <td>@totalWorked</td>
-
-                            //Calculate overtime hours
-                            string overTime = "";
-                            if (hours >= 40)
-                            {
-                                overTime = (hours - 40).ToString() + ":" + minutes;
-                            }
-                            <td>@overTime</td>
-
-                            //Calculate overtime hours
-                            string overTimeflsa = "";
-
-                            overTimeflsa = (hours - 40).ToString() + ":" + minutes;
-                            int overtimeHours = 0;
-                            int overtimeMinutes = ((hours - 40) * 60 + minutes) + (((hours - 40) * 60 + minutes) / 2);
-                            while (overtimeMinutes >= 60)
-                            {
-                                overtimeHours = overtimeHours + 1;
-                                overtimeMinutes = overtimeMinutes - 60;
-                            }
-                            if (overtimeMinutes >= 53)
-                            {
-                                overTimeflsa = (overtimeHours + 1) + ":00";
-                            }
-                            if (overtimeMinutes >= 38 && overtimeMinutes <= 52)
-                            {
-                                overTimeflsa = overtimeHours + ":45";
-                            }
-                            if (overtimeMinutes >= 23 && overtimeMinutes <= 37)
-                            {
-                                overTimeflsa = overtimeHours + ":30";
-                            }
-                            if (overtimeMinutes <= 22 && overtimeMinutes >= 8)
-                            {
-                                overTimeflsa = overtimeHours + ":15";
-                            }
-                            if (overtimeMinutes <= 7)
-                            {
-                                overTimeflsa = overtimeHours + ":00";
-                            }
-
-                            <td>@overTimeflsa</td>
-
-
-                            //Calculate Total Absent Hours
-                            foreach (TimeSheet sheet in @tsheet)
-                            {
-                                string absHours = "";
-                                if (sheet.LeaveHours.Equals("0:00"))
-                                {
-
-                                }
-                                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
-                                {
-                                    absHours = sheet.LeaveHours;
-                                    Debug.WriteLine("Leave hour : " + sheet.LeaveHours);
-                                    hour += Convert.ToInt16(absHours.Split(':')[0]);
-                                    minute += Convert.ToInt16(absHours.Split(':')[1]);
-                                    while (minute >= 60)
-                                    {
-                                        minute = minute - 60;
-                                        hour = hour + 1;
-                                    }
-
-                                    totalHours = hour + ":" + minute;
-                                    totalabsent = totalHours;
-
-                                    Debug.WriteLine("Running absents: " + totalHours);
-                                    Debug.WriteLine("Running absents by the hours: " + hours);
-                                }
-                                else
-                                {
-                                    Error = Error + 1;
-                                }
-                            }
-                            <td>@totalabsent</td>*@
-                            <td>@emp.Supervisor</td>
+                                }                                         
                         }
                     </tr>
                 }
