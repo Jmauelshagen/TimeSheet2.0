@@ -109,12 +109,14 @@
                 @using (Html.BeginForm("ReportData", "Reports", FormMethod.Post, new { role = "form" }))
                 {
                     @Html.LabelFor(x => x.Name)
+                    <span>&nbsp;</span>
                     @Html.DropDownListFor(x => x.Name,
                                                         Model.EmpNames,
                                                         "-Select Employee-",
                                                         new { @class = "form-control" })
-
+                    <span>&nbsp;</span>
                     @Html.LabelFor(x => x.WeekEnding)
+                    <span>&nbsp;</span>
                     @Html.DropDownListFor(x => x.WeekEnding,
                                                         Model.WeekEndingDates,
                                                         "-Select A Date-",

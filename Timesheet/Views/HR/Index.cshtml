@@ -81,6 +81,7 @@
         @using (Html.BeginForm("GetPayData", "HR", FormMethod.Post, new { role = "form" }))
     {
         @Html.LabelFor(m => m.WeekEnding)
+        <span>&nbsp;</span>
         @Html.DropDownListFor(m => m.WeekEnding,
                        Model.WeekEndingDates,
                        " - Please select a date - ",
