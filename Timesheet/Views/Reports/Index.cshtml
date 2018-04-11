@@ -185,7 +185,7 @@
                                     <td>@Html.TextBoxFor(model => model.LeaveHours, new { @Value = @reportTimeList[i].LeaveHours.ToString().Trim(), pattern = "(1[0-2]|0?[0-9]):([14][5]|[03][0])$", title = "Please enter time as hours and minutes in format ##:## rounded to nearest 15", @readonly = "readonly", style = "width: 50px;" })</td>
                                     <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @reportTimeList[i].AdditionalHours.ToString().Trim(), pattern = "(1[0-2]|0?[0-9]):([14][5]|[03][0])$$", title = "Please enter time as hours and minutes in format ##:## rounded to nearest 15", @readonly = "readonly", style = "width: 75px;" })</td>
                                     @{ /** Calculates the hours worked for the day and check the return from TimeSheet.CalculateTotalHoursWorked to see if it is the first time through with no data, if its got 1 or 3 punches, or if 2 or 4 punches. **/
-                                        string TotalHoursWorked = reporttime.CalculateWorkedHours(reporttime);
+                                        string TotalHoursWorked = reportTimeList[i].CalculateWorkedHours(reportTimeList[i]);
                                         Debug.WriteLine(TotalHoursWorked + "in total Hours");
                                         if (TotalHoursWorked.Equals("Missing Punch"))
                                         {
