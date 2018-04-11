@@ -619,7 +619,6 @@ namespace Timesheet.Controllers
             List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
             Session["Message2"] = "";
 
-            //string CurrentDate = Request.Form["Date"].ToString().Trim();
             string CurrentDate = model.Date.Trim();
             string message;
             Debug.WriteLine(CurrentDate);
