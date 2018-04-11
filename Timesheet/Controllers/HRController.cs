@@ -33,8 +33,8 @@ namespace Timesheet.Controllers
         //This controller obtains a list of pay summary objects for the week selected in the UI
         public ActionResult GetPayData(TimeSheet model)
         {
-            List<PaySummary> paySumList = new List<PaySummary>();
-            PaySummary paySum = new PaySummary();          
+            List<WeeklyReport> paySumList = new List<WeeklyReport>();
+            WeeklyReport paySum = new WeeklyReport();       
             var wED = model.WeekEnding;
             List<int> empIds = paySum.GetBanner_IDsByWeekEndDate(wED);
             /*if(model.IsEnabled)
@@ -49,7 +49,7 @@ namespace Timesheet.Controllers
             {
                 foreach (int empId in empIds)
                 {
-                    paySumList.Add(new PaySummary(empId, wED));
+                    paySumList.Add( paySum.getWeeklyReport(empId,wED));
                 }
             }
            

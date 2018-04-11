@@ -78,7 +78,7 @@ namespace Timesheet.Models
                 {
                     missedpunch = missedpunch + 1;
                 }
-                else if (!String.IsNullOrEmpty(hoursWorked) && !hoursWorked.Equals("Error"))
+                else if (!String.IsNullOrEmpty(hoursWorked.Trim()) && !hoursWorked.Equals("Error"))
                 {
                     hours += Convert.ToInt16(hoursWorked.Split(':')[0]);
                     minutes += Convert.ToInt16(hoursWorked.Split(':')[1]);
@@ -132,7 +132,7 @@ namespace Timesheet.Models
                 {
 
                 }
-                else if (!String.IsNullOrEmpty(sheet.LeaveHours))
+                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
                 {
                     absHours = sheet.LeaveHours;
                     Debug.WriteLine("Leave hour : " + sheet.LeaveHours);

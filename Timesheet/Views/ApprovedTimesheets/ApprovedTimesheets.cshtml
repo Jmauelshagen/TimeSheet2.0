@@ -15,7 +15,8 @@
 
     Employee emp = (Employee)Session["Employee"];
     List<List<TimeSheet>> tsheets = (List<List<TimeSheet>>)Session["AppTimeSheetData"];
-    List<string> dates = (List<string>)Session["Dates"];      
+    List<string> dates = (List<string>)Session["Dates"];
+    WeeklyReport weekly = new WeeklyReport();    
 }
 
 <!DOCTYPE html>
@@ -59,8 +60,9 @@
             {
                 foreach (List<TimeSheet> tsheet in @tsheets)
                 {
+                    weekly = weekly.getWeeklyReport(emp.Banner_ID, tsheet[0].WeekEnding.Trim());
                     Debug.WriteLine("List of List run!");
-                    Debug.WriteLine("The weekending should be: " + tsheet[0].WeekEnding);
+                    Debug.WriteLine("The weekending should be: " + weekly.WeekEnding);
                     <tr>
                         @{
                             <td>@tsheet[0].WeekEnding</td>
@@ -76,6 +78,38 @@
                             int minute = 0;
                             int minutes = 0;
 
+                            <td>@weekly.HoursWorked</td>
+                            Debug.WriteLine("Overtime hours: " + weekly.Overtime);
+                                if (!weekly.Overtime.Equals(""))
+                                {
+                                    <td>@weekly.Overtime</td>
+                                }
+
+                                else
+                                {
+                                    <td> 0 </td>
+                                }                            
+                            Debug.WriteLine("Overtime hours after multiplying by the FLSA 1.5 Weekly Timesheet: " + weekly.FLSA_Overtime);
+                                if (!weekly.FLSA_Overtime.Equals(""))
+                                {
+                                    <td>@weekly.FLSA_Overtime</td>
+                                }
+
+                                else
+                                {
+                                    <td> 0 </td>
+                                }   
+                             Debug.WriteLine("The weekly leave hours: " + weekly.LeaveHours);
+                                if (!weekly.LeaveHours.Equals(""))
+                                {
+                                    <td>@weekly.LeaveHours</td>
+                                }
+
+                                else
+                                {
+                                    <td> 0 </td>
+                                }                               
+                            @*/**Total worked hours for the week**/
                             foreach (TimeSheet sheet in tsheet)
                             {
                                 string hoursWorked = sheet.CalculateWorkedHours(sheet);
@@ -167,7 +201,7 @@
                                 {
 
                                 }
-                                else if (!String.IsNullOrEmpty(sheet.LeaveHours))
+                                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
                                 {
                                     absHours = sheet.LeaveHours;
                                     Debug.WriteLine("Leave hour : " + sheet.LeaveHours);
@@ -190,7 +224,7 @@
                                     Error = Error + 1;
                                 }
                             }
-                            <td>@totalabsent</td>
+                            <td>@totalabsent</td>*@
                             <td>@emp.Supervisor</td>
                         }
                     </tr>

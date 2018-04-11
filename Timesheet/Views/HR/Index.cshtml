@@ -54,9 +54,12 @@
 <body>
     <!--Get employee and pay summary objects from the session.-->
 
-    @{var hr = (Employee)Session["HR"];
+    @{
+        var hr = (Employee)Session["HR"];
         var emps = new Employee();
-        var paySumList = (List<PaySummary>)Session["PaySummaryList"];
+        var paySumList = (List<WeeklyReport>)Session["PaySummaryList"];
+        WeeklyReport weekly = new WeeklyReport();
+        
     }
     <div>
         <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
@@ -105,11 +108,10 @@
                 @{
                     if (@paySumList != null)
                     {
-                        foreach (PaySummary paySum in @paySumList)
+                        foreach (WeeklyReport paySum in @paySumList)
                         {
                             using (Html.BeginForm("GetOverview", "HR", FormMethod.Post))
-                            {
-
+                            {                                
                                 <tr>
                                     @{Model.Banner_ID = paySum.Banner_ID;
                                         emps = emps.GetEmployee(Convert.ToInt16(@paySum.Banner_ID));}
@@ -119,22 +121,22 @@
                                         @*<a href="mailto:@emps.Email_Address.Trim()">@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID</a>*@
                                     </td>
                                     <td>
-                                        @paySum.TotalHours
+                                        @paySum.HoursWorked
                                     </td>
                                     <td>
-                                        @paySum.OverTimeHours
+                                        @paySum.Overtime
                                     </td>
                                     <td>
-                                        @paySum.OverTimeHoursFLSA
+                                        @paySum.FLSA_Overtime
                                     </td>
                                     <td>
-                                        @paySum.TotalAbsent
+                                        @paySum.LeaveHours
                                     </td>
                                     <td>
-                                        @paySum.TimeSheetStatus
+                                        @paySum.TimesheetStatus
                                     </td>
                                     <td>
-                                        @paySum.SuperName
+                                        @paySum.SupervisorName
                                     </td>
                                     @*<td>
                                         <button id="submit" type="submit" value="Overview">Overview</button>
