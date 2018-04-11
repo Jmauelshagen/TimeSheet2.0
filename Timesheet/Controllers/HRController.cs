@@ -37,20 +37,10 @@ namespace Timesheet.Controllers
             WeeklyReport paySum = new WeeklyReport();       
             var wED = model.WeekEnding;
             List<int> empIds = paySum.GetBanner_IDsByWeekEndDate(wED);
-            /*if(model.IsEnabled)
+
+            foreach (int empId in empIds)
             {
-                String result = "True";
-                foreach (int empID in empIds)
-                {
-                    paySumList.Add(new PaySummary(empID, wED, result));
-                }
-            }
-            //else*/
-            {
-                foreach (int empId in empIds)
-                {
-                    paySumList.Add( paySum.getWeeklyReport(empId,wED));
-                }
+                paySumList.Add( paySum.getWeeklyReport(empId,wED));
             }
            
             Session["Weekend"] = wED;
