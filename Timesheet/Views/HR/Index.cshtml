@@ -76,7 +76,6 @@
             </div>
         </label>*@
 
-        <br />
         <p>Select a week to review employee pay sheet summaries.</p>
         <!--Form for selecting a week and viewing pay summaries-->
         @using (Html.BeginForm("GetPayData", "HR", FormMethod.Post, new { role = "form" }))
@@ -91,14 +90,15 @@
         <br />
 
         <!--Table to display pay summaries from the session-->
-        <table style="width:100%" cellpadding="4" id="PaySummary">
+        <table class="center" id="PaySummary">
             <thead>
                 <tr>
                     <th>Name, ID</th>
+                    <th>Absent hours</th>
                     <th>Worked hours</th>
+                    <th>Total hours</th>
                     <th>Over Time</th>
                     <th>FLSA Overtime</th>
-                    <th>Absent hours</th>
                     <th>Time Sheet Status</th>
                     <th>Supervisor</th>
                     @*<th>Overview</th>*@
@@ -121,17 +121,20 @@
                                         @*<a href="mailto:@emps.Email_Address.Trim()">@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID</a>*@
                                     </td>
                                     <td>
+                                        @paySum.LeaveHours
+                                    </td>
+                                    <td>
                                         @paySum.HoursWorked
+                                    </td>
+                                    <td>
+                                        @paySum.TotalHoursWorked
                                     </td>
                                     <td>
                                         @paySum.Overtime
                                     </td>
                                     <td>
                                         @paySum.FLSA_Overtime
-                                    </td>
-                                    <td>
-                                        @paySum.LeaveHours
-                                    </td>
+                                    </td>                                    
                                     <td>
                                         @paySum.TimesheetStatus
                                     </td>
