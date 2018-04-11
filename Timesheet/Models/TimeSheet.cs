@@ -543,8 +543,15 @@ namespace Timesheet.Models
 
                 else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()) && String.IsNullOrEmpty(sheet.AdditionalHours.Trim()) && String.IsNullOrEmpty(sheet.TimeIn.Trim()) && String.IsNullOrEmpty(sheet.OutForLunch.Trim()) && String.IsNullOrEmpty(sheet.InFromLunch.Trim()) && String.IsNullOrEmpty(sheet.TimeOut.Trim()))
                 {
-                    Debug.WriteLine("if only additional hours are worked..");                    
+                    Debug.WriteLine("if only leave hours are worked..");                    
                     totalHours = "NoTime";
+                    //return totalHours;
+                }
+
+                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()) && !String.IsNullOrEmpty(sheet.AdditionalHours.Trim()) && String.IsNullOrEmpty(sheet.TimeIn.Trim()) && String.IsNullOrEmpty(sheet.OutForLunch.Trim()) && String.IsNullOrEmpty(sheet.InFromLunch.Trim()) && String.IsNullOrEmpty(sheet.TimeOut.Trim()))
+                {
+                    Debug.WriteLine("if both leave and addtional....");
+                    totalHours = sheet.AdditionalHours.ToString().Trim();
                     //return totalHours;
                 }
 
