@@ -13,9 +13,6 @@ namespace Timesheet.Controllers
         // GET: Timesheet
         public ActionResult Timesheet()
         {
-            //Session["Message"] = "";
-            ////Note Error checking
-            //Session["Message2"] = "";
             Employee emp = (Employee)Session["Employee"];
             Session["datelist"] = GetListOfDays();
             return View();
@@ -276,7 +273,7 @@ namespace Timesheet.Controllers
                             else { tsheets[i].TimeOut = ""; }
 
                             if (!String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = model.LeaveId; }
-                            else { tsheets[i].LeaveId = 0; }
+                            else { Debug.WriteLine("6666666666666666666666666666666666666");  tsheets[i].LeaveId = 0; }
 
                             if (!String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = model.LeaveHours; }
                             else { tsheets[i].LeaveHours = ""; }
@@ -758,21 +755,25 @@ namespace Timesheet.Controllers
                 Session["OldMessage"] = message;
                 return RedirectToAction("OldTimesheet", "Timesheet");
             }
+            else
+            {
 
-            string wED = model.WeekEnding.Trim();
-            List<TimeSheet> tsheets = model.GetTimeSheetByIdAndDate(emp.Banner_ID, wED);
-            Session["TimeSheetData"] = tsheets;
-            IEnumerable<SelectListItem> dateList = GetListOfDays(emp.Banner_ID, wED);
-            Session["dateList"] = dateList;
-            List<string> dates = GetDaysInTimeSheet(emp.Banner_ID, wED);
-            Session["dates"] = dates;
+                string wED = model.WeekEnding.Trim();
+                List<TimeSheet> tsheets = model.GetTimeSheetByIdAndDate(emp.Banner_ID, wED);
+                Session["TimeSheetData"] = tsheets;
+                IEnumerable<SelectListItem> dateList = GetListOfDays(emp.Banner_ID, wED);
+                Session["dateList"] = dateList;
+                List<string> dates = GetDaysInTimeSheet(emp.Banner_ID, wED);
+                Session["dates"] = dates;
 
-            Session["Message"] = "";
-            Session["DailyMessage"] = "";
-            Session["CurrentMessage"] = "";
-            Session["OldMessage"] = "";
+                Session["Message"] = "";
+                Session["DailyMessage"] = "";
+                Session["CurrentMessage"] = "";
+                Session["OldMessage"] = "";
 
-            return RedirectToAction("OldTimesheet", "Timesheet");
+                return RedirectToAction("OldTimesheet", "Timesheet");
+            }
+
         }
 
         private IEnumerable<SelectListItem> GetListOfDays(int id, string wed)
