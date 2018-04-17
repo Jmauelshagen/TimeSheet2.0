@@ -28,7 +28,7 @@ namespace Timesheet.Models
         public string OutForLunch { get; set; }
         public string InFromLunch { get; set; }
         public string TimeOut { get; set; }
-        public Nullable<int> LeaveId { get; set; }
+        public int LeaveId { get; set; }
         public string LeaveHours { get; set; }
         public string AdditionalHours { get; set; }
         public string TotalHoursWorked { get; set; }
@@ -277,7 +277,7 @@ namespace Timesheet.Models
             tsheet.AuthorizedBySupervisor = sheet.AuthorizedBySupervisor;
             tsheet.Banner_ID = sheet.Banner_ID;
             tsheet.Note = sheet.Note;
-            Debug.WriteLine("The tsheet is :" + tsheet.Note + "]");
+            Debug.WriteLine("The tsheet is :" + sheet.LeaveId + "55555555555555]");
 
             db.SaveChanges();
 
@@ -837,7 +837,7 @@ namespace Timesheet.Models
 
             foreach (TimeSheet sheet in sheets)
             {
-                Debug.WriteLine("******************************* DATE SAVED TO LIST *****************************: " + sheet.Date);
+                Debug.WriteLine("******************************* DATE SAVED TO LIST: " + sheet.Date);
                 dates.Add(sheet.Date);
             }
             return dates;
