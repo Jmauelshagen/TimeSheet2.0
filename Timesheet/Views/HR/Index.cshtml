@@ -17,8 +17,9 @@
         var textRange; var j=0;
         tab = document.getElementById('PaySummary'); // id of table
 
-        for (j = 0; j < tab.rows.length; j++) {
-            tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+        for(j = 0 ; j < tab.rows.length ; j++)
+        {
+            tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
         }
 
         tab_text = tab_text + "</table>";
@@ -73,7 +74,7 @@
 <body>
     <!--Get employee and pay summary objects from the session.-->
     @{
-                    var hr = (Employee)Session["HR"];
+        var hr = (Employee)Session["HR"];
         var emps = new Employee();
         var paySumList = (List<WeeklyReport>)Session["PaySummaryList"];
         IEnumerable<SelectListItem> WeekendingList = (IEnumerable<SelectListItem>)Session["WeekendingList"];
@@ -104,7 +105,7 @@
             @Html.RadioButton("Type", "Pending Approval") Pending Approval
             @Html.RadioButton("Type", "Approved") Approved
         </div>
-}
+        }
         
         <br />
 
@@ -159,9 +160,9 @@
                                     @paySum.SupervisorName
                                 </td>
                             </tr>
+                        }
                     }
                 }
-            }
                 }
             </tbody>
         </table>

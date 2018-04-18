@@ -31,13 +31,12 @@ namespace Timesheet.Controllers
         }
 
         //This controller obtains a list of pay summary objects for the week selected in the UI
-        public ActionResult GetPayData(TimeSheet model, FormCollection frm)
+        public ActionResult GetPayData(TimeSheet model)
         {
             List<WeeklyReport> paySumList = new List<WeeklyReport>();
             WeeklyReport paySum = new WeeklyReport();
-            string type = frm["Type"].ToString().Trim();
-            Debug.WriteLine("The Session type is: *****" + type);
-            paySum.type = type;
+            string type = (string)Session["Type"];
+            Debug.WriteLine("The Session type is: *****: " + type);
             var wED = model.WeekEnding;
             List<int> empIds = paySum.GetBanner_IDsByWeekEndDate(wED);
 
@@ -84,6 +83,18 @@ namespace Timesheet.Controllers
 
             //Return the TimeSheet view
             return RedirectToAction("Overview", "HR");
+        }
+
+        //Not used currently
+        public ActionResult ApprovedTimesheets()
+        {
+            return View();
+        }
+
+        //Not used currently
+        public ActionResult TimesheetReports()
+        {
+            return View();
         }
 
         private List<string> GetDaysInTimeSheet(int id, string wed)
