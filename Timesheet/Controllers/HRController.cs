@@ -34,7 +34,9 @@ namespace Timesheet.Controllers
         public ActionResult GetPayData(TimeSheet model)
         {
             List<WeeklyReport> paySumList = new List<WeeklyReport>();
-            WeeklyReport paySum = new WeeklyReport();       
+            WeeklyReport paySum = new WeeklyReport();
+            string type = (string)Session["Type"];
+            Debug.WriteLine("The Session type is: *****: " + type);
             var wED = model.WeekEnding;
             List<int> empIds = paySum.GetBanner_IDsByWeekEndDate(wED);
 

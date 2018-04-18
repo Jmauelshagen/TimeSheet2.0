@@ -7,15 +7,16 @@
 <!--This screen renders after someone with the HR role logs in. It displays a menu for week ending date.
     After selection is submitted, a summary of hours worked by each employee that logged time that week
     is displayed.-->
-<script>            
+<script>
+
     function fnExcelReport()
     {
         var tab_text="<table border='2px'><tr bgcolor='#87AFC6'>";
         var textRange; var j=0;
         tab = document.getElementById('PaySummary'); // id of table
 
-        for(j = 0 ; j < tab.rows.length ; j++) 
-        {     
+        for(j = 0 ; j < tab.rows.length ; j++)
+        {
             tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
         }
 
@@ -25,20 +26,37 @@
         tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
 
         var ua = window.navigator.userAgent;
-        var msie = ua.indexOf("MSIE "); 
+        var msie = ua.indexOf("MSIE ");
 
         if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
         {
             txtArea1.document.open("txt/html","replace");
             txtArea1.document.write(tab_text);
             txtArea1.document.close();
-            txtArea1.focus(); 
+            txtArea1.focus();
             sa=txtArea1.document.execCommand("SaveAs",true,"Reports.xls");
-        }  
+        }
         else                 //other browser not tested on IE 11
-            sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));  
+            sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
 
         return (sa);
+    }
+
+    function typeChange()
+    {
+        alert("In Typechange");
+        if (document.getElementById('switch_4_Def').checked) {
+            @Session["Type"] = "Default";
+        }
+        else if (document.getElementById('switch_4_Nosub').checked) {
+            @Session["Type"] = "Not Submitted";
+        }
+        else if (document.getElementById('switch_4_Sub').checked) {
+            @Session["Type"] = "Submitted";
+        }
+        else (document.getElementById('switch_4_App').checked) {
+            @Session["Type"] = "Approved";
+        }
     }
 </script>
 
@@ -81,38 +99,54 @@
         <!--Form for selecting a week and viewing pay summaries-->
         @using (Html.BeginForm("GetPayData", "HR", FormMethod.Post, new { role = "form" }))
         {
-            @Html.LabelFor(m => m.WeekEnding)
-            <span>&nbsp;</span>
-            @Html.DropDownListFor(m => m.WeekEnding, WeekendingList, " - Please select a date - ", new { @class = "form-control", onchange = "this.form.submit();" })
+        @Html.LabelFor(m => m.WeekEnding)
+        <span>&nbsp;</span>
+        @Html.DropDownListFor(m => m.WeekEnding,
+                        Model.WeekEndingDates,
+                        " - Please select a date - ",
+                        new { @class = "form-control" })
+        <button type="submit">Search</button>
         }
-        @{
-            if (@paySumList != null)
-            {
-            <p>Reports for the Week ending on @paySumList[0].WeekEnding</p>
-            <!--Table to display pay summaries from the session-->
-            <table class="center" id="PaySummary">
-                <thead>
-                    <tr>
-                        <th style="display:none;">Weekending Date</th>
-                        <th>Name, ID</th>
-                        <th>Absent hours</th>
-                        <th>Worked hours</th>
-                        <th>Total hours</th>
-                        <th>Over Time</th>
-                        <th>FLSA Overtime</th>
-                        <th>Time Sheet Status</th>
-                        <th>Supervisor</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (WeeklyReport paySum in @paySumList)
+        <form style="align-content:center">
+            <div class="switch-field">
+                <div class="switch-title">Three fields? Sure.</div>
+                <input type="radio" id="switch_4_Def" name="switch_4" onclick="typeChange();" />
+                <label for="switch_3_left">Default</label>
+                <input type="radio" id="switch_4_Nosub" name="switch_4" onclick="typeChange();" />
+                <label for="switch_3_center">Not Submitted</label>
+                <input type="radio" id="switch_4_Sub" name="switch_4" onclick="typeChange();" />
+                <label for="switch_3_right">Submitted</label>
+                <input type="radio" id="switch_4_App" name="switch_4" onclick="typeChange();" />
+                <label for="switch_3_right">Approved</label>
+            </div>
+        </form>
+        <br />
+
+        <!--Table to display pay summaries from the session-->
+        <table class="center" id="PaySummary">
+            <thead>
+                <tr>
+                    <th>Name, ID</th>
+                    <th>Absent hours</th>
+                    <th>Worked hours</th>
+                    <th>Total hours</th>
+                    <th>Over Time</th>
+                    <th>FLSA Overtime</th>
+                    <th>Time Sheet Status</th>
+                    <th>Supervisor</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                if (@paySumList != null)
+                {
+                    foreach (WeeklyReport paySum in @paySumList)
                     {
                         using (Html.BeginForm("GetOverview", "HR", FormMethod.Post))
                         {
                             <tr>
-                                <td style="display:none;"> @paySum.WeekEnding</td>
                                 @{Model.Banner_ID = paySum.Banner_ID;
-                                    emps = emps.GetEmployee(Convert.ToInt16(@paySum.Banner_ID));}
+                                emps = emps.GetEmployee(Convert.ToInt16(@paySum.Banner_ID));}
                                 @Html.HiddenFor(model => model.Banner_ID)
                                 <td>
                                     <button id="submit" type="submit" value="@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID">@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID</button>
@@ -139,13 +173,13 @@
                                     @paySum.SupervisorName
                                 </td>
                             </tr>
-                        }
                     }
-                </tbody>
-            </table>
+                }
             }
-        }
-        </div><br />
+                }
+            </tbody>
+        </table>
+    </div><br />
     <iframe id="txtArea1" style="display:none"></iframe>
     <button id="btnExport" onclick="fnExcelReport();">Export Report </button>
 
