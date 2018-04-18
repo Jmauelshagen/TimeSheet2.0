@@ -32,6 +32,7 @@ namespace Timesheet.Models
         public string SupervisorName { get; set; }
         public string TimesheetStatus { get; set; }
         public string EmployeeName { get; set; }
+        public string type { get; set; }
 
         public WeeklyReport()
         {
@@ -67,9 +68,23 @@ namespace Timesheet.Models
 
         public WeeklyReport getWeeklyReport(int Banner_ID, string wEnd)
         {
+            //if (type.Equals("Not Submitted"))
+            //{
+
+            //}
+            //else if (type.Equals("Submitted"))
+            //{
+
+            //}
+            //else if (type.Equals("Approved"))
+            //{
+
+            //}
+            //else
+            //{ }
             var wReport = (from wr in db.WeeklyReports
-                           where wr.Banner_ID == Banner_ID && wr.WeekEnding == wEnd.Trim()
-                           select wr);
+                               where wr.Banner_ID == Banner_ID && wr.WeekEnding == wEnd.Trim()
+                               select wr);
 
             var count = wReport.Count();
             if (count == 0)
