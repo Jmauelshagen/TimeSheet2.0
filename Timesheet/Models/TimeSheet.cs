@@ -28,7 +28,7 @@ namespace Timesheet.Models
         public string OutForLunch { get; set; }
         public string InFromLunch { get; set; }
         public string TimeOut { get; set; }
-        public Nullable<int> LeaveId { get; set; }
+        public int LeaveId { get; set; }
         public string LeaveHours { get; set; }
         public string AdditionalHours { get; set; }
         public string TotalHoursWorked { get; set; }
@@ -39,6 +39,8 @@ namespace Timesheet.Models
         public IEnumerable<SelectListItem> EmpNames { get; set; }
         public string Note { get; set; }
         public string Name { get; set; }
+        public bool IsEnabled { get; set; }
+        public string HoursWorked { get; set; }
 
 
         //Constructors
@@ -60,11 +62,13 @@ namespace Timesheet.Models
             AuthorizedBySupervisor = "False";
             Banner_ID = 0;
             Note = "";
+            IsEnabled = false;
         }
 
         //all-args constructor
         public TimeSheet(int id, string wEnd, string date, string inT, string outL, string inL, string outT,
-            int leaveId, string leaveHrs, string addlHrs, string tlHrs, string sub, string auth, int banner_ID, string n)
+            int leaveId, string leaveHrs, string addlHrs, string tlHrs, string sub, string auth, int banner_ID,
+            string n, bool enable)
         {
             Id = id;
             WeekEnding = wEnd;
@@ -81,6 +85,7 @@ namespace Timesheet.Models
             AuthorizedBySupervisor = auth;
             Banner_ID = banner_ID;
             Note = n;
+            this.IsEnabled = enable;
         }
 
         //Method to get list of Timesheet objects by employee id and week ending date
@@ -272,7 +277,7 @@ namespace Timesheet.Models
             tsheet.AuthorizedBySupervisor = sheet.AuthorizedBySupervisor;
             tsheet.Banner_ID = sheet.Banner_ID;
             tsheet.Note = sheet.Note;
-            Debug.WriteLine("The tsheet is :" + tsheet.Note + "]");
+            Debug.WriteLine("The tsheet is :" + sheet.LeaveId + "55555555555555]");
 
             db.SaveChanges();
 
@@ -380,7 +385,7 @@ namespace Timesheet.Models
                     return totalHours;
                 }
 
-                else if (!String.IsNullOrEmpty(sheet.AdditionalHours.Trim()) && String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
+                else if (!String.IsNullOrEmpty(sheet.AdditionalHours.Trim()) && String.IsNullOrEmpty(sheet.LeaveHours.Trim()) && String.IsNullOrEmpty(sheet.TimeIn.Trim()) && String.IsNullOrEmpty(sheet.OutForLunch.Trim()) && String.IsNullOrEmpty(sheet.InFromLunch.Trim()) && String.IsNullOrEmpty(sheet.TimeOut.Trim()))
                 {
                     Debug.WriteLine("if only additional hours are worked..");
                     string totalHours;
@@ -388,14 +393,14 @@ namespace Timesheet.Models
                     return totalHours;
                 }
 
-                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()) && String.IsNullOrEmpty(sheet.AdditionalHours.Trim()))
+                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()) && String.IsNullOrEmpty(sheet.AdditionalHours.Trim()) && String.IsNullOrEmpty(sheet.TimeIn.Trim()) && String.IsNullOrEmpty(sheet.OutForLunch.Trim()) && String.IsNullOrEmpty(sheet.InFromLunch.Trim()) && String.IsNullOrEmpty(sheet.TimeOut.Trim()))
                 {
                     Debug.WriteLine("if only leave hours are worked..");
                     string totalHours;
                     totalHours = sheet.LeaveHours.ToString().Trim();
                     return totalHours;
                 }
-                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()) && !String.IsNullOrEmpty(sheet.AdditionalHours.Trim()))
+                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()) && !String.IsNullOrEmpty(sheet.AdditionalHours.Trim()) && String.IsNullOrEmpty(sheet.TimeIn.Trim()) && String.IsNullOrEmpty(sheet.OutForLunch.Trim()) && String.IsNullOrEmpty(sheet.InFromLunch.Trim()) && String.IsNullOrEmpty(sheet.TimeOut.Trim()))
                 {
                     Debug.WriteLine("if both additionalHours and LeaveHours are filled in.");
                     int leaveHour = 0;
@@ -445,6 +450,9 @@ namespace Timesheet.Models
         {
             try
             {
+                string totalHours;
+                int hours = 0;
+                int minutes = 0;
                 if (!String.IsNullOrEmpty(sheet.TimeIn.Trim()) && !String.IsNullOrEmpty(sheet.OutForLunch.Trim()) && String.IsNullOrEmpty(sheet.InFromLunch.Trim()) && String.IsNullOrEmpty(sheet.TimeOut.Trim()))
                 {
                     Debug.WriteLine("Calculating the first 2 punches");
@@ -453,7 +461,7 @@ namespace Timesheet.Models
                     //used to view the incoming values
                     Debug.WriteLine("Clocked in at " + tIn + " in 2 Punches");
                     Debug.WriteLine("Clocked out for lunch at " + lOut + " in 2 Punches");
-                    string totalHours;
+                   
                     if (tIn > lOut)
                     {
                         totalHours = "Error";
@@ -478,7 +486,7 @@ namespace Timesheet.Models
                         Debug.WriteLine(hoursWorked + "************* " + hoursWorked.TotalHours + "************************* " + hour + " ************* " + minute + " add time " + AdditionalHours);
                     }
                     Debug.WriteLine("TotalHours from the first 2 punches :" + totalHours);
-                    return totalHours;
+                    //return totalHours;
                 }
 
                 else if (!String.IsNullOrEmpty(sheet.TimeIn.Trim()) && !String.IsNullOrEmpty(sheet.OutForLunch.Trim()) && !String.IsNullOrEmpty(sheet.InFromLunch.Trim()) && !String.IsNullOrEmpty(sheet.TimeOut.Trim()))
@@ -492,8 +500,7 @@ namespace Timesheet.Models
                     Debug.WriteLine("Clocked in at " + tIn + " in 4 Punches");
                     Debug.WriteLine("Clocked out for lunch at " + lOut + " in 4 Punches");
                     Debug.WriteLine("Clocked in from lunch at " + lIn + " in 4 Punches");
-                    Debug.WriteLine("Clocked out at " + tOut + " in 4 Punches");
-                    string totalHours;
+                    Debug.WriteLine("Clocked out at " + tOut + " in 4 Punches");                    
                     if (tIn > lOut || lOut > lIn || lIn > tOut)
                     {
                         totalHours = "Error";
@@ -517,38 +524,79 @@ namespace Timesheet.Models
                         Debug.WriteLine(hoursWorked + "************* " + hoursWorked.TotalHours + "************************* " + hour + " ************* " + minute + " add time " + AdditionalHours);
                         totalHours = hour.ToString() + ":" + minute.ToString();
                     }
-                    return totalHours;
+                    //return totalHours;
                 }
 
                 else if (String.IsNullOrEmpty(sheet.TimeIn.Trim()) && String.IsNullOrEmpty(sheet.OutForLunch.Trim()) && String.IsNullOrEmpty(sheet.InFromLunch.Trim()) && String.IsNullOrEmpty(sheet.TimeOut.Trim()) && String.IsNullOrEmpty(sheet.AdditionalHours.Trim()) && String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
                 {
-                    Debug.WriteLine("Skipping over empty day not filled out yet.");
-                    string totalHours;
+                    Debug.WriteLine("Skipping over empty day not filled out yet.");                    
                     totalHours = "NoTime";
-                    return totalHours;
+                    //return totalHours;
                 }
 
-                else if (!String.IsNullOrEmpty(sheet.AdditionalHours.Trim()))
+                else if (!String.IsNullOrEmpty(sheet.AdditionalHours.Trim()) && String.IsNullOrEmpty(sheet.TimeIn.Trim()) && String.IsNullOrEmpty(sheet.OutForLunch.Trim()) && String.IsNullOrEmpty(sheet.InFromLunch.Trim()) && String.IsNullOrEmpty(sheet.TimeOut.Trim()) && String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
                 {
-                    Debug.WriteLine("if only additional hours are worked..");
-                    string totalHours;
+                    Debug.WriteLine("if only additional hours are worked..");                  
                     totalHours = sheet.AdditionalHours.ToString().Trim();
-                    return totalHours;
+                    //return totalHours;
                 }
 
-                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
+                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()) && String.IsNullOrEmpty(sheet.AdditionalHours.Trim()) && String.IsNullOrEmpty(sheet.TimeIn.Trim()) && String.IsNullOrEmpty(sheet.OutForLunch.Trim()) && String.IsNullOrEmpty(sheet.InFromLunch.Trim()) && String.IsNullOrEmpty(sheet.TimeOut.Trim()))
                 {
-                    Debug.WriteLine("if only additional hours are worked..");
-                    string totalHours;
+                    Debug.WriteLine("if only leave hours are worked..");                    
                     totalHours = "NoTime";
-                    return totalHours;
+                    //return totalHours;
+                }
+
+                else if (!String.IsNullOrEmpty(sheet.LeaveHours.Trim()) && !String.IsNullOrEmpty(sheet.AdditionalHours.Trim()) && String.IsNullOrEmpty(sheet.TimeIn.Trim()) && String.IsNullOrEmpty(sheet.OutForLunch.Trim()) && String.IsNullOrEmpty(sheet.InFromLunch.Trim()) && String.IsNullOrEmpty(sheet.TimeOut.Trim()))
+                {
+                    Debug.WriteLine("if both leave and addtional....");
+                    totalHours = sheet.AdditionalHours.ToString().Trim();
+                    //return totalHours;
                 }
 
                 else
                 {
-                    Debug.WriteLine("Sending 'Missing Punch' hours for the day because punches are missing. only gets called for 1 punch and 3 punches 999999999999");
-                    string totalHours;
+                    Debug.WriteLine("Sending 'Missing Punch' hours for the day because punches are missing. only gets called for 1 punch and 3 punches 999999999999");                   
                     totalHours = "Missing Punch";
+                    //return totalHours;
+                }
+
+                Debug.WriteLine(totalHours + " in total Hours");
+                if (totalHours.Equals("NoTime"))
+                {
+                    totalHours = "0";
+                    HoursWorked = totalHours;
+                    return totalHours;
+                }
+                else if (totalHours.Equals("Missing Punch"))
+                {
+                    totalHours = "Missing Punch";
+                    HoursWorked = totalHours;
+                    return totalHours;
+                }
+
+                else if (!totalHours.Equals("Error"))
+                {
+                    Debug.WriteLine("Passed the if");
+                    hours = Convert.ToInt16(totalHours.Split(':')[0]);
+                    minutes = Convert.ToInt16(totalHours.Split(':')[1]);
+                    if (minutes >= 60)
+                    {
+                        minutes = minutes - 60;
+                        hours = hours + 1;
+                    }
+                    totalHours = hours + ":" + minutes;
+                    HoursWorked = totalHours;
+                    Debug.WriteLine("Running total: " + totalHours);
+                    Debug.WriteLine("Running total by the hours: " + hours);
+                    return totalHours;
+                }
+                else
+                {
+                    Debug.WriteLine("Failed the if");
+                    totalHours = "Error";
+                    HoursWorked = totalHours;
                     return totalHours;
                 }
 
@@ -557,6 +605,49 @@ namespace Timesheet.Models
             {
                 Debug.WriteLine(ae);
                 return "";
+            }
+        }
+
+        public string GetOvertime()
+        {
+            String overtime;
+            int hours = 0;
+            int minutes = 0;            
+            if (HoursWorked.Equals("0") || HoursWorked.Equals("Missing Punch") || HoursWorked.Equals("NoTime"))
+            {
+                overtime = "0";
+                return overtime;
+            }
+            else if (!HoursWorked.Equals("Error"))
+            {
+                Debug.WriteLine("Calculating Hours Worked in the Timesheet");
+                hours = Convert.ToInt16(HoursWorked.Split(':')[0]);
+                minutes = Convert.ToInt16(HoursWorked.Split(':')[1]);
+                if (minutes >= 60)
+                {
+                    minutes = minutes - 60;
+                    hours = hours + 1;
+                }
+                String totalHours = hours + ":" + minutes;
+
+                /** Calculates and overtime for the day **/
+                int hoursWorked2 = Convert.ToInt16(totalHours.Split(':')[0]);
+                int minutesWorked = Convert.ToInt16(totalHours.Split(':')[1]);
+                if (hoursWorked2 < 8)
+                {
+                    overtime = "0";
+                    return overtime;
+                }
+                else
+                {
+                    overtime = (hoursWorked2 - 8) + ":" + minutesWorked;
+                    return overtime;
+                }
+            }
+            else
+            {
+                overtime = "0";
+                return overtime;
             }
         }
 
@@ -746,7 +837,7 @@ namespace Timesheet.Models
 
             foreach (TimeSheet sheet in sheets)
             {
-                Debug.WriteLine("******************************* DATE SAVED TO LIST *****************************: " + sheet.Date);
+                Debug.WriteLine("******************************* DATE SAVED TO LIST: " + sheet.Date);
                 dates.Add(sheet.Date);
             }
             return dates;
@@ -780,6 +871,23 @@ namespace Timesheet.Models
             return weekEndDates;
         }
 
+        public List<string> GetApprovedWeekendsList(int id)
+        {
+            var wED = (from sheets in db.TimeSheets
+                       where sheets.Banner_ID == id && sheets.AuthorizedBySupervisor.Equals("True")
+                       select sheets.WeekEnding).Distinct().OrderBy(WeekEnding => WeekEnding);
+            if(wED == null)
+            {
+                return null;
+            }
+            List<string> weekEndDates = new List<string>();
+            foreach (string date in wED)
+            {
+                weekEndDates.Add(date);                
+            }
+            return weekEndDates;
+        }
+
         //Obtains the fist and list names for a distinct list of employee ids that exist on the
         //TimeSheet db table
         public List<string> GetEmployeeNames(int sid)
@@ -789,6 +897,7 @@ namespace Timesheet.Models
                       select sheets.Banner_ID).Distinct();
             foreach (int id in Id)
             {
+                Debug.WriteLine("This id is: " + id);
                 var fname = (from emps in db.Employees
                              where emps.Banner_ID == id && emps.Supervisor == sid.ToString().Trim()
                              select emps.First_Name).FirstOrDefault();

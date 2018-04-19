@@ -135,8 +135,8 @@ namespace Timesheet.Models
             foreach (TimeSheet sheet in tsheets)
             {
                 string hoursWorked = sheet.CalculateTotalHoursWorked(sheet);
-
-                if (!String.IsNullOrEmpty(hoursWorked) && !hoursWorked.Equals("Error") && !hoursWorked.Equals("Missing Punch") && !hoursWorked.Equals("NoTime"))
+                Debug.WriteLine("Total hours calc is: " + hoursWorked);
+                if (!String.IsNullOrEmpty(hoursWorked.Trim()) && !hoursWorked.Equals("Error") && !hoursWorked.Equals("Missing Punch") && !hoursWorked.Equals("NoTime") && !hoursWorked.Equals("0"))
                 {
                     hours += Convert.ToInt16(hoursWorked.Split(':')[0]);
                     minutes += Convert.ToInt16(hoursWorked.Split(':')[1]);
@@ -200,7 +200,7 @@ namespace Timesheet.Models
             foreach (TimeSheet sheet in tsheets)
             {
                 string hoursWorked = sheet.CalculateWorkedHours(sheet);
-                if (!String.IsNullOrEmpty(hoursWorked) && !hoursWorked.Equals("Error") && !hoursWorked.Equals("Missing Punch") && !hoursWorked.Equals("NoTime"))
+                if (!String.IsNullOrEmpty(hoursWorked.Trim()) && !hoursWorked.Equals("Error") && !hoursWorked.Equals("Missing Punch") && !hoursWorked.Equals("NoTime") && !hoursWorked.Equals("0"))
                 {
                     hours += Convert.ToInt16(hoursWorked.Split(':')[0]);
                     minutes += Convert.ToInt16(hoursWorked.Split(':')[1]);
@@ -451,5 +451,22 @@ namespace Timesheet.Models
             return maxId;
         }
 
+        //Method to return pay summary data for employees
+        public List<int> GetBanner_IDsByWeekEndDate(string date)
+        {
+            //get set of employee ids by week ending date
+            var eIds = (from sheets in db.TimeSheets
+                        where sheets.WeekEnding == date
+                        select sheets.Banner_ID).Distinct().OrderBy(Banner_ID => Banner_ID);
+
+            List<int> Banner_IDs = new List<int>();
+            //add employee ids to list
+            foreach (int id in eIds)
+            {
+                Banner_IDs.Add(id);
+            }
+
+            return Banner_IDs;
+        }
     }
 }

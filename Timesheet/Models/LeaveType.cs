@@ -11,10 +11,73 @@ namespace Timesheet.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Web.Mvc;
+
     public partial class LeaveType
     {
+
+        LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
+
         public int LeaveId { get; set; }
         public string Description { get; set; }
+
+        public LeaveType()
+        {
+            LeaveId = 0;
+            Description = "";
+        }
+
+        public LeaveType(int li, string d)
+        {
+            LeaveId = li;
+            Description = d;
+        }
+
+        public IEnumerable<SelectListItem> GetLeaveList()
+        {
+            var leaveType = (from leave in db.LeaveTypes
+                             select leave);
+            var leaveList = new List<SelectListItem>();
+            foreach (LeaveType leave in leaveType)
+            {
+                leaveList.Add(new SelectListItem
+                {
+                    Value = leave.LeaveId.ToString().Trim(),
+                    Text = leave.Description
+                });
+            }
+            return leaveList;
+        }
+        public IEnumerable<SelectListItem> GetLeaveListSelected(int id)
+        {
+            var leaveType = (from leave in db.LeaveTypes
+                             select leave);
+            var leaveList = new List<SelectListItem>();
+            foreach (LeaveType leave in leaveType)
+            {
+                if (leave.LeaveId == id)
+                {
+                    leaveList.Add(new SelectListItem
+                    {
+                        Value = leave.LeaveId.ToString(),
+                        Text = leave.Description,
+                        Selected = true
+                    });
+                }
+                else
+                {
+                    leaveList.Add(new SelectListItem
+                    {
+                        Value = leave.LeaveId.ToString(),
+                        Text = leave.Description,
+                    });
+                }
+
+            }
+            return leaveList;
+        }
+
     }
 }

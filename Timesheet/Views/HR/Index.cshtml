@@ -54,9 +54,13 @@
 <body>
     <!--Get employee and pay summary objects from the session.-->
 
-    @{var hr = (Employee)Session["HR"];
+    @{
+        var hr = (Employee)Session["HR"];
         var emps = new Employee();
-        var paySumList = (List<PaySummary>)Session["PaySummaryList"];
+        var paySumList = (List<WeeklyReport>)Session["PaySummaryList"];
+        IEnumerable<SelectListItem> WeekendingList = (IEnumerable<SelectListItem>)Session["WeekendingList"];
+        WeeklyReport weekly = new WeeklyReport();
+
     }
     <div>
         <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
@@ -66,80 +70,82 @@
         <!--Display HR person's first and last name-->
         <p>Welcome @hr.First_Name @hr.Last_Name!</p>
 
-        <br />
+        @*Rounded switch
+        <label class="switch">
+            @Html.CheckBoxFor(model => model.IsEnabled, new {@checked = "checked"})
+            <div class="slider round">
+            </div>
+        </label>*@
+
         <p>Select a week to review employee pay sheet summaries.</p>
         <!--Form for selecting a week and viewing pay summaries-->
         @using (Html.BeginForm("GetPayData", "HR", FormMethod.Post, new { role = "form" }))
         {
             @Html.LabelFor(m => m.WeekEnding)
-            @Html.DropDownListFor(m => m.WeekEnding,
-                                                 Model.WeekEndingDates,
-                                                 " - Please select a date - ",
-                                                 new { @class = "form-control" })
-            <button type="submit">Search</button>
+            <span>&nbsp;</span>
+            @Html.DropDownListFor(m => m.WeekEnding, WeekendingList, " - Please select a date - ", new { @class = "form-control", onchange = "this.form.submit();" })
         }
-        <br />
-
-        <!--Table to display pay summaries from the session-->
-        <table style="width:100%" cellpadding="4" id="PaySummary">
-            <thead>
-                <tr>
-                    <th>Name, ID</th>
-                    <th>Worked hours</th>
-                    <th>Over Time</th>
-                    <th>FLSA Overtime</th>
-                    <th>Absent hours</th>
-                    <th>Time Sheet Status</th>
-                    <th>Supervisor</th>
-                    @*<th>Overview</th>*@
-                </tr>
-            </thead>
-            <tbody>
-                @{
-                    if (@paySumList != null)
+        @{
+            if (@paySumList != null)
+            {
+            <p>Reports for the Week ending on @paySumList[0].WeekEnding</p>
+            <!--Table to display pay summaries from the session-->
+            <table class="center" id="PaySummary">
+                <thead>
+                    <tr>
+                        <th style="display:none;">Weekending Date</th>
+                        <th>Name, ID</th>
+                        <th>Absent hours</th>
+                        <th>Worked hours</th>
+                        <th>Total hours</th>
+                        <th>Over Time</th>
+                        <th>FLSA Overtime</th>
+                        <th>Time Sheet Status</th>
+                        <th>Supervisor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (WeeklyReport paySum in @paySumList)
                     {
-                        foreach (PaySummary paySum in @paySumList)
+                        using (Html.BeginForm("GetOverview", "HR", FormMethod.Post))
                         {
-                            using (Html.BeginForm("GetOverview", "HR", FormMethod.Post))
-                            {
-
-                                <tr>
-                                    @{Model.Banner_ID = paySum.Banner_ID;
-                                        emps = emps.GetEmployee(Convert.ToInt16(@paySum.Banner_ID));}
-                                    @Html.HiddenFor(model => model.Banner_ID)
-                                    <td>
-                                        <button id="submit" type="submit" value="@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID">@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID</button>
-                                        @*<a href="mailto:@emps.Email_Address.Trim()">@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID</a>*@
-                                    </td>
-                                    <td>
-                                        @paySum.TotalHours
-                                    </td>
-                                    <td>
-                                        @paySum.OverTimeHours
-                                    </td>
-                                    <td>
-                                        @paySum.OverTimeHoursFLSA
-                                    </td>
-                                    <td>
-                                        @paySum.TotalAbsent
-                                    </td>
-                                    <td>
-                                        @paySum.TimeSheetStatus
-                                    </td>
-                                    <td>
-                                        @paySum.SuperName
-                                    </td>
-                                    @*<td>
-                                        <button id="submit" type="submit" value="Overview">Overview</button>
-                                    </td>*@
-                                </tr>
-                            }
+                            <tr>
+                                <td style="display:none;"> @paySum.WeekEnding</td>
+                                @{Model.Banner_ID = paySum.Banner_ID;
+                                    emps = emps.GetEmployee(Convert.ToInt16(@paySum.Banner_ID));}
+                                @Html.HiddenFor(model => model.Banner_ID)
+                                <td>
+                                    <button id="submit" type="submit" value="@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID">@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID</button>
+                                </td>
+                                <td>
+                                    @paySum.LeaveHours
+                                </td>
+                                <td>
+                                    @paySum.HoursWorked
+                                </td>
+                                <td>
+                                    @paySum.TotalHoursWorked
+                                </td>
+                                <td>
+                                    @paySum.Overtime
+                                </td>
+                                <td>
+                                    @paySum.FLSA_Overtime
+                                </td>
+                                <td>
+                                    @paySum.TimesheetStatus
+                                </td>
+                                <td>
+                                    @paySum.SupervisorName
+                                </td>
+                            </tr>
                         }
                     }
-                }
-            </tbody>
-        </table>
-    </div><br />
+                </tbody>
+            </table>
+            }
+        }
+        </div><br />
     <iframe id="txtArea1" style="display:none"></iframe>
     <button id="btnExport" onclick="fnExcelReport();">Export Report </button>
 

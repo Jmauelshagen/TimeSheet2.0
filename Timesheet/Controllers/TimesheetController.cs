@@ -13,27 +13,18 @@ namespace Timesheet.Controllers
         // GET: Timesheet
         public ActionResult Timesheet()
         {
-            //Session["Message"] = "";
-            ////Note Error checking
-            //Session["Message2"] = "";
             Employee emp = (Employee)Session["Employee"];
             Session["datelist"] = GetListOfDays();
             return View();
         }
         public ActionResult DailyTimesheet()
         {
-            //Session["Message"] = "";
-            ////Note Error checking
-            //Session["Message2"] = "";
             Employee emp = (Employee)Session["Employee"];
             Session["datelist"] = GetListOfDays();
             return View();
         }
         public ActionResult OldTimesheet()
         {
-            //Session["Message"] = "";
-            ////Note Error checking
-            //Session["Message2"] = "";
             Employee emp = (Employee)Session["Employee"];
             Session["WeekList"] = GetWeekEndingDateList(emp.Banner_ID);
             return View();
@@ -44,7 +35,6 @@ namespace Timesheet.Controllers
             Employee emp = (Employee)Session["Employee"];
             List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
 
-
             foreach (TimeSheet sheet in tsheets)
             {
                 sheet.Submitted = "True";
@@ -54,8 +44,8 @@ namespace Timesheet.Controllers
             Session["CurrentMessage"] = message;
 
             return RedirectToAction("Timesheet", "Timesheet");
-
         }
+
         public ActionResult SubmitOldTimesheet(TimeSheet model)
         {
             Employee emp = (Employee)Session["Employee"];
@@ -70,7 +60,6 @@ namespace Timesheet.Controllers
             Session["OldMessage"] = message;
 
             return RedirectToAction("OldTimesheet", "Timesheet");
-
         }
 
         public ActionResult GetDailyTimeSheet()
@@ -619,7 +608,6 @@ namespace Timesheet.Controllers
             List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
             Session["Message2"] = "";
 
-            //string CurrentDate = Request.Form["Date"].ToString().Trim();
             string CurrentDate = model.Date.Trim();
             string message;
             Debug.WriteLine(CurrentDate);
@@ -759,21 +747,25 @@ namespace Timesheet.Controllers
                 Session["OldMessage"] = message;
                 return RedirectToAction("OldTimesheet", "Timesheet");
             }
+            else
+            {
 
-            string wED = model.WeekEnding.Trim();
-            List<TimeSheet> tsheets = model.GetTimeSheetByIdAndDate(emp.Banner_ID, wED);
-            Session["TimeSheetData"] = tsheets;
-            IEnumerable<SelectListItem> dateList = GetListOfDays(emp.Banner_ID, wED);
-            Session["dateList"] = dateList;
-            List<string> dates = GetDaysInTimeSheet(emp.Banner_ID, wED);
-            Session["dates"] = dates;
+                string wED = model.WeekEnding.Trim();
+                List<TimeSheet> tsheets = model.GetTimeSheetByIdAndDate(emp.Banner_ID, wED);
+                Session["TimeSheetData"] = tsheets;
+                IEnumerable<SelectListItem> dateList = GetListOfDays(emp.Banner_ID, wED);
+                Session["dateList"] = dateList;
+                List<string> dates = GetDaysInTimeSheet(emp.Banner_ID, wED);
+                Session["dates"] = dates;
 
-            Session["Message"] = "";
-            Session["DailyMessage"] = "";
-            Session["CurrentMessage"] = "";
-            Session["OldMessage"] = "";
+                Session["Message"] = "";
+                Session["DailyMessage"] = "";
+                Session["CurrentMessage"] = "";
+                Session["OldMessage"] = "";
 
-            return RedirectToAction("OldTimesheet", "Timesheet");
+                return RedirectToAction("OldTimesheet", "Timesheet");
+            }
+
         }
 
         private IEnumerable<SelectListItem> GetListOfDays(int id, string wed)

@@ -39,6 +39,9 @@ namespace Timesheet.Controllers
 
                 //Get the role id from the Employee object
                 string role = employee.Job_Desc_Number.Trim();
+                LeaveType leave = new LeaveType();
+                Session["LeaveList"] = leave.GetLeaveList();
+
 
                 //Redirect the user to the correct dashboard screen based upon the role id
                 // 1 = Employee; 2 = Supervisor; 3 = HR

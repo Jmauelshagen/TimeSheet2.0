@@ -78,7 +78,7 @@ namespace Timesheet.Models
                 {
                     missedpunch = missedpunch + 1;
                 }
-                else if (!String.IsNullOrEmpty(hoursWorked) && !hoursWorked.Equals("Error"))
+                else if (!String.IsNullOrEmpty(hoursWorked.Trim()) && !hoursWorked.Equals("Error"))
                 {
                     hours += Convert.ToInt16(hoursWorked.Split(':')[0]);
                     minutes += Convert.ToInt16(hoursWorked.Split(':')[1]);
@@ -128,7 +128,7 @@ namespace Timesheet.Models
             foreach (TimeSheet sheet in tsheets)
             {
                 string absHours = "";
-                if (String.IsNullOrEmpty(sheet.LeaveHours.Trim()))
+                if (sheet.LeaveHours.Equals("0:00"))
                 {
 
                 }
@@ -223,6 +223,145 @@ namespace Timesheet.Models
 
         }
 
+        public PaySummary(int empId, string wED, string t)
+        {
+            //Code to calculate total hours worked in a week and time sheet status
+            string status = "Unknown";
+            string totalWorked = "";
+            string totalabsent = "";
+            string totalHours = "";
+            int missedpunch = 0;
+            int Error = 0;
+            int hour = 0;
+            int hours = 0;
+            int minute = 0;
+            int minutes = 0;
+            var tsheets = (from sheets in db.TimeSheets
+                           where sheets.Banner_ID == empId && sheets.WeekEnding == wED && sheets.AuthorizedBySupervisor.Equals(t)
+                           select sheets);
+
+            foreach (TimeSheet sheet in tsheets)
+            {
+                string hoursWorked = sheet.CalculateWorkedHours(sheet);
+                if (hoursWorked.Equals("NoTime"))
+                {
+
+                }
+                else if (hoursWorked.Equals("Missing Punch"))
+                {
+                    missedpunch = missedpunch + 1;
+                }
+                else if (!String.IsNullOrEmpty(hoursWorked) && !hoursWorked.Equals("Error"))
+                {
+                    hours += Convert.ToInt16(hoursWorked.Split(':')[0]);
+                    minutes += Convert.ToInt16(hoursWorked.Split(':')[1]);
+                    while (minutes >= 60)
+                    {
+                        minutes = minutes - 60;
+                        hours = hours + 1;
+                    }
+                    if (minutes == 0)
+                    {
+                        totalHours = hours + ":00";
+                    }
+                    else
+                    {
+                        totalHours = hours + ":" + minutes;
+                    }
+                    totalWorked = totalHours;
+
+                    Debug.WriteLine("Running Worked total: " + totalWorked);
+                    Debug.WriteLine("Running Worked total by the hours: " + hours);
+                }
+                else
+                {
+                    Error = Error + 1;
+                }
+                Debug.WriteLine("Submit status:" + sheet.Submitted);
+                Debug.WriteLine("Autorized status: " + sheet.AuthorizedBySupervisor);
+                if (sheet.Submitted.Trim().Equals("True") && sheet.AuthorizedBySupervisor.Trim().Equals("True"))
+                {
+                    Debug.WriteLine("In Authorized");
+                    status = "Authorized";
+                }
+                else if (sheet.Submitted.Trim().Equals("True") && sheet.AuthorizedBySupervisor.Trim().Equals("False"))
+                {
+                    Debug.WriteLine("In submitted");
+                    status = "Submitted";
+                }
+                else
+                {
+                    status = "Not Submitted";
+                }
+            }
+            this.TimeSheetStatus = status;
+            this.TotalHours = totalHours.ToString();
+
+            //Calculate Total Absent Hours
+            foreach (TimeSheet sheet in tsheets)
+            {
+                string absHours = "";
+                if (sheet.LeaveHours.Equals("0:00"))
+                {
+
+                }
+                else if (!String.IsNullOrEmpty(sheet.LeaveHours))
+                {
+                    absHours = sheet.LeaveHours;
+                    Debug.WriteLine("Leave hour : " + sheet.LeaveHours);
+                    hour += Convert.ToInt16(absHours.Split(':')[0]);
+                    minute += Convert.ToInt16(absHours.Split(':')[1]);
+                    while (minute >= 60)
+                    {
+                        minute = minute - 60;
+                        hour = hour + 1;
+                    }
+
+                    totalHours = hour + ":" + minute;
+                    totalabsent = totalHours;
+
+                    Debug.WriteLine("Running absents: " + totalHours);
+                    Debug.WriteLine("Running absents by the hours: " + hours);
+                }
+                else
+                {
+                    Error = Error + 1;
+                }
+            }
+            this.TotalAbsent = totalabsent;
+
+            //Calculate overtime hours
+            string overTime = "";
+            if (hours >= 40)
+            {
+                overTime = (hours - 40).ToString() + ":" + minutes;
+            }
+            this.OverTimeHours = overTime;
+
+            //Code to get the employee name and Supervisor name by employee id
+            var fname = (from emps in db.Employees
+                         where emps.Banner_ID == empId
+                         select emps.First_Name).FirstOrDefault();
+            var lname = (from emps in db.Employees
+                         where emps.Banner_ID == empId
+                         select emps.Last_Name).FirstOrDefault();
+            this.EmpName = fname + " " + lname;
+            this.Banner_ID = empId;
+
+            var sId = (from emps in db.Employees
+                       where emps.Banner_ID == empId
+                       select emps.Supervisor).FirstOrDefault();
+            int sIdn = Convert.ToInt16(sId.Trim().ToString());
+            var sfname = (from emps in db.Employees
+                          where emps.Banner_ID == sIdn
+                          select emps.First_Name).FirstOrDefault();
+            var slname = (from emps in db.Employees
+                          where emps.Banner_ID == sIdn
+                          select emps.Last_Name).FirstOrDefault();
+            this.SuperName = sfname + " " + slname;
+
+        }        
+
         //Method to return pay summary data for employees
         public List<int> GetBanner_IDsByWeekEndDate(string date)
         {
@@ -240,6 +379,5 @@ namespace Timesheet.Models
 
             return Banner_IDs;
         }
-
     }
 }
