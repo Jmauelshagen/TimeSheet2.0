@@ -68,25 +68,20 @@ namespace Timesheet.Models
 
         public WeeklyReport getWeeklyReport(int Banner_ID, string wEnd)
         {
-            //if (type.Equals("Not Submitted"))
-            //{
-
-            //}
-            //else if (type.Equals("Submitted"))
-            //{
-
-            //}
-            //else if (type.Equals("Approved"))
-            //{
-
-            //}
-            //else
-            //{ }
             var wReport = (from wr in db.WeeklyReports
                                where wr.Banner_ID == Banner_ID && wr.WeekEnding == wEnd.Trim()
                                select wr);
+            if (!type.Equals("Default") || type.Equals(""))
+            {
+                Debug.WriteLine("INSIDE ANOTHER REPORT TYPE!!!");
+                wReport = (from wr in db.WeeklyReports
+                           where wr.Banner_ID == Banner_ID && wr.WeekEnding == wEnd.Trim()
+                           && wr.TimesheetStatus == type.Trim()
+                               select wr);
+            }
 
             var count = wReport.Count();
+            Debug.WriteLine("(((((( THE COUNT IS: )))) " + count);
             if (count == 0)
             {
                 WeeklyReport report = new WeeklyReport
@@ -473,6 +468,27 @@ namespace Timesheet.Models
             var eIds = (from sheets in db.TimeSheets
                         where sheets.WeekEnding == date
                         select sheets.Banner_ID).Distinct().OrderBy(Banner_ID => Banner_ID);
+            if(type.Equals("Not Submitted"))
+            {
+                eIds = (from sheets in db.TimeSheets
+                        where sheets.WeekEnding == date && sheets.Submitted.Trim() == "False"
+                        && sheets.AuthorizedBySupervisor.Trim() == "False"
+                        select sheets.Banner_ID).Distinct().OrderBy(Banner_ID => Banner_ID);
+            }
+            else if (type.Equals("Pending Approval"))
+            {
+                eIds = (from sheets in db.TimeSheets
+                        where sheets.WeekEnding == date && sheets.Submitted.Trim() == "True"
+                        && sheets.AuthorizedBySupervisor.Trim() == "False"
+                        select sheets.Banner_ID).Distinct().OrderBy(Banner_ID => Banner_ID);
+            }
+            else if(type.Equals("Approved"))
+            {
+                eIds = (from sheets in db.TimeSheets
+                        where sheets.WeekEnding == date && sheets.Submitted.Trim() == "True"
+                        && sheets.AuthorizedBySupervisor.Trim() == "True"
+                        select sheets.Banner_ID).Distinct().OrderBy(Banner_ID => Banner_ID);
+            }
 
             List<int> Banner_IDs = new List<int>();
             //add employee ids to list

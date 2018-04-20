@@ -3,11 +3,13 @@
 
 @{
     Layout = null;
+    var message2 = "";
+
 }
 <!--This screen renders after someone with the HR role logs in. It displays a menu for week ending date.
     After selection is submitted, a summary of hours worked by each employee that logged time that week
     is displayed.-->
-<script>
+<script type="text/javascript">
 
     function fnExcelReport()
     {
@@ -15,26 +17,25 @@
         var textRange; var j=0;
         tab = document.getElementById('PaySummary'); // id of table
 
-        for(j = 0 ; j < tab.rows.length ; j++)
-        {
-            tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+        for (j = 0; j < tab.rows.length; j++) {
+            tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
         }
 
-        tab_text=tab_text+"</table>";
-        tab_text= tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
-        tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
-        tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+        tab_text = tab_text + "</table>";
+        tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+        tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+        tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
 
         var ua = window.navigator.userAgent;
         var msie = ua.indexOf("MSIE ");
 
         if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
         {
-            txtArea1.document.open("txt/html","replace");
+            txtArea1.document.open("txt/html", "replace");
             txtArea1.document.write(tab_text);
             txtArea1.document.close();
             txtArea1.focus();
-            sa=txtArea1.document.execCommand("SaveAs",true,"Reports.xls");
+            sa = txtArea1.document.execCommand("SaveAs", true, "Reports.xls");
         }
         else                 //other browser not tested on IE 11
             sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
@@ -60,8 +61,8 @@
     }
 </script>
 
-<!DOCTYPE html>
-<link rel="stylesheet" href="~/Content/Style.css" type="text/css" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<link rel="stylesheet" href="~/Content/Style.css" type="text/css"/>
 
 <html>
 <head>
@@ -71,14 +72,12 @@
 
 <body>
     <!--Get employee and pay summary objects from the session.-->
-
     @{
-        var hr = (Employee)Session["HR"];
+                    var hr = (Employee)Session["HR"];
         var emps = new Employee();
         var paySumList = (List<WeeklyReport>)Session["PaySummaryList"];
         IEnumerable<SelectListItem> WeekendingList = (IEnumerable<SelectListItem>)Session["WeekendingList"];
         WeeklyReport weekly = new WeeklyReport();
-
     }
     <div>
         <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
@@ -87,14 +86,7 @@
         <h1>Pay Sheet Summaries</h1>
         <!--Display HR person's first and last name-->
         <p>Welcome @hr.First_Name @hr.Last_Name!</p>
-
-        @*Rounded switch
-        <label class="switch">
-            @Html.CheckBoxFor(model => model.IsEnabled, new {@checked = "checked"})
-            <div class="slider round">
-            </div>
-        </label>*@
-
+        <p>@message2</p>
         <p>Select a week to review employee pay sheet summaries.</p>
         <!--Form for selecting a week and viewing pay summaries-->
         @using (Html.BeginForm("GetPayData", "HR", FormMethod.Post, new { role = "form" }))
@@ -102,24 +94,18 @@
         @Html.LabelFor(m => m.WeekEnding)
         <span>&nbsp;</span>
         @Html.DropDownListFor(m => m.WeekEnding,
-                        Model.WeekEndingDates,
-                        " - Please select a date - ",
-                        new { @class = "form-control" })
-        <button type="submit">Search</button>
-        }
-        <form style="align-content:center">
-            <div class="switch-field">
-                <div class="switch-title">Three fields? Sure.</div>
-                <input type="radio" id="switch_4_Def" name="switch_4" onclick="typeChange();" />
-                <label for="switch_3_left">Default</label>
-                <input type="radio" id="switch_4_Nosub" name="switch_4" onclick="typeChange();" />
-                <label for="switch_3_center">Not Submitted</label>
-                <input type="radio" id="switch_4_Sub" name="switch_4" onclick="typeChange();" />
-                <label for="switch_3_right">Submitted</label>
-                <input type="radio" id="switch_4_App" name="switch_4" onclick="typeChange();" />
-                <label for="switch_3_right">Approved</label>
-            </div>
-        </form>
+                          Model.WeekEndingDates,
+                          " - Please select a date - ",
+                          new { @class = "form-control" })
+        <button type="submit">Search</button><br/>
+        <div class="switch-field">
+            @Html.RadioButton("Type", "Default", new {@checked = "checked" }) Default
+            @Html.RadioButton("Type", "Not Submitted") Not Submitted
+            @Html.RadioButton("Type", "Pending Approval") Pending Approval
+            @Html.RadioButton("Type", "Approved") Approved
+        </div>
+}
+        
         <br />
 
         <!--Table to display pay summaries from the session-->
