@@ -57,7 +57,7 @@
             <PropertyRef Name="LeaveId" />
           </Key>
           <Property Name="LeaveId" Type="int" Nullable="false" />
-          <Property Name="Description" Type="nchar" MaxLength="20" />
+          <Property Name="Description" Type="nchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="Logins">
           <Key>
@@ -116,7 +116,7 @@
           <Property Name="Overtime" Type="nchar" MaxLength="20" Nullable="false" />
           <Property Name="FLSA_Overtime" Type="nchar" MaxLength="20" Nullable="false" />
           <Property Name="SupervisorName" Type="nchar" MaxLength="40" Nullable="false" />
-          <Property Name="TimesheetStatus" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="TimesheetStatus" Type="nchar" MaxLength="20" Nullable="false" />
           <Property Name="EmployeeName" Type="nchar" MaxLength="40" Nullable="false" />
         </EntityType>
         <EntityContainer Name="LoginDatabaseModelStoreContainer">
@@ -180,7 +180,7 @@
             <PropertyRef Name="LeaveId" />
           </Key>
           <Property Name="LeaveId" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="Login">
           <Key>
