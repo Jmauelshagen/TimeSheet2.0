@@ -34,6 +34,7 @@ namespace Timesheet.Controllers
         public ActionResult GetPayData(TimeSheet model)
         {
             List<WeeklyReport> paySumList = new List<WeeklyReport>();
+            WeeklyReport paySum = new WeeklyReport();       
             var wED = model.WeekEnding;
             List<int> empIds = paySum.GetBanner_IDsByWeekEndDate(wED);
 
@@ -189,7 +190,7 @@ namespace Timesheet.Controllers
                     string name = emp.First_Name + " " + emp.Last_Name;
                     string subject = "Changes Made";
                     string email = emp.Email_Address.Trim();
-                    string messages = "Dear " + emp.First_Name.Trim() + "," + Environment.NewLine + "Changes have been made to " + CurrentDate + " Timesheet, Please reivew changes and call HR if you have any questions." + Environment.NewLine +
+                    string messages = "Dear " + emp.First_Name.Trim() + "," + Environment.NewLine + "Changes have been made to " + CurrentDate + " Timesheet, Please review changes and call HR if you have any questions." + Environment.NewLine +
                         "Old Timesheet data -";
 
                     if (!String.IsNullOrEmpty(tsheets[i].TimeIn.Trim())) { messages = messages + " Time In: "+DateTime.Parse(tsheets[i].TimeIn.Trim()).ToString(@"hh\:mm tt"); }
@@ -246,7 +247,7 @@ namespace Timesheet.Controllers
                     {
                         Debug.WriteLine("AddH : " + model.AdditionalHours + " Note: " + model.Note);
                         Debug.WriteLine("The message says :" + Session["Message2"]);
-                        message = "Note Saved Succesfully";
+                        message = "Timesheet Saved Succesfully";
                         Session["Message2"] = "";
                         Session["Message"] = message;
                         tsheets[i].UpdateTimeSheet(tsheets[i]);
@@ -300,7 +301,7 @@ namespace Timesheet.Controllers
                 string name = emp.First_Name + " " + emp.Last_Name;
                 string subject = "Note Added/Deleted";
                 string email = emp.Email_Address.Trim();
-                string messages = "Dear " + emp.First_Name.Trim() + "," + Environment.NewLine + "A note has been Added/Deleted from " + CurrentDate + " Timesheet, Please reivew changes and call HR if you have any questions." + Environment.NewLine +
+                string messages = "Dear " + emp.First_Name.Trim() + "," + Environment.NewLine + "A note has been Added/Deleted from " + CurrentDate + " Timesheet, Please review changes and call HR if you have any questions." + Environment.NewLine +
                     "Old Timesheet data -";
 
                 for (int i = 0; i < 7; i++)
