@@ -43,23 +43,6 @@
 
         return (sa);
     }
-
-    function typeChange()
-    {
-        alert("In Typechange");
-        if (document.getElementById('switch_4_Def').checked) {
-            @Session["Type"] = "Default";
-        }
-        else if (document.getElementById('switch_4_Nosub').checked) {
-            @Session["Type"] = "Not Submitted";
-        }
-        else if (document.getElementById('switch_4_Sub').checked) {
-            @Session["Type"] = "Submitted";
-        }
-        else (document.getElementById('switch_4_App').checked) {
-            @Session["Type"] = "Approved";
-        }
-    }
 </script>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -95,12 +78,8 @@
         {
         @Html.LabelFor(m => m.WeekEnding)
         <span>&nbsp;</span>
-        @Html.DropDownListFor(m => m.WeekEnding,
-                          Model.WeekEndingDates,
-                          " - Please select a date - ",
-                          new { @class = "form-control" })
-        <button type="submit">Search</button><br/>        
-        }        
+        @Html.DropDownListFor(m => m.WeekEnding, WeekendingList, " - Please select a date - ", new { @class = "form-control", onchange = "this.form.submit();" })
+        }
         <br />
 
         <!--Table to display pay summaries from the session-->
@@ -121,41 +100,41 @@
                 @{
                 if (@paySumList != null)
                 {
-                    foreach (WeeklyReport paySum in @paySumList)
-                    {
-                        using (Html.BeginForm("GetOverview", "HR", FormMethod.Post))
-                        {
-                            <tr>
-                                @{Model.Banner_ID = paySum.Banner_ID;
-                                emps = emps.GetEmployee(Convert.ToInt16(@paySum.Banner_ID));}
-                                @Html.HiddenFor(model => model.Banner_ID)
-                                <td>
-                                    <button id="submit" type="submit" value="@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID">@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID</button>
-                                </td>
-                                <td>
-                                    @paySum.LeaveHours
-                                </td>
-                                <td>
-                                    @paySum.HoursWorked
-                                </td>
-                                <td>
-                                    @paySum.TotalHoursWorked
-                                </td>
-                                <td>
-                                    @paySum.Overtime
-                                </td>
-                                <td>
-                                    @paySum.FLSA_Overtime
-                                </td>
-                                <td>
-                                    @paySum.TimesheetStatus
-                                </td>
-                                <td>
-                                    @paySum.SupervisorName
-                                </td>
-                            </tr>
-                        }
-                    }
+                foreach (WeeklyReport paySum in @paySumList)
+                {
+                using (Html.BeginForm("GetOverview", "HR", FormMethod.Post))
+                {
+                <tr>
+                    @{Model.Banner_ID = paySum.Banner_ID;
+                    emps = emps.GetEmployee(Convert.ToInt16(@paySum.Banner_ID));}
+                    @Html.HiddenFor(model => model.Banner_ID)
+                    <td>
+                        <button id="submit" type="submit" value="@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID">@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID</button>
+                    </td>
+                    <td>
+                        @paySum.LeaveHours
+                    </td>
+                    <td>
+                        @paySum.HoursWorked
+                    </td>
+                    <td>
+                        @paySum.TotalHoursWorked
+                    </td>
+                    <td>
+                        @paySum.Overtime
+                    </td>
+                    <td>
+                        @paySum.FLSA_Overtime
+                    </td>
+                    <td>
+                        @paySum.TimesheetStatus
+                    </td>
+                    <td>
+                        @paySum.SupervisorName
+                    </td>
+                </tr>
+                }
+                }
                 }
                 }
             </tbody>
