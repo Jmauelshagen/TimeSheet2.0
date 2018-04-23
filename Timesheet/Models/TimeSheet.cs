@@ -837,7 +837,7 @@ namespace Timesheet.Models
 
             foreach (TimeSheet sheet in sheets)
             {
-                Debug.WriteLine("******************************* DATE SAVED TO LIST: " + sheet.Date);
+                Debug.WriteLine("******************************* DATE SAVED TO LIST *****************************: " + sheet.Date);
                 dates.Add(sheet.Date);
             }
             return dates;

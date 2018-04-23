@@ -278,9 +278,9 @@
     <Content Include="Views\HR\Index.cshtml" />
     <Content Include="Views\ApprovedTimesheets\ApprovedTimesheets.cshtml" />
     <Content Include="Views\Timesheet\DailyTimesheet.cshtml" />
+    <Content Include="Views\Reports\Index.cshtml" />
     <Content Include="Views\Timesheet\OldTimesheet.cshtml" />
     <Content Include="Views\HR\Overview.cshtml" />
-    <Content Include="Views\Reports\Reports.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
