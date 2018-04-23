@@ -19,10 +19,9 @@ namespace Timesheet.Controllers
         //Routes users to the HR screen after obtaining a list of weekending dates from the db
         public ActionResult Index()
         {
-            var model = new TimeSheet();
-            var pmod = new PaySummary();
+
             Session["WeekendingList"] = GetWeekEndingDateList();
-            return View(model);
+            return View();
         }
 
         public ActionResult Overview(TimeSheet model)
@@ -34,17 +33,38 @@ namespace Timesheet.Controllers
         public ActionResult GetPayData(TimeSheet model)
         {
             List<WeeklyReport> paySumList = new List<WeeklyReport>();
+            List<WeeklyReport> approvedList = new List<WeeklyReport>();
+            List<WeeklyReport> pendingList = new List<WeeklyReport>();
+            List<WeeklyReport> notsubmittedList = new List<WeeklyReport>();
+
             WeeklyReport paySum = new WeeklyReport();       
             var wED = model.WeekEnding;
             List<int> empIds = paySum.GetBanner_IDsByWeekEndDate(wED);
 
             foreach (int empId in empIds)
             {
-                paySumList.Add( paySum.getWeeklyReport(empId,wED));
+                paySum = paySum.getWeeklyReport(empId, wED);
+                paySumList.Add(paySum);
+                if (paySum.TimesheetStatus.Trim().Equals("Approved"))
+                {
+                    approvedList.Add(paySum);
+                }
+                if (paySum.TimesheetStatus.Trim().Equals("Pending Approval"))
+                {
+                    pendingList.Add(paySum);
+                }
+                if (paySum.TimesheetStatus.Trim().Equals("Not Submitted"))
+                {
+                    notsubmittedList.Add(paySum);
+                }
             }
            
             Session["Weekend"] = wED;
             Session["PaySummaryList"] = paySumList;
+            Session["ApprovedList"] = approvedList;
+            Session["PendingList"] = pendingList;
+            Session["NotSubmittedList"] = notsubmittedList;
+
 
             return RedirectToAction("Index", "HR");
         }
