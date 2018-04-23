@@ -19,12 +19,18 @@ namespace Timesheet.Controllers
         }
         public ActionResult DailyTimesheet()
         {
+            //Session["Message"] = "";
+            ////Note Error checking
+            //Session["Message2"] = "";
             Employee emp = (Employee)Session["Employee"];
             Session["datelist"] = GetListOfDays();
             return View();
         }
         public ActionResult OldTimesheet()
         {
+            //Session["Message"] = "";
+            ////Note Error checking
+            //Session["Message2"] = "";
             Employee emp = (Employee)Session["Employee"];
             Session["WeekList"] = GetWeekEndingDateList(emp.Banner_ID);
             return View();
@@ -35,6 +41,7 @@ namespace Timesheet.Controllers
             Employee emp = (Employee)Session["Employee"];
             List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
 
+
             foreach (TimeSheet sheet in tsheets)
             {
                 sheet.Submitted = "True";
@@ -44,8 +51,8 @@ namespace Timesheet.Controllers
             Session["CurrentMessage"] = message;
 
             return RedirectToAction("Timesheet", "Timesheet");
-        }
 
+        }
         public ActionResult SubmitOldTimesheet(TimeSheet model)
         {
             Employee emp = (Employee)Session["Employee"];
@@ -60,6 +67,7 @@ namespace Timesheet.Controllers
             Session["OldMessage"] = message;
 
             return RedirectToAction("OldTimesheet", "Timesheet");
+
         }
 
         public ActionResult GetDailyTimeSheet()
@@ -265,7 +273,7 @@ namespace Timesheet.Controllers
                             else { tsheets[i].TimeOut = ""; }
 
                             if (!String.IsNullOrEmpty(model.LeaveId.ToString())) { tsheets[i].LeaveId = model.LeaveId; }
-                            else { tsheets[i].LeaveId = 0; }
+                            else { Debug.WriteLine("6666666666666666666666666666666666666");  tsheets[i].LeaveId = 0; }
 
                             if (!String.IsNullOrEmpty(model.LeaveHours)) { tsheets[i].LeaveHours = model.LeaveHours; }
                             else { tsheets[i].LeaveHours = ""; }
