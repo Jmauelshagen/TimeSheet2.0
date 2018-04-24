@@ -8,11 +8,12 @@
 <!--Get employee, time sheet and date objects from session.-->
 @{
     ViewBag.Title = "Overview";
-    <div>
-        <center>
-            <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
-        </center>
-    </div>
+<div>
+    <center>
+        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" /><br/>
+    </center>
+    <a href="@Url.Action("HRhelp", "Help")"style="float:right;  margin: 0em 15em 0em 0em;" target="_blank" >Help</a><br/>
+</div>
 
     Employee emp = (Employee)Session["Employee"];
     List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];

@@ -19,9 +19,8 @@
     <!--Get employee object from the session.-->
     @{var sup = (Employee)Session["Supervisor"]; }
     <div>
-        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
-        <a href="Help/SupHelp.cshtml" class="button">Help</a>
-        @Html.ActionLink("Menus", "SupHelp", "Help", null, new { @class = "Button" })
+        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" /><br/>
+        <a href="@Url.Action("Suphelp", "Help")" style="float:right;  margin: 0em 15em 0em 0em;" target="_blank" >Help</a><br/>
 
     </div>
     <div>
