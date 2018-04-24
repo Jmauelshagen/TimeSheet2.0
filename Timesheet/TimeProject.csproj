@@ -211,9 +211,22 @@
       <DependentUpon>LoginDatabase.mdf</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\at1.jpg" />
+    <Content Include="Content\at2.jpg" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\ChatLogo.jpg" />
+    <Content Include="Content\edit1.jpg" />
+    <Content Include="Content\edit2.jpg" />
+    <Content Include="Content\email1.jpg" />
+    <Content Include="Content\email2.jpg" />
+    <Content Include="Content\export1.jpg" />
+    <Content Include="Content\gi1.jpg" />
+    <Content Include="Content\hrdrop.jpg" />
+    <Content Include="Content\hrprint1.jpg" />
+    <Content Include="Content\suprint1.jpg" />
+    <Content Include="Content\reports1.jpg" />
+    <Content Include="Content\reports2.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -253,6 +266,8 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Content\Style.css" />
+    <Content Include="Views\Help\user manual HR.html" />
+    <Content Include="Views\Help\user manual Sup.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -281,6 +296,8 @@
     <Content Include="Views\Reports\Index.cshtml" />
     <Content Include="Views\Timesheet\OldTimesheet.cshtml" />
     <Content Include="Views\HR\Overview.cshtml" />
+    <Content Include="Views\Help\HRhelp.cshtml" />
+    <Content Include="Views\Help\SupHelp.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

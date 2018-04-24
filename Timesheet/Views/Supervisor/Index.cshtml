@@ -20,6 +20,9 @@
     @{var sup = (Employee)Session["Supervisor"]; }
     <div>
         <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        <a href="Help/SupHelp.cshtml" class="button">Help</a>
+        @Html.ActionLink("Menus", "SupHelp", "Help", null, new { @class = "Button" })
+
     </div>
     <div>
         <h1>Supervisor</h1>
