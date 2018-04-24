@@ -68,6 +68,20 @@ namespace Timesheet.Models
 
         public WeeklyReport getWeeklyReport(int Banner_ID, string wEnd)
         {
+            //if (type.Equals("Not Submitted"))
+            //{
+
+            //}
+            //else if (type.Equals("Submitted"))
+            //{
+
+            //}
+            //else if (type.Equals("Approved"))
+            //{
+
+            //}
+            //else
+            //{ }
             var wReport = (from wr in db.WeeklyReports
                                where wr.Banner_ID == Banner_ID && wr.WeekEnding == wEnd.Trim()
                                select wr);
