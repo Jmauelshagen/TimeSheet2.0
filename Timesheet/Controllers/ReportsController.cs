@@ -17,15 +17,13 @@ namespace Timesheet.Controllers
         // GET: Reports
         //Forwards user to Supervisor screen after getting employee names and week ending dates
         //to be used in the menu/form
-        public ActionResult Index()
+        public ActionResult Reports()
         {
             var sup = (Employee)Session["Supervisor"];
-            var model = new TimeSheet
-            {
-                EmpNames = GetEmployeeNames(sup.Banner_ID),
-                WeekEndingDates = GetWeekEndingDateList()
-            };
-            return View(model);
+            Session["EmployeeList"] = GetEmployeeNames(sup.Banner_ID);
+            Session["WeekendingList"] = GetWeekEndingDateList();
+
+            return View();
         }
 
         //Obtains a list of week ending dates and adds them to a select list object
@@ -73,19 +71,24 @@ namespace Timesheet.Controllers
             {
                 string message = "***Please select the employee name and Weekend date***";
                 Session["Message"] = message;
-                return RedirectToAction("Index", "Reports");
+                Session["TimeSheetData"] = "";
+                return RedirectToAction("Reports", "Reports");
             }
-            var name = model.Name.Trim();
-            var wED = model.WeekEnding.Trim();
-            List<TimeSheet> reportList = timeSheet.GetTimeSheetByIdAndDate(Convert.ToInt16(name), wED);
-            Session["TimeSheetData"] = reportList; 
-            if(reportList.ElementAtOrDefault(0) != null)
+            else
             {
-                Employee ep = new Employee().GetEmployee((Convert.ToInt16(reportList[0].Banner_ID)));
-                Debug.WriteLine("Emp Name is again: " + ep.First_Name);
-                Session["Employee"] = ep;
-            }     
-            return RedirectToAction("Index", "Reports");
+                var name = model.Name.Trim();
+                var wED = model.WeekEnding.Trim();
+                List<TimeSheet> reportList = timeSheet.GetTimeSheetByIdAndDate(Convert.ToInt16(name), wED);
+                Session["TimeSheetData"] = reportList;
+                if (reportList.ElementAtOrDefault(0) != null)
+                {
+                    Employee ep = new Employee().GetEmployee((Convert.ToInt16(reportList[0].Banner_ID)));
+                    Debug.WriteLine("Emp Name is again: " + ep.First_Name);
+                    Session["Employee"] = ep;
+                }
+                return RedirectToAction("Reports", "Reports");
+            }
+
         }
 
         //Updates the AuthorizedBySupervisor column to True for each day of the week that is approved
@@ -94,14 +97,14 @@ namespace Timesheet.Controllers
         public ActionResult Approve()
         {
             List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetData"];
-            foreach(TimeSheet sheet in list)
+            foreach (TimeSheet sheet in list)
             {
                 sheet.AuthorizedBySupervisor = "True";
                 sheet.UpdateTimeSheet(sheet);
             }
             string message = "Time sheet is approved.";
             Session["Message"] = message;
-            return RedirectToAction("Index", "Reports");
+            return RedirectToAction("Reports", "Reports");
         }
 
         public async Task<ActionResult> Deny() //receives form
@@ -128,7 +131,7 @@ namespace Timesheet.Controllers
                 ViewData["esent"] = "Your Message Has Been Sent";
                 Debug.WriteLine("Message Was sent");
             }
-            return RedirectToAction("Index", "Reports");
+            return RedirectToAction("Reports", "Reports");
         }
 
         //SendEmail method
