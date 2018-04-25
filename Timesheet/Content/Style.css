@@ -1,9 +1,9 @@
 ﻿body {
-    text-align:center;
+    text-align: center;
     background-color: lightgray;
     font-family: Arial, Times New Roman, sans-serif;
     font-size: 0.98em;
-    display:block;
+    display: block;
 }
 
 a {
@@ -18,29 +18,29 @@ a {
     cursor: pointer;
 }
 
-a:link {
-    color: Black;
-    background-color: lightgray;
-    text-decoration: none
-}
+    a:link {
+        color: Black;
+        background-color: lightgray;
+        text-decoration: none
+    }
 
-a:hover {
-    color: black;
-    background-color: darkgray;
-    text-decoration: none
-}
+    a:hover {
+        color: black;
+        background-color: darkgray;
+        text-decoration: none
+    }
 
-a:visited {
-    color: black;
-    background-color: transparent;
-    text-decoration: none
-}
+    a:visited {
+        color: black;
+        background-color: transparent;
+        text-decoration: none
+    }
 
-a:active {
-    color: green;
-    background-color: transparent;
-    text-decoration: none
-}
+    a:active {
+        color: green;
+        background-color: transparent;
+        text-decoration: none
+    }
 
 button {
     list-style: none;
@@ -54,114 +54,36 @@ button {
     cursor: pointer;
 }
 
-button:link {
+    button:link {
         color: Black;
         background-color: lightgray;
         text-decoration: none
-}
+    }
 
-button:hover {
+    button:hover {
         color: black;
         background-color: darkgray;
         text-decoration: none
-}
+    }
 
-button:visited {
+    button:visited {
         color: black;
         background-color: transparent;
         text-decoration: none
-}
+    }
 
-button:active {
+    button:active {
         color: black;
         background-color: transparent;
         text-decoration: none
-}
-
-.switch input {
-    display: none;
-}
-
-.slider {
-    position: relative;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 5px;
-    width: 5px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-
-input:checked + .slider {
-    background-color: #2196F3;
-}
-
-input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-    border-radius: 34px;
-}
-
-.slider.round:before {
-    border-radius: 50%;
-}
-
-/* include generated hidden field here */
-input[type="checkbox"]:checked + input[type="hidden"] + .slider,
-input[type="checkbox"]:checked + .slider {
-    background-color: #2196F3;
-}
-
-/* include generated hidden field here */
-input[type="checkbox"]:focus + input[type="hidden"] + .slider,
-input[type="checkbox"]:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
-}
-
-/* include generated hidden field here */
-input[type="checkbox"]:checked + input[type="hidden"] + .slider:before,
-input[type="checkbox"]:checked + .slider:before {
-    transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-    border-radius: 34px;
-}
-
-.slider.round:before {
-    border-radius: 50%;
-}
+    }
 
 #login-div {
     position: absolute;
     left: 40%;
     top: 40%;
     padding: 10px 10px;
-    text-align:center;
+    text-align: center;
 }
 
 table {
@@ -170,19 +92,22 @@ table {
 }
 
 th, td {
-    min-width:110px;
-    max-width:500px;
-    padding:5px;
+    min-width: 110px;
+    max-width: 500px;
+    padding: 5px;
     border: 1px solid black;
     border-collapse: collapse;
 }
+
 ul {
     list-style-type: none;
 }
+
 li {
     padding: 30px;
     margin: 30px;
 }
+
 .nav {
     display: inline;
     padding: 5px;
@@ -194,11 +119,75 @@ li {
 }
 
 .floating-box {
-    text-align:center;
+    text-align: center;
     float: left;
-    margin:50px;
+    margin: 50px;
 }
 
-div{
-    display:block;
+div {
+    display: block;
+}
+
+.switch-field {
+    display: inline-block;
+    font-family: "Lucida Grande", Tahoma, Verdana, sans-serif;
+    padding: 40px;
+    overflow: hidden;
+    text-align:center
+}
+
+.switch-title {
+    margin-bottom: 6px;
+}
+
+select.switch-field option {
+    position: absolute !important;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    width: 1px;
+    border: 0;
+    overflow: hidden;
+    align-content:center
+}
+
+select.switch-field label {
+    float: left;
+}
+
+select.switch-field label {
+    display: inline-block;
+    width: 60px;
+    background-color: #e4e4e4;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    text-shadow: none;
+    padding: 6px 12px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    -o-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+
+.switch-field label:hover {
+    cursor: pointer;
+}
+
+.switch-field input:checked + label {
+    background-color: #A5DC86;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.switch-field label:first-of-type {
+    border-radius: 4px 0 0 4px;
+}
+
+.switch-field label:last-of-type {
+    border-radius: 0 4px 4px 0;
 }

@@ -17,9 +17,10 @@ namespace Timesheet.Models
 
     public partial class WeeklyReport
     {
-        //Instance Variables
+        /**Instance Variables**/
         LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
 
+        /**Properties**/
         public int Id { get; set; }
         public string WeekEnding { get; set; }
         public int Banner_ID { get; set; }
@@ -32,7 +33,9 @@ namespace Timesheet.Models
         public string SupervisorName { get; set; }
         public string TimesheetStatus { get; set; }
         public string EmployeeName { get; set; }
+        public string type { get; set; }
 
+        /**Default constructor**/
         public WeeklyReport()
         {
             Id = 0;
@@ -49,6 +52,7 @@ namespace Timesheet.Models
             EmployeeName = "";
         }
 
+        /**No args Constructor**/
         public WeeklyReport(int id, string we, int bid, string lh, string ah, string hw, string thw, string ot, string fot, string sup, string ts, string en)
         {
             Id = id;
@@ -65,13 +69,16 @@ namespace Timesheet.Models
             EmployeeName = en;
         }
 
+        /**Queries the Weekly Report Table for all timesheets for a specific employee then creates
+         * a list of weekly timesheets with disticted weekend dates**/
         public WeeklyReport getWeeklyReport(int Banner_ID, string wEnd)
         {
             var wReport = (from wr in db.WeeklyReports
-                           where wr.Banner_ID == Banner_ID && wr.WeekEnding == wEnd.Trim()
-                           select wr);
+                               where wr.Banner_ID == Banner_ID && wr.WeekEnding == wEnd.Trim()
+                               select wr);
 
             var count = wReport.Count();
+            Debug.WriteLine("(((((( THE COUNT IS: )))) " + count);
             if (count == 0)
             {
                 WeeklyReport report = new WeeklyReport
@@ -107,6 +114,8 @@ namespace Timesheet.Models
 
         }
 
+        /**Queries the Weekly Report Table for all timesheets for a specific employee then creates
+         * a list of weekly timesheets with total calculations for each distinct weekend date**/
         public void CalculateWeeklyReport(int Banner_ID, string wEnd)
         {
             //Code to calculate total hours worked in a week and time sheet status
@@ -413,12 +422,14 @@ namespace Timesheet.Models
             this.SupervisorName = sfname.Trim() + " " + slname.Trim();
         }
 
+        /**Inserts a created weekly report into the weekly report table**/
         public void InsertWeeklyReport(WeeklyReport report)
         {
             db.WeeklyReports.Add(report);
             db.SaveChanges();
         }
 
+        /**Updates a specifc Weekly Report with all recieved information**/
         public void UpdateWeeklyReport(WeeklyReport report)
         {
             WeeklyReport wReport = (from wr in db.WeeklyReports
@@ -441,7 +452,7 @@ namespace Timesheet.Models
             db.SaveChanges();
         }
 
-        //Method to get the max id from the TimeSheet data table
+        /**Method to get the max id from the TimeSheet data table**/
         public int GetMaxWeeklyReportId()
         {
             var ids = from wReports in db.WeeklyReports
@@ -451,7 +462,7 @@ namespace Timesheet.Models
             return maxId;
         }
 
-        //Method to return pay summary data for employees
+        /**Method to return pay summary data for employees**/
         public List<int> GetBanner_IDsByWeekEndDate(string date)
         {
             //get set of employee ids by week ending date

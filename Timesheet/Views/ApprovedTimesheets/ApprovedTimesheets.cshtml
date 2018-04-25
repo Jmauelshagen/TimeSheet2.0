@@ -8,9 +8,10 @@
 <!--This html file isn't used in the solution yet-->
 @{
     ViewBag.Title = "Approved Timesheets";
-    <div>
-        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
-    </div>
+<div>
+    <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" /><br/>
+    <a href="@Url.Action("Suphelp", "Help")" style="float:right;  margin: 0em 15em 0em 0em" >Help</a><br/>
+</div>
     Employee sup = (Employee)Session["Supervisor"];
 
     Employee emp = (Employee)Session["Employee"];

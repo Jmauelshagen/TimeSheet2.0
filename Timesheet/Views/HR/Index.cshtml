@@ -3,26 +3,23 @@
 
 @{
     Layout = null;
-}    
-@{
-    var hr = (Employee)Session["HR"];
-    var emps = new Employee();
-    var paySumList= (List<WeeklyReport>)Session["PaySummaryList"];
-    IEnumerable<SelectListItem> WeekendingList = (IEnumerable<SelectListItem>)Session["WeekendingList"];
-    WeeklyReport weekly = new WeeklyReport();
+    var message2 = "";
 
 }
 <!--This screen renders after someone with the HR role logs in. It displays a menu for week ending date.
     After selection is submitted, a summary of hours worked by each employee that logged time that week
     is displayed.-->
-<script>
-    function fnExcelReport() {
-        var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
-        var textRange; var j = 0;
+<script type="text/javascript">
+
+    function fnExcelReport()
+    {
+        var tab_text="<table border='2px'><tr bgcolor='#87AFC6'>";
+        var textRange; var j=0;
         tab = document.getElementById('PaySummary'); // id of table
 
-        for (j = 0; j < tab.rows.length; j++) {
-            tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+        for(j = 0 ; j < tab.rows.length ; j++)
+        {
+            tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
         }
 
         tab_text = tab_text + "</table>";
@@ -47,28 +44,10 @@
         return (sa);
     }
 
-    function radClick() {
-        if (document.getElementById('Type').checked) {
-            var type = document.getElementById('Type').value
-            if (type == "Default") {
-                @{ paySumList = (List<WeeklyReport>)Session["PaySummaryList"]; } //'<%=Session["PaySummaryList"]%>';
-            }
-            if (type == "Not Submitted") {
-                @{paySumList = (List<WeeklyReport>)Session["NotSubmittedList"]; } //'<%=Session["NotSubmittedList"]%>'; //
-            }
-            if (type == "Approved") {
-                @{paySumList = (List<WeeklyReport>)Session["ApprovedList"]; } //'<%=Session["ApprovedList"]%>'; //
-            }
-            if (type == "Pending Approval") {
-                @{paySumList = (List<WeeklyReport>)Session["PendingList"]; } //'<%=Session["PendingList"]%>'; //
-            }
-            window.location.reload();
-        }
-    } 
 </script>
 
-<!DOCTYPE html>
-<link rel="stylesheet" href="~/Content/Style.css" type="text/css" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<link rel="stylesheet" href="~/Content/Style.css" type="text/css"/>
 
 <html>
 <head>
@@ -78,14 +57,22 @@
 
 <body>
     <!--Get employee and pay summary objects from the session.-->
+    @{
+        var hr = (Employee)Session["HR"];
+        var emps = new Employee();
+        var paySumList = (List<WeeklyReport>)Session["PaySummaryList"];
+        IEnumerable<SelectListItem> WeekendingList = (IEnumerable<SelectListItem>)Session["WeekendingList"];
+        WeeklyReport weekly = new WeeklyReport();
+    }
     <div>
-        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" /><br/>
+        <a href="@Url.Action("HRhelp", "Help")" style="float:right;  margin: 0em 15em 0em 0em;" target="_blank">Help</a><br/>
     </div>
     <div>
         <h1>Pay Sheet Summaries</h1>
         <!--Display HR person's first and last name-->
         <p>Welcome @hr.First_Name @hr.Last_Name!</p>
-
+        <p>@message2</p>
         <p>Select a week to review employee pay sheet summaries.</p>
         <!--Form for selecting a week and viewing pay summaries-->
         @using (Html.BeginForm("GetPayData", "HR", FormMethod.Post, new { role = "form" }))
@@ -97,14 +84,6 @@
         @{
             if (@paySumList != null)
             {
-                <form id="radForm" onload="radClick()" onchange="radClick()">
-                    <div class="switch-field">
-                        @Html.RadioButton("Type", "Default", new { @checked = "checked" })<label for="switch_3_center">Default</label>
-                        @Html.RadioButton("Type", "Not Submitted") <label for="switch_3_center">Not Submitted</label>
-                        @Html.RadioButton("Type", "Pending Approval") <label for="switch_3_center">Pending Approval</label>
-                        @Html.RadioButton("Type", "Approved") <label for="switch_3_center">Approved</label>
-                    </div>
-                </form>
                 <p>Reports for the Week ending on @paySumList[0].WeekEnding</p>
                 <!--Table to display pay summaries from the session-->
                 <table class="center" id="PaySummary">

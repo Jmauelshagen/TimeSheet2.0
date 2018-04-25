@@ -17,24 +17,28 @@ namespace Timesheet.Models
 
     public partial class LeaveType
     {
-
+        /** Instanced Variables**/
         LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
 
+        /**Properties**/
         public int LeaveId { get; set; }
         public string Description { get; set; }
 
+        /**Default Constructor**/
         public LeaveType()
         {
             LeaveId = 0;
             Description = "";
         }
 
+        /**All args Constructor**/
         public LeaveType(int li, string d)
         {
             LeaveId = li;
             Description = d;
         }
 
+        /**Queries the databse for all the leave types and creates a list of types**/
         public IEnumerable<SelectListItem> GetLeaveList()
         {
             var leaveType = (from leave in db.LeaveTypes
@@ -50,6 +54,9 @@ namespace Timesheet.Models
             }
             return leaveList;
         }
+
+        /**Queries the databse for all the leave types and creates a list of types, the given
+         * ID is then selected**/
         public IEnumerable<SelectListItem> GetLeaveListSelected(int id)
         {
             var leaveType = (from leave in db.LeaveTypes

@@ -19,7 +19,9 @@
     <!--Get employee object from the session.-->
     @{var sup = (Employee)Session["Supervisor"]; }
     <div>
-        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" /><br/>
+        <a href="@Url.Action("Suphelp", "Help")" style="float:right;  margin: 0em 15em 0em 0em;" target="_blank" >Help</a><br/>
+
     </div>
     <div>
         <h1>Supervisor</h1>
@@ -27,13 +29,18 @@
         <p>Welcome @sup.First_Name @sup.Last_Name!</p>
 
         <!--Links to reports and approved time sheets-->
-        <p>
-            <a href="@Url.Action("Reports", "Reports")">Reports</a>
-
-            <a href="@Url.Action("ApprovedTimesheets", "ApprovedTimesheets")">Approved Timesheet</a>
-        </p>
-        <!--Log out link-->
-        <a href="@Url.Action("LogOut", "Login")">LogOut</a>
+        <ul class="unstyled">
+            <li>
+                <a href="@Url.Action("Reports", "Reports")"> Reports</a>
+            </li>
+            <li>
+                <a href="@Url.Action("ApprovedTimesheets", "ApprovedTimesheets")">Approved Timesheet</a>
+            </li>
+            <li>
+                <!--Log out link-->
+                <a href="@Url.Action("LogOut", "Login")">LogOut</a>
+            </li>
+        </ul>
     </div>
 </body>
 </html>

@@ -155,7 +155,7 @@
                 <th style="display:none;" class="noPrint"></th>
             </tr>
             @{ for (int i = 0; i < 7; i++)
-               {
+                {
                     using (Html.BeginForm("SaveTimeSheet", "Timesheet", FormMethod.Post, new { name = "frm" + i, id = "frm", enctype = "multipart/form-data", onsubmit = "return leaveFieldEmpty(" + i + ")" }))
                     {
                         if (tsheets[0].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
@@ -170,7 +170,7 @@
                                 <td>@Html.TextBoxFor(model => model.InFromLunch, new { type = "time", Value = @tsheets[i].InFromLunch.ToString().Trim(), style = "width: 100px;" })</td>
                                 <td>@Html.TextBoxFor(model => model.TimeOut, new { type = "time", Value = @tsheets[i].TimeOut.ToString().Trim(), style = "width: 100px;" })</td>
                                 <td>
-                                    @Html.DropDownListFor(model => model.LeaveId, new SelectList(leaveList, "Value", "Text", Convert.ToInt16(tsheets[i].LeaveId.ToString().Trim())))
+                                    @Html.DropDownListFor(model => model.LeaveId, new SelectList(leaveList, "Value", "Text", Convert.ToInt16(tsheets[i].LeaveId.ToString().Trim()))) 
                                 </td>
                                 <td>@Html.TextBoxFor(model => model.LeaveHours, new { @Value = @tsheets[i].LeaveHours.ToString().Trim(), pattern = "(1[0-2]|0?[0-9]):([14][5]|[03][0])$", title = "Please enter time as hours and minutes in format ##:## rounded to nearest 15", style = "width: 75px;" })</td>
                                 <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim(), pattern = "(1[0-2]|0?[0-9]):([14][5]|[03][0])$", title = "Please enter time as hours and minutes in format ##:## rounded to nearest 15", style = "width: 75px;" })</td>
@@ -268,7 +268,7 @@
                             }
                         }
                     }
-               }
+                }
             }
         </table>
     </div>

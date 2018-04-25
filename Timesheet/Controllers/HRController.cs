@@ -33,38 +33,19 @@ namespace Timesheet.Controllers
         public ActionResult GetPayData(TimeSheet model)
         {
             List<WeeklyReport> paySumList = new List<WeeklyReport>();
-            List<WeeklyReport> approvedList = new List<WeeklyReport>();
-            List<WeeklyReport> pendingList = new List<WeeklyReport>();
-            List<WeeklyReport> notsubmittedList = new List<WeeklyReport>();
-
-            WeeklyReport paySum = new WeeklyReport();       
+            WeeklyReport paySum = new WeeklyReport();
+            string type = (string)Session["Type"];
+            Debug.WriteLine("The Session type is: *****: " + type);
             var wED = model.WeekEnding;
             List<int> empIds = paySum.GetBanner_IDsByWeekEndDate(wED);
 
             foreach (int empId in empIds)
             {
-                paySum = paySum.getWeeklyReport(empId, wED);
-                paySumList.Add(paySum);
-                if (paySum.TimesheetStatus.Trim().Equals("Approved"))
-                {
-                    approvedList.Add(paySum);
-                }
-                if (paySum.TimesheetStatus.Trim().Equals("Pending Approval"))
-                {
-                    pendingList.Add(paySum);
-                }
-                if (paySum.TimesheetStatus.Trim().Equals("Not Submitted"))
-                {
-                    notsubmittedList.Add(paySum);
-                }
+                paySumList.Add( paySum.getWeeklyReport(empId,wED));
             }
            
             Session["Weekend"] = wED;
             Session["PaySummaryList"] = paySumList;
-            Session["ApprovedList"] = approvedList;
-            Session["PendingList"] = pendingList;
-            Session["NotSubmittedList"] = notsubmittedList;
-
 
             return RedirectToAction("Index", "HR");
         }
@@ -267,7 +248,7 @@ namespace Timesheet.Controllers
                     {
                         Debug.WriteLine("AddH : " + model.AdditionalHours + " Note: " + model.Note);
                         Debug.WriteLine("The message says :" + Session["Message2"]);
-                        message = "Timesheet Saved Succesfully";
+                        message = "Note Saved Succesfully";
                         Session["Message2"] = "";
                         Session["Message"] = message;
                         tsheets[i].UpdateTimeSheet(tsheets[i]);

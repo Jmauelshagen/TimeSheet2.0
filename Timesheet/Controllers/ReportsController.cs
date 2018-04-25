@@ -97,7 +97,7 @@ namespace Timesheet.Controllers
         public ActionResult Approve()
         {
             List<TimeSheet> list = (List<TimeSheet>)Session["TimeSheetData"];
-            foreach(TimeSheet sheet in list)
+            foreach (TimeSheet sheet in list)
             {
                 sheet.AuthorizedBySupervisor = "True";
                 sheet.UpdateTimeSheet(sheet);

@@ -15,11 +15,10 @@ namespace Timesheet.Models
 
     public partial class Employee
     {
-        //Instance variables
+        /**Instance variables**/
         LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
 
-        //Class properties
-
+        /**Properties**/
         public string Department { get; set; }
         public string Supervisor { get; set; }
         public string First_Name { get; set; }
@@ -40,8 +39,7 @@ namespace Timesheet.Models
         public string Display_Public { get; set; }
         public string Job_Desc_Number { get; set; }
 
-        //Constructors
-        //0-arg constructor
+        /**Default Constructor**/
         public Employee()
         {
             First_Name = "";
@@ -62,7 +60,7 @@ namespace Timesheet.Models
             Job_Desc_Number = "";
         }
 
-        //all-arg constructor
+        /**all-arg Constructor**/
         public Employee(string fn, string ln, string mn, int bid, string np, string ns, string jt, string fp, string f, string em, string pp, string sp, string c, string m, string d, string jn)
         {
             First_Name = "";
@@ -83,8 +81,8 @@ namespace Timesheet.Models
             Job_Desc_Number = "";
         }
 
-        //Method to obtain employee data from the database
-        //Method accepts the employee id as a paramter and returns an Employee object
+        /**Method to obtain employee data from the database.Method accepts the
+         * employee id as a paramter and returns an Employee object**/
         public Employee GetEmployee(int id)
         {
             var e = from employees in db.Employees
@@ -94,8 +92,8 @@ namespace Timesheet.Models
             return emp;
         }
 
-        //Method is to obtain employee data for multiple employees
-        //Method accepts a supervisor id as a parameter and returns a list of Employee objects
+        /**Method is to obtain employee data for multiple employees. Method accepts a supervisor
+         * id as a parameter and returns a list of Employee objects**/
         public List<Employee> GetEmployees(string id)
         {
             List<Employee> empList = new List<Employee>();
