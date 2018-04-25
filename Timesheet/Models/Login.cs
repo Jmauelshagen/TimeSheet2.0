@@ -18,12 +18,10 @@ namespace Timesheet.Models
 
     public partial class Login
     {
-
-        //final test
-        //Instance variables
+        /**Instance variables**/
         LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
 
-        //Class properties
+        /**Properties**/
         public int Banner_ID { get; set; }
         [DisplayName("User Name")]
         [Required(ErrorMessage = "This Field is required")]
@@ -35,8 +33,7 @@ namespace Timesheet.Models
         public string Password { get; set; }
         public string LoginErrorMessage { get; set; }
 
-        //Constructors
-        //no-arg constructor
+        /**Default constructor**/
         public Login()
         {
             Banner_ID = 0;
@@ -45,7 +42,7 @@ namespace Timesheet.Models
             LoginErrorMessage = "";
         }
 
-        //all-args constructor
+        /**all-args constructor**/
         public Login(int id, string uName, string pWord, string error)
         {
             Banner_ID = id;
@@ -54,8 +51,8 @@ namespace Timesheet.Models
             LoginErrorMessage = error;
         }
 
-        //Method to validate login information
-        //Queries Login table by username and password, returns bool if record is found
+        /**Method to validate login information.Queries Login table by username and
+         * password, returns bool if record is found**/
         public bool ValidateLogin(string uname, string pword)
         {
             var log = from logins in db.Logins 
@@ -77,8 +74,8 @@ namespace Timesheet.Models
             }
         }
 
-        //Method to get Login object
-        //Queries Login table by username and password, returns Login object
+        /**Method to get Login object. Queries Login table by username and password,
+         * returns Login object**/
         public Login GetLogin(string uname, string pword)
         {
             var log = from logins in db.Logins

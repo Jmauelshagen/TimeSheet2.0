@@ -99,15 +99,8 @@
                           Model.WeekEndingDates,
                           " - Please select a date - ",
                           new { @class = "form-control" })
-        <button type="submit">Search</button><br/>
-        <div class="switch-field">
-            @Html.RadioButton("Type", "Default", new {@checked = "checked" }) Default
-            @Html.RadioButton("Type", "Not Submitted") Not Submitted
-            @Html.RadioButton("Type", "Pending Approval") Pending Approval
-            @Html.RadioButton("Type", "Approved") Approved
-        </div>
-        }
-        
+        <button type="submit">Search</button><br/>        
+        }        
         <br />
 
         <!--Table to display pay summaries from the session-->
