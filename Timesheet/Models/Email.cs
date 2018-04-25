@@ -15,24 +15,27 @@ namespace Timesheet.Models
 
     public partial class Email
     {
-        //Instance variables
+        /**Instance Variables**/
         LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
 
         public string Password { get; set; }
         public string Email_Address { get; set; }
 
+        /**Default Constructor**/
         public Email()
         {
             Email_Address = "";
             Password = "";
         }
 
+        /** All args Constructor**/
         public Email(string email, string pass)
         {
             Email_Address = email;
             Password = pass;
         }
 
+        /**Method that returns a email given a string**/
         public Email GetEmail(string em)
         {
             var e = from emails in db.Emails

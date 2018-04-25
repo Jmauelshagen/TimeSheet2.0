@@ -17,10 +17,10 @@ namespace Timesheet.Models
 
     public partial class TimeSheet
     {
-        //Instance Variables
+        /**Instance Variables**/
         LoginDatabaseEntities1 db = new LoginDatabaseEntities1();
 
-        //Class properties
+        /**Class properties**/
         public int Id { get; set; }
         public string WeekEnding { get; set; }
         public string Date { get; set; }
@@ -43,8 +43,7 @@ namespace Timesheet.Models
         public string HoursWorked { get; set; }
 
 
-        //Constructors
-        //no-args constructor
+        /**Default constructor**/
         public TimeSheet()
         {
             Id = 0;
@@ -65,7 +64,7 @@ namespace Timesheet.Models
             IsEnabled = false;
         }
 
-        //all-args constructor
+        /**all-args constructor**/
         public TimeSheet(int id, string wEnd, string date, string inT, string outL, string inL, string outT,
             int leaveId, string leaveHrs, string addlHrs, string tlHrs, string sub, string auth, int banner_ID,
             string n, bool enable)
@@ -88,8 +87,8 @@ namespace Timesheet.Models
             this.IsEnabled = enable;
         }
 
-        //Method to get list of Timesheet objects by employee id and week ending date
-        //Queries the TimeSheet table by employee id and WeekEnding date and returns List collection of Timesheet objects
+        /**Method to get list of Timesheet objects by employee id and week ending date.Queries the TimeSheet
+         * table by employee id and WeekEnding date and returns List collection of Timesheet objects**/
         public List<TimeSheet> GetTimeSheetByWeek(int Banner_ID, List<string> dates)
         {
             List<TimeSheet> timesheets = new List<TimeSheet>();
@@ -136,6 +135,7 @@ namespace Timesheet.Models
             return timesheets;
         }
 
+        /**Queries the database to look for all approved timesheets of a specific employee and creates a list**/
         public List<TimeSheet> GetApprovedTimesheets(string emp)
         {
             List<TimeSheet> timesheets = new List<TimeSheet>();
@@ -157,7 +157,7 @@ namespace Timesheet.Models
             return timesheets;
         }
 
-        //Method to retrieve list of TimeSheet objects by employee name and week ending date
+        /**Method to retrieve list of TimeSheet objects by employee name and week ending date**/
         public List<TimeSheet> GetTimeSheetByNameAndDate(string name, string wED)
         {
             Debug.WriteLine("Name value is: " + name);
@@ -183,7 +183,7 @@ namespace Timesheet.Models
             return timesheets;
         }
 
-        //Method to retrieve list of TimeSheet objects by employee ID and week ending date
+        /**Method to retrieve list of TimeSheet objects by employee ID and week ending date**/
         public List<TimeSheet> GetTimeSheetByIdAndDate(int id, string wED)
         {
             Debug.WriteLine("ID value is: " + id);
@@ -202,7 +202,7 @@ namespace Timesheet.Models
             return timesheets;
         }
 
-        //Method to get the max id from the TimeSheet data table
+        /**Method to get the max id from the TimeSheet data table**/
         public int GetMaxTimeSheetId()
         {
             var ids = from tsheets in db.TimeSheets
@@ -212,7 +212,7 @@ namespace Timesheet.Models
             return maxId;
         }
 
-        //Method to insert TimeSheet data into the TimeSheet data table
+        /**Method to insert TimeSheet data into the TimeSheet data table**/
         public void InsertTimeSheet(TimeSheet sheet)
         {
             WeeklyReport weeklyReport = new WeeklyReport();
@@ -223,7 +223,7 @@ namespace Timesheet.Models
             weeklyReport.getWeeklyReport(sheet.Banner_ID, sheet.WeekEnding.Trim());
         }
 
-        //Method to update TimeSheet data in the TimeSheet data table
+        /**Method to update TimeSheet data in the TimeSheet data table**/
         public void UpdateTimeSheet(TimeSheet sheet)
         {
             WeeklyReport weeklyReport = new WeeklyReport();
@@ -446,6 +446,7 @@ namespace Timesheet.Models
             }
         }
 
+        /**Calculates the total hours work for a day including additional hours**/
         public string CalculateWorkedHours(TimeSheet sheet)
         {
             try
@@ -608,6 +609,7 @@ namespace Timesheet.Models
             }
         }
 
+        /**Calculates and returns the overtime for the day. Over 8 hours**/
         public string GetOvertime()
         {
             String overtime;
@@ -824,7 +826,7 @@ namespace Timesheet.Models
             return dates;
         }
 
-        //Method to retrieve a date List object by employee id and weekday
+        /**Method to retrieve a date List object by employee id and weekday**/
         public List<string> GetDates(int id, string wED)
         {
             Debug.WriteLine("ID value is: " + id);
@@ -837,13 +839,13 @@ namespace Timesheet.Models
 
             foreach (TimeSheet sheet in sheets)
             {
-                Debug.WriteLine("******************************* DATE SAVED TO LIST: " + sheet.Date);
+                Debug.WriteLine("******************************* DATE SAVED TO LIST *****************************: " + sheet.Date);
                 dates.Add(sheet.Date);
             }
             return dates;
         }
 
-        //Queries the TimeSheet table and obtains a list of distinct week ending dates that exist on the table
+        /**Queries the TimeSheet table and obtains a list of distinct week ending dates that exist on the table**/
         public List<string> GetWeekEndingDateList()
         {
             var wED = (from sheets in db.TimeSheets
@@ -857,6 +859,7 @@ namespace Timesheet.Models
             return weekEndDates;
         }
 
+        /**Quereies the Timesheet table for a list of weekend dates worked by a specific employee**/
         public List<string> GetWeekEndingDateList(int id)
         {
             var wED = (from sheets in db.TimeSheets
@@ -871,6 +874,7 @@ namespace Timesheet.Models
             return weekEndDates;
         }
 
+        /**Queres the Timesheet table for a list of weekend dates worked by a specific employee and was also approved**/
         public List<string> GetApprovedWeekendsList(int id)
         {
             var wED = (from sheets in db.TimeSheets
@@ -888,8 +892,7 @@ namespace Timesheet.Models
             return weekEndDates;
         }
 
-        //Obtains the fist and list names for a distinct list of employee ids that exist on the
-        //TimeSheet db table
+        /**Obtains the fist and list names for a distinct list of employee ids that exist on the TimeSheet db table**/
         public List<string> GetEmployeeNames(int sid)
         {
             List<string> names = new List<string>();
