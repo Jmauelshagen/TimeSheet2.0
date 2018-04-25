@@ -19,5 +19,9 @@ namespace Timesheet.Controllers
         {
             return View();
         }
+        public ActionResult Emphelp()
+        {
+            return View();
+        }
     }
 }

@@ -8,12 +8,12 @@
 <!--Get employee, time sheet list and message objects from the session.-->
 @{
     ViewBag.Title = "Reports";
-<div>
-    <center>
-        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
-    </center>
-    <a href="@Url.Action("Suphelp", "Help")" style="float:right;  margin: 0em 15em 0em 0em;" target="_blank">Help</a><br />
-</div>
+    <div>
+        <center>
+            <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        </center>
+        <a href="@Url.Action("Suphelp", "Help")" style="float:right;  margin: 0em 15em 0em 0em;" target="_blank">Help</a><br />
+    </div>
 
     Employee sup = (Employee)Session["Supervisor"];
     Employee emp = (Employee)Session["Employee"];
@@ -90,7 +90,7 @@
 </head>
 <body onload="formatAMPM()">
 
-    <h1>Reports 2</h1>
+    <h1>Reports</h1>
     <!--Get and display current date and time.-->
     @{
         string today = DateTime.Now.ToLongDateString();

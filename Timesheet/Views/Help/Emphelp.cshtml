@@ -1,0 +1,151 @@
+@using Timesheet.Models
+@{
+    Layout = null;
+}
+
+<!--This is the dashboard for anyone that logs in with the Employee role. It displays links to the
+   different timesheet views.-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Employee User Manual</title>
+    <style>
+        p {
+            font-size: 20px;
+        }
+
+        body {
+            background-color: lightgray;
+        }
+
+        a {
+            list-style: none;
+            padding: 5px;
+            font: bold 14px "times new roman";
+            -webkit-transition-duration: 0.5s; /* Safari */
+            transition-duration: 0.5s;
+            background-color: lightgray;
+            border: solid .5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            a:link {
+                color: Black;
+                background-color: lightgray;
+                text-decoration: none
+            }
+
+            a:hover {
+                color: black;
+                background-color: darkgray;
+                text-decoration: none
+            }
+
+            a:visited {
+                color: black;
+                background-color: transparent;
+                text-decoration: none
+            }
+
+            a:active {
+                color: green;
+                background-color: transparent;
+                text-decoration: none
+            }
+
+        .bold {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+
+<body>
+    <center>
+        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
+        <br><br>
+    </center>
+    <center>
+        <h3> Employee Timesheet Help</h3>
+    </center>
+    <br> <br>
+
+    <h3>General Info</h3>
+    <p>
+        Upon successful login by an <q>Employee</q> user, the Employee dashboard displays.
+        The Dashboard screen presents the user with links (buttons) for <span class="bold">Weekly Timesheet</span>,
+        <span class="bold">Daily Timesheet</span>, <span class="bold">Look Up Previous Timesheet</span>,
+        a <span class="bold">Quick Time Stamp</span> button,
+        and a <span class="bold">LogOut button</span>.
+    </p>
+
+    <p>
+        From the Employee Dashboard, click on the <span class="bold">Quick Time Stamp</span> button to automatically capture the current time for time-in
+        and time-out on the current day.
+    </p>
+
+    <a href="~/Content/employeeDashboard.jpg" alt="Employee Dashboard" target="_blank"> Employee Dashboard Example</a>
+
+    <hr>
+
+    <h3>Weekly Timesheet</h3>
+
+    <p>
+        The Weekly Timesheet screen allows the Employee to view/enter/edit timesheet data for each of the seven days (Sunday-Saturday)
+        of the current week. The user enters his/her time(s), up to 2 time-ins and 2 time-outs (to account for lunch), for each day worked
+        as well as any additional hours not accounted for in the clock in/out sequence (for example, off-site training or approved work
+        from home, etc.). When the Employee clicks on <span class="bold">Save</span> for a day&rsquo;s hours, if they have entered any time
+        in the Additional Hours field,  a message displays suggesting the user enter a note to clarify the additional hours. To attach a
+        note for the additional hours, simply type your message in the &ldquo;Comment for any additional hours worked&rdquo; text area that
+        is on the screen above the navigation buttons, then select the date associated with the note in the &ldquo;Select Day to submit&rdquo;
+        dropdown box. The note will then be associated with that selected date.
+    </p>
+
+    <p>
+        To record time off, use the Type of Absence dropdown box to select the absence category for each day and then enter the number of hours
+        in the Absent hours field for the specific day(s) of the week. A message displays if the user attempts to save a timesheet row with either
+        one (Type of Absence or Absent hours), and not the other filled in.
+    </p>
+
+    <p>
+        When the user has entered all of his/her times for the week, click on Submit Week to submit the timesheet to the Supervisor for
+        approval. A message will display asking the user to confirm the accuracy of the timesheet. Click OK to confirm.
+        A message displays that the timesheet has been successfully submitted.
+    </p>
+
+    <a href="~/Content/weeklyTimesheet.jpg" alt="Weekly Timesheet" target="_blank">Weekly Timesheet Example</a>
+
+    <hr>
+
+    <h3>Daily Timesheet </h3>
+    <p>
+        The Daily Timesheet screen allows the Employee to view/enter/edit timesheet data for the current day.
+    </p>
+
+    <p>
+        Click on the <span class="bold">Record Current Time</span> button to automatically capture the current time for a time-in and
+        time-out on the current day.
+    </p>
+
+    <a href="~/Content/dailyTimesheet.jpg" alt="Daily Timesheet" target="_blank">Daily Timesheet</a> &nbsp;&nbsp;&nbsp;
+
+    <a href="~/Content/recordCurrentTimestamp.jpg" alt="Record Current Timestamp" target="_blank"> Record Current timestamp Example</a>
+
+    <hr>
+
+    <h3>Look Up Previous Timesheet</h3>
+    <p>
+        This option can be used to access any existing Weekly Timesheet. Use the Select Timesheet dropdown box to select the weekly
+        timesheet based on the week-ending date.
+    </p>
+
+    <a href="~/Content/timesheetHistory.jpg" alt="Timesheet History" target="_blank">Timesheet History Example</a> &nbsp;&nbsp;&nbsp;
+
+    <hr>
+
+
+</body>
+</html>
