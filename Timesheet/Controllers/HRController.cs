@@ -19,10 +19,9 @@ namespace Timesheet.Controllers
         //Routes users to the HR screen after obtaining a list of weekending dates from the db
         public ActionResult Index()
         {
-            var model = new TimeSheet();
-            var pmod = new PaySummary();
-            model.WeekEndingDates = GetWeekEndingDateList();
-            return View(model);
+
+            Session["WeekendingList"] = GetWeekEndingDateList();
+            return View();
         }
 
         public ActionResult Overview(TimeSheet model)
