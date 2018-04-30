@@ -3,26 +3,19 @@
 @using System.Diagnostics
 @{
     Layout = null;
-}
-<!--Screen for employees to input time sheet data.-->
-<!--Get employee, time sheet and date objects from session.-->
-@{
     ViewBag.Title = "Overview";
-    <div>
-        <center>
-            <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" /><br/>
-        </center>
-        <a href="@Url.Action("HRhelp", "Help")"style="float:right;  margin: 0em 15em 0em 0em;" target="_blank" >Help</a><br/>
-    </div>
 
     Employee emp = (Employee)Session["Employee"];
     List<TimeSheet> tsheets = (List<TimeSheet>)Session["TimeSheetData"];
     List<string> dates = (List<string>)Session["Dates"];
     IEnumerable<SelectListItem> datelist = (IEnumerable<SelectListItem>)Session["datelist"];
     IEnumerable<SelectListItem> leaveList = (IEnumerable<SelectListItem>)Session["LeaveList"];
+    string message = (string)Session["Message"];
     string mess = (string)Session["Message2"];
     WeeklyReport weekly = new WeeklyReport();
     weekly = weekly.getWeeklyReport(emp.Banner_ID, tsheets[1].WeekEnding.Trim());
+    TimeSheet statusTest = tsheets[0];
+
 }
 <script>
     window.setTimeout(function () {
@@ -100,7 +93,9 @@
 </style>
 
 <!DOCTYPE html>
-<link rel="stylesheet" href="~/Content/Style.css" type="text/css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="~/Content/bootstrap.min.css">
 
 <html>
 <head>
@@ -108,43 +103,71 @@
     <title>Timesheet</title>
 </head>
 <body onload="formatAMPM()">
-
-    <!--Get and display current date and time.-->
-    @{
-        string today = DateTime.Now.ToLongDateString();
-        string time = DateTime.Now.ToLongTimeString();
-
-        if (!String.IsNullOrEmpty(mess))
-        {
-            <script type="text/javascript">
-                window.alert("@mess");
-            </script>
-            Session["Message2"] = "";
+    <header class="text-center">
+        <div>
+            <center>
+                <img class="img-responsive" src="http://www.chattahoocheetech.edu/wp-content/uploads/2017/02/the_essentials_new_website_header_revised_1200.jpg" alt="ChattahoocheeTech Banner Picture" width="1200" height="180">
+            </center>
+            <a class="btn btn-default" href="@Url.Action("Suphelp", "Help")" style="float:right;  margin: 1% 1% 0% 0%;" target="_blank">Help</a><br />
+        </div><br />
+        <h2>Weekly Overview</h2>
+        @{
+            string today = DateTime.Now.ToLongDateString();
+            string time = DateTime.Now.ToLongTimeString();
         }
-    }
-
-    <h2 style="text-align: center;">Weekly Time Sheet</h2>
-
-    <p id="Time" style="text-align: center;">@today <div id="time" style="text-align: center;"></div></p>
-
-    <label id="Message">@Html.DisplayFor(model => Session["Message"])</label>
+        <p>It is @today <div id="time">@time</div></p>
+        @{ if (!String.IsNullOrEmpty(mess))
+            {
+                <script type="text/javascript">
+                    window.alert("@mess");
+                </script>
+                Session["Message2"] = "";
+            }
+            if (!String.IsNullOrEmpty(message))
+            {
+                <label id="Message">@message</label>
+            }
+        }
+    </header>
+    <main class="text-center">
 
     <h3 style="text-align: center;">Contact Info</h3>
     <ul>
         <li class="nav">Name: @emp.First_Name @emp.Last_Name</li>
-        <li class="nav">Email:<a href="mailto:@emp.Email_Address.Trim()" style="border:none;">@emp.Email_Address.Trim()</a></li>
+        <li class="nav">Email:<a class="btn btn-default" href="mailto:@emp.Email_Address.Trim()" style="border:none;">@emp.Email_Address.Trim()</a></li>
         <li class="nav">Phone: @emp.Primary_Phone</li>
         <li class="nav">Banner ID: @emp.Banner_ID</li>
     </ul>
 
-
-
-    <!--Table to display time sheet input form.-->
-    <div class="yesPrint">
-        <table class="center">
-            <tr>
+        <!--Table to display time sheet input form.-->
+        <div class="center yesPrint container table-responsive" style="margin:auto">
+            <table class="center table table-bordered table-condensed">
+            <caption style="background-color:lightgray; font-weight:bold;">timesheet for the week of @tsheets[0].WeekEnding</caption>
+                @{
+                    if (statusTest.AuthorizedBySupervisor.Trim().Equals("False") && statusTest.Submitted.Trim().Equals("False"))
+                    {
+                        <tr class="danger">
+                            <td colspan="4" style="font-weight:bold; background-color:AppWorkspace;">Status</td>
+                            <td colspan="6">Not Submitted</td>
+                        </tr>
+                    }
+                    if (statusTest.AuthorizedBySupervisor.Trim().Equals("False") && statusTest.Submitted.Trim().Equals("True"))
+                    {
+                        <tr class="warning">
+                            <td colspan="4" style="font-weight:bold; background-color:AppWorkspace;">Status</td>
+                            <td colspan="6">Submitted and Pending Approval</td>
+                        </tr>
+                    }
+                    if (statusTest.AuthorizedBySupervisor.Trim().Equals("True"))
+                    {
+                        <tr class="success">
+                            <td colspan="4" style="font-weight:bold; background-color:AppWorkspace;">Status</td>
+                            <td colspan="6">Approved</td>
+                        </tr>
+                    }
+                }<tr>
                 <th style="display:none;">ID</th>
-                <th>Week end</th>
+                <th style="display:none;">Week end</th>
                 <th>Date</th>
                 <th>Time In</th>
                 <th>Time Out</th>
@@ -155,8 +178,8 @@
                 <th>Additional Hours</th>
                 <th>Hours Worked</th>
                 <th>Overtime</th>
-                <th>Submitted</th>
-                <th>Approved</th>
+                <th style="display:none;">Submitted</th>
+                <th style="display:none;">Approved</th>
                 <th style="display:none;">Banner Id</th>
                 <th style="display:none;"></th>
             </tr>
@@ -167,12 +190,12 @@
                         <tr>
                             <!--Converted some of the textboxes to time input to reduce user error-->
                             <td style="display:none;">@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                            <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                            <td style="display:none;">@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                             <td>@Html.TextBoxFor(model => model.Date, new { @Value = @tsheets[i].Date.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                            <td>@Html.TextBoxFor(model => model.TimeIn, new { type = "time", Value = @tsheets[i].TimeIn.ToString().Trim(), style = "width: 100px;" })</td>
-                            <td>@Html.TextBoxFor(model => model.OutForLunch, new { type = "time", Value = @tsheets[i].OutForLunch.ToString().Trim(), style = "width: 100px;" })</td>
-                            <td>@Html.TextBoxFor(model => model.InFromLunch, new { type = "time", Value = @tsheets[i].InFromLunch.ToString().Trim(), style = "width: 100px;" })</td>
-                            <td>@Html.TextBoxFor(model => model.TimeOut, new { type = "time", Value = @tsheets[i].TimeOut.ToString().Trim(), style = "width: 100px;" })</td>
+                            <td>@Html.TextBoxFor(model => model.TimeIn, new { type = "time", Value = @tsheets[i].TimeIn.ToString().Trim(), style = "width: 120px;" })</td>
+                            <td>@Html.TextBoxFor(model => model.OutForLunch, new { type = "time", Value = @tsheets[i].OutForLunch.ToString().Trim(), style = "width: 120px;" })</td>
+                            <td>@Html.TextBoxFor(model => model.InFromLunch, new { type = "time", Value = @tsheets[i].InFromLunch.ToString().Trim(), style = "width: 120px;" })</td>
+                            <td>@Html.TextBoxFor(model => model.TimeOut, new { type = "time", Value = @tsheets[i].TimeOut.ToString().Trim(), style = "width: 120px;" })</td>
                             <td>
                                 @Html.DropDownListFor(model => model.LeaveId, new SelectList(leaveList, "Value", "Text", Convert.ToInt16(tsheets[i].LeaveId.ToString().Trim())))
                             </td>
@@ -200,12 +223,12 @@
                                     Debug.WriteLine(TotalHoursWorked + " Weekly Timesheet TotalHours Test 2 for overtime");
                                     string overtime = tsheets[i].GetOvertime();
                                     @overtime
-                                    }
-                            </td>                            
-                            <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                            <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
+                                }
+                            </td>
+                            <td style="display:none;">@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
+                            <td style="display:none;">@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                             <td style="display:none;">@Html.TextBoxFor(model => model.Banner_ID, new { @Value = @tsheets[i].Banner_ID.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                            <td class="noPrint"><button id="submit" type="submit" value="Save">Save</button></td> <!--   onclick="return leaveFieldEmpty()"             -->
+                            <td class="noPrint"><button class="btn btn-default" id="submit" type="submit" value="Save">Save</button></td>
                         </tr>
                         /**These add section for notes to be displayed if they exist**/
                         if (!String.IsNullOrEmpty(tsheets[i].Note))
@@ -223,8 +246,9 @@
         </table>
     </div>
     <br />
-    <div class="yesPrint">
-        <table class="center" id="WeeklyTotals">
+        <div class="yesPrint container table-responsive">
+            <table class="center table table-bordered table-condensed" id="WeeklyTotals">
+            <caption style="background-color:lightgray; font-weight:bold;">Weekly Totals</caption>
             <tr>
                 <th>Absent Hours</th>
                 <th>Worked Hours</th>
@@ -308,61 +332,59 @@
             </tr>
         </table>
     </div>
-    <br />
-    <div class="noPrint">
+    <div class="container noPrint">
         @{/**This Text Area is used to give infomation about any additional hours given. It creates
-            * another form that saves input to a the model and updates it to the day selected**/
+              * another form that saves input to a the model and updates it to the day selected**/
             using (Html.BeginForm("SaveTimeNote", "HR", FormMethod.Post))
             {
                 <h3 align="center">@Html.Label("Comment for any additional hours worked", new { @style = "font-size: 1.1em" })</h3>
                 <p align="center">
                     @Html.TextAreaFor(model => model.Note, 10, 50, new
-                    {
-                        @placeholder = "Comments about additional hours go here." +
-                                    "\n\nTo clear a note from a day enter 'none' or 'None' in the field and save it, this will remove the note."
-                    })
+                   {
+                       @class ="form-control",
+                       @placeholder = "Comments about additional hours go here." +
+                                             "\n\nTo clear a note from a day enter 'none' or 'None' in the field and save it, this will remove the note."
+                   })
                 </p>
-                <p align="center">@Html.DropDownList("Date", datelist, "Select Day to submit", new { onchange = "this.form.submit();" })</p>
+                <p align="center">@Html.DropDownList("Date", datelist, "Select Day to submit", new { @class = "btn btn-default dropdown-toggle", onchange = "this.form.submit();" })</p>
             }
         }
     </div>
-    <br />
-    <div class="noPrint">
+    <div class="container center noPrint">
         <!--Email form (html)-->
-        <p> Email @emp.First_Name </p>
+        <h3 align="center">@Html.Label("Email "+ @emp.First_Name, new { @style = "font-size: 1.1em" })</h3>
         @using (Html.BeginForm("Email", "HR", FormMethod.Post))
         {
             <div>
                 <form name="sentMessage" id="contactForm" novalidate>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div>
                             <div class="form-group">
-                                @*<input type="email" name="empemail" class="form-control" placeholder="Employee Email *" id="email" required data-validation-required-message="Please enter your email address.">*@
-                                <p></p>
                                 <input type="text" name="empsub" class="form-control" placeholder="Subject: *" id="name" required data-validation-required-message="Please enter a Subject.">
-                                <p></p>
                                 <textarea class="form-control" name="smessage" placeholder="Your Message: *" id="message" required data-validation-required-message="Please enter a message." rows="10" cols="50"></textarea>
-                                <p></p>
                             </div>
                         </div>
                         <div class="clearfix"></div>
-                        <div class="col-lg-12 text-center">
+                        <div class=" text-center">
                             <div id="success"></div>
-                            <button type="submit" class="submit button" onclick="this.form.submit();">Send Message</button>
+                            <button type="submit" class="btn btn-default" onclick="this.form.submit();">Send Message</button>
                         </div>
                     </div>
                 </form>
             </div>
         }
-        <br />
-        <br />
-
-        <a href="@Url.Action("Index", "HR")" class="button">Home</a>
-
-        <button type="button" value="Print" onClick="window.print()">Print</button>
-
-        <a href="@Url.Action("LogOut", "Login")" class="button">LogOut</a>
     </div>
+</main>    
+    <footer>
+        <div class="noPrint text-center">
+
+            <a class="btn btn-default" href="@Url.Action("Index", "HR")">Home</a>
+
+            <button class="btn btn-default" type="button" value="Print" onClick="window.print()">Print</button>
+            <br /><br />
+            <a class="btn btn-default" href="@Url.Action("LogOut", "Login")">LogOut</a>
+        </div>
+    </footer>
 </body>
 
 </html>

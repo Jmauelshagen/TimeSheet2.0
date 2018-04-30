@@ -3,15 +3,14 @@
 @using System.Diagnostics
 @{
     Layout = null;
+    ViewBag.Title = "ApprovedTimesheets";
+    Session.Remove("TimeSheetData");
+
     SelectList employees = ViewBag.Employees;
-    ViewBag.Title = "Approved Timesheets";
-
     Employee sup = (Employee)Session["Supervisor"];
-
     Employee emp = (Employee)Session["Employee"];
     List<List<TimeSheet>> tsheets = (List<List<TimeSheet>>)Session["AppTimeSheetData"];
     List<string> dates = (List<string>)Session["Dates"];
-
     WeeklyReport weekly = new WeeklyReport();
 }
 

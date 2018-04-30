@@ -1,83 +1,83 @@
-﻿@using Timesheet.Models
-@model Timesheet.Models.TimeSheet
+﻿@model Timesheet.Models.TimeSheet 
+@using Timesheet.Models
 @using System.Diagnostics
 @{
     Layout = null;
     ViewBag.Title = "OldTimesheet";
 
-}
-
-<!--Get employee, time sheet list and message objects from the session.-->
-@{
+    Session.Remove("QuickTimeStamp");
     Employee emp = (Employee)Session["Employee"];
     var tsheets = (List<TimeSheet>)Session["TimeSheetData"];
+    List<string> dates = (List<string>)Session["dates"];
     IEnumerable<SelectListItem> dateList = (IEnumerable<SelectListItem>)Session["dateList"];
     IEnumerable<SelectListItem> weekList = (IEnumerable<SelectListItem>)Session["weeklist"];
     IEnumerable<SelectListItem> leaveList = (IEnumerable<SelectListItem>)Session["LeaveList"];
-    List<string> dates = (List<string>)Session["dates"];
+    string message = (string)Session["OldMessage"];
     string mess = (string)Session["Message2"];
     WeeklyReport weekly = new WeeklyReport();
+    TimeSheet statusTest = null;
 
     if ((tsheets != null) && tsheets.Any())
     {
+        statusTest = tsheets[0];
         weekly = weekly.getWeeklyReport(emp.Banner_ID, tsheets[1].WeekEnding.Trim());
     }
 }
 
 <script>
-        window.setTimeout(function () {
-            // This will execute 5 seconds later
-            var label = document.getElementById('Message');
-            if (label != null) {
-                label.style.display = 'none';
-            }
-
-        }, 4000);
-
-        function checkTime(i)//Check for single digit numbers in the seconds and minutes of the live clock
-        {
-            if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
-            return i;
+    window.setTimeout(function () {
+        // This will execute 5 seconds later
+        var label = document.getElementById('Message');
+        if (label != null) {
+            label.style.display = 'none';
         }
 
-        function formatAMPM()//Methods makes live clock
-        {
-            var today = new Date();
-            var hours = today.getHours();
-            var minutes = today.getMinutes();
-            var seconds = today.getSeconds();
-            seconds = checkTime(seconds);
-            var ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12;
-            hours = hours ? hours : 12; // the hour '0' should be '12'
-            minutes = minutes < 10 ? '0' + minutes : minutes;
-            var strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
-            document.getElementById('time').innerHTML = strTime;
-            var t = setTimeout(formatAMPM, 500);
+    }, 4000);
+
+    function checkTime(i)//Check for single digit numbers in the seconds and minutes of the live clock
+    {
+        if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
+        return i;
+    }
+
+    function formatAMPM()//Methods makes live clock
+    {
+        var today = new Date();
+        var hours = today.getHours();
+        var minutes = today.getMinutes();
+        var seconds = today.getSeconds();
+        seconds = checkTime(seconds);
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        var strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+        document.getElementById('time').innerHTML = strTime;
+        var t = setTimeout(formatAMPM, 500);
+    }
+
+    function leaveFieldEmpty(i) {
+        var leaveid;
+        var leaveHours;
+        leaveHours = document.forms["frm" + i]["LeaveHours"].value;
+        leaveid = document.forms["frm" + i]["LeaveId"].value;
+
+        if (leaveid == '0' && leaveHours == '') {
+            return true;
         }
-
-        function leaveFieldEmpty(i) {
-            var leaveid;
-            var leaveHours;
-            leaveHours = document.forms["frm" + i]["LeaveHours"].value;
-            leaveid = document.forms["frm" + i]["LeaveId"].value;
-
-            if (leaveid == '0' && leaveHours == '') {
-                return true;
-            }
-            else if (leaveid != '0' && leaveHours != '') {
-                return true;
-            }
-            else if (leaveid == '0' && leaveHours != '') {
-                alert("Please make sure to enter an Absent Type.");
-                return false;
-            }
-            else if (leaveid != '0' && leaveHours == '') {
-                alert("Please make sure to enter Absent Hours.");
-                return false;
-            };
-
+        else if (leaveid != '0' && leaveHours != '') {
+            return true;
         }
+        else if (leaveid == '0' && leaveHours != '') {
+            alert("Please make sure to enter an Absent Type.");
+            return false;
+        }
+        else if (leaveid != '0' && leaveHours == '') {
+            alert("Please make sure to enter Absent Hours.");
+            return false;
+        };
+
+    }
 
 </script>
 
@@ -103,7 +103,9 @@
 
 <!--This is the page for an employee to look up previous timesheets.-->
 <!DOCTYPE html>
-<link rel="stylesheet" href="~/Content/Style.css" type="text/css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="~/Content/bootstrap.min.css">
 
 <html>
 <head>
@@ -111,57 +113,76 @@
     <title>Reports</title>
 </head>
 <body onload="formatAMPM()">
-    <div>
-        <center>
-            <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
-        </center>
-        <a href="@Url.Action("Emphelp", "Help")" style="float:right;  margin: 0em 15em 0em 0em;" target="_blank">Help</a><br />
-    </div>
-    <div>
-
-        <h2 style="text-align: center;">Timesheet History</h2>
-        <h3 style="text-align: center;">@emp.First_Name @emp.Last_Name</h3>
-
-        <!--Get and display current date and time.-->
+    <header class="text-center">
+        <div>
+            <center>
+                <img class="img-responsive" src="http://www.chattahoocheetech.edu/wp-content/uploads/2017/02/the_essentials_new_website_header_revised_1200.jpg" alt="ChattahoocheeTech Banner Picture" width="1200" height="180">
+            </center>
+            <a class="btn btn-default" href="@Url.Action("Emphelp", "Help")" style="float:right;  margin: 1% 1% 0% 0%;" target="_blank">Help</a><br />
+        </div><br />
+        <h2>Timesheet History</h2>
+        <p>Welcome @emp.First_Name @emp.Last_Name!</p>
         @{
             string today = DateTime.Now.ToLongDateString();
             string time = DateTime.Now.ToLongTimeString();
-
-            if (!String.IsNullOrEmpty(mess))
+        }
+        <p>It is @today <div id="time">@time</div></p>
+        @{ if (!String.IsNullOrEmpty(mess))
             {
                 <script type="text/javascript">
                     window.alert("@mess");
                 </script>
                 Session["Message2"] = "";
             }
-        }
-
-        <p id="Time" style="text-align: center;">@today <div id="time" style="text-align: center;"></div></p>
-
-        @using (Html.BeginForm("ReportData", "TimeSheet", FormMethod.Post, new { role = "form" }))
-        {
-            <P class="noPrint">
-                @Html.LabelFor(model => model.WeekEnding, "Select Timesheet")
-                @Html.DropDownListFor(model => model.WeekEnding, weekList, "-Select A Date-", new { onchange = "this.form.submit();" })
-            </P>
-        }
-        <label id="Message">@Html.DisplayFor(model => Session["OldMessage"])</label>
-
-        <!--Form for employee to select a timesheet week ending date.-->
-        @{
-            if ((tsheets != null) && tsheets.Any())
+            if (!String.IsNullOrEmpty(message))
             {
-                <p>timesheet for the week of @tsheets[0].WeekEnding</p>
+                <label id="Message">@message</label>
             }
         }
+    </header>
+    <main class="text-center">
+        <div class="dropdown">
+            @using (Html.BeginForm("ReportData", "TimeSheet", FormMethod.Post, new { role = "form" }))
+            {
+                @Html.LabelFor(model => model.WeekEnding, "Select Timesheet: ")
+                @Html.DropDownListFor(model => model.WeekEnding, weekList, "-Select A Date-", new { @class = "btn btn-default dropdown-toggle", onchange = "this.form.submit();" })
+            }
+        </div>
+        <br />
+        <!--Form for employee to select a timesheet week ending date.-->
         @{
             if (@tsheets != null)
-            {<!--Table to display time sheet input form.-->
-                <div class="yesPrint">
-                    <table class="center">
+            {
+                <!--Table to display time sheet input form.-->
+                <div class="center yesPrint container table-responsive" style="margin:auto">
+                    <table class="center table table-bordered table-condensed">
+                        <caption style="background-color:lightgray; font-weight:bold;">timesheet for the week of @tsheets[0].WeekEnding</caption>
+                        @{
+                            if (statusTest.AuthorizedBySupervisor.Trim().Equals("False") && statusTest.Submitted.Trim().Equals("False"))
+                            {
+                                <tr class="danger">
+                                    <td colspan="4" style="font-weight:bold; background-color:AppWorkspace;">Status</td>
+                                    <td colspan="6">Not Submitted</td>
+                                </tr>
+                            }
+                            if (statusTest.AuthorizedBySupervisor.Trim().Equals("False") && statusTest.Submitted.Trim().Equals("True"))
+                            {
+                                <tr class="warning">
+                                    <td colspan="4" style="font-weight:bold; background-color:AppWorkspace;">Status</td>
+                                    <td colspan="6">Submitted and Pending Approval</td>
+                                </tr>
+                            }
+                            if (statusTest.AuthorizedBySupervisor.Trim().Equals("True"))
+                            {
+                                <tr class="success">
+                                    <td colspan="4" style="font-weight:bold; background-color:AppWorkspace;">Status</td>
+                                    <td colspan="6">Approved</td>
+                                </tr>
+                            }
+                        }
                         <tr>
                             <th style="display:none;">ID</th>
-                            <th>Week end</th>
+                            <th style="display:none;">Week end</th>
                             <th>Date</th>
                             <th>Time In</th>
                             <th>Time Out</th>
@@ -172,10 +193,10 @@
                             <th>Additional Hours</th>
                             <th>Hours Worked</th>
                             <th>Overtime</th>
-                            <th>Submitted</th>
-                            <th>Approved</th>
-                            <th style="display:none;" class="noPrint">Banner Id</th>
-                            <th style="display:none;" class="noPrint"></th>
+                            <th style="display:none;">Submitted</th>
+                            <th style="display:none;">Approved</th>
+                            <th style="display:none;">Banner Id</th>
+                            <th style="display:none;"></th>
                         </tr>
                         @{for (int i = 0; i < 7; i++)
                             {
@@ -186,12 +207,12 @@
                                         <tr>
                                             <!--Converted some of the textboxes to time input to reduce user error-->
                                             <td style="display:none;">@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                                            <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                            <td style="display:none;">@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                             <td>@Html.TextBoxFor(model => model.Date, new { @Value = @tsheets[i].Date.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                                            <td>@Html.TextBoxFor(model => model.TimeIn, new { type = "time", Value = @tsheets[i].TimeIn.ToString().Trim(), style = "width: 100px;" })</td>
-                                            <td>@Html.TextBoxFor(model => model.OutForLunch, new { type = "time", Value = @tsheets[i].OutForLunch.ToString().Trim(), style = "width: 100px;" })</td>
-                                            <td>@Html.TextBoxFor(model => model.InFromLunch, new { type = "time", Value = @tsheets[i].InFromLunch.ToString().Trim(), style = "width: 100px;" })</td>
-                                            <td>@Html.TextBoxFor(model => model.TimeOut, new { type = "time", Value = @tsheets[i].TimeOut.ToString().Trim(), style = "width: 100px;" })</td>
+                                            <td>@Html.TextBoxFor(model => model.TimeIn, new { type = "time", Value = @tsheets[i].TimeIn.ToString().Trim(), style = "width: 120px;" })</td>
+                                            <td>@Html.TextBoxFor(model => model.OutForLunch, new { type = "time", Value = @tsheets[i].OutForLunch.ToString().Trim(), style = "width: 120px;" })</td>
+                                            <td>@Html.TextBoxFor(model => model.InFromLunch, new { type = "time", Value = @tsheets[i].InFromLunch.ToString().Trim(), style = "width: 120px;" })</td>
+                                            <td>@Html.TextBoxFor(model => model.TimeOut, new { type = "time", Value = @tsheets[i].TimeOut.ToString().Trim(), style = "width: 120px;" })</td>
                                             <td>
                                                 @Html.DropDownListFor(model => model.LeaveId, new SelectList(leaveList, "Value", "Text", Convert.ToInt16(tsheets[i].LeaveId.ToString().Trim())))
                                             </td>
@@ -221,10 +242,10 @@
                                                     @overtime
                                                 }
                                             </td>
-                                            <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                                            <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                                            <td style="display:none;" class="noPrint">@Html.TextBoxFor(model => model.Banner_ID, new { @Value = @tsheets[i].Banner_ID.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                                            <td class="noPrint"><button id="submit" type="submit" value="Save">Save</button></td>
+                                            <td style="display:none;">@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
+                                            <td style="display:none;">@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
+                                            <td style="display:none;">@Html.TextBoxFor(model => model.Banner_ID, new { @Value = @tsheets[i].Banner_ID.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                            <td class="noPrint"><button class="btn btn-default" id="submit" type="submit" value="Save">Save</button></td>
                                         </tr>
                                         /**These add section for notes to be displayed if they exist**/
                                         if (!String.IsNullOrEmpty(tsheets[i].Note))
@@ -241,12 +262,12 @@
                                         <tr>
                                             <!--Converted some of the textboxes to time input to reduce user error-->
                                             <td style="display:none;">@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                                            <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                            <td style="display:none;">@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                             <td>@Html.TextBoxFor(model => model.Date, new { @Value = @tsheets[i].Date.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                                            <td>@Html.TextBoxFor(model => model.TimeIn, new { type = "time", Value = @tsheets[i].TimeIn.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                                            <td>@Html.TextBoxFor(model => model.OutForLunch, new { type = "time", Value = @tsheets[i].OutForLunch.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                                            <td>@Html.TextBoxFor(model => model.InFromLunch, new { type = "time", Value = @tsheets[i].InFromLunch.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                                            <td>@Html.TextBoxFor(model => model.TimeOut, new { type = "time", Value = @tsheets[i].TimeOut.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
+                                            <td>@Html.TextBoxFor(model => model.TimeIn, new { type = "time", Value = @tsheets[i].TimeIn.ToString().Trim(), @readonly = "readonly", style = "width: 120px;" })</td>
+                                            <td>@Html.TextBoxFor(model => model.OutForLunch, new { type = "time", Value = @tsheets[i].OutForLunch.ToString().Trim(), @readonly = "readonly", style = "width: 120px;" })</td>
+                                            <td>@Html.TextBoxFor(model => model.InFromLunch, new { type = "time", Value = @tsheets[i].InFromLunch.ToString().Trim(), @readonly = "readonly", style = "width: 120px;" })</td>
+                                            <td>@Html.TextBoxFor(model => model.TimeOut, new { type = "time", Value = @tsheets[i].TimeOut.ToString().Trim(), @readonly = "readonly", style = "width: 120px;" })</td>
                                             <td>
                                                 @Html.DropDownListFor(model => model.LeaveId, new SelectList(leaveList, "Value", "Text", Convert.ToInt16(tsheets[i].LeaveId.ToString().Trim())))
                                             </td>
@@ -275,8 +296,8 @@
                                                     @overtime
                                                 }
                                             </td>
-                                            <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                                            <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
+                                            <td style="display:none;">@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
+                                            <td style="display:none;">@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
                                             <td style="display:none;">@Html.TextBoxFor(model => model.Banner_ID, new { @Value = @tsheets[i].Banner_ID.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
                                         </tr>
                                         /**These add section for notes to be displayed if they exist**/
@@ -295,9 +316,10 @@
                     </table>
                 </div>
                 <br />
-                <div class="yesPrint">
-                    <table class="center" id="WeeklyTotals">
-                        <tr>
+                <div class="yesPrint container table-responsive">
+                    <table class="center table table-bordered table-condensed" id="WeeklyTotals">
+                        <caption style="background-color:lightgray; font-weight:bold;">Weekly Totals</caption>
+                       <tr>
                             <th>Absent Hours</th>
                             <th>Worked Hours</th>
                             <th>Total Hours</th>
@@ -382,7 +404,7 @@
                 </div>
                 <div class="noPrint">
                     @{/**This Text Area is used to give infomation about any additional hours given. It creates
-                             * another form that saves input to a the model and updates it to the day selected**/}
+                                     * another form that saves input to a the model and updates it to the day selected**/}
                     @{
                         if (tsheets[0].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
                         {
@@ -393,32 +415,34 @@
                                     @Html.TextAreaFor(model => model.Note, 10, 50, new
                                     {
                                         @placeholder = "Comments about additional hours go here." +
-                                                   "\n\nTo clear a note from a day enter 'none' or 'None' in the field and save it, this will remove the note."
+                                                                       "\n\nTo clear a note from a day enter 'none' or 'None' in the field and save it, this will remove the note."
                                     })
                                 </p>
-                                <p align="center">@Html.DropDownList("Date", dateList, "Select Day to submit", new { onchange = "this.form.submit();" })</p>
+                                <p align="center">@Html.DropDownList("Date", dateList, "Select Day to submit", new { @class = "btn btn-default dropdown-toggle", onchange = "this.form.submit();" })</p>
                             }
                         }
                     }
                 </div>
             }
         }
-    </div>
-    <br />
-    <div class="noPrint">
-        <!-- link to go to the home page-->
-        <a href="@Url.Action("Index", "Employees")" class="button">Home</a>
+    </main>
+    <footer>
+        <div class="noPrint text-center">
+            <!-- link to go to the home page-->
+            <a class="btn btn-default" href="@Url.Action("Index", "Employees")">Home</a>
 
-        <a href="@Url.Action("GetTimeSheet","Timesheet")">Weekly Timesheet</a>
+            <a class="btn btn-default" href="@Url.Action("GetTimeSheet","Timesheet")">Weekly Timesheet</a>
 
-        <a href="@Url.Action("GetDailyTimeSheet","Timesheet")">Daily Timesheet</a>
+            <a class="btn btn-default" href="@Url.Action("GetDailyTimeSheet","Timesheet")">Daily Timesheet</a>
 
-        <button type="button" value="Print" onClick="window.print()">Print</button>
+            <button class="btn btn-default" type="button" value="Print" onClick="window.print()">Print</button>
 
-        <!--Submit Week button with popup validation-->
-        @Html.ActionLink("Submit Week", "SubmitOldTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new { @class = "button", @style = "text-decoration: none; color: black;", @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })
-        <!--Log out link-->
-        <a href="@Url.Action("LogOut","Login")">LogOut</a>
-    </div>
+            <!--Submit Week button with popup validation-->
+            @Html.ActionLink("Submit Week", "SubmitOldTimesheet", "Timesheet", new { confirm = true, test = "testing" }, new { @class = "btn btn-default", @style = "text-decoration: none; color: black;", @onclick = "return confirm('I acknowledge that the times I have inputted are correct')" })
+            <br/><br/>
+            <!--Log out link-->
+            <a class="btn btn-default" href="@Url.Action("LogOut","Login")">LogOut</a>
+        </div>
+    </footer>
 </body>
 </html>

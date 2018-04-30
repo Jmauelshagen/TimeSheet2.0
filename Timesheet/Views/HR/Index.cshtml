@@ -11,15 +11,13 @@
     is displayed.-->
 <script type="text/javascript">
 
-    function fnExcelReport()
-    {
-        var tab_text="<table border='2px'><tr bgcolor='#87AFC6'>";
-        var textRange; var j=0;
+    function fnExcelReport() {
+        var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
+        var textRange; var j = 0;
         tab = document.getElementById('PaySummary'); // id of table
 
-        for(j = 0 ; j < tab.rows.length ; j++)
-        {
-            tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+        for (j = 0; j < tab.rows.length; j++) {
+            tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
         }
 
         tab_text = tab_text + "</table>";
@@ -43,6 +41,52 @@
 
         return (sa);
     }
+
+    function checkTime(i)//Check for single digit numbers in the seconds and minutes of the live clock
+    {
+        if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+        return i;
+    }
+
+    function formatAMPM()//Methods makes live clock
+    {
+        var today = new Date();
+        var hours = today.getHours();
+        var minutes = today.getMinutes();
+        var seconds = today.getSeconds();
+        seconds = checkTime(seconds);
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        var strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+        document.getElementById('time').innerHTML = strTime;
+        var t = setTimeout(formatAMPM, 500);
+    }
+
+    function leaveFieldEmpty(i) {
+        var leaveid;
+        var leaveHours;
+        leaveHours = document.forms["frm" + i]["LeaveHours"].value;
+        leaveid = document.forms["frm" + i]["LeaveId"].value;
+
+        if (leaveid == '0' && leaveHours == '') {
+            return true;
+        }
+        else if (leaveid != '0' && leaveHours != '') {
+            return true;
+        }
+        else if (leaveid == '0' && leaveHours != '') {
+            alert("Please make sure to enter an Absent Type.");
+        return false;
+        }
+        else if (leaveid != '0' && leaveHours == '') {
+            alert("Please make sure to enter Absent Hours.");
+        return false;
+        };
+
+    }
+
 </script>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -54,7 +98,7 @@
     <title>Pay Sheet Summaries</title>
 </head>
 
-<body>
+<body onload="formatAMPM()">
     <!--Get employee and pay summary objects from the session.-->
     @{
         var hr = (Employee)Session["HR"];
