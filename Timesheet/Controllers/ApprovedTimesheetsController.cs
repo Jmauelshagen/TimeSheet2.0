@@ -21,6 +21,7 @@ namespace ApprovedTimesheets.Controllers
                 EmpNames = GetEmployeeNames(sup.Banner_ID),
                 
             };
+            Session.Remove("Message");
             return View(model);
         }
 
@@ -37,8 +38,15 @@ namespace ApprovedTimesheets.Controllers
                 approveList.Add(timesheet.GetTimeSheetByIdAndDate(emp, date));
                 Debug.WriteLine("The size of approveList is: " + approveList.Count);
             }
-            Debug.WriteLine("The size of approveList is: " + approveList.Count);
-            Session["AppTimeSheetData"] = approveList;
+            if(approveList.Count != 0)
+            {
+                Debug.WriteLine("The size of approveList is: " + approveList.Count);
+                Session["AppTimeSheetData"] = approveList;
+            }
+            else
+            {
+                Session.Remove("AppTimeSheetData");
+            }
             return RedirectToAction("ApprovedTimesheets", "ApprovedTimesheets");
         }
 

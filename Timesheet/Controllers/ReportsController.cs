@@ -71,7 +71,7 @@ namespace Timesheet.Controllers
             {
                 string message = "***Please select the employee name and Weekend date***";
                 Session["Message"] = message;
-                Session["TimeSheetData"] = "";
+                Session.Remove("TimeSheetData");
                 return RedirectToAction("Reports", "Reports");
             }
             else
@@ -79,14 +79,20 @@ namespace Timesheet.Controllers
                 var name = model.Name.Trim();
                 var wED = model.WeekEnding.Trim();
                 List<TimeSheet> reportList = timeSheet.GetTimeSheetByIdAndDate(Convert.ToInt16(name), wED);
-                Session["TimeSheetData"] = reportList;
-                if (reportList.ElementAtOrDefault(0) != null)
+                if(reportList.Count != 0)
                 {
-                    Employee ep = new Employee().GetEmployee((Convert.ToInt16(reportList[0].Banner_ID)));
-                    Debug.WriteLine("Emp Name is again: " + ep.First_Name);
-                    Session["Employee"] = ep;
+                    Session["TimeSheetData"] = reportList;
                 }
+                else
+                {
+                    Session.Remove("TimeSheetData");
+                }
+                Employee ep = new Employee().GetEmployee(Convert.ToInt16(name));
+                Session["Employee"] = ep;
+                Session.Remove("Message");
+
                 return RedirectToAction("Reports", "Reports");
+
             }
 
         }

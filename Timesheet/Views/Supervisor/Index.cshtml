@@ -7,7 +7,9 @@
     reports and approved timesheet views.-->
 
 <!DOCTYPE html>
-<link rel="stylesheet" href="~/Content/Style.css" type="text/css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="~/Content/bootstrap.min.css">
 
 <html>
 <head>
@@ -18,24 +20,31 @@
 <body>
     <!--Get employee object from the session.-->
     @{var sup = (Employee)Session["Supervisor"]; }
-    <div>
-        <center>
-            <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
-        </center>
-        <a href="@Url.Action("Suphelp", "Help")" style="float:right;  margin: 0em 15em 0em 0em;" target="_blank">Help</a><br />
-    </div>
-    <div>
-        <h1>Supervisor</h1>
-        <!--Display employee first and last name.-->
+    <header class="text-center">
+        <div>
+            <center>
+                <img class="img-responsive" src="http://www.chattahoocheetech.edu/wp-content/uploads/2017/02/the_essentials_new_website_header_revised_1200.jpg" alt="ChattahoocheeTech Banner Picture" width="1200" height="180">
+            </center>
+            <a class="btn btn-default" href="@Url.Action("Suphelp", "Help")" style="float:right; margin:1% 1% 0% 0%;" target="_blank">Help</a><br />
+        </div><br />
+        <h2>Supervisor</h2>
         <p>Welcome @sup.First_Name @sup.Last_Name!</p>
+        @{
+            string today = DateTime.Now.ToLongDateString();
+            string time = DateTime.Now.ToLongTimeString();
+        }
+        <p id="time">It is @today at @time</p>
+    </header>
+    <footer>
+        <div class="text-center">
+            <!--Links to reports and approved time sheets-->
+            <a class="btn btn-default" href="@Url.Action("Reports", "Reports")"> Reports</a>
 
-        <!--Links to reports and approved time sheets-->
-        <a href="@Url.Action("Reports", "Reports")"> Reports</a>
-        <a href="@Url.Action("ApprovedTimesheets", "ApprovedTimesheets")">Approved Timesheet</a>
-        <br /><br />
-        <!--Log out link-->
-        <a href="@Url.Action("LogOut", "Login")">LogOut</a>
-
-    </div>
+            <a class="btn btn-default" href="@Url.Action("ApprovedTimesheets", "ApprovedTimesheets")">Approved Timesheet</a>
+            <br /><br />
+            <!--Log out link-->
+            <a class="btn btn-default" href="@Url.Action("LogOut", "Login")">LogOut</a>
+        </div>
+    </footer>
 </body>
 </html>
