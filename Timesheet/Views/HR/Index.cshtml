@@ -3,7 +3,6 @@
 
 @{
     Layout = null;
-    var message2 = "";
 
     var hr = (Employee)Session["HR"];
     var emps = new Employee();
@@ -70,35 +69,12 @@
         var t = setTimeout(formatAMPM, 500);
     }
 
-    function leaveFieldEmpty(i) {
-        var leaveid;
-        var leaveHours;
-        leaveHours = document.forms["frm" + i]["LeaveHours"].value;
-        leaveid = document.forms["frm" + i]["LeaveId"].value;
-
-        if (leaveid == '0' && leaveHours == '') {
-            return true;
-        }
-        else if (leaveid != '0' && leaveHours != '') {
-            return true;
-        }
-        else if (leaveid == '0' && leaveHours != '') {
-            alert("Please make sure to enter an Absent Type.");
-            return false;
-        }
-        else if (leaveid != '0' && leaveHours == '') {
-            alert("Please make sure to enter Absent Hours.");
-            return false;
-        };
-
-    }
-
 </script>
 
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="~/Content/bootstrap.min.css">
+<link rel="stylesheet" href="~/Content/bootstrap.css">
 
 <html>
 <head>
@@ -112,7 +88,7 @@
             <center>
                 <img class="img-responsive" src="http://www.chattahoocheetech.edu/wp-content/uploads/2017/02/the_essentials_new_website_header_revised_1200.jpg" alt="ChattahoocheeTech Banner Picture" width="1200" height="180" />
             </center>
-            <a class="btn btn-default" href="@Url.Action("HRhelp", "Help")" style="float:right;  margin: 0em 15em 0em 0em;" target="_blank">Help</a><br />
+            <a class="btn btn-default" href="@Url.Action("HRhelp", "Help")" style="float:right;  margin: 1% 1% 0% 0%;" target="_blank">Help</a><br />
         </div>
         <h2>Pay Sheet Summaries</h2>
         <p>Welcome @hr.First_Name @hr.Last_Name!</p>
@@ -135,7 +111,7 @@
             if (@paySumList != null)
             {
                 <div class="yesPrint container table-responsive">
-                    <table class="center table table-bordered table-condensed" id="TimeSheet">
+                    <table class="center table table-bordered table-condensed table-responsive" id="TimeSheet">
                         <caption style="background-color:lightgray; font-weight:bold;">Reports for the Week ending on @paySumList[0].WeekEnding</caption>
                         <tr>
                             <th style="display:none;">Weekending Date</th>

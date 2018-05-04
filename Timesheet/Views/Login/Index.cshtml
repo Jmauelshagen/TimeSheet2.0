@@ -57,7 +57,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="~/Content/bootstrap.min.css">
+<link rel="stylesheet" href="~/Content/bootstrap.css">
 
 <html>
 <head>
@@ -83,14 +83,14 @@
         }
         <p>It is @today <div id="time">@time</div></p>
     </header>
-    
+
     <!--The login form-->
     <main class="text-center">
         @using (Html.BeginForm("Authorize", "Login", FormMethod.Post))
         {
             if (@Html.ValidationMessageFor(model => model.Username) != null || @Html.ValidationMessageFor(model => model.Password) != null || !String.IsNullOrEmpty(message))
-            {   
-                <label class="field-validation-error" style="color:red">@Html.ValidationMessageFor(model => model.Username) @Html.ValidationMessageFor(model => model.Password) @message</label><br /> 
+            {
+                <label class="field-validation-error" style="color:red">@Html.ValidationMessageFor(model => model.Username) @Html.ValidationMessageFor(model => model.Password) @message</label><br />
             }
             <div class="container">
                 <div class="row">
@@ -98,7 +98,7 @@
                     <div class="col-*-*">@Html.LabelFor(model => model.Password) @Html.EditorFor(model => model.Password)</div>
                     <div class="col-*-*"><Button class="btn btn-default" type="Submit" name="name" value="Login">Login</Button> <button class="btn btn-default" type="reset" name="name" value="Clear">Clear</button></div>
                 </div>
-            </div> 
+            </div>
             <script src="~/Scripts/jquery-1.10.2.min.js"></script>
             <script src="~/Scripts/jquery.validate.min.js"></script>
             <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

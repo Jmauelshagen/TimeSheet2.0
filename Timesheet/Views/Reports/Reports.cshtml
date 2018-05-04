@@ -77,7 +77,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="~/Content/bootstrap.min.css">
+<link rel="stylesheet" href="~/Content/bootstrap.css">
 
 <html>
 <head>
@@ -106,13 +106,13 @@
     <main class="text-center">
 
         <div class="noPrint dropdown">
-        <!--Display message content if it exists.-->
-        @{if (tsheets != null)
-            { 
-                <label id="Message">@Html.DisplayFor(model => Session["Message"])</label>
+            <!--Display message content if it exists.-->
+            @{if (tsheets != null)
+                {
+                    <label id="Message">@Html.DisplayFor(model => Session["Message"])</label>
+                }
             }
-        }
-        
+
             <p>Select Employee</p>
             <p>
                 @{
@@ -120,7 +120,7 @@
                     {
                         @Html.DropDownListFor(model => model.Name, EmployeeList, "-Select Employee-", new { @class = "btn btn-default dropdown-toggle" })
                         <span>&nbsp;</span>
-                        @Html.DropDownListFor(model => model.WeekEnding, WeekendingList, "-Select A Date-", new { @class = "btn btn-default dropdown-toggle"})
+                        @Html.DropDownListFor(model => model.WeekEnding, WeekendingList, "-Select A Date-", new { @class = "btn btn-default dropdown-toggle" })
                         <span>&nbsp;</span>
                         <button class="btn btn-default" type="submit">Search</button>
                     }
@@ -138,48 +138,48 @@
                 <div class="yesPrint container table-responsive">
                     <table class="center table table-bordered table-condensed" id="TimeSheet">
                         <caption style="background-color:lightgray; font-weight:bold;">This is @emp.First_Name.Trim()'s timesheet for the week of @tsheets[0].WeekEnding</caption>
-                            @{
-                                if (statusTest.AuthorizedBySupervisor.Trim().Equals("False") && statusTest.Submitted.Trim().Equals("False"))
-                                {
-                                    <tr class="danger">
-                                        <td colspan="4" style="font-weight:bold; background-color:AppWorkspace;">Status</td>
-                                        <td colspan="6">Not Submitted</td>
-                                    </tr>
-                                }
-                                if (statusTest.AuthorizedBySupervisor.Trim().Equals("False") && statusTest.Submitted.Trim().Equals("True"))
-                                {
-                                    <tr class="warning">
-                                        <td colspan="4" style="font-weight:bold; background-color:AppWorkspace;">Status</td>
-                                        <td colspan="6">Submitted and Pending Approval</td>
-                                    </tr>
-                                }
-                                if (statusTest.AuthorizedBySupervisor.Trim().Equals("True"))
-                                {
-                                    <tr class="success">
-                                        <td colspan="4" style="font-weight:bold; background-color:AppWorkspace;">Status</td>
-                                        <td colspan="6">Approved</td>
-                                    </tr>
-                                }
-                            }                           
+                        @{
+                            if (statusTest.AuthorizedBySupervisor.Trim().Equals("False") && statusTest.Submitted.Trim().Equals("False"))
+                            {
+                                <tr class="danger">
+                                    <td colspan="4" style="font-weight:bold; background-color:AppWorkspace;">Status</td>
+                                    <td colspan="6">Not Submitted</td>
+                                </tr>
+                            }
+                            if (statusTest.AuthorizedBySupervisor.Trim().Equals("False") && statusTest.Submitted.Trim().Equals("True"))
+                            {
+                                <tr class="warning">
+                                    <td colspan="4" style="font-weight:bold; background-color:AppWorkspace;">Status</td>
+                                    <td colspan="6">Submitted and Pending Approval</td>
+                                </tr>
+                            }
+                            if (statusTest.AuthorizedBySupervisor.Trim().Equals("True"))
+                            {
+                                <tr class="success">
+                                    <td colspan="4" style="font-weight:bold; background-color:AppWorkspace;">Status</td>
+                                    <td colspan="6">Approved</td>
+                                </tr>
+                            }
+                        }
                         <tr>
-                                <th style="display:none;">ID</th>
-                                <th style="display:none;">Week end</th>
-                                <th>Date</th>
-                                <th>Time In</th>
-                                <th>Time Out</th>
-                                <th>Time In</th>
-                                <th>Time Out</th>
-                                <th>Type of absence</th>
-                                <th>Absent hours</th>
-                                <th>Additional Hours</th>
-                                <th>Hours Worked Today</th>
-                                <th>Over Time Today</th>
-                                <th style="display:none;">Submitted</th>
-                                <th style="display:none;">Approved</th>
-                                <th style="display:none;">Banner Id</th>
-                            </tr>
-                            @{ for (int i = 0; i < 7; i++)
-                               {
+                            <th style="display:none;">ID</th>
+                            <th style="display:none;">Week end</th>
+                            <th>Date</th>
+                            <th>Time In</th>
+                            <th>Time Out</th>
+                            <th>Time In</th>
+                            <th>Time Out</th>
+                            <th>Type of absence</th>
+                            <th>Absent hours</th>
+                            <th>Additional Hours</th>
+                            <th>Hours Worked Today</th>
+                            <th>Over Time Today</th>
+                            <th style="display:none;">Submitted</th>
+                            <th style="display:none;">Approved</th>
+                            <th style="display:none;">Banner Id</th>
+                        </tr>
+                        @{ for (int i = 0; i < 7; i++)
+                            {
                                 <tr>
                                     <!--Converted some of the textboxes to time input to reduce user error-->
                                     <td style="display:none;">@tsheets[i].Id.ToString().Trim()</td>
@@ -228,14 +228,14 @@
                                     </tr>
                                 }
 
-                               }
                             }
-                        </table>
+                        }
+                    </table>
                 </div>
                 <br />
                 <div class="yesPrint container table-responsive">
                     <table class="center table table-bordered table-condensed" id="WeeklyTotals">
-                    <caption style="background-color:lightgray; font-weight:bold;">Weekly Totals</caption>
+                        <caption style="background-color:lightgray; font-weight:bold;">Weekly Totals</caption>
                         <tr>
                             <th>Absent Hours</th>
                             <th>Worked Hours</th>
@@ -336,21 +336,21 @@
                 </div>
             }
         }
-        </main>
-        <footer>
-            <div class="noPrint text-center">
-                <!--Like to go back-->
-                <a class="btn btn-default" href="@Url.Action("Index","Supervisor")">Home</a>
+    </main>
+    <footer>
+        <div class="noPrint text-center">
+            <!--Like to go back-->
+            <a class="btn btn-default" href="@Url.Action("Index","Supervisor")">Home</a>
 
-                <!--To Go to approved Timesheet Page-->
-                <a class="btn btn-default" href="@Url.Action("ApprovedTimesheets", "ApprovedTimesheets")">Approved Timesheet</a>
+            <!--To Go to approved Timesheet Page-->
+            <a class="btn btn-default" href="@Url.Action("ApprovedTimesheets", "ApprovedTimesheets")">Approved Timesheet</a>
 
-                <button class="btn btn-default" type="button" value="Print" onClick="window.print()">Print</button>
-                <br /><br />
-                <!--Log out link.-->
-                <a class="btn btn-default" href="@Url.Action("LogOut","Login")">LogOut</a>
-            </div>
-        </footer>
+            <button class="btn btn-default" type="button" value="Print" onClick="window.print()">Print</button>
+            <br /><br />
+            <!--Log out link.-->
+            <a class="btn btn-default" href="@Url.Action("LogOut","Login")">LogOut</a>
+        </div>
+    </footer>
 </body>
 </html>
 

@@ -97,7 +97,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="~/Content/bootstrap.min.css">
+<link rel="stylesheet" href="~/Content/bootstrap.css">
 
 <html>
 <head>
@@ -385,7 +385,7 @@
         </div>
         <div class="noPrint">
             @{/**This Text Area is used to give infomation about any additional hours given. It creates
-                                  * another form that saves input to a the model and updates it to the day selected**/
+                                    * another form that saves input to a the model and updates it to the day selected**/
                 if (tsheets[0].AuthorizedBySupervisor.ToString().Trim().Equals("False"))
                 {
                     using (Html.BeginForm("SaveTimeNote", "Timesheet", FormMethod.Post))
@@ -395,7 +395,7 @@
                             @Html.TextAreaFor(model => model.Note, 10, 50, new
                             {
                                 @placeholder = "Comments about additional hours go here." +
-                                                             "\n\nTo clear a note from a day enter 'none' or 'None' in the field and save it, this will remove the note."
+                                                                  "\n\nTo clear a note from a day enter 'none' or 'None' in the field and save it, this will remove the note."
                             })
                         </p>
                         <p align="center">@Html.DropDownList("Date", datelist, "Select Day to submit", new { @class = "btn btn-default dropdown-toggle", onchange = "this.form.submit();" })</p>

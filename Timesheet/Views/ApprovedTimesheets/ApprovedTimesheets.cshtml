@@ -17,7 +17,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="~/Content/bootstrap.min.css">
+<link rel="stylesheet" href="~/Content/bootstrap.css">
 
 <html>
 <head>
@@ -34,8 +34,8 @@
         </div><br />
         <h2>Approved Timesheets</h2>
         @{
-        string today = DateTime.Now.ToLongDateString();
-        string time = DateTime.Now.ToLongTimeString();
+            string today = DateTime.Now.ToLongDateString();
+            string time = DateTime.Now.ToLongTimeString();
         }
         <p id="time">It is @today at @time</p>
     </header>
@@ -45,74 +45,74 @@
             @using (Html.BeginForm("ApprovedData", "ApprovedTimesheets", FormMethod.Post, new { role = "form" }))
             {
                 @Html.DropDownListFor(x => x.Name,
-                              Model.EmpNames,
-                              "-Select Employee-",
-                              new { @class= "btn btn-default dropdown-toggle", onchange = "this.form.submit();" })
+                                   Model.EmpNames,
+                                   "-Select Employee-",
+                                   new { @class = "btn btn-default dropdown-toggle", onchange = "this.form.submit();" })
             }
         </div>
         <br />
-    @{
-        if (@tsheets != null)
-        { <div class="container table-responsive">
-                <table class="center table table-bordered">
-                    <tr>
-                        <th>Week End</th>
-                        <th>Employee Name</th>
-                        <th>Absent hours</th>
-                        <th>Worked hours</th>
-                        <th>Total hours</th>
-                        <th>Over Time</th>
-                        <th>FLSA Over Time</th>
-                    </tr>
+        @{
+            if (@tsheets != null)
+            { <div class="container table-responsive">
+                    <table class="center table table-bordered">
+                        <tr>
+                            <th>Week End</th>
+                            <th>Employee Name</th>
+                            <th>Absent hours</th>
+                            <th>Worked hours</th>
+                            <th>Total hours</th>
+                            <th>Over Time</th>
+                            <th>FLSA Over Time</th>
+                        </tr>
 
-                    @{
-                        foreach (List<TimeSheet> tsheet in @tsheets)
-                        {
-                            weekly = weekly.getWeeklyReport(emp.Banner_ID, tsheet[0].WeekEnding.Trim());
-                            Debug.WriteLine("List of List run!");
-                            Debug.WriteLine("The weekending should be: " + weekly.WeekEnding);
-                            <tr>
-                                @{
-                                    <td>@tsheet[0].WeekEnding</td>
-                                    <td>@emp.First_Name @emp.Last_Name</td>
-                                    Debug.WriteLine("The weekly leave hours: " + weekly.LeaveHours);
-                                    if (!weekly.LeaveHours.Equals(""))
-                                    {
-                                        <td>@weekly.LeaveHours</td>
-                                    }
-                                    else
-                                    {
-                                        <td> 0 </td>
-                                    }
-                                    <td>@weekly.HoursWorked</td>
-                                    <td>@weekly.TotalHoursWorked</td>
-                                    Debug.WriteLine("Overtime hours: " + weekly.Overtime);
-                                    if (!weekly.Overtime.Equals(""))
-                                    {
-                                        <td>@weekly.Overtime</td>
-                                    }
+                        @{
+                            foreach (List<TimeSheet> tsheet in @tsheets)
+                            {
+                                weekly = weekly.getWeeklyReport(emp.Banner_ID, tsheet[0].WeekEnding.Trim());
+                                Debug.WriteLine("List of List run!");
+                                Debug.WriteLine("The weekending should be: " + weekly.WeekEnding);
+                                <tr>
+                                    @{
+                                        <td>@tsheet[0].WeekEnding</td>
+                                        <td>@emp.First_Name @emp.Last_Name</td>
+                                        Debug.WriteLine("The weekly leave hours: " + weekly.LeaveHours);
+                                        if (!weekly.LeaveHours.Equals(""))
+                                        {
+                                            <td>@weekly.LeaveHours</td>
+                                        }
+                                        else
+                                        {
+                                            <td> 0 </td>
+                                        }
+                                        <td>@weekly.HoursWorked</td>
+                                        <td>@weekly.TotalHoursWorked</td>
+                                        Debug.WriteLine("Overtime hours: " + weekly.Overtime);
+                                        if (!weekly.Overtime.Equals(""))
+                                        {
+                                            <td>@weekly.Overtime</td>
+                                        }
 
-                                    else
-                                    {
-                                        <td> 0 </td>
+                                        else
+                                        {
+                                            <td> 0 </td>
+                                        }
+                                        Debug.WriteLine("Overtime hours after multiplying by the FLSA 1.5 Weekly Timesheet: " + weekly.FLSA_Overtime);
+                                        if (!weekly.FLSA_Overtime.Equals(""))
+                                        {
+                                            <td>@weekly.FLSA_Overtime</td>
+                                        }
+                                        else
+                                        {
+                                            <td> 0 </td>
+                                        }
                                     }
-                                    Debug.WriteLine("Overtime hours after multiplying by the FLSA 1.5 Weekly Timesheet: " + weekly.FLSA_Overtime);
-                                    if (!weekly.FLSA_Overtime.Equals(""))
-                                    {
-                                        <td>@weekly.FLSA_Overtime</td>
-                                    }
-                                    else
-                                    {
-                                        <td> 0 </td>
-                                    }
-                                }
-                            </tr>
+                                </tr>
+                            }
                         }
-                    }
-                </table>
-            </div>
+                    </table>
+                </div>
+            }
         }
-    }
     </main>
     <footer class="text-center">
         <!--Like to go back-->

@@ -1,4 +1,4 @@
-@using Timesheet.Models
+﻿@using Timesheet.Models
 @{
     Layout = null;
 }
@@ -9,11 +9,12 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="~/Content/bootstrap.min.css">
+<link rel="stylesheet" href="~/Content/bootstrap.css">
 
+<html lang="en">
 <head>
     <title>Employee User Manual</title>
-    <style>
+    @*<style>
         p {
             font-size: 20px;
         }
@@ -61,11 +62,11 @@
         .bold {
             font-weight: bold;
         }
-    </style>
+    </style>*@
 </head>
 
 
-<body>
+<body style="padding:5%">
     <header class="text-center">
         <div>
             <center>
@@ -73,11 +74,6 @@
             </center>
             <h3> Employee Timesheet Help</h3>
         </div>
-        @{
-            string today = DateTime.Now.ToLongDateString();
-            string time = DateTime.Now.ToLongTimeString();
-        }
-        <p id="time">It is @today at @time</p>
     </header>
 
     <main class="text-center">
@@ -96,7 +92,7 @@
             and time-out on the current day.
         </p>
 
-        <a href="~/Content/employeeDashboard.jpg" alt="Employee Dashboard" target="_blank"> Employee Dashboard Example</a>
+        <a class="btn btn-default" href="~/Content/employeeDashboard.jpg" alt="Employee Dashboard" target="_blank"> Employee Dashboard Example</a>
 
         <hr>
 
@@ -125,7 +121,7 @@
             A message displays that the timesheet has been successfully submitted.
         </p>
 
-        <a href="~/Content/weeklyTimesheet.jpg" alt="Weekly Timesheet" target="_blank">Weekly Timesheet Example</a>
+        <a class="btn btn-default" href="~/Content/weeklyTimesheet.jpg" alt="Weekly Timesheet" target="_blank">Weekly Timesheet Example</a>
 
         <hr>
 
@@ -139,9 +135,9 @@
             time-out on the current day.
         </p>
 
-        <a href="~/Content/dailyTimesheet.jpg" alt="Daily Timesheet" target="_blank">Daily Timesheet</a> &nbsp;&nbsp;&nbsp;
+        <a class="btn btn-default" href="~/Content/dailyTimesheet.jpg" alt="Daily Timesheet" target="_blank">Daily Timesheet</a> &nbsp;&nbsp;&nbsp;
 
-        <a href="~/Content/recordCurrentTimestamp.jpg" alt="Record Current Timestamp" target="_blank"> Record Current timestamp Example</a>
+        <a class="btn btn-default" href="~/Content/recordCurrentTimestamp.jpg" alt="Record Current Timestamp" target="_blank"> Record Current timestamp Example</a>
 
         <hr>
 
@@ -151,7 +147,7 @@
             timesheet based on the week-ending date.
         </p>
 
-        <a href="~/Content/timesheetHistory.jpg" alt="Timesheet History" target="_blank">Timesheet History Example</a> &nbsp;&nbsp;&nbsp;
+        <a class="btn btn-default" href="~/Content/timesheetHistory.jpg" alt="Timesheet History" target="_blank">Timesheet History Example</a> &nbsp;&nbsp;&nbsp;
 
         <hr>
     </main>
