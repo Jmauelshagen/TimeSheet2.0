@@ -879,7 +879,7 @@ namespace Timesheet.Models
         {
             var wED = (from sheets in db.TimeSheets
                        where sheets.Banner_ID == id && sheets.AuthorizedBySupervisor.Equals("True")
-                       select sheets.WeekEnding).Distinct().OrderBy(WeekEnding => WeekEnding);
+                       select sheets.WeekEnding).Distinct();
             if(wED == null)
             {
                 return null;

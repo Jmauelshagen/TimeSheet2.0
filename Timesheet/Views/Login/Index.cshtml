@@ -2,13 +2,62 @@
 
 @{
     Layout = null;
+    string message = (string)Session["Error"];
 }
 
-<!--This is the screen where users log in to the system.  It is the first screen that appears when
-    the solution runs.-->
+<script>
+
+    function checkTime(i)//Check for single digit numbers in the seconds and minutes of the live clock
+    {
+        if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
+        return i;
+    }
+
+    function formatAMPM()//Methods makes live clock
+    {
+        var today = new Date();
+        var hours = today.getHours();
+        var minutes = today.getMinutes();
+        var seconds = today.getSeconds();
+        seconds = checkTime(seconds);
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        var strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+        document.getElementById('time').innerHTML = strTime;
+        var t = setTimeout(formatAMPM, 500);
+    }
+
+    function leaveFieldEmpty(i) {
+        var leaveid;
+        var leaveHours;
+        leaveHours = document.forms["frm" + i]["LeaveHours"].value;
+        leaveid = document.forms["frm" + i]["LeaveId"].value;
+
+        if (leaveid == '0' && leaveHours == '') {
+            return true;
+        }
+        else if (leaveid != '0' && leaveHours != '') {
+            return true;
+        }
+        else if (leaveid == '0' && leaveHours != '') {
+            alert("Please make sure to enter an Absent Type.");
+            return false;
+        }
+        else if (leaveid != '0' && leaveHours == '') {
+            alert("Please make sure to enter Absent Hours.");
+            return false;
+        };
+
+    }
+
+</script>
 
 <!DOCTYPE html>
-<link rel="stylesheet" href="~/Content/Style.css" type="text/css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="~/Content/bootstrap.css">
 
 <html>
 <head>
@@ -21,63 +70,39 @@
         }
     </style>
 </head>
-<body>
-    <div>
-        <center>
-            <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
-        </center>
-    </div>
-    <div id="login-div">
+<body onload="formatAMPM()">
+    <header class="text-center">
+        <div>
+            <center>
+                <img class="img-responsive" src="http://www.chattahoocheetech.edu/wp-content/uploads/2017/02/the_essentials_new_website_header_revised_1200.jpg" alt="ChattahoocheeTech Banner Picture" width="1200" height="180">
+            </center>
+        </div>
+        @{
+            string today = DateTime.Now.ToLongDateString();
+            string time = DateTime.Now.ToLongTimeString();
+        }
+        <p>It is @today <div id="time">@time</div></p>
+    </header>
 
-
-        <!--The login form-->
+    <!--The login form-->
+    <main class="text-center">
         @using (Html.BeginForm("Authorize", "Login", FormMethod.Post))
         {
-        <label class="field-validation-error" style="color:red">@Html.DisplayFor(model => Session["Error"])</label>
-        <table>
-            <tr>
-                <td></td>
-                <td style="text-decoration: underline"></td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.LabelFor(model => model.Username)
-                </td>
-                <td>
-                    @Html.EditorFor(model => model.Username)
-
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        @Html.ValidationMessageFor(model => model.Username)
-                    </td>
-                </tr>
-                <tr>
-                    <td>@Html.LabelFor(model => model.Password)</td>
-                    <td>@Html.EditorFor(model => model.Password)</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        @Html.ValidationMessageFor(model => model.Password)
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <Button type="Submit" name="name" value="Login">Login</Button>
-                        <button type="reset" name="name" value="Clear">Clear</button>
-                    </td>
-                </tr>
-            </table>
+            if (@Html.ValidationMessageFor(model => model.Username) != null || @Html.ValidationMessageFor(model => model.Password) != null || !String.IsNullOrEmpty(message))
+            {
+                <label class="field-validation-error" style="color:red">@Html.ValidationMessageFor(model => model.Username) @Html.ValidationMessageFor(model => model.Password) @message</label><br />
+            }
+            <div class="container">
+                <div class="row">
+                    <div class="col-*-*">@Html.LabelFor(model => model.Username) @Html.EditorFor(model => model.Username)</div>
+                    <div class="col-*-*">@Html.LabelFor(model => model.Password) @Html.EditorFor(model => model.Password)</div>
+                    <div class="col-*-*"><Button class="btn btn-default" type="Submit" name="name" value="Login">Login</Button> <button class="btn btn-default" type="reset" name="name" value="Clear">Clear</button></div>
+                </div>
+            </div>
+            <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+            <script src="~/Scripts/jquery.validate.min.js"></script>
+            <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
         }
-
-    </div>
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-
+    </main>
 </body>
 </html>

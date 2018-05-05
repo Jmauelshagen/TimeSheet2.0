@@ -8,12 +8,7 @@
 <!--Get employee, time sheet list and message objects from the session.-->
 @{
     ViewBag.Title = "Reports";
-    <div>
-        <center>
-            <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
-        </center>
-        <a href="@Url.Action("Suphelp", "Help")" style="float:right;  margin: 0em 15em 0em 0em;" target="_blank">Help</a><br />
-    </div>
+    Session.Remove("AppTimeSheetData");
 
     Employee sup = (Employee)Session["Supervisor"];
     Employee emp = (Employee)Session["Employee"];
@@ -80,8 +75,9 @@
 <!--This is the Supervisor role's view of time sheets, and has the capability to approve or deny
     a time sheet.-->
 <!DOCTYPE html>
-<link rel="stylesheet" href="~/Content/Style.css" type="text/css" />
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="~/Content/bootstrap.css">
 
 <html>
 <head>
@@ -89,238 +85,272 @@
     <title>Reports</title>
 </head>
 <body onload="formatAMPM()">
+    <header class="text-center">
+        <div>
+            <center>
+                <img class="img-responsive" src="http://www.chattahoocheetech.edu/wp-content/uploads/2017/02/the_essentials_new_website_header_revised_1200.jpg" alt="ChattahoocheeTech Banner Picture" width="1200" height="180">
+            </center>
+            <div class="noPrint">
+                <a class="btn btn-default" href="@Url.Action("Suphelp", "Help")" style="float:right; margin:1% 1% 0% 0%;" target="_blank">Help</a>
+            </div>
+            <br />
+        </div><br />
+        <h2>Reports</h2>
+        @{
+            string today = DateTime.Now.ToLongDateString();
+            string time = DateTime.Now.ToLongTimeString();
+        }
+        <p>It is @today <div id="time">@time</div></p>
+    </header>
 
-    <h1>Reports</h1>
-    <!--Get and display current date and time.-->
-    @{
-        string today = DateTime.Now.ToLongDateString();
-        string time = DateTime.Now.ToLongTimeString();
-    }
-    <p id="Time" style="text-align: center;">@today <div id="time" style="text-align: center;"></div></p>
-    <!--Display message content if it exists.-->
-    <p><label id="Message">@Html.DisplayFor(model => Session["Message"])</label></p>
+    <main class="text-center">
 
-    <div class="noPrint">
-        <p>Select Employee </p>
-        <p>
-            @{
-                using (Html.BeginForm("ReportData", "Reports", FormMethod.Post))
+        <div class="noPrint dropdown">
+            <!--Display message content if it exists.-->
+            @{if (tsheets != null)
                 {
-                    @Html.LabelFor(model => model.Name, "Employee: ")
-                    @Html.DropDownListFor(model => model.Name, EmployeeList, "-Select Employee-")
-                    <span>&nbsp;</span>
-                    @Html.LabelFor(model => model.WeekEnding, "Week Ending Date: ")
-                    @Html.DropDownListFor(model => model.WeekEnding, WeekendingList, "-Select A Date-")
-                    <span>&nbsp;</span>
-                    <button type="submit">Search</button>
+                    <label id="Message">@Html.DisplayFor(model => Session["Message"])</label>
                 }
             }
-        </p>
-    </div>
 
-    @{ if (@tsheets != null && @tsheets.Any())
-        {
-            Employee empReport = new Employee();
-            Employee employee = empReport.GetEmployee(Convert.ToInt16(@tsheets[0].Banner_ID));
-            weekly = weekly.getWeeklyReport(emp.Banner_ID, tsheets[0].WeekEnding.Trim());
-
-            <!--Form for supervisor to select an employee by name and a week ending date.-->
-            <p>This is @emp.First_Name.Trim()'s timesheet for the week of @tsheets[0].WeekEnding</p><br />
-
-            <!--Table to display time sheet input form.-->
-            <div class="yesPrint">
-                <table class="center" id="Timesheet">
-                    <tr>
-                        <th style="display:none;">ID</th>
-                        <th>Week end</th>
-                        <th>Date</th>
-                        <th>Time In</th>
-                        <th>Time Out</th>
-                        <th>Time In</th>
-                        <th>Time Out</th>
-                        <th>Type of absence</th>
-                        <th>Absent hours</th>
-                        <th>Additional Hours</th>
-                        <th>Hours Worked Today</th>
-                        <th>Over Time Today</th>
-                        <th>Submitted</th>
-                        <th>Approved</th>
-                        <th style="display:none;">Banner Id</th>
-                    </tr>
-                    @{ for (int i = 0; i < 7; i++)
-                        {
-                            <tr>
-                                <!--Converted some of the textboxes to time input to reduce user error-->
-                                <td style="display:none;">@Html.TextBoxFor(model => model.Id, new { @Value = @tsheets[i].Id.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                                <td>@Html.TextBoxFor(model => model.WeekEnding, new { @Value = @tsheets[i].WeekEnding.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                                <td>@Html.TextBoxFor(model => model.Date, new { @Value = @tsheets[i].Date.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                                <td>@Html.TextBoxFor(model => model.TimeIn, new { type = "time", Value = @tsheets[i].TimeIn.ToString().Trim(), style = "width: 100px;" })</td>
-                                <td>@Html.TextBoxFor(model => model.OutForLunch, new { type = "time", Value = @tsheets[i].OutForLunch.ToString().Trim(), style = "width: 100px;" })</td>
-                                <td>@Html.TextBoxFor(model => model.InFromLunch, new { type = "time", Value = @tsheets[i].InFromLunch.ToString().Trim(), style = "width: 100px;" })</td>
-                                <td>@Html.TextBoxFor(model => model.TimeOut, new { type = "time", Value = @tsheets[i].TimeOut.ToString().Trim(), style = "width: 100px;" })</td>
-                                <td>
-                                    @Html.DropDownListFor(model => model.LeaveId, new SelectList(leaveList, "Value", "Text", Convert.ToInt16(@tsheets[i].LeaveId.ToString().Trim())))
-                                </td>
-                                <td>@Html.TextBoxFor(model => model.LeaveHours, new { @Value = @tsheets[i].LeaveHours.ToString().Trim(), pattern = "(1[0-2]|0?[0-9]):([14][5]|[03][0])$", title = "Please enter time as hours and minutes in format ##:## rounded to nearest 15", style = "width: 75px;" })</td>
-                                <td>@Html.TextBoxFor(model => model.AdditionalHours, new { @Value = @tsheets[i].AdditionalHours.ToString().Trim(), pattern = "(1[0-2]|0?[0-9]):([14][5]|[03][0])$", title = "Please enter time as hours and minutes in format ##:## rounded to nearest 15", style = "width: 75px;" })</td>
-                                @{ /** Calculates the hours worked for the day and check the return from TimeSheet.CalculateTotalHoursWorked to see if it is the first time through with no data, if its got 1 or 3 punches, or if 2 or 4 punches. **/
-                                    string TotalHoursWorked = tsheets[i].CalculateWorkedHours(tsheets[i]);
-                                    Debug.WriteLine(TotalHoursWorked + "in total Hours");
-                                    if (TotalHoursWorked.Equals("Missing Punch"))
-                                    {
-
-                                        <td bgcolor="lightyellow">@TotalHoursWorked</td>
-                                    }
-                                    else if (TotalHoursWorked.Equals("Error"))
-                                    {
-                                        <td bgcolor="salmon">@TotalHoursWorked</td>
-                                    }
-                                    else
-                                    {
-                                        <td>@TotalHoursWorked</td>
-                                    }
-                                }
-                                <td>
-                                    @{ /** Calculates the hours worked for the day and check the return from TimeSheet.CalculateTotalHoursWorked to see if it is the first time through with no data, if its got 1 or 3 punches, or if 2 or 4 punches. **/
-                                        Debug.WriteLine(TotalHoursWorked + " Weekly Timesheet TotalHours Test 2 for overtime");
-                                        string overtime = tsheets[i].GetOvertime();
-                                        @overtime
-                                    }
-                                </td>
-                                <td>@Html.TextBoxFor(model => model.Submitted, new { @Value = @tsheets[i].Submitted.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                                <td>@Html.TextBoxFor(model => model.AuthorizedBySupervisor, new { @Value = @tsheets[i].AuthorizedBySupervisor.ToString().Trim(), @readonly = "readonly", style = "width: 75px;" })</td>
-                                <td style="display:none;">@Html.TextBoxFor(model => model.Banner_ID, new { @Value = @tsheets[i].Banner_ID.ToString().Trim(), @readonly = "readonly", style = "width: 100px;" })</td>
-                            </tr>
-                            /**These add section for notes to be displayed if they exist**/
-                            if (!String.IsNullOrEmpty(tsheets[i].Note))
-                            {
-                                <tr>
-                                    <td colspan="4" style="font-weight:bold;">Notes for additional hours worked</td>
-                                    <td colspan="9" style="background-color:white;">@tsheets[i].Note.ToString().Trim()</td>
-                                </tr>
-                            }
-
-                        }
-                    }
-                </table>
-            </div>
-            <br />
-            <div class="yesPrint">
-                <table class="center" id="WeeklyTotals">
-                    <tr>
-                        <th>Absent Hours</th>
-                        <th>Worked Hours</th>
-                        <th>Total Hours</th>
-                        <th>Overtime worked</th>
-                        <th>FLSA Overtime</th>
-                    </tr>
-                    <tr>
-                        <!--Displaying Absent Hours used-->
-                        @{
-                            Debug.WriteLine("The weekly leave hours: " + weekly.LeaveHours);
-                            if (!weekly.LeaveHours.Equals(""))
-                            {
-                                <td>@weekly.LeaveHours</td>
-                            }
-
-                            else
-                            {
-                                <td> 0 </td>
-                            }
-                        }
-                        <!-- code for the color warning system for total hours worked-->
-                        @{
-
-                            Debug.WriteLine("The weekly hours: " + weekly.HoursWorked);
-                            if (weekly.HoursWorked.Equals("Missing Punch"))
-                            {
-                                <td bgcolor="lightyellow">Missing Punch</td>
-                            }
-                            else if (weekly.HoursWorked.Equals("Error"))
-                            {
-                                <td bgcolor="salmon">Error</td>
-                            }
-                            else
-                            {
-                                <td>@weekly.HoursWorked</td>
-                            }
-                        }
-                        <!--Displaying All Hours absent and worked-->
-                        @{
-                            Debug.WriteLine("The Final weekly hours: " + weekly.TotalHoursWorked);
-                            if (weekly.TotalHoursWorked.Equals("Missing Punch"))
-                            {
-                                <td bgcolor="lightyellow">Missing Punch</td>
-                            }
-                            else if (weekly.TotalHoursWorked.Equals("Error"))
-                            {
-                                <td bgcolor="salmon">Error</td>
-                            }
-                            else
-                            {
-                                <td>@weekly.TotalHoursWorked</td>
-                            }
-                        }
-                        <!--Displays the total overtime worked-->
-                        @{
-                            Debug.WriteLine("Overtime hours after multiplying by the FLSA 1.5 Weekly Timesheet: " + weekly.Overtime);
-                            if (!weekly.Overtime.Equals(""))
-                            {
-                                <td>@weekly.Overtime</td>
-                            }
-
-                            else
-                            {
-                                <td> 0 </td>
-                            }
-                        }
-                        <!--Displays the total overtime earned-->
-                        @{
-                            Debug.WriteLine("Overtime hours after multiplying by the FLSA 1.5 Weekly Timesheet: " + weekly.FLSA_Overtime);
-                            if (!weekly.FLSA_Overtime.Equals(""))
-                            {
-                                <td>@weekly.FLSA_Overtime</td>
-                            }
-
-                            else
-                            {
-                                <td> 0 </td>
-                            }
-                        }
-                    </tr>
-                </table>
-            </div>
-            <br />
-            <div class="noPrint">
+            <p>Select Employee</p>
+            <p>
                 @{
-                    <!--Forms to approve or deny time sheet.-->
-                    using (Html.BeginForm("Approve", "Reports", FormMethod.Post, new { role = "form" }))
+                    using (Html.BeginForm("ReportData", "Reports", FormMethod.Post))
                     {
-                        <button type="submit">Approve</button>
-                    }
-
-                    using (Html.BeginForm("Deny", "Reports", FormMethod.Post, new { role = "form" }))
-                    {
-                        <button type="submit">Deny</button>
+                        @Html.DropDownListFor(model => model.Name, EmployeeList, "-Select Employee-", new { @class = "btn btn-default dropdown-toggle" })
+                        <span>&nbsp;</span>
+                        @Html.DropDownListFor(model => model.WeekEnding, WeekendingList, "-Select A Date-", new { @class = "btn btn-default dropdown-toggle" })
+                        <span>&nbsp;</span>
+                        <button class="btn btn-default" type="submit">Search</button>
                     }
                 }
-            </div>
+            </p>
+        </div>
+
+        @{ if (@tsheets != null)
+            {
+                Employee empReport = new Employee();
+                Employee employee = empReport.GetEmployee(Convert.ToInt16(@tsheets[0].Banner_ID));
+                weekly = weekly.getWeeklyReport(emp.Banner_ID, tsheets[0].WeekEnding.Trim());
+                TimeSheet statusTest = @tsheets[0];
+                <!--Table to display time sheet input form.-->
+                <div class="yesPrint container table-responsive">
+                    <table class="center table table-bordered table-condensed" id="TimeSheet">
+                        <caption style="background-color:lightgray; font-weight:bold;">This is @emp.First_Name.Trim()'s timesheet for the week of @tsheets[0].WeekEnding</caption>
+                        @{
+                            if (statusTest.AuthorizedBySupervisor.Trim().Equals("False") && statusTest.Submitted.Trim().Equals("False"))
+                            {
+                                <tr class="danger">
+                                    <td colspan="4" style="font-weight:bold; background-color:AppWorkspace;">Status</td>
+                                    <td colspan="6">Not Submitted</td>
+                                </tr>
+                            }
+                            if (statusTest.AuthorizedBySupervisor.Trim().Equals("False") && statusTest.Submitted.Trim().Equals("True"))
+                            {
+                                <tr class="warning">
+                                    <td colspan="4" style="font-weight:bold; background-color:AppWorkspace;">Status</td>
+                                    <td colspan="6">Submitted and Pending Approval</td>
+                                </tr>
+                            }
+                            if (statusTest.AuthorizedBySupervisor.Trim().Equals("True"))
+                            {
+                                <tr class="success">
+                                    <td colspan="4" style="font-weight:bold; background-color:AppWorkspace;">Status</td>
+                                    <td colspan="6">Approved</td>
+                                </tr>
+                            }
+                        }
+                        <tr>
+                            <th style="display:none;">ID</th>
+                            <th style="display:none;">Week end</th>
+                            <th>Date</th>
+                            <th>Time In</th>
+                            <th>Time Out</th>
+                            <th>Time In</th>
+                            <th>Time Out</th>
+                            <th>Type of absence</th>
+                            <th>Absent hours</th>
+                            <th>Additional Hours</th>
+                            <th>Hours Worked Today</th>
+                            <th>Over Time Today</th>
+                            <th style="display:none;">Submitted</th>
+                            <th style="display:none;">Approved</th>
+                            <th style="display:none;">Banner Id</th>
+                        </tr>
+                        @{ for (int i = 0; i < 7; i++)
+                            {
+                                <tr>
+                                    <!--Converted some of the textboxes to time input to reduce user error-->
+                                    <td style="display:none;">@tsheets[i].Id.ToString().Trim()</td>
+                                    <td style="display:none;">@tsheets[i].WeekEnding.ToString().Trim()</td>
+                                    <td>@tsheets[i].Date.ToString().Trim()</td>
+                                    <td>@tsheets[i].TimeIn.ToString().Trim()</td>
+                                    <td>@tsheets[i].OutForLunch.ToString().Trim()</td>
+                                    <td>@tsheets[i].InFromLunch.ToString().Trim()</td>
+                                    <td>@tsheets[i].TimeOut.ToString().Trim()</td>
+                                    <td>@tsheets[i].LeaveId.ToString().Trim()</td>
+                                    <td>@tsheets[i].LeaveHours.ToString().Trim()</td>
+                                    <td>@tsheets[i].AdditionalHours.ToString().Trim()</td>
+                                    @{ /** Calculates the hours worked for the day and check the return from TimeSheet.CalculateTotalHoursWorked to see if it is the first time through with no data, if its got 1 or 3 punches, or if 2 or 4 punches. **/
+                                        string TotalHoursWorked = tsheets[i].CalculateWorkedHours(tsheets[i]);
+                                        Debug.WriteLine(TotalHoursWorked + "in total Hours");
+                                        if (TotalHoursWorked.Equals("Missing Punch"))
+                                        {
+                                            <td bgcolor="lightyellow">@TotalHoursWorked</td>
+                                        }
+                                        else if (TotalHoursWorked.Equals("Error"))
+                                        {
+                                            <td bgcolor="salmon">@TotalHoursWorked</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@TotalHoursWorked</td>
+                                        }
+                                    }
+                                    <td>
+                                        @{ /** Calculates the hours worked for the day and check the return from TimeSheet.CalculateTotalHoursWorked to see if it is the first time through with no data, if its got 1 or 3 punches, or if 2 or 4 punches. **/
+                                            Debug.WriteLine(TotalHoursWorked + " Weekly Timesheet TotalHours Test 2 for overtime");
+                                            string overtime = tsheets[i].GetOvertime();
+                                            @overtime
+                                        }
+                                    </td>
+                                    <td style="display:none;">@tsheets[i].Submitted.ToString().Trim()</td>
+                                    <td style="display:none;">@tsheets[i].AuthorizedBySupervisor.ToString().Trim()</td>
+                                    <td style="display:none;">@tsheets[i].Banner_ID.ToString().Trim()</td>
+                                </tr>
+                                /**These add section for notes to be displayed if they exist**/
+                                if (!String.IsNullOrEmpty(tsheets[i].Note))
+                                {
+                                    <tr>
+                                        <td colspan="4" style="font-weight:bold;">Notes for additional hours worked</td>
+                                        <td colspan="9" style="background-color:white;">@tsheets[i].Note.ToString().Trim()</td>
+                                    </tr>
+                                }
+
+                            }
+                        }
+                    </table>
+                </div>
+                <br />
+                <div class="yesPrint container table-responsive">
+                    <table class="center table table-bordered table-condensed" id="WeeklyTotals">
+                        <caption style="background-color:lightgray; font-weight:bold;">Weekly Totals</caption>
+                        <tr>
+                            <th>Absent Hours</th>
+                            <th>Worked Hours</th>
+                            <th>Total Hours</th>
+                            <th>Overtime worked</th>
+                            <th>FLSA Overtime</th>
+                        </tr>
+                        <tr>
+                            <!--Displaying Absent Hours used-->
+                            @{
+                                Debug.WriteLine("The weekly leave hours: " + weekly.LeaveHours);
+                                if (!weekly.LeaveHours.Equals(""))
+                                {
+                                    <td>@weekly.LeaveHours</td>
+                                }
+
+                                else
+                                {
+                                    <td> 0 </td>
+                                }
+                            }
+                            <!-- code for the color warning system for total hours worked-->
+                            @{
+
+                                Debug.WriteLine("The weekly hours: " + weekly.HoursWorked);
+                                if (weekly.HoursWorked.Equals("Missing Punch"))
+                                {
+                                    <td bgcolor="lightyellow">Missing Punch</td>
+                                }
+                                else if (weekly.HoursWorked.Equals("Error"))
+                                {
+                                    <td bgcolor="salmon">Error</td>
+                                }
+                                else
+                                {
+                                    <td>@weekly.HoursWorked</td>
+                                }
+                            }
+                            <!--Displaying All Hours absent and worked-->
+                            @{
+                                Debug.WriteLine("The Final weekly hours: " + weekly.TotalHoursWorked);
+                                if (weekly.TotalHoursWorked.Equals("Missing Punch"))
+                                {
+                                    <td bgcolor="lightyellow">Missing Punch</td>
+                                }
+                                else if (weekly.TotalHoursWorked.Equals("Error"))
+                                {
+                                    <td bgcolor="salmon">Error</td>
+                                }
+                                else
+                                {
+                                    <td>@weekly.TotalHoursWorked</td>
+                                }
+                            }
+                            <!--Displays the total overtime worked-->
+                            @{
+                                Debug.WriteLine("Overtime hours after multiplying by the FLSA 1.5 Weekly Timesheet: " + weekly.Overtime);
+                                if (!weekly.Overtime.Equals(""))
+                                {
+                                    <td>@weekly.Overtime</td>
+                                }
+
+                                else
+                                {
+                                    <td> 0 </td>
+                                }
+                            }
+                            <!--Displays the total overtime earned-->
+                            @{
+                                Debug.WriteLine("Overtime hours after multiplying by the FLSA 1.5 Weekly Timesheet: " + weekly.FLSA_Overtime);
+                                if (!weekly.FLSA_Overtime.Equals(""))
+                                {
+                                    <td>@weekly.FLSA_Overtime</td>
+                                }
+
+                                else
+                                {
+                                    <td> 0 </td>
+                                }
+                            }
+                        </tr>
+                    </table>
+                </div>
+                <br />
+                <div class="noPrint">
+                    @{
+                        <!--Forms to approve or deny time sheet.-->
+                        using (Html.BeginForm("Approve", "Reports", FormMethod.Post, new { role = "form" }))
+                        {
+                            <button class="btn btn-default" type="submit">Approve</button>
+                        }
+
+                        using (Html.BeginForm("Deny", "Reports", FormMethod.Post, new { role = "form" }))
+                        {
+                            <button class="btn btn-default" type="submit">Deny</button>
+                        }
+                    }
+                </div>
+            }
         }
-    }
-    <br />
+    </main>
+    <footer>
+        <div class="noPrint text-center">
+            <!--Like to go back-->
+            <a class="btn btn-default" href="@Url.Action("Index","Supervisor")">Home</a>
 
-    <div class="noPrint">
-        <!--Like to go back-->
-        <a href="@Url.Action("Index","Supervisor")">Home</a>
+            <!--To Go to approved Timesheet Page-->
+            <a class="btn btn-default" href="@Url.Action("ApprovedTimesheets", "ApprovedTimesheets")">Approved Timesheet</a>
 
-        <!--To Go to approved Timesheet Page-->
-        <a href="@Url.Action("ApprovedTimesheets", "ApprovedTimesheets")">Approved Timesheet</a>
-
-        <button type="button" value="Print" onClick="window.print()">Print</button>
-
-        <!--Log out link.-->
-        <a href="@Url.Action("LogOut","Login")">LogOut</a>
-    </div>
+            <button class="btn btn-default" type="button" value="Print" onClick="window.print()">Print</button>
+            <br /><br />
+            <!--Log out link.-->
+            <a class="btn btn-default" href="@Url.Action("LogOut","Login")">LogOut</a>
+        </div>
+    </footer>
 </body>
 </html>
 

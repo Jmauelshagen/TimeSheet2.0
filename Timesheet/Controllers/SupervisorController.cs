@@ -11,7 +11,9 @@ namespace Timesheet.Controllers
         // GET: Supervisor
         public ActionResult Index()
         {
+            Session.Remove("AppTimeSheetData");
             Session.Remove("TimeSheetData");
+            Session.Remove("Message");
             return View();
         }
     }

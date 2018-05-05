@@ -38,7 +38,9 @@
 <!--This is the employee dashboard screen. It renders after someone with the employee role logs in-->
 
 <!DOCTYPE html>
-<link rel="stylesheet" href="~/Content/Style.css" type="text/css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="~/Content/bootstrap.css">
 
 <html>
 <head>
@@ -48,40 +50,40 @@
 
 <body onload="formatAMPM()">
     <!--Get the employee object out of the session-->
-    @{
-        var emp = (Employee)Session["Employee"];
-        string today = DateTime.Now.ToLongDateString();
-        string time = DateTime.Now.ToLongTimeString();
-        string CurrentDate = DateTime.Now.ToShortDateString();
-    }
-
-    <div>
-        <center>
-            <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
-        </center>
-        <a href="@Url.Action("Emphelp", "Help")" style="float:right;  margin: 0em 15em 0em 0em;" target="_blank">Help</a><br />
-    </div>
-    <div>
-        <!--Display the employee's first and last name-->
-        <h3 style="text-align: center;">Welcome @emp.First_Name @emp.Last_Name!</h3>
-        <p id="Time" style="text-align: center;">@today <div id="time" style="text-align: center;"></div></p>
-
-        <p>
+    @{var emp = (Employee)Session["Employee"];}
+    <header class="text-center">
+        <div>
+            <center>
+                <img class="img-responsive" src="http://www.chattahoocheetech.edu/wp-content/uploads/2017/02/the_essentials_new_website_header_revised_1200.jpg" alt="ChattahoocheeTech Banner Picture" width="1200" height="180">
+            </center>
+            <a class="btn btn-default" href="@Url.Action("Emphelp", "Help")" style="float:right;  margin: 1% 1% 0% 0%;" target="_blank">Help</a><br />
+        </div><br />
+        <h2>Employee</h2>
+        <p>Welcome @emp.First_Name @emp.Last_Name!</p>
+        @{
+            string today = DateTime.Now.ToLongDateString();
+            string time = DateTime.Now.ToLongTimeString();
+            string CurrentDate = DateTime.Now.ToShortDateString();
+        }
+        <p>It is @today <div id="time">@time</div></p>
+    </header>
+    <footer>
+        <div class="text-center">
             <!--Link to get to the timesheet input screen-->
-            <a href="@Url.Action("GetTimeSheet","Timesheet")">Weekly Timesheet</a>
+            <a class="btn btn-default" href="@Url.Action("GetTimeSheet","Timesheet")">Weekly Timesheet</a>
 
-            <a href="@Url.Action("GetDailyTimeSheet","Timesheet")">Daily Timesheet</a>
+            <a class="btn btn-default" href="@Url.Action("GetDailyTimeSheet","Timesheet")">Daily Timesheet</a>
 
-            <a href="@Url.Action("OldTimesheet","Timesheet")">Look Up Previous Timesheet</a>
+            <a class="btn btn-default" href="@Url.Action("OldTimesheet","Timesheet")">Look Up Previous Timesheet</a>
 
-            <a href="@Url.Action("QuickTimeStamp","Timesheet")">Quick Time Stamp</a>
+            <a class="btn btn-default" href="@Url.Action("QuickTimeStamp","Timesheet")">Quick Time Stamp</a>
 
-        </p>
-        <p>
-            <label id="Message">@Html.DisplayFor(model => Session["Message"])</label>
-        </p>
-        <!--Log out link-->
-        <a href="@Url.Action("LogOut", "Login")">LogOut</a>
-    </div>
+            <p>
+                <label id="Message">@Html.DisplayFor(model => Session["Message"])</label>
+            </p>
+            <!--Log out link-->
+            <a class="btn btn-default" href="@Url.Action("LogOut", "Login")">LogOut</a>
+        </div>
+    </footer>
 </body>
 </html>

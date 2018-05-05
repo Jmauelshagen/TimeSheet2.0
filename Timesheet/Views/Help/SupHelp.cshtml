@@ -7,11 +7,14 @@
     reports and approved timesheet views.-->
 
 <!DOCTYPE html>
-<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="~/Content/bootstrap.css">
 
+<html lang="en">
 <head>
     <title>Supervisor User Manual</title>
-    <style>
+    @*<style>
         p {
             font-size: 20px;
         }
@@ -55,61 +58,64 @@
                 background-color: transparent;
                 text-decoration: none
             }
-    </style>
+    </style>*@
 </head>
 
 
-<body font size=14>
-    <center>
-        <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
-        <br><br>
-    </center>
-    <center>
-        <h3>As a Supervisor, you are assigned the task of viewing your employee's timesheets and approving or denying them based on their edits to their time.</h3>
-    </center>
-    <br> <br>
+<body style="padding:5%">
+    <header class="text-center">
+        <div>
+            <center>
+                <img class="img-responsive" src="http://www.chattahoocheetech.edu/wp-content/uploads/2017/02/the_essentials_new_website_header_revised_1200.jpg" alt="ChattahoocheeTech Banner Picture" width="1200" height="180">
+            </center>
+            <h3>As a Supervisor, you are assigned the task of viewing your employee's timesheets and approving or denying them based on their edits to their time.</h3>
+        </div>
+    </header>
 
-    <h3>General Info</h3>
-    <p>
-        After a successful login as a Supervisor employee, you will reach a page with three choices: Reports, Approved TimeSheet, and Logout.
-        The reports page will allow you to view an employee's time and approve or deny it based on its accuracy. The approved time page will allow you to view
-        the timesheets that the supervisor has approved. The logout button will securely log you out of the system.
-    </p>
-    <a href="~/Content/gi1.jpg" alt="general info pic" target="_blank"> Example </a>
-    <hr>
+    <main class="text-center">
 
-    <h3>Reports</h3>
-    <p>
-        When in the reports page, use the two drop down tabs on the left of the page to select the employee you wish to view and the week ending date
-        and click search. This will bring up that specific employee's timesheet for the week date selected. After careful consideration of the employee's time, you can
-        choose to approve their time by clicking <b><i>Approve</i></b> or deny it by clicking <b><i>Deny</i></b>.
-    </p>
+        <h3>General Info</h3>
+        <p>
+            After a successful login as a Supervisor employee, you will reach a page with three choices: Reports, Approved TimeSheet, and Logout.
+            The reports page will allow you to view an employee's time and approve or deny it based on its accuracy. The approved time page will allow you to view
+            the timesheets that the supervisor has approved. The logout button will securely log you out of the system.
+        </p>
+        <a class="btn btn-default" href="~/Content/gi1.jpg" alt="general info pic" target="_blank"> Example </a>
+        <hr>
 
-    <a href="~/Content/reports1.jpg" alt="rep pic" target="_blank"> Example 1</a> &nbsp;&nbsp;&nbsp;
+        <h3>Reports</h3>
+        <p>
+            When in the reports page, use the two drop down tabs on the left of the page to select the employee you wish to view and the week ending date
+            and click search. This will bring up that specific employee's timesheet for the week date selected. After careful consideration of the employee's time, you can
+            choose to approve their time by clicking <b><i>Approve</i></b> or deny it by clicking <b><i>Deny</i></b>.
+        </p>
 
-    <a href="~/Content/reports2.jpg" alt="rep pic" target="_blank"> Example 2</a>
-    <hr>
+        <a class="btn btn-default" href="~/Content/reports1.jpg" alt="rep pic" target="_blank"> Example 1</a> &nbsp;&nbsp;&nbsp;
 
-    <h3>Approved Time</h3>
-    <p>
-        When in the Approved time page, select the desired employee using the dropdown to view the approved timesheets for that specific employee.
-    </p>
-    <a href="~/Content/at1.jpg" alt="approve pic" target="_blank"> Example 1</a> &nbsp;&nbsp;&nbsp;
+        <a class="btn btn-default" href="~/Content/reports2.jpg" alt="rep pic" target="_blank"> Example 2</a>
+        <hr>
 
-    <a href="~/Content/at2.jpg" alt="approve pic" target="_blank"> Example 2</a>
+        <h3>Approved Time</h3>
+        <p>
+            When in the Approved time page, select the desired employee using the dropdown to view the approved timesheets for that specific employee.
+        </p>
+        <a class="btn btn-default" href="~/Content/at1.jpg" alt="approve pic" target="_blank"> Example 1</a> &nbsp;&nbsp;&nbsp;
 
-    <hr>
+        <a class="btn btn-default" href="~/Content/at2.jpg" alt="approve pic" target="_blank"> Example 2</a>
 
-
-
-    <h3>Printing Timesheets</h3>
-    <p>
-        An Supervisor employee may be able to print an employee's timesheet via the print button in the overview page. A print window will then pop up
-        prompting the user to print to the default printer.
+        <hr>
 
 
-    </p>
-    <a href="~/Content/suprint1.jpg" alt="print pic" target="_blank"> Example </a>
-    <hr>
+
+        <h3>Printing Timesheets</h3>
+        <p>
+            An Supervisor employee may be able to print an employee's timesheet via the print button in the overview page. A print window will then pop up
+            prompting the user to print to the default printer.
+
+
+        </p>
+        <a class="btn btn-default" href="~/Content/suprint1.jpg" alt="print pic" target="_blank"> Example </a>
+        <hr>
+    </main>
 </body>
 </html>

@@ -3,7 +3,12 @@
 
 @{
     Layout = null;
-    var message2 = "";
+
+    var hr = (Employee)Session["HR"];
+    var emps = new Employee();
+    var paySumList = (List<WeeklyReport>)Session["PaySummaryList"];
+    IEnumerable<SelectListItem> WeekendingList = (IEnumerable<SelectListItem>)Session["WeekendingList"];
+    WeeklyReport weekly = new WeeklyReport();
 
 }
 <!--This screen renders after someone with the HR role logs in. It displays a menu for week ending date.
@@ -11,15 +16,13 @@
     is displayed.-->
 <script type="text/javascript">
 
-    function fnExcelReport()
-    {
-        var tab_text="<table border='2px'><tr bgcolor='#87AFC6'>";
-        var textRange; var j=0;
+    function fnExcelReport() {
+        var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
+        var textRange; var j = 0;
         tab = document.getElementById('PaySummary'); // id of table
 
-        for(j = 0 ; j < tab.rows.length ; j++)
-        {
-            tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+        for (j = 0; j < tab.rows.length; j++) {
+            tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
         }
 
         tab_text = tab_text + "</table>";
@@ -43,10 +46,35 @@
 
         return (sa);
     }
+
+    function checkTime(i)//Check for single digit numbers in the seconds and minutes of the live clock
+    {
+        if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
+        return i;
+    }
+
+    function formatAMPM()//Methods makes live clock
+    {
+        var today = new Date();
+        var hours = today.getHours();
+        var minutes = today.getMinutes();
+        var seconds = today.getSeconds();
+        seconds = checkTime(seconds);
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        var strTime = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+        document.getElementById('time').innerHTML = strTime;
+        var t = setTimeout(formatAMPM, 500);
+    }
+
 </script>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<link rel="stylesheet" href="~/Content/Style.css" type="text/css"/>
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="~/Content/bootstrap.css">
 
 <html>
 <head>
@@ -54,41 +82,37 @@
     <title>Pay Sheet Summaries</title>
 </head>
 
-<body>
-    <!--Get employee and pay summary objects from the session.-->
-    @{
-        var hr = (Employee)Session["HR"];
-        var emps = new Employee();
-        var paySumList = (List<WeeklyReport>)Session["PaySummaryList"];
-        IEnumerable<SelectListItem> WeekendingList = (IEnumerable<SelectListItem>)Session["WeekendingList"];
-        WeeklyReport weekly = new WeeklyReport();
-    }
-    <div>
-        <center>
-            <img src="~/Content/ChatLogo.jpg" alt="ChatLogo" height="250" width="1520" />
-        </center>
-        <a href="@Url.Action("HRhelp", "Help")" style="float:right;  margin: 0em 15em 0em 0em;" target="_blank">Help</a><br />
-    </div>
-    <div>
-        <h1>Pay Sheet Summaries</h1>
-        <!--Display HR person's first and last name-->
+<body onload="formatAMPM()">
+    <header class="text-center">
+        <div>
+            <center>
+                <img class="img-responsive" src="http://www.chattahoocheetech.edu/wp-content/uploads/2017/02/the_essentials_new_website_header_revised_1200.jpg" alt="ChattahoocheeTech Banner Picture" width="1200" height="180" />
+            </center>
+            <a class="btn btn-default" href="@Url.Action("HRhelp", "Help")" style="float:right;  margin: 1% 1% 0% 0%;" target="_blank">Help</a><br />
+        </div>
+        <h2>Pay Sheet Summaries</h2>
         <p>Welcome @hr.First_Name @hr.Last_Name!</p>
-        <p>@message2</p>
-        <p>Select a week to review employee pay sheet summaries.</p>
-        <!--Form for selecting a week and viewing pay summaries-->
-        @using (Html.BeginForm("GetPayData", "HR", FormMethod.Post, new { role = "form" }))
-        {
-            @Html.LabelFor(m => m.WeekEnding)
-            <span>&nbsp;</span>
-            @Html.DropDownListFor(m => m.WeekEnding, WeekendingList, " - Please select a date - ", new { @class = "form-control", onchange = "this.form.submit();" })
+        @{
+            string today = DateTime.Now.ToLongDateString();
+            string time = DateTime.Now.ToLongTimeString();
         }
+        <p>It is @today <div id="time">@time</div></p>
+    </header>
+    <main class="text-center">
+        <div class="noPrint dropdown">
+            <p>Select a week to review employee pay sheet summaries.</p>
+            <!--Form for selecting a week and viewing pay summaries-->
+            @using (Html.BeginForm("GetPayData", "HR", FormMethod.Post, new { role = "form" }))
+            {
+                @Html.DropDownListFor(m => m.WeekEnding, WeekendingList, " - Please select a date - ", new { @class = "btn btn-default dropdown-toggle", onchange = "this.form.submit();" })
+            }
+        </div>
         @{
             if (@paySumList != null)
             {
-                <p>Reports for the Week ending on @paySumList[0].WeekEnding</p>
-                <!--Table to display pay summaries from the session-->
-                <table class="center" id="PaySummary">
-                    <thead>
+                <div class="yesPrint container table-responsive">
+                    <table class="center table table-bordered table-condensed table-responsive" id="TimeSheet">
+                        <caption style="background-color:lightgray; font-weight:bold;">Reports for the Week ending on @paySumList[0].WeekEnding</caption>
                         <tr>
                             <th style="display:none;">Weekending Date</th>
                             <th>Name, ID</th>
@@ -100,8 +124,7 @@
                             <th>Time Sheet Status</th>
                             <th>Supervisor</th>
                         </tr>
-                    </thead>
-                    <tbody>
+
                         @foreach (WeeklyReport paySum in @paySumList)
                         {
                             using (Html.BeginForm("GetOverview", "HR", FormMethod.Post))
@@ -109,9 +132,9 @@
                                 <tr>
                                     <td style="display:none;"> @paySum.WeekEnding</td>
                                     @{ emps = emps.GetEmployee(Convert.ToInt16(@paySum.Banner_ID)); }
-                                    @Html.HiddenFor(m => m.Banner_ID, new { @Value = @paySum.Banner_ID } )
+                                    @Html.HiddenFor(m => m.Banner_ID, new { @Value = @paySum.Banner_ID })
                                     <td>
-                                        <button id="submit" type="submit" value="@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID">@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID</button>
+                                        <button class="btn btn-default" id="submit" type="submit" value="@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID">@emps.First_Name.Trim() @emps.Last_Name.Trim(), @emps.Banner_ID</button>
                                     </td>
                                     <td>
                                         @paySum.LeaveHours
@@ -137,15 +160,19 @@
                                 </tr>
                             }
                         }
-                    </tbody>
-                </table>
+                    </table>
+                    <iframe id="txtArea1" style="display:none"></iframe>
+                </div>
             }
         }
-    </div><br />
-    <iframe id="txtArea1" style="display:none"></iframe>
-    <button id="btnExport" onclick="fnExcelReport();">Export Report </button>
-
-    <!--Log out link-->
-    <a href="@Url.Action("LogOut", "Login")">LogOut</a>
+    </main>
+    <footer>
+        <div class="noPrint text-center">
+            <button class="btn btn-default" id="btnExport" onclick="fnExcelReport();">Export Report </button>
+            <br /><br />
+            <!--Log out link-->
+            <a class="btn btn-default" href="@Url.Action("LogOut", "Login")">LogOut</a>
+        </div>
+    </footer>
 </body>
 </html>
